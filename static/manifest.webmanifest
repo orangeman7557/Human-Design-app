@@ -1,0 +1,12 @@
+{
+  "name": "Human Design Chart",
+  "short_name": "HD Chart",
+  "description": "Calcular, guardar y consultar cartas de Human Design.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0b0b0d",
+  "theme_color": "#0b0b0d",
+  "lang": "es"
+}
