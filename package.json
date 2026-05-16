@@ -23,8 +23,8 @@
     "wrangler": "^3.78.0"
   },
   "dependencies": {
+    "astronomy-engine": "^2.1.19",
     "luxon": "^3.5.0",
-    "swisseph-wasm": "^0.0.4",
     "tz-lookup": "^6.1.25"
   }
 }

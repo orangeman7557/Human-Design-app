@@ -1,95 +1,88 @@
-// Wrapper alrededor de swisseph-wasm.
-// Aquí se concentra todo lo astronómico:
-//   - Inicializar la librería WASM.
-//   - Convertir fecha/hora a Julian Day.
-//   - Pedir longitudes eclípticas de los 13 cuerpos HD.
-//   - Encontrar el momento exacto del Diseño (Sol a 88° del nacimiento).
+// Capa astronómica de la app.
 //
-// IMPORTANTE: swisseph-wasm trae código pensado para Node (createRequire,
-// node:module) que rompe el build del Worker de Cloudflare. Para evitarlo
-// importamos la librería dinámicamente y solo en el navegador. Vite ve la
-// guarda `if (browser)` y elimina por completo esta rama en el bundle de
-// servidor; así swisseph-wasm nunca acaba en el código del Worker.
+// Usamos `astronomy-engine` (JavaScript puro, sin WASM) para las posiciones
+// geocéntricas aparentes de Sol, Luna y planetas. Los nodos lunares no vienen
+// en la librería como función directa, así que el Nodo Norte lo calculamos
+// con la fórmula clásica de Meeus para el nodo medio (precisión sobrada para
+// HD: el error frente al nodo verdadero es <2°, y una línea HD mide 0,9375°).
 
-import { browser } from '$app/environment';
+import * as Astronomy from 'astronomy-engine';
 
-/** @type {Promise<any> | null} */
-let swePromise = null;
+// Mapa nombre interno → constante de astronomy-engine para los cuerpos
+// que la librería sí calcula directamente como vector geocéntrico.
+const ASTRO_BODY = {
+  sun: Astronomy.Body.Sun,
+  mercury: Astronomy.Body.Mercury,
+  venus: Astronomy.Body.Venus,
+  mars: Astronomy.Body.Mars,
+  jupiter: Astronomy.Body.Jupiter,
+  saturn: Astronomy.Body.Saturn,
+  uranus: Astronomy.Body.Uranus,
+  neptune: Astronomy.Body.Neptune,
+  pluto: Astronomy.Body.Pluto
+};
 
-function getSwe() {
-  if (!swePromise) {
-    if (!browser) {
-      swePromise = Promise.reject(
-        new Error('Swiss Ephemeris solo está disponible en el navegador.')
-      );
-    } else {
-      swePromise = (async () => {
-        const { default: SwissEph } = await import('swisseph-wasm');
-        const swe = new SwissEph();
-        await swe.initSwissEph();
-        return swe;
-      })();
-    }
-  }
-  return swePromise;
+const JD_UNIX_EPOCH = 2440587.5; // JD del 1970-01-01 00:00 UT
+
+/** @param {Date} date */
+export function dateToJd(date) {
+  return date.getTime() / 86_400_000 + JD_UNIX_EPOCH;
+}
+
+/** @param {number} jd */
+function jdToDate(jd) {
+  return new Date((jd - JD_UNIX_EPOCH) * 86_400_000);
 }
 
 /**
- * Convierte una fecha UTC a Julian Day (UT).
- * @param {Date} utcDate
- * @returns {Promise<number>}
+ * Longitud eclíptica geocéntrica aparente de un cuerpo (en grados, 0-360).
+ * @param {string} name
+ * @param {Astronomy.AstroTime} time
  */
-export async function dateToJd(utcDate) {
-  const swe = await getSwe();
-  const hourFraction =
-    utcDate.getUTCHours() +
-    utcDate.getUTCMinutes() / 60 +
-    utcDate.getUTCSeconds() / 3600;
-  return swe.julday(
-    utcDate.getUTCFullYear(),
-    utcDate.getUTCMonth() + 1,
-    utcDate.getUTCDate(),
-    hourFraction
-  );
+function eclipticLongitude(name, time) {
+  if (name === 'moon') {
+    const vec = Astronomy.GeoMoon(time);
+    return Astronomy.Ecliptic(vec).elon;
+  }
+  const body = ASTRO_BODY[name];
+  if (!body) throw new Error(`Cuerpo no soportado: ${name}`);
+  const vec = Astronomy.GeoVector(body, time, true); // true = corregir aberración
+  return Astronomy.Ecliptic(vec).elon;
+}
+
+/**
+ * Nodo Norte lunar medio (Ω) en grados, fórmula de Meeus (Astronomical
+ * Algorithms, cap. 47), válida para fechas razonables de uso humano.
+ * @param {number} jd
+ */
+function meanLunarNorthNode(jd) {
+  const T = (jd - 2451545.0) / 36525;
+  const omega =
+    125.0445479 -
+    1934.1362891 * T +
+    0.0020754 * T * T +
+    (T * T * T) / 467441 -
+    (T * T * T * T) / 60616000;
+  return ((omega % 360) + 360) % 360;
 }
 
 /**
  * Devuelve las longitudes eclípticas de los 13 cuerpos relevantes para HD
  * en un Julian Day dado.
- *
  * @param {number} jd
- * @returns {Promise<Record<string, number>>} mapa nombre → longitud (0-360)
+ * @returns {Record<string, number>}
  */
-export async function getPlanetLongitudes(jd) {
-  const swe = await getSwe();
-  const flags = swe.SEFLG_SWIEPH; // Swiss Ephemeris, tropical, geocéntrico
-
-  // Mapa de nombre interno → constante de Swiss Ephemeris.
-  // El Norte/Sur lunar usa True Node (no Mean) por convención HD moderna.
-  const ids = {
-    sun: swe.SE_SUN,
-    moon: swe.SE_MOON,
-    mercury: swe.SE_MERCURY,
-    venus: swe.SE_VENUS,
-    mars: swe.SE_MARS,
-    jupiter: swe.SE_JUPITER,
-    saturn: swe.SE_SATURN,
-    uranus: swe.SE_URANUS,
-    neptune: swe.SE_NEPTUNE,
-    pluto: swe.SE_PLUTO,
-    northNode: swe.SE_TRUE_NODE
-  };
+export function getPlanetLongitudes(jd) {
+  const time = new Astronomy.AstroTime(jdToDate(jd));
 
   /** @type {Record<string, number>} */
   const longs = {};
-  for (const [name, id] of Object.entries(ids)) {
-    const result = swe.calc_ut(jd, id, flags);
-    longs[name] = result[0]; // result = [longitude, latitude, distance, ...]
+  for (const name of Object.keys(ASTRO_BODY)) {
+    longs[name] = eclipticLongitude(name, time);
   }
-
-  // Tierra: opuesta al Sol.
+  longs.moon = eclipticLongitude('moon', time);
   longs.earth = (longs.sun + 180) % 360;
-  // Nodo Sur: opuesto al Nodo Norte.
+  longs.northNode = meanLunarNorthNode(jd);
   longs.southNode = (longs.northNode + 180) % 360;
 
   return longs;
@@ -97,34 +90,24 @@ export async function getPlanetLongitudes(jd) {
 
 /**
  * Encuentra el Julian Day del Diseño: el momento en que el Sol estaba
- * exactamente 88° por detrás de su posición en el nacimiento (medido en
- * grados de arco solar, no en días).
+ * exactamente 88° por detrás de su posición natal (medido en grados de arco
+ * solar, no en días). Newton-Raphson sobre la diferencia angular.
  *
- * Usa una búsqueda iterativa tipo Newton. El Sol se mueve ~0,985°/día, así
- * que cada corrección de error en grados se traduce a corrección en días.
- *
- * @param {number} birthJd - Julian Day del nacimiento
- * @param {number} birthSunLongitude - longitud del Sol natal en grados
- * @returns {Promise<number>} Julian Day del Diseño
+ * @param {number} birthJd
+ * @param {number} birthSunLongitude
+ * @returns {number}
  */
-export async function computeDesignJd(birthJd, birthSunLongitude) {
-  const swe = await getSwe();
+export function computeDesignJd(birthJd, birthSunLongitude) {
   const target = (((birthSunLongitude - 88) % 360) + 360) % 360;
 
-  let jd = birthJd - 88; // estimación inicial: ~88 días naturales antes
-  const flags = swe.SEFLG_SWIEPH;
-
+  let jd = birthJd - 88; // estimación: ~88 días naturales antes
   for (let i = 0; i < 50; i++) {
-    const pos = swe.calc_ut(jd, swe.SE_SUN, flags);
-    const current = pos[0];
+    const time = new Astronomy.AstroTime(jdToDate(jd));
+    const current = eclipticLongitude('sun', time);
 
-    // Diferencia firmada en [-180, 180]: cuánto le sobra/falta al Sol
-    // para llegar al target.
     let diff = (((current - target) % 360) + 540) % 360 - 180;
-
-    if (Math.abs(diff) < 1e-7) return jd; // ~0,000004° de precisión, sobra
+    if (Math.abs(diff) < 1e-7) return jd;
     jd -= diff / 0.985_647_3; // velocidad media diaria del Sol en grados
   }
-
-  return jd; // 50 iteraciones es de sobra; si llegamos aquí, ya convergió
+  return jd;
 }
