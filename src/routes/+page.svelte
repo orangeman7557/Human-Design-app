@@ -1,73 +1,190 @@
 <script>
-  // Placeholder home screen for Fase 0.
-  // In Fase 1 this will be replaced with the birth-data form + bodygraph render.
+  import { goto } from '$app/navigation';
+
+  // Pre-rellenamos con la carta de Javs como caso de validación. En
+  // iteraciones siguientes, el usuario empezará con el formulario vacío.
+  let name = $state('Javs');
+  let date = $state('1984-03-13');
+  let time = $state('09:30');
+  let timezone = $state('Europe/Madrid');
+  let latitude = $state(40.4168);
+  let longitude = $state(-3.7038);
+
+  let submitting = $state(false);
+  /** @type {string | null} */
+  let error = $state(null);
+
+  function submit(e) {
+    e.preventDefault();
+    submitting = true;
+    error = null;
+    try {
+      const birth = {
+        name: name.trim() || null,
+        date,
+        time,
+        timezone: timezone.trim(),
+        latitude: Number(latitude),
+        longitude: Number(longitude)
+      };
+      sessionStorage.setItem('birthData', JSON.stringify(birth));
+      goto('/chart');
+    } catch (e) {
+      error = e instanceof Error ? e.message : String(e);
+      submitting = false;
+    }
+  }
 </script>
 
 <main>
   <header>
     <h1>Human Design Chart</h1>
-    <p class="tagline">Calcular, guardar y consultar cartas de Human Design.</p>
+    <p class="tagline">Iteración 1.1 — cálculo y resultado en texto.</p>
   </header>
 
-  <section class="status">
-    <span class="dot"></span>
-    Esqueleto en pie. Próximo paso: cálculo astronómico y bodygraph.
-  </section>
+  <form onsubmit={submit}>
+    <label>
+      <span>Nombre</span>
+      <input type="text" bind:value={name} placeholder="Opcional" autocomplete="off" />
+    </label>
+
+    <label>
+      <span>Fecha de nacimiento</span>
+      <input type="date" bind:value={date} required />
+    </label>
+
+    <label>
+      <span>Hora local de nacimiento</span>
+      <input type="time" bind:value={time} required />
+    </label>
+
+    <label>
+      <span>Zona horaria (IANA)</span>
+      <input type="text" bind:value={timezone} placeholder="Europe/Madrid" required />
+      <small>En la próxima iteración esto se detectará solo a partir de la ciudad.</small>
+    </label>
+
+    <div class="row">
+      <label>
+        <span>Latitud</span>
+        <input type="number" step="0.0001" bind:value={latitude} required />
+      </label>
+      <label>
+        <span>Longitud</span>
+        <input type="number" step="0.0001" bind:value={longitude} required />
+      </label>
+    </div>
+
+    {#if error}
+      <p class="error">{error}</p>
+    {/if}
+
+    <button type="submit" disabled={submitting}>
+      {submitting ? 'Calculando…' : 'Calcular carta'}
+    </button>
+  </form>
 
   <footer>
-    <small>v0.0.1 · open source · AGPL-3.0</small>
+    <small>v0.1.0 · open source · AGPL-3.0</small>
   </footer>
 </main>
 
 <style>
   main {
-    max-width: 600px;
+    max-width: 460px;
     margin: 0 auto;
-    padding: 4rem 1.5rem;
+    padding: 3rem 1.25rem 4rem;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    text-align: center;
   }
-
-  header h1 {
-    font-size: clamp(1.75rem, 5vw, 2.25rem);
-    font-weight: 600;
-    margin: 0 0 0.5rem;
+  header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+  h1 {
+    font-size: clamp(1.6rem, 5vw, 2rem);
+    font-weight: 500;
+    margin: 0 0 0.4rem;
     letter-spacing: -0.01em;
   }
-
   .tagline {
     color: var(--text-muted);
-    margin: 0 0 3rem;
-    line-height: 1.5;
+    margin: 0;
+    font-size: 0.9rem;
   }
 
-  .status {
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+  }
+
+  label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+  label span {
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 0.72rem;
+  }
+  input {
     background: var(--surface);
     border: 1px solid var(--border);
+    color: var(--text);
+    padding: 0.7rem 0.85rem;
     border-radius: var(--radius);
-    padding: 1rem 1.25rem;
+    font-size: 1rem;
+    font-family: inherit;
+    color-scheme: dark;
+  }
+  input:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+  small {
     color: var(--text-muted);
-    font-size: 0.95rem;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.6rem;
-    margin: 0 auto;
+    font-size: 0.75rem;
+    opacity: 0.7;
   }
 
-  .dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
+  .row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.8rem;
+  }
+
+  button {
+    margin-top: 1rem;
     background: var(--accent);
-    box-shadow: 0 0 8px var(--accent-soft);
-    flex-shrink: 0;
+    color: #1a1408;
+    border: none;
+    padding: 0.85rem 1rem;
+    border-radius: var(--radius);
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  button:disabled {
+    opacity: 0.6;
+    cursor: progress;
+  }
+
+  .error {
+    color: var(--danger);
+    font-size: 0.9rem;
+    margin: 0;
   }
 
   footer {
     margin-top: 4rem;
+    text-align: center;
     color: var(--text-muted);
     opacity: 0.6;
   }
