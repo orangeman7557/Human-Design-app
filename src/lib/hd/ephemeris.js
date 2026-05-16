@@ -4,23 +4,32 @@
 //   - Convertir fecha/hora a Julian Day.
 //   - Pedir longitudes eclípticas de los 13 cuerpos HD.
 //   - Encontrar el momento exacto del Diseño (Sol a 88° del nacimiento).
+//
+// IMPORTANTE: swisseph-wasm trae código pensado para Node (createRequire,
+// node:module) que rompe el build del Worker de Cloudflare. Para evitarlo
+// importamos la librería dinámicamente y solo en el navegador. Vite ve la
+// guarda `if (browser)` y elimina por completo esta rama en el bundle de
+// servidor; así swisseph-wasm nunca acaba en el código del Worker.
 
-import SwissEph from 'swisseph-wasm';
+import { browser } from '$app/environment';
 
-/** @type {SwissEph | null} */
+/** @type {Promise<any> | null} */
 let swePromise = null;
 
-/**
- * Inicializa Swiss Ephemeris una sola vez por sesión.
- * Devuelve siempre la misma instancia para evitar recargas innecesarias.
- */
 function getSwe() {
   if (!swePromise) {
-    swePromise = (async () => {
-      const swe = new SwissEph();
-      await swe.initSwissEph();
-      return swe;
-    })();
+    if (!browser) {
+      swePromise = Promise.reject(
+        new Error('Swiss Ephemeris solo está disponible en el navegador.')
+      );
+    } else {
+      swePromise = (async () => {
+        const { default: SwissEph } = await import('swisseph-wasm');
+        const swe = new SwissEph();
+        await swe.initSwissEph();
+        return swe;
+      })();
+    }
   }
   return swePromise;
 }
