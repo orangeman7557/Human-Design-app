@@ -28,8 +28,8 @@ export const MOTOR_CENTERS = ['sacral', 'heart', 'solarPlexus', 'root'];
 // Qué puertas pertenecen a cada centro.
 export const GATES_BY_CENTER = {
   head:        [61, 63, 64],
-  ajna:        [4, 17, 24, 43, 47],
-  throat:      [8, 11, 12, 16, 20, 23, 31, 33, 35, 45, 56, 62],
+  ajna:        [4, 11, 17, 24, 43, 47],
+  throat:      [8, 12, 16, 20, 23, 31, 33, 35, 45, 56, 62],
   g:           [1, 2, 7, 10, 13, 15, 25, 46],
   heart:       [21, 26, 40, 51],
   sacral:      [3, 5, 9, 14, 27, 29, 34, 42, 59],
