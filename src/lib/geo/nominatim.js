@@ -12,6 +12,13 @@
 
 const ENDPOINT = 'https://nominatim.openstreetmap.org/search';
 
+// Locale-biased result ordering. The audience is currently Spanish, so when
+// two cities share a name (classic: "Cuenca" exists in both Spain and
+// Ecuador) we surface the Spanish one first. We do NOT filter — the user
+// can still pick the Ecuadorian one if it's the right match. Replace this
+// constant with something user-configurable when the app grows beyond ES.
+const PREFERRED_COUNTRY_CODE = 'es';
+
 /**
  * @typedef {Object} Place
  * @property {string} label
@@ -30,9 +37,10 @@ export async function searchPlaces(query, signal) {
   const params = new URLSearchParams({
     q: query,
     format: 'json',
-    // We over-fetch (more than we display) so client-side dedup has material
-    // to work with. Nominatim's own `dedupe=1` doesn't catch every case
-    // because it can't distinguish a "city" from the homonymous "boundary".
+    // We over-fetch (more than we display) so client-side dedup and re-rank
+    // have material to work with. Nominatim's own `dedupe=1` doesn't catch
+    // every case because it can't distinguish a "city" from the homonymous
+    // "boundary".
     limit: '10',
     addressdetails: '1',
     // Localized place names. Spanish users see Spanish-language place names.
@@ -51,8 +59,8 @@ export async function searchPlaces(query, signal) {
  * Falls back through the place hierarchy because not every locality has a
  * `city` field (small villages, hamlets, etc.).
  *
- * Keeps the `class` field around as a hidden ranking signal for the
- * dedup pass; it's stripped before returning to callers.
+ * Keeps `class` and `countryCode` around as hidden ranking signals for the
+ * dedup pass; they are stripped before returning to callers.
  */
 function toPlace(item) {
   const addr = item.address ?? {};
@@ -72,19 +80,31 @@ function toPlace(item) {
     label,
     latitude: parseFloat(item.lat),
     longitude: parseFloat(item.lon),
-    _class: item.class // internal ranking signal
+    _class: item.class,
+    _countryCode: (addr.country_code ?? '').toLowerCase()
   };
 }
 
 /**
- * Remove duplicate entries (Nominatim often returns the same place under
- * different OSM types: the "city" record and the "administrative boundary"
- * record that shares the city name). We rank `place` entries above
- * `boundary` entries, then keep the first occurrence of each label.
+ * Re-rank and de-duplicate.
+ *
+ * Ranking signals (lower score wins; stable sort preserves Nominatim's
+ * original "importance" order within ties):
+ *   - Entries of `class=place` (actual cities/villages) come before
+ *     `class=boundary` (administrative regions that share the name).
+ *   - Entries in the preferred country come before the rest.
+ *
+ * Dedup is by exact label after ranking, so the highest-ranked entry for
+ * a given label survives.
  */
 function dedupeAndRank(places) {
-  const priority = (p) => (p._class === 'place' ? 0 : 1);
-  const sorted = [...places].sort((a, b) => priority(a) - priority(b));
+  const score = (p) => {
+    let s = 0;
+    if (p._class !== 'place') s += 10;
+    if (p._countryCode !== PREFERRED_COUNTRY_CODE) s += 5;
+    return s;
+  };
+  const sorted = [...places].sort((a, b) => score(a) - score(b));
 
   const seen = new Set();
   const out = [];
