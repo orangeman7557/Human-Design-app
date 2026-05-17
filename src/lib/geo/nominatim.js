@@ -30,7 +30,10 @@ export async function searchPlaces(query, signal) {
   const params = new URLSearchParams({
     q: query,
     format: 'json',
-    limit: '6',
+    // We over-fetch (more than we display) so client-side dedup has material
+    // to work with. Nominatim's own `dedupe=1` doesn't catch every case
+    // because it can't distinguish a "city" from the homonymous "boundary".
+    limit: '10',
     addressdetails: '1',
     // Localized place names. Spanish users see Spanish-language place names.
     'accept-language': 'es'
@@ -40,13 +43,16 @@ export async function searchPlaces(query, signal) {
   if (!res.ok) throw new Error(`Nominatim returned HTTP ${res.status}`);
 
   const raw = await res.json();
-  return raw.map(toPlace);
+  return dedupeAndRank(raw.map(toPlace)).slice(0, 6);
 }
 
 /**
  * Compose a human-friendly label from Nominatim's verbose address parts.
  * Falls back through the place hierarchy because not every locality has a
  * `city` field (small villages, hamlets, etc.).
+ *
+ * Keeps the `class` field around as a hidden ranking signal for the
+ * dedup pass; it's stripped before returning to callers.
  */
 function toPlace(item) {
   const addr = item.address ?? {};
@@ -65,6 +71,31 @@ function toPlace(item) {
   return {
     label,
     latitude: parseFloat(item.lat),
-    longitude: parseFloat(item.lon)
+    longitude: parseFloat(item.lon),
+    _class: item.class // internal ranking signal
   };
+}
+
+/**
+ * Remove duplicate entries (Nominatim often returns the same place under
+ * different OSM types: the "city" record and the "administrative boundary"
+ * record that shares the city name). We rank `place` entries above
+ * `boundary` entries, then keep the first occurrence of each label.
+ */
+function dedupeAndRank(places) {
+  const priority = (p) => (p._class === 'place' ? 0 : 1);
+  const sorted = [...places].sort((a, b) => priority(a) - priority(b));
+
+  const seen = new Set();
+  const out = [];
+  for (const p of sorted) {
+    if (seen.has(p.label)) continue;
+    seen.add(p.label);
+    out.push({
+      label: p.label,
+      latitude: p.latitude,
+      longitude: p.longitude
+    });
+  }
+  return out;
 }
