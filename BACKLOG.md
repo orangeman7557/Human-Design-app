@@ -72,6 +72,9 @@ then compute the true node from the Moon's instantaneous orbit.
 - The Nominatim integration uses the public endpoint without an explicit
   User-Agent. For low traffic this is fine; if the app grows, we should
   switch to a self-identifying header or a self-hosted Nominatim mirror.
-- `src/lib/geo/nominatim.js` is misnamed: it now backs onto Photon
-  (better at autocomplete) rather than Nominatim. Rename to `geocoder.js`
-  in a cleanup pass.
+- City autocomplete uses Nominatim's `/search`, which is geared toward
+  full-form geocoding rather than prefix autocomplete. Short prefixes
+  ("cuen", "barc") don't always surface the obvious match. A first attempt
+  at switching to Photon (komoot) failed in deployment and was reverted.
+  Future work: investigate the Photon failure (possible CORS or response
+  shape mismatch) or try a different autocomplete-friendly geocoder.
