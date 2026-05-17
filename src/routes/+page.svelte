@@ -1,14 +1,25 @@
 <script>
-  import { goto } from '$app/navigation';
+  // Birth-data entry form.
+  //
+  // Pre-filled with orangeman7557's chart as the validation test case. The
+  // `place` state carries pre-resolved latitude/longitude/timezone so the
+  // form can be submitted as-is without going through the autocomplete on
+  // first load.
 
-  // Pre-rellenamos con la carta de Javs como caso de validación. En
-  // iteraciones siguientes, el usuario empezará con el formulario vacío.
-  let name = $state('Javs');
+  import { goto } from '$app/navigation';
+  import CityAutocomplete from '$lib/components/CityAutocomplete.svelte';
+
+  let name = $state('orangeman7557');
   let date = $state('1984-03-13');
   let time = $state('09:30');
-  let timezone = $state('Europe/Madrid');
-  let latitude = $state(40.4168);
-  let longitude = $state(-3.7038);
+
+  /** @type {{ label: string, latitude: number, longitude: number, timezone: string } | null} */
+  let place = $state({
+    label: 'Madrid, Comunidad de Madrid, España',
+    latitude: 40.4168,
+    longitude: -3.7038,
+    timezone: 'Europe/Madrid'
+  });
 
   let submitting = $state(false);
   /** @type {string | null} */
@@ -16,16 +27,23 @@
 
   function submit(e) {
     e.preventDefault();
-    submitting = true;
     error = null;
+
+    if (!place) {
+      error = 'Selecciona una ciudad de la lista de sugerencias.';
+      return;
+    }
+
+    submitting = true;
     try {
       const birth = {
         name: name.trim() || null,
         date,
         time,
-        timezone: timezone.trim(),
-        latitude: Number(latitude),
-        longitude: Number(longitude)
+        timezone: place.timezone,
+        latitude: place.latitude,
+        longitude: place.longitude,
+        placeLabel: place.label
       };
       sessionStorage.setItem('birthData', JSON.stringify(birth));
       goto('/chart');
@@ -39,7 +57,7 @@
 <main>
   <header>
     <h1>Human Design Chart</h1>
-    <p class="tagline">Iteración 1.1 — cálculo y resultado en texto.</p>
+    <p class="tagline">Introduce tus datos de nacimiento.</p>
   </header>
 
   <form onsubmit={submit}>
@@ -59,21 +77,9 @@
     </label>
 
     <label>
-      <span>Zona horaria (IANA)</span>
-      <input type="text" bind:value={timezone} placeholder="Europe/Madrid" required />
-      <small>En la próxima iteración esto se detectará solo a partir de la ciudad.</small>
+      <span>Lugar de nacimiento</span>
+      <CityAutocomplete bind:value={place} />
     </label>
-
-    <div class="row">
-      <label>
-        <span>Latitud</span>
-        <input type="number" step="0.0001" bind:value={latitude} required />
-      </label>
-      <label>
-        <span>Longitud</span>
-        <input type="number" step="0.0001" bind:value={longitude} required />
-      </label>
-    </div>
 
     {#if error}
       <p class="error">{error}</p>
@@ -85,7 +91,7 @@
   </form>
 
   <footer>
-    <small>v0.1.0 · open source · AGPL-3.0</small>
+    <small>v0.1.0 · open source · AGPL-3.0 · Built with AI assistance</small>
   </footer>
 </main>
 
@@ -147,19 +153,8 @@
     outline: none;
     border-color: var(--accent);
   }
-  small {
-    color: var(--text-muted);
-    font-size: 0.75rem;
-    opacity: 0.7;
-  }
 
-  .row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.8rem;
-  }
-
-  button {
+  button[type='submit'] {
     margin-top: 1rem;
     background: var(--accent);
     color: #1a1408;
@@ -171,7 +166,7 @@
     cursor: pointer;
     font-family: inherit;
   }
-  button:disabled {
+  button[type='submit']:disabled {
     opacity: 0.6;
     cursor: progress;
   }
