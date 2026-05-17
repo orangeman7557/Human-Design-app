@@ -95,9 +95,14 @@ function toPlace(item) {
  *
  * Ranking signals (lower score wins; stable sort preserves Nominatim's
  * original "importance" order within ties):
- *   - Entries of `class=place` (actual cities/villages) come before
- *     `class=boundary` (administrative regions that share the name).
- *   - Entries in the preferred country come before the rest.
+ *   - **Preferred country dominates.** Nominatim sometimes returns the
+ *     city in the preferred country as a `class=boundary` (admin record)
+ *     while returning a homonymous city in another country as a proper
+ *     `class=place`. Ranking class above country would surface the wrong
+ *     hit. Country comes first.
+ *   - **Settlement type as tie-breaker.** Within the same country tier,
+ *     prefer `class=place` (real city/village) over `class=boundary`
+ *     (administrative boundary).
  *
  * Dedup is by exact label after ranking, so the highest-ranked entry for
  * a given label survives.
@@ -105,8 +110,8 @@ function toPlace(item) {
 function dedupeAndRank(places) {
   const score = (p) => {
     let s = 0;
-    if (p._class !== 'place') s += 10;
-    if (p._countryCode !== PREFERRED_COUNTRY_CODE) s += 5;
+    if (p._countryCode !== PREFERRED_COUNTRY_CODE) s += 10;
+    if (p._class !== 'place') s += 5;
     return s;
   };
   const sorted = [...places].sort((a, b) => score(a) - score(b));
