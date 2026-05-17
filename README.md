@@ -1,7 +1,7 @@
 # Human Design Chart App
 
-A free, open-source PWA for calculating, saving, and consulting Human Design
-charts.
+A free, source-available PWA for calculating, saving, and consulting Human
+Design charts. Free for any noncommercial use. See [License](#license).
 
 ## Status
 
@@ -62,8 +62,29 @@ Then open [http://localhost:5173](http://localhost:5173).
 
 ## License
 
-[AGPL-3.0-or-later](./LICENSE). Any public deployment of a derived work must
-publish its source code under a compatible license.
+[PolyForm Noncommercial License 1.0.0](./LICENSE).
+
+The source code is publicly visible and free to read, fork, modify, run, and
+share for any **noncommercial** purpose — personal use, study, research,
+hobby projects, education, and use by charitable, public-research, public-safety,
+health, environmental, or government organizations.
+
+**Commercial use is not granted by this license** and requires explicit written
+permission from the copyright holder. "Commercial" means anything intended for
+or directed toward commercial advantage or monetary compensation (selling the
+app, embedding it in a paid product, running it as a paid service, etc.).
+
+For commercial licensing inquiries, contact
+[orangeman7557@gmail.com](mailto:orangeman7557@gmail.com).
+
+Third-party licenses for bundled dependencies are listed in [`NOTICE`](./NOTICE).
+
+Note: PolyForm Noncommercial is a *source-available* license, not an
+OSI-approved open-source license. The earlier AGPL-3.0 licensing was a
+consequence of using Swiss Ephemeris (AGPL); now that the engine is
+[astronomy-engine](https://github.com/cosinekitty/astronomy) (MIT), that
+constraint no longer applies, and the license has been re-chosen on its own
+merits.
 
 ## Phased plan
 

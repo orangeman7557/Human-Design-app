@@ -8,6 +8,46 @@ some point.
 > comments, and documentation are produced collaboratively between orangeman7557 (the
 > author and decision-maker) and an AI coding assistant.
 
+## Decision log — License change (AGPL-3.0 → PolyForm Noncommercial 1.0.0)
+
+**Date:** 2026-05-17.
+
+**What changed:** the project's license moved from AGPL-3.0-or-later to
+[PolyForm Noncommercial 1.0.0](./LICENSE). The previous third-party attribution
+(astronomy-engine, MIT) is now recorded explicitly in [`NOTICE`](./NOTICE).
+
+**Why:** AGPL was inherited from the original plan to use Swiss Ephemeris,
+whose copyleft license forced the whole derived work to be AGPL. Since
+Phase 1.1 the engine is `astronomy-engine` (MIT), so the AGPL obligation
+disappeared and the licensing decision became free again. The author
+re-chose on its merits: source-available so the calculation stays auditable,
+noncommercial so the author retains the optionality of monetising later
+without competing against a clone of the same code.
+
+**Consequences accepted:**
+
+- This is no longer "open source" in the strict OSI sense. It is
+  source-available. GitHub will not show the green license badge; it will
+  show "Other" or "View license".
+- Public/forks/mirrors that present the project as "open source" should be
+  corrected in language: it is *source-available, noncommercial-only*.
+- The author is currently the sole copyright holder. **Any future external
+  contribution requires a CLA (Contributor License Agreement)** before merge,
+  or the author loses the ability to relicense or grant commercial
+  exemptions. Until a CLA is in place, do not accept third-party PRs that
+  add or modify code.
+- Past releases (none yet tagged) would remain under the previous license
+  forever once published. Since no release was tagged under AGPL, this is
+  moot for now.
+- Commercial exemptions can be granted case-by-case in writing by the
+  author. There is no public mechanism for this yet; if the project gains
+  traction, consider a "commercial license" page with a contact route.
+- "Noncommercial" boundaries can be ambiguous in edge cases. The PolyForm
+  text defines it precisely; the author is the one who enforces it.
+
+**Files touched in this change:**
+`LICENSE`, `NOTICE` (new), `README.md`, `package.json`, `BACKLOG.md`.
+
 ## Astronomical precision (HD variables: color, tone, base)
 
 **Current decision:** the app uses

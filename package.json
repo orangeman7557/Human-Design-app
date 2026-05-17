@@ -1,8 +1,8 @@
 {
   "name": "human-design-chart-app",
   "version": "0.0.1",
-  "description": "PWA gratuita y open-source para calcular, guardar y consultar cartas de Human Design.",
-  "license": "AGPL-3.0-or-later",
+  "description": "Source-available PWA for calculating, saving, and consulting Human Design charts. Free for any noncommercial use.",
+  "license": "SEE LICENSE IN LICENSE",
   "private": false,
   "type": "module",
   "engines": {

@@ -19,6 +19,10 @@ lives in [`BACKLOG.md`](./BACKLOG.md).
 
 Last updated: 2026-05-17.
 
+> Latest change: license switched from AGPL-3.0-or-later to PolyForm
+> Noncommercial 1.0.0 — rationale and consequences logged in
+> [`BACKLOG.md`](./BACKLOG.md#decision-log--license-change-agpl-30--polyform-noncommercial-100).
+
 ---
 
 ## ✅ Done
