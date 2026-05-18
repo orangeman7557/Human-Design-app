@@ -91,7 +91,7 @@
   </form>
 
   <footer>
-    <small>v0.1.0 · open source · AGPL-3.0 · Built with AI assistance</small>
+    <small>v0.1.0 · source-available · free for noncommercial use · Built with AI assistance</small>
   </footer>
 </main>
 
