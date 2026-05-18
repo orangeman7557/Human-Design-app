@@ -1,9 +1,15 @@
 // AI-authored — geometry constants and helpers for the SVG bodygraph.
 // Coordinates are relative to a 380×510 viewBox.
+//
+// This file is "structural truth": center positions, shapes, palette, and the
+// helpers that turn the channel list into renderable lines + label positions.
+// Pixel-perfect Rave-style placement of every gate on its center perimeter is
+// a Phase 3 polish item; for now we approximate by drawing channels center-to-
+// center and pushing gate labels just outside the perimeter along each channel.
 
 import { CENTER_BY_GATE, CHANNELS } from './constants.js';
 
-// ── Center-of-mass positions ─────────────────────────────────────────────────
+// ── Center-of-mass positions ────────────────────────────────────────────────
 export const CENTER_POS = {
   head:        { x: 190, y: 48  },
   ajna:        { x: 190, y: 113 },
@@ -16,7 +22,7 @@ export const CENTER_POS = {
   root:        { x: 190, y: 438 },
 };
 
-// ── Center shape definitions ─────────────────────────────────────────────────
+// ── Center shape definitions ────────────────────────────────────────────────
 // type: 'triangle-up' | 'triangle-down' | 'rect' | 'diamond'
 // r: circumradius for polygon shapes (px)
 // w, h: dimensions for rects (px)
@@ -32,21 +38,32 @@ export const CENTER_SHAPES = {
   root:        { type: 'rect',          w: 82, h: 38 },
 };
 
+// ── HD-standard fill colors when a center is defined ────────────────────────
+// Lightly desaturated for the dark theme so they don't vibrate against the
+// background but stay recognisable as the classic palette.
+export const CENTER_COLORS_DEFINED = {
+  head:        '#d4b03a', // yellow
+  ajna:        '#5d9b5d', // green
+  throat:      '#9b7137', // brown / ochre
+  g:           '#d4b03a', // yellow
+  heart:       '#b94444', // red
+  sacral:      '#b94444', // red
+  spleen:      '#9b7137', // brown
+  solarPlexus: '#9b7137', // brown
+  root:        '#7a5128', // dark brown
+};
+
 // Perpendicular gap between parallel channels sharing the same center pair.
 export const CHANNEL_SPACING = 6;
 
 /**
- * Returns SVG polygon `points` string for a center shape.
- * Returns null for rects (rendered as <rect> in Svelte).
- * @param {string} name
- * @returns {string|null}
+ * SVG polygon `points` string for a center shape (returns null for rects).
  */
 export function centerPoints(name) {
   const { x, y } = CENTER_POS[name];
   const s = CENTER_SHAPES[name];
   const r = s.r;
   if (s.type === 'triangle-up') {
-    // Equilateral triangle pointing up, circumradius r
     return `${x},${y - r} ${x - r * 0.866},${y + r * 0.5} ${x + r * 0.866},${y + r * 0.5}`;
   }
   if (s.type === 'triangle-down') {
@@ -59,11 +76,26 @@ export function centerPoints(name) {
 }
 
 /**
- * Returns the SVG line endpoints for a channel with a perpendicular offset.
- * @param {string} c1 - center name (canonical: alphabetically first)
- * @param {string} c2 - center name (canonical: alphabetically second)
- * @param {number} offset - pixels perpendicular to the c1→c2 direction
- * @returns {{ x1: number, y1: number, x2: number, y2: number }}
+ * Distance from a center's origin to its perimeter along the unit direction
+ * (ux, uy). Exact for rect and diamond; conservative (circumradius) for
+ * triangles.
+ */
+function exitDistance(name, ux, uy) {
+  const s = CENTER_SHAPES[name];
+  if (s.type === 'rect') {
+    const tx = Math.abs(ux) > 1e-6 ? (s.w / 2) / Math.abs(ux) : Infinity;
+    const ty = Math.abs(uy) > 1e-6 ? (s.h / 2) / Math.abs(uy) : Infinity;
+    return Math.min(tx, ty);
+  }
+  if (s.type === 'diamond') {
+    return s.r / (Math.abs(ux) + Math.abs(uy));
+  }
+  return s.r;
+}
+
+/**
+ * SVG endpoints for a channel line, optionally offset perpendicular to the
+ * c1→c2 direction (used to spread parallel channels in a bundle).
  */
 export function channelLine(c1, c2, offset) {
   const p1 = CENTER_POS[c1];
@@ -71,7 +103,6 @@ export function channelLine(c1, c2, offset) {
   const dx = p2.x - p1.x;
   const dy = p2.y - p1.y;
   const len = Math.sqrt(dx * dx + dy * dy);
-  // Perpendicular unit vector
   const px = -dy / len;
   const py = dx / len;
   return {
@@ -83,47 +114,39 @@ export function channelLine(c1, c2, offset) {
 }
 
 /**
- * Returns the position of a gate label along a channel.
- * fraction=0 → at c1, fraction=1 → at c2.
- * @param {string} c1
- * @param {string} c2
- * @param {number} fraction
- * @param {number} offset
- * @returns {{ x: number, y: number }}
+ * Position for a gate-number label just *outside* the perimeter of `home`,
+ * along the line from `home` to `far`, plus a perpendicular `offset` that
+ * matches its sibling channel line in a parallel bundle.
  */
-export function gateLabelPos(c1, c2, fraction, offset) {
-  const { x1, y1, x2, y2 } = channelLine(c1, c2, offset);
+export function gateOuterPos(home, far, offset, margin = 5) {
+  const p1 = CENTER_POS[home];
+  const p2 = CENTER_POS[far];
+  const dx = p2.x - p1.x;
+  const dy = p2.y - p1.y;
+  const len = Math.sqrt(dx * dx + dy * dy);
+  const ux = dx / len;
+  const uy = dy / len;
+  const r = exitDistance(home, ux, uy) + margin;
+  const px = -uy;
+  const py = ux;
   return {
-    x: x1 + (x2 - x1) * fraction,
-    y: y1 + (y2 - y1) * fraction,
+    x: p1.x + ux * r + px * offset,
+    y: p1.y + uy * r + py * offset,
   };
 }
 
 /**
  * Builds per-channel rendering metadata: canonical center pair, perpendicular
  * offset within the bundle, and gate↔end assignment.
- *
- * Each entry:
- * {
- *   gates: [g1, g2],    // original gate pair
- *   g_a: number,        // gate belonging to c1 (c1 end of the line)
- *   g_b: number,        // gate belonging to c2 (c2 end of the line)
- *   c1: string,         // alphabetically first center
- *   c2: string,         // alphabetically second center
- *   offset: number,     // perpendicular offset px
- * }
- *
- * @returns {Array<{gates:[number,number], g_a:number, g_b:number, c1:string, c2:string, offset:number}>}
  */
 export function buildChannelGeometry() {
-  // Group channels by canonical (sorted) center-pair key
   /** @type {Map<string, Array<{g1:number, g2:number, c1:string, c2:string}>>} */
   const groups = new Map();
 
   for (const [g1, g2] of CHANNELS) {
     const c1 = CENTER_BY_GATE[g1];
     const c2 = CENTER_BY_GATE[g2];
-    const [ca, cb] = [c1, c2].sort(); // canonical order
+    const [ca, cb] = [c1, c2].sort();
     const key = `${ca}:${cb}`;
     if (!groups.has(key)) groups.set(key, []);
     groups.get(key).push({ g1, g2, c1, c2 });
@@ -134,15 +157,13 @@ export function buildChannelGeometry() {
     const n = channels.length;
     channels.forEach(({ g1, g2, c1, c2 }, i) => {
       const [ca, cb] = [c1, c2].sort();
-      // Offset: spread bundle symmetrically around 0
       const offset = (i - (n - 1) / 2) * CHANNEL_SPACING;
-      // Assign each gate to its canonical end
       const g_a = CENTER_BY_GATE[g1] === ca ? g1 : g2;
       const g_b = g_a === g1 ? g2 : g1;
       result.push({
         gates: /** @type {[number,number]} */ ([g1, g2]),
-        g_a,   // gate label near ca
-        g_b,   // gate label near cb
+        g_a,
+        g_b,
         c1: ca,
         c2: cb,
         offset,

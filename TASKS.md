@@ -19,9 +19,15 @@ lives in [`BACKLOG.md`](./BACKLOG.md).
 
 Last updated: 2026-05-18.
 
-> Latest change: Phase 1.3 — SVG bodygraph. Three new files:
-> `src/lib/hd/bodygraph-geometry.js`, `src/lib/components/Bodygraph.svelte`,
-> and integration edit on `src/routes/chart/+page.svelte`.
+> Latest change: Phase 1.3 — SVG bodygraph polish pass. Cryptic centre
+> labels (HD/Aj/Gt/…) removed; gate numbers now positioned just outside
+> each centre's perimeter instead of inside; HD-standard fill colours on
+> defined centres (yellow for Head/G, green for Ajna, brown for
+> Throat/Spleen/SP, red for Heart/Sacral, dark brown for Root); mixed
+> channels rendered as striped white/red instead of solid amber; active
+> gates show a navy marker. Per-gate canonical positions on each centre
+> perimeter and gate-to-gate channel routing remain as Phase 3 polish —
+> see `BACKLOG.md` → "Bodygraph polish remaining".
 
 ---
 
@@ -62,8 +68,6 @@ Last updated: 2026-05-18.
   `src/lib/components/Bodygraph.svelte`, edit to `src/routes/chart/+page.svelte`.
 
 ## ⬜ Next up
-
-- **Phase 2 — Local persistence + chart list.** IndexedDB via Dexie.js.
 
 ## ⬜ Pending
 

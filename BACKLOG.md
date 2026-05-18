@@ -102,6 +102,32 @@ then compute the true node from the Moon's instantaneous orbit.
 - **Multi-language activation**: the architecture is already multi-language
   ready; English translation pending once there's traction.
 
+## Bodygraph polish remaining (Phase 3)
+
+Phase 1.3 shipped a *functional* bodygraph with HD-standard colours, classic
+shapes, striped mixed channels, gate numbers moved outside the centres, and
+deduplicated gate labels. What remains for Phase 3 to reach Rave-style
+fidelity:
+
+- **Per-gate canonical positions on each centre's perimeter.** Today every
+  gate is placed at whichever channel encounters it first. The standard
+  layout has each gate at a fixed position (e.g. gate 10 on the left side
+  of G regardless of which channel it serves). This requires hand-defined
+  (x,y) for all 64 gates plus a switch from centre-to-centre channel
+  routing to gate-to-gate routing.
+- **Half-channel coloring** (matching how Rave actually paints channels):
+  each half of a channel rendered by its near-gate's activation state
+  (white = Personality, red = Design) rather than the current single colour
+  per whole channel.
+- **Mixed gate marker** rendered as half-red/half-white circle (today both
+  channel halves are striped, but the gate marker itself is uniform navy).
+- **Heart triangle orientation:** currently `triangle-up` (apex at top);
+  classical layout has the apex pointing left-down toward G.
+- **Centre identifier inside G** (just the letter "G", as in classical
+  bodygraphs). No other centres are labelled.
+- **Optional decorative human silhouette** behind the bodygraph (purely
+  aesthetic, common in Rave-style apps).
+
 ## Known tech debt
 
 - Files from the first commit ended up with macOS permissions that prevent

@@ -1,42 +1,28 @@
 <!-- AI-authored — SVG bodygraph for Human Design charts. -->
-<!-- Colour coding: Personality = white, Design = red, both = amber (accent). -->
-<!-- Geometry is approximately correct; pixel polish deferred to Phase 3. -->
+<!-- Classical HD palette for defined centers (yellow, green, brown, red). -->
+<!-- Channel colours: Personality = white, Design = red, Both = striped, -->
+<!-- Inactive = dim. Active gates show a navy marker with the number inside. -->
 
 <script>
   import { CENTERS } from '$lib/hd/constants.js';
   import {
     CENTER_POS,
     CENTER_SHAPES,
+    CENTER_COLORS_DEFINED,
     centerPoints,
     channelLine,
-    gateLabelPos,
+    gateOuterPos,
     buildChannelGeometry,
   } from '$lib/hd/bodygraph-geometry.js';
 
   /** @type {import('$lib/hd/chart.js').Chart} */
   let { chart } = $props();
 
-  // ── Human-readable center labels (short, fit inside shapes) ────────────────
-  const CENTER_LABELS = {
-    head:        'HD',
-    ajna:        'Aj',
-    throat:      'Gt',
-    g:           'G',
-    heart:       'Cz',
-    sacral:      'Sc',
-    spleen:      'Bz',
-    solarPlexus: 'PS',
-    root:        'Rz',
-  };
-
-  // ── Gate activation sets ────────────────────────────────────────────────────
+  // ── Gate activation sets ───────────────────────────────────────────────────
   const persGates = new Set(Object.values(chart.personality).map((a) => a.gate));
   const desGates  = new Set(Object.values(chart.design).map((a) => a.gate));
 
-  /**
-   * Returns 'pers' | 'des' | 'both' | 'inactive' for a gate number.
-   * @param {number} gate
-   */
+  /** @param {number} gate */
   function gateState(gate) {
     const p = persGates.has(gate);
     const d = desGates.has(gate);
@@ -47,10 +33,8 @@
   }
 
   /**
-   * Returns the visual state of a channel line.
-   * A channel is active only when both gate slots are filled.
-   * @param {number} g1 @param {number} g2
-   * @returns {'pers'|'des'|'mixed'|'inactive'}
+   * Channel visual state. A channel is only complete when both gate slots
+   * are filled. "mixed" means the two slots are filled by different sides.
    */
   function channelState(g1, g2) {
     const s1 = gateState(g1);
@@ -63,25 +47,35 @@
     return 'des';
   }
 
-  // ── Colour maps ─────────────────────────────────────────────────────────────
-  const GATE_COLOR = {
-    pers:     '#e8e8ea', // white (Personality)
-    des:      '#e06262', // red   (Design)
-    both:     '#d4a657', // amber (both)
-    inactive: '#3c3c42', // dim
-  };
+  // ── Palette ─────────────────────────────────────────────────────────────────
+  const PERS_COLOR     = '#eaeaee'; // white (Personality)
+  const DES_COLOR      = '#e0556c'; // red/pink (Design)
+  const INACTIVE_COLOR = '#23232a'; // dim channel skeleton
+  const MARKER_FILL    = '#1c2540'; // navy behind active gate numbers
 
-  const CHANNEL_COLOR = {
-    pers:     '#e8e8ea',
-    des:      '#e06262',
-    mixed:    '#d4a657',
-    inactive: '#222226',
-  };
-
-  const CHANNEL_WIDTH = { pers: 2.5, des: 2.5, mixed: 2.5, inactive: 1.2 };
-
-  // ── Static geometry (computed once) ────────────────────────────────────────
   const channelGeometry = buildChannelGeometry();
+
+  // ── Deduplicate gate labels ────────────────────────────────────────────────
+  // A gate that participates in several channels (10, 20, 34, 57…) appeared
+  // multiple times with the previous renderer. We render each gate exactly
+  // once, taking its position from the first channel where it shows up.
+  // Pixel-perfect per-gate positions on the center perimeter is a Phase 3
+  // polish item (see BACKLOG.md).
+  /** @type {Map<number, { x: number, y: number, state: string }>} */
+  const gateLabels = (() => {
+    const map = new Map();
+    for (const ch of channelGeometry) {
+      if (!map.has(ch.g_a)) {
+        const pos = gateOuterPos(ch.c1, ch.c2, ch.offset);
+        map.set(ch.g_a, { ...pos, state: gateState(ch.g_a) });
+      }
+      if (!map.has(ch.g_b)) {
+        const pos = gateOuterPos(ch.c2, ch.c1, -ch.offset);
+        map.set(ch.g_b, { ...pos, state: gateState(ch.g_b) });
+      }
+    }
+    return map;
+  })();
 </script>
 
 <div class="bodygraph-wrap">
@@ -91,36 +85,57 @@
     role="img"
     aria-label="Bodygraph Human Design"
   >
-    <!-- ── 1. Channel lines (drawn first, behind centers) ──────────────────── -->
+    <!-- ── 1. Channels (drawn first, behind centers) ─────────────────────── -->
     <g>
       {#each channelGeometry as ch}
         {@const state = channelState(ch.gates[0], ch.gates[1])}
         {@const ln    = channelLine(ch.c1, ch.c2, ch.offset)}
-        <line
-          x1={ln.x1} y1={ln.y1}
-          x2={ln.x2} y2={ln.y2}
-          stroke={CHANNEL_COLOR[state]}
-          stroke-width={CHANNEL_WIDTH[state]}
-          stroke-linecap="round"
-        />
+
+        {#if state === 'mixed'}
+          <!-- Mixed: two overlaid dashed lines, alternating colours. -->
+          <line
+            x1={ln.x1} y1={ln.y1} x2={ln.x2} y2={ln.y2}
+            stroke={PERS_COLOR} stroke-width="3.5"
+            stroke-dasharray="9 9" stroke-linecap="butt"
+          />
+          <line
+            x1={ln.x1} y1={ln.y1} x2={ln.x2} y2={ln.y2}
+            stroke={DES_COLOR} stroke-width="3.5"
+            stroke-dasharray="9 9" stroke-dashoffset="9" stroke-linecap="butt"
+          />
+        {:else if state === 'pers'}
+          <line
+            x1={ln.x1} y1={ln.y1} x2={ln.x2} y2={ln.y2}
+            stroke={PERS_COLOR} stroke-width="3.5" stroke-linecap="round"
+          />
+        {:else if state === 'des'}
+          <line
+            x1={ln.x1} y1={ln.y1} x2={ln.x2} y2={ln.y2}
+            stroke={DES_COLOR} stroke-width="3.5" stroke-linecap="round"
+          />
+        {:else}
+          <line
+            x1={ln.x1} y1={ln.y1} x2={ln.x2} y2={ln.y2}
+            stroke={INACTIVE_COLOR} stroke-width="1.2" stroke-linecap="round"
+          />
+        {/if}
       {/each}
     </g>
 
-    <!-- ── 2. Centers ──────────────────────────────────────────────────────── -->
+    <!-- ── 2. Centers ────────────────────────────────────────────────────── -->
     <g>
       {#each CENTERS as center}
         {@const defined = chart.definedCenters.includes(center)}
         {@const pos     = CENTER_POS[center]}
         {@const s       = CENTER_SHAPES[center]}
-        {@const fill    = defined ? '#1e1e22' : '#0e0e11'}
-        {@const stroke  = defined ? '#d4a657' : '#35353c'}
-        {@const sw      = defined ? 1.5 : 1}
+        {@const fill    = defined ? CENTER_COLORS_DEFINED[center] : '#0e0e11'}
+        {@const stroke  = defined ? CENTER_COLORS_DEFINED[center] : '#3a3a42'}
+        {@const sw      = defined ? 1.3 : 1}
 
         {#if s.type === 'rect'}
           <rect
             x={pos.x - s.w / 2} y={pos.y - s.h / 2}
-            width={s.w} height={s.h}
-            rx="3"
+            width={s.w} height={s.h} rx="3"
             {fill} {stroke} stroke-width={sw}
           />
         {:else}
@@ -129,50 +144,30 @@
             {fill} {stroke} stroke-width={sw}
           />
         {/if}
-
-        <!-- Center label -->
-        <text
-          x={pos.x} y={pos.y}
-          text-anchor="middle"
-          dominant-baseline="central"
-          fill={defined ? '#d4a657' : '#58585f'}
-          font-size="7.5"
-          font-family="system-ui, sans-serif"
-          font-weight={defined ? '600' : '400'}
-          pointer-events="none"
-        >{CENTER_LABELS[center]}</text>
       {/each}
     </g>
 
-    <!-- ── 3. Gate labels ──────────────────────────────────────────────────── -->
+    <!-- ── 3. Gate markers + numbers, deduplicated ───────────────────────── -->
     <g>
-      {#each channelGeometry as ch}
-        {@const posA = gateLabelPos(ch.c1, ch.c2, 0.18, ch.offset)}
-        {@const posB = gateLabelPos(ch.c1, ch.c2, 0.82, ch.offset)}
-        {@const stA  = gateState(ch.g_a)}
-        {@const stB  = gateState(ch.g_b)}
+      {#each gateLabels as [gate, info]}
+        {@const active = info.state !== 'inactive'}
+
+        {#if active}
+          <circle
+            cx={info.x} cy={info.y} r="5.5"
+            fill={MARKER_FILL} stroke="#3a3a42" stroke-width="0.5"
+          />
+        {/if}
 
         <text
-          x={posA.x} y={posA.y}
-          text-anchor="middle"
-          dominant-baseline="central"
-          fill={GATE_COLOR[stA]}
-          font-size="6.5"
+          x={info.x} y={info.y}
+          text-anchor="middle" dominant-baseline="central"
+          fill={active ? '#eaeaee' : '#5a5a62'}
+          font-size={active ? '6' : '5.5'}
+          font-weight={active ? '600' : '400'}
           font-family="system-ui, sans-serif"
-          opacity={stA === 'inactive' ? 0.28 : 1}
           pointer-events="none"
-        >{ch.g_a}</text>
-
-        <text
-          x={posB.x} y={posB.y}
-          text-anchor="middle"
-          dominant-baseline="central"
-          fill={GATE_COLOR[stB]}
-          font-size="6.5"
-          font-family="system-ui, sans-serif"
-          opacity={stB === 'inactive' ? 0.28 : 1}
-          pointer-events="none"
-        >{ch.g_b}</text>
+        >{gate}</text>
       {/each}
     </g>
   </svg>
@@ -181,7 +176,7 @@
 <style>
   .bodygraph-wrap {
     width: 100%;
-    max-width: 400px;
+    max-width: 420px;
     margin: 0 auto 2rem;
   }
 
