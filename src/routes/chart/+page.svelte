@@ -2,6 +2,7 @@
   import { onMount } from 'svelte';
   import { computeChart } from '$lib/hd/chart.js';
   import { CENTERS, PLANETS } from '$lib/hd/constants.js';
+  import Bodygraph from '$lib/components/Bodygraph.svelte';
 
   // Etiquetas humanas. En la próxima iteración esto vivirá en i18n.
   const CENTER_LABELS = {
@@ -107,6 +108,8 @@
   {:else if error}
     <p class="status error">Error: {error}</p>
   {:else if chart}
+    <Bodygraph {chart} />
+
     <section class="summary">
       <div class="card">
         <span class="label">Tipo</span>

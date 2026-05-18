@@ -17,11 +17,11 @@ Statuses:
 The deeper context (technical trade-offs, future ideas, deferred decisions)
 lives in [`BACKLOG.md`](./BACKLOG.md).
 
-Last updated: 2026-05-17.
+Last updated: 2026-05-18.
 
-> Latest change: license switched from AGPL-3.0-or-later to PolyForm
-> Noncommercial 1.0.0 — rationale and consequences logged in
-> [`BACKLOG.md`](./BACKLOG.md#decision-log--license-change-agpl-30--polyform-noncommercial-100).
+> Latest change: Phase 1.3 — SVG bodygraph. Three new files:
+> `src/lib/hd/bodygraph-geometry.js`, `src/lib/components/Bodygraph.svelte`,
+> and integration edit on `src/routes/chart/+page.svelte`.
 
 ---
 
@@ -52,20 +52,18 @@ Last updated: 2026-05-17.
   visual bodygraph and broken Ajna definition for other charts). Bumped
   Wrangler to v4 and Node to v22 (build env variable `NODE_VERSION=22` on
   Cloudflare + `.nvmrc` + `engines.node` in `package.json`).
+- **Phase 1.3 — SVG bodygraph visualization.** Functional bodygraph above
+  the textual chart data. 9 centres as geometric shapes (triangles, diamond,
+  rects), filled + amber border when defined, outlined when open. All 36
+  channels drawn as lines; parallel channels between the same centre pair
+  are offset perpendicularly. Colour coding: Personality=white, Design=red,
+  mixed (both)=amber, inactive=very dim. Gate numbers shown on each channel
+  near their centre. Three new files: `src/lib/hd/bodygraph-geometry.js`,
+  `src/lib/components/Bodygraph.svelte`, edit to `src/routes/chart/+page.svelte`.
 
 ## ⬜ Next up
 
-- **Phase 1.3 — SVG bodygraph visualization.** Functional, classic-faithful
-  style. Reference for later polish: Richard Beaumont's "Rave" app. Closes
-  Phase 1. Decisions already taken with the user:
-  - Bodygraph above the textual data on the chart page.
-  - Personality vs Design colour-coded for dark theme: white for
-    Personality, red for Design, mixed when both.
-  - Geometry: approximately-correct gate positions for the first cut; pixel
-    polish belongs in Phase 3.
-  - Three new files expected: `src/lib/hd/bodygraph-geometry.js`,
-    `src/lib/components/Bodygraph.svelte`, plus the integration edit on
-    `src/routes/chart/+page.svelte`.
+- **Phase 2 — Local persistence + chart list.** IndexedDB via Dexie.js.
 
 ## ⬜ Pending
 
