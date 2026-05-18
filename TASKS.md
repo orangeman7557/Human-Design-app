@@ -19,15 +19,16 @@ lives in [`BACKLOG.md`](./BACKLOG.md).
 
 Last updated: 2026-05-18.
 
-> Latest change: Phase 1.3 — SVG bodygraph polish pass. Cryptic centre
-> labels (HD/Aj/Gt/…) removed; gate numbers now positioned just outside
-> each centre's perimeter instead of inside; HD-standard fill colours on
-> defined centres (yellow for Head/G, green for Ajna, brown for
-> Throat/Spleen/SP, red for Heart/Sacral, dark brown for Root); mixed
-> channels rendered as striped white/red instead of solid amber; active
-> gates show a navy marker. Per-gate canonical positions on each centre
-> perimeter and gate-to-gate channel routing remain as Phase 3 polish —
-> see `BACKLOG.md` → "Bodygraph polish remaining".
+> Latest change: Phase 1.3 — SVG bodygraph rebuilt against the Rave
+> reference. Nine centres at their classic positions and shapes (Heart
+> with apex pointing left toward G; Spleen apex right and Solar Plexus
+> apex left, both pointing toward Sacral). All 64 gates have canonical
+> positions inside their centre. Channels routed gate-to-gate as straight
+> lines with each half coloured by its near-gate's activation (white for
+> Personality / inactive skeleton, red for Design / Both). Active gates
+> carry a navy marker with the number; inactive gates show a dim number.
+> What remains for Phase 3 visual polish is in `BACKLOG.md` →
+> "Bodygraph polish remaining".
 
 ---
 

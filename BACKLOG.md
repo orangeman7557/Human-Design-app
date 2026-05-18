@@ -104,29 +104,29 @@ then compute the true node from the Moon's instantaneous orbit.
 
 ## Bodygraph polish remaining (Phase 3)
 
-Phase 1.3 shipped a *functional* bodygraph with HD-standard colours, classic
-shapes, striped mixed channels, gate numbers moved outside the centres, and
-deduplicated gate labels. What remains for Phase 3 to reach Rave-style
-fidelity:
+Phase 1.3 now matches the Rave reference on structural fundamentals:
+canonical gate positions inside each centre, gate-to-gate channel routing,
+half-channel colouring by near-gate state, Heart apex pointing left, and
+Spleen/Solar Plexus apexes pointing inward toward Sacral.
 
-- **Per-gate canonical positions on each centre's perimeter.** Today every
-  gate is placed at whichever channel encounters it first. The standard
-  layout has each gate at a fixed position (e.g. gate 10 on the left side
-  of G regardless of which channel it serves). This requires hand-defined
-  (x,y) for all 64 gates plus a switch from centre-to-centre channel
-  routing to gate-to-gate routing.
-- **Half-channel coloring** (matching how Rave actually paints channels):
-  each half of a channel rendered by its near-gate's activation state
-  (white = Personality, red = Design) rather than the current single colour
-  per whole channel.
-- **Mixed gate marker** rendered as half-red/half-white circle (today both
-  channel halves are striped, but the gate marker itself is uniform navy).
-- **Heart triangle orientation:** currently `triangle-up` (apex at top);
-  classical layout has the apex pointing left-down toward G.
+What remains for Phase 3 visual fidelity:
+
+- **Mixed gate marker** rendered as a half-red/half-white split circle
+  (today the marker is uniform navy regardless of state; the colour
+  information lives in the channel halves only).
+- **Striped "Both" channel halves.** When a gate is activated by *both*
+  Personality and Design, the corresponding channel half should alternate
+  white/red along its length rather than solidly painting it red.
+- **Fine-tuning of gate positions inside each centre.** The current
+  coordinates are approximations; some are very close to centre edges and
+  may benefit from a per-gate audit against a high-resolution reference.
 - **Centre identifier inside G** (just the letter "G", as in classical
   bodygraphs). No other centres are labelled.
 - **Optional decorative human silhouette** behind the bodygraph (purely
   aesthetic, common in Rave-style apps).
+- **Layout responsiveness on very narrow screens.** The current viewBox
+  `380×620` works down to ~340 px wide; below that the gate numbers get
+  crowded.
 
 ## Known tech debt
 
