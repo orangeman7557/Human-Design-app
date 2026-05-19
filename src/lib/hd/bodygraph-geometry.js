@@ -50,17 +50,18 @@ export const CENTER_SHAPES = {
   root:        { type: 'rect',           w: 95, h: 58  },  // was 130×80
 };
 
-// ── HD-standard fill colours when a centre is defined ───────────────────────
+// ── HD-standard fill colours when a centre is defined (Phase 1.4.K) ─────────
+// Calibrated to match the Rave reference palette: brighter, slightly warmer.
 export const CENTER_COLORS_DEFINED = {
-  head:        '#d4b03a', // yellow
-  ajna:        '#5d9b5d', // green
-  throat:      '#9b7137', // brown / ochre
-  g:           '#d4b03a', // yellow
-  heart:       '#b94444', // red
-  sacral:      '#b94444', // red
-  spleen:      '#9b7137', // brown
-  solarPlexus: '#9b7137', // brown
-  root:        '#7a5128', // dark brown
+  head:        '#e5cf3d', // bright yellow
+  ajna:        '#6cb46c', // green
+  throat:      '#b87a35', // warm amber / orange-brown
+  g:           '#e5cf3d', // bright yellow (matches Head)
+  heart:       '#c83838', // red
+  sacral:      '#c83838', // red (matches Heart)
+  spleen:      '#b87a35', // warm amber (matches Throat)
+  solarPlexus: '#b87a35', // warm amber (matches Throat)
+  root:        '#5e3e1d', // dark brown
 };
 
 // ── Canonical gate positions ────────────────────────────────────────────────

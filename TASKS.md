@@ -19,12 +19,19 @@ lives in [`BACKLOG.md`](./BACKLOG.md).
 
 Last updated: 2026-05-19.
 
-> Latest change: Phase 1.4 completada (subtareas A-K, excepto H eliminada).
-> Bodygraph visualmente próximo al reference de Rave: centros más pequeños,
-> canales paralelos con offset perpendicular, Personality distinguible del
-> esqueleto, marcador split para puertas Both, borde ámbar en centros
-> definidos, Heart reposicionado, puertas Head corregidas. Listo para
-> revisión visual antes de continuar con Fase 2.
+> Latest change: Phase 1.4.K — palette + marker polish (B1, D1, E1-E4).
+> Channel halves now use `stroke-linecap="butt"` so they meet cleanly at
+> the midpoint. Inactive channels raised to a visible white-grey
+> (`#dadce0`) skeleton — Rave style. Personality bumped to pure white;
+> Design re-tuned to hot pink-red `#e84672`. Gate markers unified: navy
+> circle + white number for any active state; the split Personality/Design
+> "Both" marker is removed — the distinction lives in the channel halves.
+> Defined centres use a stroke matching their own fill (no separate
+> border); centre fills calibrated closer to Rave tones. Still pending
+> in the bodygraph polish queue: A1 (Throat/Sacral/Root → square),
+> A2 (enlarge Head/Ajna), B2 (half-channel rendering edge cases),
+> B3 / C1 (per-centre gate re-positioning so parallel channels emerge
+> from geometry).
 
 ---
 
