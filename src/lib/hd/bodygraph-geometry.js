@@ -21,6 +21,11 @@
 // 95×65/95×65/95×58). A2: Head enlarged from r=32 to r=40, Ajna from
 // r=28 to r=34. Ajna gates 17 and 11 nudged x toward the centerline so
 // they remain inside the larger triangle's narrower lower half.
+// Phase 1.4.M — Throat/Sacral/Root squares tightened from 85 to 75 (1.4.L
+// came out visually too big). C1: full audit of the 64 gate positions
+// against the Rave reference, row-aligning gates so parallel channels
+// now form parallel bars by geometry alone (no perpendicular offsets
+// needed any more).
 
 export const VIEWBOX = { w: 380, h: 620 };
 
@@ -42,18 +47,18 @@ export const CENTER_POS = {
 //     | 'rect' | 'diamond'
 // r: circumradius for triangles and diamonds
 // w, h: dimensions for rects
-// Phase 1.4.L — A1: Throat/Sacral/Root → square (85×85).
-//               A2: Head/Ajna enlarged a touch.
+// Phase 1.4.M — Throat/Sacral/Root squares tightened from 85 to 75.
+//               (1.4.L made them squares; visually they came out too big.)
 export const CENTER_SHAPES = {
-  head:        { type: 'triangle-up',    r: 40 },   // A2: was 32
-  ajna:        { type: 'triangle-down',  r: 34 },   // A2: was 28
-  throat:      { type: 'rect',           w: 85, h: 85 }, // A1: was 95×65
+  head:        { type: 'triangle-up',    r: 40 },
+  ajna:        { type: 'triangle-down',  r: 34 },
+  throat:      { type: 'rect',           w: 75, h: 75 },
   g:           { type: 'diamond',        r: 45 },
   heart:       { type: 'triangle-left',  r: 30 },
-  sacral:      { type: 'rect',           w: 85, h: 85 }, // A1: was 95×65
+  sacral:      { type: 'rect',           w: 75, h: 75 },
   spleen:      { type: 'triangle-right', r: 40 },
   solarPlexus: { type: 'triangle-left',  r: 40 },
-  root:        { type: 'rect',           w: 85, h: 85 }, // A1: was 95×58
+  root:        { type: 'rect',           w: 75, h: 75 },
 };
 
 // ── HD-standard fill colours when a centre is defined (Phase 1.4.K) ─────────
@@ -70,102 +75,105 @@ export const CENTER_COLORS_DEFINED = {
   root:        '#5e3e1d', // dark brown
 };
 
-// ── Canonical gate positions ────────────────────────────────────────────────
-// Rescaled from Phase 1.3 positions using per-centre scale factors so that
-// all gate dots land inside (or at the inner edge of) their smaller centre.
+// ── Canonical gate positions (Phase 1.4.M — C1 audit) ──────────────────────
+// All 64 positions re-derived from the Rave reference layout. Gates inside
+// each centre are placed in rows / columns that match the standard HD
+// bodygraph (e.g. Throat: 3-2-2-4 vertical rows; G: 1 top, 7/13 upper, 10/25
+// at side vertices, 15/46 lower, 2 bottom; etc.). Parallel channels now
+// emerge from geometry alone: the row alignment puts source and target
+// gates in matching X-positions, so channels are visually parallel without
+// any perpendicular offset trick.
 //
 // Counts (must total 64): Head 3, Ajna 6, Throat 11, G 8, Heart 4,
 // Sacral 9, Spleen 7, Solar Plexus 7, Root 9.
 export const GATE_POSITIONS = {
 
-  // HEAD — three gates inside the triangle near the bottom, facing Ajna
-  // (Phase 1.4.J: moved from y:78 to y:68 — triangle bottom edge is at y:71)
-  64: { x: 172, y: 68 },
+  // HEAD — 3 gates along the inner bottom edge (faces Ajna)
+  64: { x: 170, y: 68 },
   61: { x: 190, y: 68 },
-  63: { x: 208, y: 68 },
+  63: { x: 210, y: 68 },
 
-  // AJNA — top edge faces Head, bottom apex faces Throat
-  // Phase 1.4.L: gates 17 and 11 nudged inward (x) to stay inside the
-  // bigger triangle (r=34); the narrower section near the apex needs them
-  // closer to the centerline.
-  47: { x: 170, y: 127 },
+  // AJNA — top row faces Head; apex region faces Throat
+  47: { x: 167, y: 127 },
   24: { x: 190, y: 127 },
-  4:  { x: 210, y: 127 },
-  17: { x: 180, y: 153 },
-  11: { x: 200, y: 153 },
+  4:  { x: 213, y: 127 },
+  17: { x: 180, y: 155 },
+  11: { x: 200, y: 155 },
   43: { x: 190, y: 165 },
 
-  // THROAT — top row faces Ajna, sides face Spleen/SolarPlexus,
-  // bottom row faces G/Sacral (scale_x 0.731, scale_y 0.765)
-  62: { x: 162, y: 214 },
-  23: { x: 190, y: 214 },
-  56: { x: 218, y: 214 },
-  16: { x: 152, y: 230 },
-  35: { x: 228, y: 230 },
-  20: { x: 159, y: 245 },
-  12: { x: 221, y: 245 },
-  31: { x: 162, y: 262 },
-  8:  { x: 181, y: 262 },
-  33: { x: 197, y: 262 },
-  45: { x: 218, y: 262 },
+  // THROAT — 4 rows: Ajna face (top), Spleen/SP faces (mid), G face (bottom)
+  62: { x: 165, y: 207 },
+  23: { x: 190, y: 207 },
+  56: { x: 215, y: 207 },
+  16: { x: 157, y: 224 },
+  35: { x: 223, y: 224 },
+  20: { x: 165, y: 242 },
+  12: { x: 215, y: 242 },
+  31: { x: 162, y: 263 },
+  8:  { x: 180, y: 263 },
+  33: { x: 200, y: 263 },
+  45: { x: 218, y: 263 },
 
-  // G — diamond, vertices face Throat (top), Heart (right),
-  // Sacral (bottom), Spleen (left) (scale 0.75)
+  // G — diamond: 1 top, 7/13 upper, 10/25 at side vertices,
+  // 15/46 lower, 2 bottom
   1:  { x: 190, y: 308 },
-  7:  { x: 177, y: 328 },
-  13: { x: 204, y: 328 },
-  10: { x: 159, y: 347 },
-  25: { x: 222, y: 347 },
-  15: { x: 177, y: 371 },
-  46: { x: 204, y: 371 },
-  2:  { x: 190, y: 390 },
+  7:  { x: 175, y: 325 },
+  13: { x: 205, y: 325 },
+  10: { x: 153, y: 345 },
+  25: { x: 227, y: 345 },
+  15: { x: 175, y: 365 },
+  46: { x: 205, y: 365 },
+  2:  { x: 190, y: 382 },
 
-  // HEART — small triangle, apex pointing left toward G (Phase 1.4.F: all y −20)
-  21: { x: 304, y: 290 },
-  51: { x: 293, y: 303 },
-  26: { x: 293, y: 316 },
-  40: { x: 311, y: 319 },
+  // HEART — small triangle, apex pointing left toward G
+  21: { x: 305, y: 288 },
+  51: { x: 293, y: 302 },
+  26: { x: 290, y: 315 },
+  40: { x: 308, y: 320 },
 
-  // SACRAL — top row faces G, bottom row faces Root (scale_x 0.731, scale_y 0.765)
-  5:  { x: 168, y: 422 },
-  14: { x: 190, y: 422 },
-  29: { x: 212, y: 422 },
-  34: { x: 167, y: 439 },
-  27: { x: 167, y: 455 },
-  59: { x: 213, y: 455 },
-  42: { x: 168, y: 472 },
+  // SACRAL — top row faces G; mid row 27/59; 34 on the left mid;
+  // bottom row faces Root
+  5:  { x: 165, y: 418 },
+  14: { x: 190, y: 418 },
+  29: { x: 215, y: 418 },
+  34: { x: 165, y: 435 },
+  27: { x: 165, y: 455 },
+  59: { x: 215, y: 455 },
+  42: { x: 165, y: 472 },
   3:  { x: 190, y: 472 },
-  9:  { x: 212, y: 472 },
+  9:  { x: 215, y: 472 },
 
-  // SPLEEN — triangle apex pointing right, toward Sacral (scale 0.727)
-  48: { x: 67,  y: 360 },
-  57: { x: 84,  y: 374 },
-  44: { x: 100, y: 381 },
-  50: { x: 111, y: 387 },
-  32: { x: 79,  y: 397 },
-  28: { x: 67,  y: 409 },
-  18: { x: 64,  y: 416 },
+  // SPLEEN — triangle apex pointing right (toward Sacral)
+  // Top slope (toward Sacral/Throat): 48, 57, 44, 50 from outer to apex.
+  // Bottom slope (toward Root): 32, 28, 18.
+  48: { x: 65,  y: 358 },
+  57: { x: 82,  y: 372 },
+  44: { x: 97,  y: 380 },
+  50: { x: 110, y: 385 },
+  32: { x: 80,  y: 397 },
+  28: { x: 65,  y: 408 },
+  18: { x: 62,  y: 415 },
 
-  // SOLAR PLEXUS — triangle apex pointing left, toward Sacral (scale 0.727)
-  36: { x: 313, y: 360 },
-  22: { x: 296, y: 374 },
-  37: { x: 280, y: 381 },
-  6:  { x: 269, y: 387 },
-  49: { x: 301, y: 397 },
-  55: { x: 313, y: 409 },
-  30: { x: 316, y: 416 },
+  // SOLAR PLEXUS — mirror of Spleen, apex pointing left (toward Sacral)
+  36: { x: 315, y: 358 },
+  22: { x: 303, y: 372 },
+  37: { x: 288, y: 380 },
+  6:  { x: 267, y: 385 },
+  49: { x: 303, y: 397 },
+  55: { x: 315, y: 408 },
+  30: { x: 317, y: 415 },
 
-  // ROOT — top row faces Sacral, lower rows face Spleen/SolarPlexus
-  // (scale_x 0.731, scale_y 0.725)
-  53: { x: 168, y: 527 },
-  60: { x: 190, y: 527 },
-  52: { x: 212, y: 527 },
-  54: { x: 164, y: 543 },
-  19: { x: 216, y: 543 },
-  39: { x: 216, y: 557 },
-  58: { x: 164, y: 569 },
-  38: { x: 190, y: 569 },
-  41: { x: 212, y: 569 },
+  // ROOT — top row faces Sacral; mid row faces Spleen/SP; bottom is the
+  // outer face (no channels emanate downward from Root).
+  53: { x: 165, y: 520 },
+  60: { x: 190, y: 520 },
+  52: { x: 215, y: 520 },
+  54: { x: 160, y: 540 },
+  19: { x: 220, y: 540 },
+  39: { x: 220, y: 558 },
+  58: { x: 160, y: 575 },
+  38: { x: 190, y: 575 },
+  41: { x: 220, y: 575 },
 };
 
 /**
