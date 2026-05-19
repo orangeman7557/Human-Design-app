@@ -4,16 +4,25 @@
 <!-- and 36 channels routed gate-to-gate as straight lines.                 -->
 <!--                                                                         -->
 <!-- Channel rendering: each channel is drawn as two halves, each coloured  -->
-<!-- by its near-gate's activation state. White = Personality or inactive   -->
-<!-- (the bodygraph skeleton is always visible); red = Design or Both.      -->
+<!-- by its near-gate's activation state.                                    -->
+<!--   Personality = bright white, Design = red/pink,                        -->
+<!--   Both = red/pink, Inactive = very dim (ghost skeleton).                -->
 <!--                                                                         -->
-<!-- Gate rendering: active gates carry a navy marker with the gate number  -->
-<!-- in white; inactive gates show just a dim number. The combination of    -->
-<!-- channel colouring + gate markers fully encodes Personality / Design /  -->
-<!-- Both / Inactive states.                                                 -->
+<!-- Parallel channels: groups of channels that connect the same pair of     -->
+<!-- centres are offset perpendicularly so they appear as parallel lines     -->
+<!-- instead of overlapping. 10 such groups exist (2-4 channels each).       -->
+<!--                                                                         -->
+<!-- Gate rendering:                                                          -->
+<!--   Active (Personality or Design): navy circle + white number.           -->
+<!--   Both (Personality+Design): split circle, top=white / bottom=red.      -->
+<!--   Inactive: dim number only, no circle.                                  -->
+<!--                                                                         -->
+<!-- Centre styling (Phase 1.4.E/I):                                         -->
+<!--   Defined: coloured fill + bright amber border.                          -->
+<!--   Undefined: very dark fill + subtle gray border (shape visible).        -->
 
 <script>
-  import { CENTERS, CHANNELS } from '$lib/hd/constants.js';
+  import { CENTERS, CHANNELS, CENTER_BY_GATE } from '$lib/hd/constants.js';
   import {
     VIEWBOX,
     CENTER_POS,
@@ -41,23 +50,80 @@
   }
 
   // ── Colour palette ─────────────────────────────────────────────────────────
-  const PERS_COLOR  = '#eaeaee'; // white (Personality + inactive skeleton)
-  const DES_COLOR   = '#e0556c'; // red/pink (Design + Both)
-  const MARKER_FILL = '#1c2540'; // navy behind active gate numbers
+  // Phase 1.4.B: Personality and inactive are now visually distinct.
+  // Inactive skeleton is very dim so it reads as structure, not activation.
+  const PERS_COLOR     = '#eaeaee'; // bright white — Personality activations
+  const DES_COLOR      = '#e0556c'; // red/pink — Design activations
+  const INACTIVE_COLOR = '#252535'; // near-invisible — inactive skeleton
+  const MARKER_FILL    = '#1c2540'; // navy behind active gate numbers
 
   function halfColor(state) {
-    return state === 'des' || state === 'both' ? DES_COLOR : PERS_COLOR;
+    if (state === 'des' || state === 'both') return DES_COLOR;
+    if (state === 'pers') return PERS_COLOR;
+    return INACTIVE_COLOR; // inactive — just a ghost skeleton
+  }
+
+  // ── Parallel channel offsets (Phase 1.4.C) ─────────────────────────────────
+  // Channels sharing the same centre-pair are shifted perpendicularly so
+  // they appear as parallel lines rather than overlapping.
+  //
+  // Spacing between adjacent parallel channels (px in viewBox units).
+  const PARALLEL_SPACING = 4.5;
+
+  // Canonical key for a centre-pair (order-independent).
+  function centrePairKey(g1, g2) {
+    const c1 = CENTER_BY_GATE[g1];
+    const c2 = CENTER_BY_GATE[g2];
+    return c1 < c2 ? `${c1}|${c2}` : `${c2}|${c1}`;
+  }
+
+  // Group channels by centre-pair.
+  const cpGroups = /** @type {Record<string, Array<[number,number]>>} */ ({});
+  for (const [g1, g2] of CHANNELS) {
+    const key = centrePairKey(g1, g2);
+    if (!cpGroups[key]) cpGroups[key] = [];
+    cpGroups[key].push([g1, g2]);
+  }
+
+  // For each multi-channel group, compute a shared perpendicular direction
+  // (perpendicular to the mean direction of all channels in the group).
+  // Then assign each channel its scalar offset along that perpendicular.
+  /** @type {Record<string, { ox: number, oy: number }>} */
+  const channelOffsets = {};
+
+  for (const [, channels] of Object.entries(cpGroups)) {
+    if (channels.length <= 1) continue;
+
+    // Mean direction unit vector across all channels in the group.
+    let sumDx = 0, sumDy = 0;
+    for (const [g1, g2] of channels) {
+      const p1 = GATE_POSITIONS[g1], p2 = GATE_POSITIONS[g2];
+      const len = Math.hypot(p2.x - p1.x, p2.y - p1.y) || 1;
+      sumDx += (p2.x - p1.x) / len;
+      sumDy += (p2.y - p1.y) / len;
+    }
+    const avgLen = Math.hypot(sumDx, sumDy) || 1;
+    // Perpendicular: rotate 90° counter-clockwise → (-dy, dx).
+    const px = -sumDy / avgLen;
+    const py =  sumDx / avgLen;
+
+    const n = channels.length;
+    channels.forEach(([g1, g2], i) => {
+      const scalar = (i - (n - 1) / 2) * PARALLEL_SPACING;
+      channelOffsets[`${g1}-${g2}`] = { ox: scalar * px, oy: scalar * py };
+    });
   }
 
   // ── Channel halves (pre-computed) ──────────────────────────────────────────
   const channelHalves = CHANNELS.map(([g1, g2]) => {
     const p1 = GATE_POSITIONS[g1];
     const p2 = GATE_POSITIONS[g2];
+    const off = channelOffsets[`${g1}-${g2}`] ?? { ox: 0, oy: 0 };
     return {
-      x1: p1.x, y1: p1.y,
-      mx: (p1.x + p2.x) / 2,
-      my: (p1.y + p2.y) / 2,
-      x2: p2.x, y2: p2.y,
+      x1: p1.x + off.ox, y1: p1.y + off.oy,
+      mx: (p1.x + p2.x) / 2 + off.ox,
+      my: (p1.y + p2.y) / 2 + off.oy,
+      x2: p2.x + off.ox, y2: p2.y + off.oy,
       c1: halfColor(gateState(g1)),
       c2: halfColor(gateState(g2)),
     };
@@ -83,11 +149,11 @@
       {#each channelHalves as ch}
         <line
           x1={ch.x1} y1={ch.y1} x2={ch.mx} y2={ch.my}
-          stroke={ch.c1} stroke-width="6" stroke-linecap="butt"
+          stroke={ch.c1} stroke-width="3.5" stroke-linecap="round"
         />
         <line
           x1={ch.mx} y1={ch.my} x2={ch.x2} y2={ch.y2}
-          stroke={ch.c2} stroke-width="6" stroke-linecap="butt"
+          stroke={ch.c2} stroke-width="3.5" stroke-linecap="round"
         />
       {/each}
     </g>
@@ -98,9 +164,9 @@
         {@const defined = chart.definedCenters.includes(center)}
         {@const pos     = CENTER_POS[center]}
         {@const s       = CENTER_SHAPES[center]}
-        {@const fill    = defined ? CENTER_COLORS_DEFINED[center] : '#101116'}
-        {@const stroke  = defined ? CENTER_COLORS_DEFINED[center] : '#3a3a42'}
-        {@const sw      = defined ? 1.3 : 1}
+        {@const fill    = defined ? CENTER_COLORS_DEFINED[center] : '#181823'}
+        {@const stroke  = defined ? '#c8a832'                    : '#46465a'}
+        {@const sw      = defined ? 2 : 1}
 
         {#if s.type === 'rect'}
           <rect
@@ -120,7 +186,21 @@
     <!-- ── 3. Gate markers + numbers ─────────────────────────────────────── -->
     <g>
       {#each gateEntries as g}
-        {#if g.active}
+        {#if g.state === 'both'}
+          <!-- Split circle: top half = Personality (white), bottom = Design (red) -->
+          <path
+            d="M {g.pos.x - 6.5},{g.pos.y} A 6.5,6.5 0 0,1 {g.pos.x + 6.5},{g.pos.y} Z"
+            fill={PERS_COLOR}
+          />
+          <path
+            d="M {g.pos.x - 6.5},{g.pos.y} A 6.5,6.5 0 0,0 {g.pos.x + 6.5},{g.pos.y} Z"
+            fill={DES_COLOR}
+          />
+          <circle
+            cx={g.pos.x} cy={g.pos.y} r="6.5"
+            fill="none" stroke="#5a5a62" stroke-width="0.5"
+          />
+        {:else if g.active}
           <circle
             cx={g.pos.x} cy={g.pos.y} r="6.5"
             fill={MARKER_FILL} stroke="#5a5a62" stroke-width="0.5"
@@ -129,7 +209,7 @@
         <text
           x={g.pos.x} y={g.pos.y}
           text-anchor="middle" dominant-baseline="central"
-          fill={g.active ? '#eaeaee' : '#a0a0a8'}
+          fill={g.state === 'both' ? MARKER_FILL : g.active ? '#eaeaee' : '#909098'}
           font-size={g.active ? '7' : '6'}
           font-weight={g.active ? '600' : '400'}
           font-family="system-ui, sans-serif"

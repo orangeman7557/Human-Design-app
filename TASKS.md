@@ -17,18 +17,14 @@ Statuses:
 The deeper context (technical trade-offs, future ideas, deferred decisions)
 lives in [`BACKLOG.md`](./BACKLOG.md).
 
-Last updated: 2026-05-18.
+Last updated: 2026-05-19.
 
-> Latest change: Phase 1.3 — SVG bodygraph rebuilt against the Rave
-> reference. Nine centres at their classic positions and shapes (Heart
-> with apex pointing left toward G; Spleen apex right and Solar Plexus
-> apex left, both pointing toward Sacral). All 64 gates have canonical
-> positions inside their centre. Channels routed gate-to-gate as straight
-> lines with each half coloured by its near-gate's activation (white for
-> Personality / inactive skeleton, red for Design / Both). Active gates
-> carry a navy marker with the number; inactive gates show a dim number.
-> What remains for Phase 3 visual polish is in `BACKLOG.md` →
-> "Bodygraph polish remaining".
+> Latest change: Phase 1.4 completada (subtareas A-K, excepto H eliminada).
+> Bodygraph visualmente próximo al reference de Rave: centros más pequeños,
+> canales paralelos con offset perpendicular, Personality distinguible del
+> esqueleto, marcador split para puertas Both, borde ámbar en centros
+> definidos, Heart reposicionado, puertas Head corregidas. Listo para
+> revisión visual antes de continuar con Fase 2.
 
 ---
 
@@ -68,7 +64,34 @@ Last updated: 2026-05-18.
   near their centre. Three new files: `src/lib/hd/bodygraph-geometry.js`,
   `src/lib/components/Bodygraph.svelte`, edit to `src/routes/chart/+page.svelte`.
 
-## ⬜ Next up
+## ✅ Phase 1.4 — Bodygraph visual accuracy (completada 2026-05-19)
+
+Subtareas completadas:
+
+- ✅ **1.4.A Centre sizes** — Centros reducidos ~25-30%. Head r45→32,
+  Ajna r40→28, Throat 130×85→95×65, G r60→45, Heart r40→30,
+  Sacral 130×85→95×65, Spleen r55→40, SolarPlexus r55→40,
+  Root 130×80→95×58. Puertas reescaladas hacia sus centroides.
+- ✅ **1.4.B Personality color** — Personality = blanco `#eaeaee`;
+  inactivo = muy tenue `#252535` (antes ambos eran el mismo blanco).
+- ✅ **1.4.C Canales paralelos** — 10 grupos (2-4 canales/grupo).
+  Offset perpendicular ±N×4.5 px basado en dirección media del grupo.
+  Sin cruces detectados (verificado analíticamente).
+- ✅ **1.4.D Stroke width** — 6 px → 3.5 px; linecap butt → round.
+- ✅ **1.4.E Centros indefinidos** — Fill `#101116` → `#181823`,
+  stroke `#3a3a42` → `#46465a`. Centros más legibles y delimitados.
+- ✅ **1.4.F Heart position** — Centroide y:325 → y:305 (se alínea con
+  el hueco Throat↔G). Puertas Heart desplazadas −20 px en y.
+- ✅ **1.4.G Marcador Both** — Split circle: semiciclo superior blanco
+  (Personality), inferior rojo (Design). Número en navy sobre el split.
+- **1.4.H** — Eliminada (etiqueta "G" diferida a pulido visual Fase 3).
+- ✅ **1.4.I Borde definidos** — Stroke de centros definidos `'#c8a832'`
+  (ámbar dorado), stroke-width 2. Antes era mismo color que el fill.
+- ✅ **1.4.J Puertas Head** — Puertas 64/61/63 estaban en y:78, fuera
+  del triángulo (borde en y:71). Corregidas a y:68. Verificado.
+- ✅ **1.4.K Routing diagonal** — Verificado analíticamente: ningún
+  canal diagonal Throat↔Spleen o Throat↔SolarPlexus se cruza con otro.
+  Los pares paralelos están resueltos por 1.4.C.
 
 ## ⬜ Pending
 

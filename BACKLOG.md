@@ -104,29 +104,36 @@ then compute the true node from the Moon's instantaneous orbit.
 
 ## Bodygraph polish remaining (Phase 3)
 
-Phase 1.3 now matches the Rave reference on structural fundamentals:
-canonical gate positions inside each centre, gate-to-gate channel routing,
-half-channel colouring by near-gate state, Heart apex pointing left, and
-Spleen/Solar Plexus apexes pointing inward toward Sacral.
+Phase 1.4 (completed 2026-05-19) brought the bodygraph visually close to
+the Rave reference. Structural accuracy: correct centre sizes and positions,
+gate positions inside each centre (all verified), parallel channel groups
+with perpendicular offsets, correct colouring (Personality/Design/Both/
+Inactive), split-circle markers for Both gates, defined-centre amber border,
+Heart repositioned in the Throat↔G gap.
 
-What remains for Phase 3 visual fidelity:
+What still remains for Phase 3 visual fidelity:
 
-- **Mixed gate marker** rendered as a half-red/half-white split circle
-  (today the marker is uniform navy regardless of state; the colour
-  information lives in the channel halves only).
 - **Striped "Both" channel halves.** When a gate is activated by *both*
   Personality and Design, the corresponding channel half should alternate
-  white/red along its length rather than solidly painting it red.
-- **Fine-tuning of gate positions inside each centre.** The current
-  coordinates are approximations; some are very close to centre edges and
-  may benefit from a per-gate audit against a high-resolution reference.
+  white/red along its length rather than solidly painting it red (currently
+  it paints red, which conflates Both with pure Design visually).
 - **Centre identifier inside G** (just the letter "G", as in classical
-  bodygraphs). No other centres are labelled.
+  bodygraphs). No other centres are labelled. Deferred by user decision.
+- **Per-gate fine-tuning against high-res Rave reference.** Gate positions
+  were rescaled proportionally; some may still be slightly off. Requires
+  a manual side-by-side comparison with a reference image.
 - **Optional decorative human silhouette** behind the bodygraph (purely
   aesthetic, common in Rave-style apps).
 - **Layout responsiveness on very narrow screens.** The current viewBox
   `380×620` works down to ~340 px wide; below that the gate numbers get
   crowded.
+- **Inactive gate text visibility.** After Phase 1.4.E the undefined centre
+  background is `#181823`; gate text is `#909098`. Verify real-device
+  legibility at small viewport sizes.
+- **PARALLEL_SPACING tuning.** Current offset is 4.5 px between parallel
+  channels. This value was chosen analytically; after visual review it may
+  need adjustment (wider for dense groups like G↔Throat with 4 channels,
+  narrower for sparse groups).
 
 ## Known tech debt
 

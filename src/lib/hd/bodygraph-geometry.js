@@ -5,8 +5,18 @@
 // at canonical positions *inside* their centre.
 //
 // Channels are rendered gate-to-gate as straight lines (no centre-to-centre
-// approximation, no perpendicular bundle offset) in Bodygraph.svelte, so
-// this file no longer exports the previous channel-routing helpers.
+// approximation) in Bodygraph.svelte.
+//
+// Phase 1.4.A — Centre sizes reduced ~25-30% vs Phase 1.3. Gate positions
+// rescaled proportionally toward each centre's centroid using:
+//   new_gate = centroid + (old_gate − centroid) × scale
+// Scale factors: Head 0.711, Ajna 0.70, Throat 0.731/0.765, G 0.75,
+// Heart 0.75, Sacral 0.731/0.765, Spleen 0.727, SolarPlexus 0.727,
+// Root 0.731/0.725.
+// Phase 1.4.F — Heart centroid moved from y:325 to y:305 (better alignment
+// with the Throat↔G gap). All four Heart gate positions shifted -20 y.
+// Phase 1.4.J — Head gates corrected from y:78 to y:68 (they were below the
+// triangle's bottom edge at y:71; now firmly inside the shape).
 
 export const VIEWBOX = { w: 380, h: 620 };
 
@@ -16,7 +26,7 @@ export const CENTER_POS = {
   ajna:        { x: 190, y: 140 },
   throat:      { x: 190, y: 235 },
   g:           { x: 190, y: 345 },
-  heart:       { x: 300, y: 325 },
+  heart:       { x: 300, y: 305 },  // was y:325 — moved up to sit in the Throat↔G gap
   sacral:      { x: 190, y: 445 },
   spleen:      { x: 80,  y: 385 },
   solarPlexus: { x: 300, y: 385 },
@@ -29,20 +39,18 @@ export const CENTER_POS = {
 // r: circumradius for triangles and diamonds
 // w, h: dimensions for rects
 export const CENTER_SHAPES = {
-  head:        { type: 'triangle-up',    r: 45 },
-  ajna:        { type: 'triangle-down',  r: 40 },
-  throat:      { type: 'rect',           w: 130, h: 85 },
-  g:           { type: 'diamond',        r: 60 },
-  heart:       { type: 'triangle-left',  r: 40 },
-  sacral:      { type: 'rect',           w: 130, h: 85 },
-  spleen:      { type: 'triangle-right', r: 55 },
-  solarPlexus: { type: 'triangle-left',  r: 55 },
-  root:        { type: 'rect',           w: 130, h: 80 },
+  head:        { type: 'triangle-up',    r: 32  },  // was 45
+  ajna:        { type: 'triangle-down',  r: 28  },  // was 40
+  throat:      { type: 'rect',           w: 95, h: 65  },  // was 130×85
+  g:           { type: 'diamond',        r: 45  },  // was 60
+  heart:       { type: 'triangle-left',  r: 30  },  // was 40
+  sacral:      { type: 'rect',           w: 95, h: 65  },  // was 130×85
+  spleen:      { type: 'triangle-right', r: 40  },  // was 55
+  solarPlexus: { type: 'triangle-left',  r: 40  },  // was 55
+  root:        { type: 'rect',           w: 95, h: 58  },  // was 130×80
 };
 
 // ── HD-standard fill colours when a centre is defined ───────────────────────
-// Lightly desaturated for the dark theme so they don't vibrate against the
-// background but stay recognisable as the classic palette.
 export const CENTER_COLORS_DEFINED = {
   head:        '#d4b03a', // yellow
   ajna:        '#5d9b5d', // green
@@ -56,96 +64,98 @@ export const CENTER_COLORS_DEFINED = {
 };
 
 // ── Canonical gate positions ────────────────────────────────────────────────
-// Each gate has a fixed position *inside* its centre, modelled on the
-// Rave reference layout. Channels in Bodygraph.svelte are drawn as straight
-// lines from one of these positions to the other.
+// Rescaled from Phase 1.3 positions using per-centre scale factors so that
+// all gate dots land inside (or at the inner edge of) their smaller centre.
 //
 // Counts (must total 64): Head 3, Ajna 6, Throat 11, G 8, Heart 4,
 // Sacral 9, Spleen 7, Solar Plexus 7, Root 9.
 export const GATE_POSITIONS = {
-  // HEAD — three gates along the bottom edge, facing Ajna
-  64: { x: 165, y: 87 },
-  61: { x: 190, y: 87 },
-  63: { x: 215, y: 87 },
 
-  // AJNA — top edge faces Head, bottom three converge toward the apex
-  47: { x: 162, y: 122 },
-  24: { x: 190, y: 122 },
-  4:  { x: 218, y: 122 },
-  17: { x: 170, y: 158 },
-  11: { x: 210, y: 158 },
-  43: { x: 190, y: 175 },
+  // HEAD — three gates inside the triangle near the bottom, facing Ajna
+  // (Phase 1.4.J: moved from y:78 to y:68 — triangle bottom edge is at y:71)
+  64: { x: 172, y: 68 },
+  61: { x: 190, y: 68 },
+  63: { x: 208, y: 68 },
 
-  // THROAT — top row faces Ajna, sides face Spleen/Solar Plexus,
-  // bottom row faces G/Sacral
-  62: { x: 152, y: 207 },
-  23: { x: 190, y: 207 },
-  56: { x: 228, y: 207 },
-  16: { x: 138, y: 228 },
-  35: { x: 242, y: 228 },
-  20: { x: 148, y: 248 },
-  12: { x: 232, y: 248 },
-  31: { x: 152, y: 270 },
-  8:  { x: 178, y: 270 },
-  33: { x: 200, y: 270 },
-  45: { x: 228, y: 270 },
+  // AJNA — top edge faces Head, bottom apex faces Throat (scale 0.70)
+  47: { x: 170, y: 127 },
+  24: { x: 190, y: 127 },
+  4:  { x: 210, y: 127 },
+  17: { x: 176, y: 153 },
+  11: { x: 204, y: 153 },
+  43: { x: 190, y: 165 },
+
+  // THROAT — top row faces Ajna, sides face Spleen/SolarPlexus,
+  // bottom row faces G/Sacral (scale_x 0.731, scale_y 0.765)
+  62: { x: 162, y: 214 },
+  23: { x: 190, y: 214 },
+  56: { x: 218, y: 214 },
+  16: { x: 152, y: 230 },
+  35: { x: 228, y: 230 },
+  20: { x: 159, y: 245 },
+  12: { x: 221, y: 245 },
+  31: { x: 162, y: 262 },
+  8:  { x: 181, y: 262 },
+  33: { x: 197, y: 262 },
+  45: { x: 218, y: 262 },
 
   // G — diamond, vertices face Throat (top), Heart (right),
-  // Sacral (bottom), Spleen (left)
-  1:  { x: 190, y: 295 },
-  7:  { x: 172, y: 322 },
-  13: { x: 208, y: 322 },
-  10: { x: 148, y: 348 },
-  25: { x: 232, y: 348 },
-  15: { x: 172, y: 380 },
-  46: { x: 208, y: 380 },
-  2:  { x: 190, y: 405 },
+  // Sacral (bottom), Spleen (left) (scale 0.75)
+  1:  { x: 190, y: 308 },
+  7:  { x: 177, y: 328 },
+  13: { x: 204, y: 328 },
+  10: { x: 159, y: 347 },
+  25: { x: 222, y: 347 },
+  15: { x: 177, y: 371 },
+  46: { x: 204, y: 371 },
+  2:  { x: 190, y: 390 },
 
-  // HEART — small triangle, apex pointing left toward G
-  21: { x: 305, y: 305 },
-  51: { x: 290, y: 322 },
-  26: { x: 290, y: 340 },
-  40: { x: 315, y: 343 },
+  // HEART — small triangle, apex pointing left toward G (Phase 1.4.F: all y −20)
+  21: { x: 304, y: 290 },
+  51: { x: 293, y: 303 },
+  26: { x: 293, y: 316 },
+  40: { x: 311, y: 319 },
 
-  // SACRAL — top row faces G, bottom row faces Root
-  5:  { x: 160, y: 415 },
-  14: { x: 190, y: 415 },
-  29: { x: 222, y: 415 },
-  34: { x: 158, y: 437 },
-  27: { x: 158, y: 458 },
-  59: { x: 222, y: 458 },
-  42: { x: 160, y: 480 },
-  3:  { x: 190, y: 480 },
-  9:  { x: 222, y: 480 },
+  // SACRAL — top row faces G, bottom row faces Root (scale_x 0.731, scale_y 0.765)
+  5:  { x: 168, y: 422 },
+  14: { x: 190, y: 422 },
+  29: { x: 212, y: 422 },
+  34: { x: 167, y: 439 },
+  27: { x: 167, y: 455 },
+  59: { x: 213, y: 455 },
+  42: { x: 168, y: 472 },
+  3:  { x: 190, y: 472 },
+  9:  { x: 212, y: 472 },
 
-  // SPLEEN — triangle with apex pointing right (toward Sacral)
-  48: { x: 62,  y: 350 },
-  57: { x: 85,  y: 370 },
-  44: { x: 107, y: 380 },
-  50: { x: 123, y: 388 },
-  32: { x: 78,  y: 402 },
-  28: { x: 62,  y: 418 },
-  18: { x: 58,  y: 428 },
+  // SPLEEN — triangle apex pointing right, toward Sacral (scale 0.727)
+  48: { x: 67,  y: 360 },
+  57: { x: 84,  y: 374 },
+  44: { x: 100, y: 381 },
+  50: { x: 111, y: 387 },
+  32: { x: 79,  y: 397 },
+  28: { x: 67,  y: 409 },
+  18: { x: 64,  y: 416 },
 
-  // SOLAR PLEXUS — triangle with apex pointing left (toward Sacral)
-  36: { x: 318, y: 350 },
-  22: { x: 295, y: 370 },
-  37: { x: 273, y: 380 },
-  6:  { x: 257, y: 388 },
-  49: { x: 302, y: 402 },
-  55: { x: 318, y: 418 },
-  30: { x: 322, y: 428 },
+  // SOLAR PLEXUS — triangle apex pointing left, toward Sacral (scale 0.727)
+  36: { x: 313, y: 360 },
+  22: { x: 296, y: 374 },
+  37: { x: 280, y: 381 },
+  6:  { x: 269, y: 387 },
+  49: { x: 301, y: 397 },
+  55: { x: 313, y: 409 },
+  30: { x: 316, y: 416 },
 
-  // ROOT — top row faces Sacral, lower rows face Spleen/Solar Plexus
-  53: { x: 160, y: 520 },
-  60: { x: 190, y: 520 },
-  52: { x: 220, y: 520 },
-  54: { x: 155, y: 542 },
-  19: { x: 225, y: 542 },
-  39: { x: 225, y: 562 },
-  58: { x: 155, y: 578 },
-  38: { x: 190, y: 578 },
-  41: { x: 220, y: 578 },
+  // ROOT — top row faces Sacral, lower rows face Spleen/SolarPlexus
+  // (scale_x 0.731, scale_y 0.725)
+  53: { x: 168, y: 527 },
+  60: { x: 190, y: 527 },
+  52: { x: 212, y: 527 },
+  54: { x: 164, y: 543 },
+  19: { x: 216, y: 543 },
+  39: { x: 216, y: 557 },
+  58: { x: 164, y: 569 },
+  38: { x: 190, y: 569 },
+  41: { x: 212, y: 569 },
 };
 
 /**
