@@ -17,6 +17,10 @@
 // with the Throat↔G gap). All four Heart gate positions shifted -20 y.
 // Phase 1.4.J — Head gates corrected from y:78 to y:68 (they were below the
 // triangle's bottom edge at y:71; now firmly inside the shape).
+// Phase 1.4.L — A1: Throat/Sacral/Root reshaped to square 85×85 (was
+// 95×65/95×65/95×58). A2: Head enlarged from r=32 to r=40, Ajna from
+// r=28 to r=34. Ajna gates 17 and 11 nudged x toward the centerline so
+// they remain inside the larger triangle's narrower lower half.
 
 export const VIEWBOX = { w: 380, h: 620 };
 
@@ -38,16 +42,18 @@ export const CENTER_POS = {
 //     | 'rect' | 'diamond'
 // r: circumradius for triangles and diamonds
 // w, h: dimensions for rects
+// Phase 1.4.L — A1: Throat/Sacral/Root → square (85×85).
+//               A2: Head/Ajna enlarged a touch.
 export const CENTER_SHAPES = {
-  head:        { type: 'triangle-up',    r: 32  },  // was 45
-  ajna:        { type: 'triangle-down',  r: 28  },  // was 40
-  throat:      { type: 'rect',           w: 95, h: 65  },  // was 130×85
-  g:           { type: 'diamond',        r: 45  },  // was 60
-  heart:       { type: 'triangle-left',  r: 30  },  // was 40
-  sacral:      { type: 'rect',           w: 95, h: 65  },  // was 130×85
-  spleen:      { type: 'triangle-right', r: 40  },  // was 55
-  solarPlexus: { type: 'triangle-left',  r: 40  },  // was 55
-  root:        { type: 'rect',           w: 95, h: 58  },  // was 130×80
+  head:        { type: 'triangle-up',    r: 40 },   // A2: was 32
+  ajna:        { type: 'triangle-down',  r: 34 },   // A2: was 28
+  throat:      { type: 'rect',           w: 85, h: 85 }, // A1: was 95×65
+  g:           { type: 'diamond',        r: 45 },
+  heart:       { type: 'triangle-left',  r: 30 },
+  sacral:      { type: 'rect',           w: 85, h: 85 }, // A1: was 95×65
+  spleen:      { type: 'triangle-right', r: 40 },
+  solarPlexus: { type: 'triangle-left',  r: 40 },
+  root:        { type: 'rect',           w: 85, h: 85 }, // A1: was 95×58
 };
 
 // ── HD-standard fill colours when a centre is defined (Phase 1.4.K) ─────────
@@ -78,12 +84,15 @@ export const GATE_POSITIONS = {
   61: { x: 190, y: 68 },
   63: { x: 208, y: 68 },
 
-  // AJNA — top edge faces Head, bottom apex faces Throat (scale 0.70)
+  // AJNA — top edge faces Head, bottom apex faces Throat
+  // Phase 1.4.L: gates 17 and 11 nudged inward (x) to stay inside the
+  // bigger triangle (r=34); the narrower section near the apex needs them
+  // closer to the centerline.
   47: { x: 170, y: 127 },
   24: { x: 190, y: 127 },
   4:  { x: 210, y: 127 },
-  17: { x: 176, y: 153 },
-  11: { x: 204, y: 153 },
+  17: { x: 180, y: 153 },
+  11: { x: 200, y: 153 },
   43: { x: 190, y: 165 },
 
   // THROAT — top row faces Ajna, sides face Spleen/SolarPlexus,

@@ -19,19 +19,14 @@ lives in [`BACKLOG.md`](./BACKLOG.md).
 
 Last updated: 2026-05-19.
 
-> Latest change: Phase 1.4.K — palette + marker polish (B1, D1, E1-E4).
-> Channel halves now use `stroke-linecap="butt"` so they meet cleanly at
-> the midpoint. Inactive channels raised to a visible white-grey
-> (`#dadce0`) skeleton — Rave style. Personality bumped to pure white;
-> Design re-tuned to hot pink-red `#e84672`. Gate markers unified: navy
-> circle + white number for any active state; the split Personality/Design
-> "Both" marker is removed — the distinction lives in the channel halves.
-> Defined centres use a stroke matching their own fill (no separate
-> border); centre fills calibrated closer to Rave tones. Still pending
-> in the bodygraph polish queue: A1 (Throat/Sacral/Root → square),
-> A2 (enlarge Head/Ajna), B2 (half-channel rendering edge cases),
-> B3 / C1 (per-centre gate re-positioning so parallel channels emerge
-> from geometry).
+> Latest change: Phase 1.4.L — A1 + A2 (centre shape and size pass).
+> Throat, Sacral and Root reshaped from rectangles (95×65/95×58) to
+> square 85×85. Head enlarged from r=32 to r=40; Ajna from r=28 to r=34.
+> Two Ajna gates (17 and 11) nudged toward the centerline so they stay
+> inside the larger triangle's narrower lower half. Still pending in the
+> bodygraph polish queue: B2 (half-channel rendering edge cases such as
+> 30-41), B3 / C1 (per-centre gate re-positioning so parallel channels
+> emerge from geometry alone).
 
 ---
 
