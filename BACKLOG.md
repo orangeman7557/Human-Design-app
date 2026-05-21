@@ -127,6 +127,19 @@ What still remains for Phase 3 visual fidelity:
 - **PARALLEL_SPACING tuning.** Current offset is 12 px (scaled from 4.5
   in the old viewBox). After visual review it may need adjustment.
 
+## Dependency conflict: wrangler v4 vs adapter-cloudflare
+
+`wrangler@^4.0.0` (proyecto) choca con el peer dep `wrangler@^3.28.4` que
+declara `@sveltejs/adapter-cloudflare@4.9.0`. Cloudflare Workers Builds usa
+`npm ci` (estricto) y falla sin workaround.
+
+**Solución temporal (2026-05-21):** `.npmrc` con `legacy-peer-deps=true`.
+
+**Solución permanente cuando proceda:** actualizar `@sveltejs/adapter-cloudflare`
+a una versión que declare soporte explícito para wrangler v4, o bajar wrangler
+a `^3.28.4`. Revisar el changelog de `@sveltejs/adapter-cloudflare` antes de
+subir de versión.
+
 ## Known tech debt
 
 - Files from the first commit ended up with macOS permissions that prevent
