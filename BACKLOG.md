@@ -102,6 +102,26 @@ then compute the true node from the Moon's instantaneous orbit.
 - **Multi-language activation**: the architecture is already multi-language
   ready; English translation pending once there's traction.
 
+## Bodygraph — pendientes de color y visibilidad
+
+- **Color de canales Personality.** El gris actual (`#9898a8`) no destaca
+  suficientemente. Probablemente requiera un cambio de enfoque: fondo del
+  bodygraph a gris medio y canales Personality en negro, para que la
+  activación Personality sea el color "lleno" y el inactivo el "vacío".
+  Revisar toda la paleta de canales al mismo tiempo.
+
+- **Colores en los quiebres de polilíneas (circuito integración).** En los
+  canales 10-20, 10-57, 10-34, 20-34, 20-57 y 34-57, el relleno de color
+  cambia en el punto de quiebre (Q o Q2), pero en los vértices de la
+  polilínea SVG el `stroke-linejoin` puede dejar artefactos visuales o el
+  color de cada mitad no se percibe limpiamente. Revisar y ajustar.
+
+- **Visibilidad de puertas inactivas en centros sin definir.** El número de
+  puerta en gris (`#909098`) sobre fondo de centro indefinido (`#181823`)
+  tiene poco contraste. Subir ligeramente el brillo del texto o bajar el
+  fondo del centro para mejorar la legibilidad sin romper la jerarquía
+  visual activo / inactivo.
+
 ## Bodygraph polish remaining (Phase 3)
 
 La rebase de geometría (2026-05-21) reemplazó todo el sistema de coordenadas:

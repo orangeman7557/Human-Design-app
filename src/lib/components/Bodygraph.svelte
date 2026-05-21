@@ -58,9 +58,9 @@
   // skeleton is always present. Personality is the same hue,
   // just brighter, so structure-vs-activation reads via brightness + the
   // gate markers themselves.
-  const PERS_COLOR     = '#9898a8'; // dark gray — Personality activations
+  const PERS_COLOR     = '#ffffff'; // white — Personality activations
   const DES_COLOR      = '#e84672'; // hot pink-red — Design activations
-  const INACTIVE_COLOR = '#dadce0'; // light grey-white — visible skeleton
+  const INACTIVE_COLOR = '#606070'; // muted gray — visible skeleton
 
   function halfColor(state) {
     if (state === 'des' || state === 'both') return DES_COLOR;
