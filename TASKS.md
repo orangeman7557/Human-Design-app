@@ -19,12 +19,10 @@ lives in [`BACKLOG.md`](./BACKLOG.md).
 
 Last updated: 2026-05-21.
 
-> Latest change: Geometry rebase — viewBox escalado a 1058×1630 (dimensiones
-> del referencial). Todos los centros y las 64 puertas re-posicionadas
-> con las coordenadas exactas del fichero de referencia
-> (`docs/bodygraph-reference-coordinates.txt`). Los triángulos pasan de
-> circunradio equilátero a vértices explícitos (el referencial no es
-> equilátero). Pendiente: validación visual en el navegador.
+> Latest change: Sesión de polish del bodygraph — circuito de integración
+> (canales 10/20/34/57 como polilíneas calculadas), ajuste de posiciones de
+> puertas desde el referencial, y refinamiento de colores (Personality blanco,
+> Design rosa-rojo, inactivo gris tenue, marcador morado oscuro).
 
 ---
 
@@ -57,11 +55,10 @@ Last updated: 2026-05-21.
   Cloudflare + `.nvmrc` + `engines.node` in `package.json`).
 - **Phase 1.3 — SVG bodygraph visualization.** Functional bodygraph above
   the textual chart data. 9 centres as geometric shapes (triangles, diamond,
-  rects), filled + amber border when defined, outlined when open. All 36
-  channels drawn as lines; parallel channels between the same centre pair
-  are offset perpendicularly. Colour coding: Personality=white, Design=red,
-  mixed (both)=amber, inactive=very dim. Gate numbers shown on each channel
-  near their centre. Three new files: `src/lib/hd/bodygraph-geometry.js`,
+  rects), filled when defined, outlined when open. All 36 channels drawn as
+  lines gate-to-gate. Colour coding: Personality=white, Design=pink-red,
+  Both=pink-red, inactive=muted gray. Active gates marked with a circle.
+  Three new files: `src/lib/hd/bodygraph-geometry.js`,
   `src/lib/components/Bodygraph.svelte`, edit to `src/routes/chart/+page.svelte`.
 
 ## ✅ Phase 1.4 — Bodygraph visual accuracy (completada 2026-05-19)
@@ -93,17 +90,24 @@ Subtareas completadas:
   canal diagonal Throat↔Spleen o Throat↔SolarPlexus se cruza con otro.
   Los pares paralelos están resueltos por 1.4.C.
 
-## 🟡 Geometry rebase (2026-05-21, pendiente validación visual)
+## ✅ Geometry rebase + bodygraph polish (2026-05-21)
 
 - ✅ ViewBox `380×620` → `1058×1630` (dimensiones del referencial).
-- ✅ Centros: formas con vértices explícitos del referencial (los triángulos
-  del referencial no son equiláteros; se abandona el enfoque de circunradio).
-  Heart cambia de `triangle-left` a `triangle-up` según el referencial.
-- ✅ Las 64 posiciones de puertas reemplazadas íntegramente por las del
-  fichero `docs/bodygraph-reference-coordinates.txt`.
-- ✅ Valores de render escalados al nuevo viewBox: `stroke-width=10`,
-  `font-size=16`, `r=18`, `PARALLEL_SPACING=12`, `sw=3`, `rx=11`.
-- ⬜ Validación visual en el navegador (pendiente confirmación del usuario).
+- ✅ Centros: vértices explícitos del referencial (triángulos no equiláteros).
+  Heart cambia de `triangle-left` a `triangle-up`.
+- ✅ Las 64 posiciones de puertas desde el referencial; ajuste fino posterior
+  de coordenadas en múltiples centros (segunda pasada del referencial).
+- ✅ Offsets perpendiculares de canales paralelos eliminados — con las
+  coordenadas del referencial los canales ya están naturalmente separados.
+- ✅ Circuito de integración (10-20, 10-57, 10-34, 20-34, 20-57, 34-57)
+  trazado como polilíneas calculadas vía `proyectarSobreRecta`. Los quiebres
+  Q y Q2 derivan de las coordenadas de las puertas, sin literales numéricos.
+- ✅ Colores refinados: Personality blanco `#ffffff`, Design rosa-rojo
+  `#e84672`, inactivo gris tenue `#606070`, marcador de puerta morado
+  `#4a2060`, stroke-width canales 12 px.
+- ✅ Puertas inactivas en centros definidos: texto en morado `#4a2060`
+  (antes gris claro, ilegible sobre fondos de color).
+- ✅ `.npmrc` con `legacy-peer-deps=true` — arregla build en Cloudflare.
 
 ## ⬜ Pending
 

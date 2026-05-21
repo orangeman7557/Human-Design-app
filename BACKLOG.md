@@ -104,12 +104,6 @@ then compute the true node from the Moon's instantaneous orbit.
 
 ## Bodygraph — pendientes de color y visibilidad
 
-- **Color de canales Personality.** El gris actual (`#9898a8`) no destaca
-  suficientemente. Probablemente requiera un cambio de enfoque: fondo del
-  bodygraph a gris medio y canales Personality en negro, para que la
-  activación Personality sea el color "lleno" y el inactivo el "vacío".
-  Revisar toda la paleta de canales al mismo tiempo.
-
 - **Colores en los quiebres de polilíneas (circuito integración).** En los
   canales 10-20, 10-57, 10-34, 20-34, 20-57 y 34-57, el relleno de color
   cambia en el punto de quiebre (Q o Q2), pero en los vértices de la
@@ -129,6 +123,18 @@ viewBox `1058×1630`, vértices explícitos de centros y 64 posiciones de puerta
 tomadas directamente del referencial (`docs/bodygraph-reference-coordinates.txt`).
 
 What still remains for Phase 3 visual fidelity:
+
+- **Rounded corners on centre shapes.** Los triángulos y el rombo tienen
+  esquinas afiladas. Redondear suavemente los vértices (SVG `stroke-linejoin`
+  o paths con `rx`) daría un acabado más pulido sin alterar la geometría.
+  Evaluar centro a centro — probablemente más relevante en Corazón y Bazo.
+
+- **Presentación visual de la información básica.** El resumen textual
+  (tipo, estrategia, autoridad, perfil, definición) se muestra como texto
+  plano. Propuesta: mostrar las opciones de tipo como chips/tarjetas
+  coloreadas igual que los centros definidos — el tipo activo con su color,
+  las demás opciones en gris. Aplicar la misma lógica a autoridad y
+  definición. Esto unifica el lenguaje visual del bodygraph con el resumen.
 
 - **Striped "Both" channel halves.** When a gate is activated by *both*
   Personality and Design, the corresponding channel half should alternate
