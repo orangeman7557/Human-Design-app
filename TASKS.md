@@ -17,16 +17,14 @@ Statuses:
 The deeper context (technical trade-offs, future ideas, deferred decisions)
 lives in [`BACKLOG.md`](./BACKLOG.md).
 
-Last updated: 2026-05-19.
+Last updated: 2026-05-21.
 
-> Latest change: Phase 1.4.L — A1 + A2 (centre shape and size pass).
-> Throat, Sacral and Root reshaped from rectangles (95×65/95×58) to
-> square 85×85. Head enlarged from r=32 to r=40; Ajna from r=28 to r=34.
-> Two Ajna gates (17 and 11) nudged toward the centerline so they stay
-> inside the larger triangle's narrower lower half. Still pending in the
-> bodygraph polish queue: B2 (half-channel rendering edge cases such as
-> 30-41), B3 / C1 (per-centre gate re-positioning so parallel channels
-> emerge from geometry alone).
+> Latest change: Geometry rebase — viewBox escalado a 1058×1630 (dimensiones
+> del referencial). Todos los centros y las 64 puertas re-posicionadas
+> con las coordenadas exactas del fichero de referencia
+> (`docs/bodygraph-reference-coordinates.txt`). Los triángulos pasan de
+> circunradio equilátero a vértices explícitos (el referencial no es
+> equilátero). Pendiente: validación visual en el navegador.
 
 ---
 
@@ -95,13 +93,25 @@ Subtareas completadas:
   canal diagonal Throat↔Spleen o Throat↔SolarPlexus se cruza con otro.
   Los pares paralelos están resueltos por 1.4.C.
 
+## 🟡 Geometry rebase (2026-05-21, pendiente validación visual)
+
+- ✅ ViewBox `380×620` → `1058×1630` (dimensiones del referencial).
+- ✅ Centros: formas con vértices explícitos del referencial (los triángulos
+  del referencial no son equiláteros; se abandona el enfoque de circunradio).
+  Heart cambia de `triangle-left` a `triangle-up` según el referencial.
+- ✅ Las 64 posiciones de puertas reemplazadas íntegramente por las del
+  fichero `docs/bodygraph-reference-coordinates.txt`.
+- ✅ Valores de render escalados al nuevo viewBox: `stroke-width=10`,
+  `font-size=16`, `r=18`, `PARALLEL_SPACING=12`, `sw=3`, `rx=11`.
+- ⬜ Validación visual en el navegador (pendiente confirmación del usuario).
+
 ## ⬜ Pending
 
 - **Phase 2 — Local persistence + chart list.** IndexedDB via Dexie.js.
   Save / list / rename / delete charts. Export/import all charts to a single
   JSON file. Only metadata kept per chart: name.
 - **Phase 3 — Visual polish + unknown-birth-time handling.** Final visual
-  pass on the bodygraph (faithful classic, Rave-like). Dark theme finalised
+  pass on the bodygraph (faithful classic, classic). Dark theme finalised
   (typography, palette). "Unknown hour" mode: chart at local noon with
   visual disclaimers + a slider to scrub the hour and see which large
   markers (type, authority, profile) shift.

@@ -1,5 +1,5 @@
 <!-- AI-authored — SVG bodygraph for Human Design charts. -->
-<!-- Layout follows the classic Rave reference: nine centres in their      -->
+<!-- Layout follows the classic reference: nine centres in their           -->
 <!-- standard shapes, 64 gates at canonical positions inside their centre, -->
 <!-- and 36 channels routed gate-to-gate as straight lines.                 -->
 <!--                                                                         -->
@@ -14,7 +14,7 @@
 <!-- centres are offset perpendicularly so they appear as parallel lines     -->
 <!-- instead of overlapping. 10 such groups exist (2-4 channels each).       -->
 <!--                                                                         -->
-<!-- Gate rendering (Phase 1.4.K — uniform Rave-style):                       -->
+<!-- Gate rendering (Phase 1.4.K — uniform style):                            -->
 <!--   Active (Personality / Design / Both): navy circle + white number.     -->
 <!--   The Personality/Design/Both distinction is encoded by the channel    -->
 <!--   halves, not the gate marker.                                          -->
@@ -54,7 +54,7 @@
 
   // ── Colour palette ─────────────────────────────────────────────────────────
   // Phase 1.4.K: inactive raised to a visible white-grey so the bodygraph
-  // skeleton is always present (Rave-style). Personality is the same hue,
+  // skeleton is always present. Personality is the same hue,
   // just brighter, so structure-vs-activation reads via brightness + the
   // gate markers themselves.
   const PERS_COLOR     = '#ffffff'; // pure white — Personality activations
@@ -73,7 +73,7 @@
   // they appear as parallel lines rather than overlapping.
   //
   // Spacing between adjacent parallel channels (px in viewBox units).
-  const PARALLEL_SPACING = 4.5;
+  const PARALLEL_SPACING = 12;
 
   // Canonical key for a centre-pair (order-independent).
   function centrePairKey(g1, g2) {
@@ -154,11 +154,11 @@
       {#each channelHalves as ch}
         <line
           x1={ch.x1} y1={ch.y1} x2={ch.mx} y2={ch.my}
-          stroke={ch.c1} stroke-width="3.5" stroke-linecap="butt"
+          stroke={ch.c1} stroke-width="10" stroke-linecap="butt"
         />
         <line
           x1={ch.mx} y1={ch.my} x2={ch.x2} y2={ch.y2}
-          stroke={ch.c2} stroke-width="3.5" stroke-linecap="butt"
+          stroke={ch.c2} stroke-width="10" stroke-linecap="butt"
         />
       {/each}
     </g>
@@ -171,12 +171,12 @@
         {@const s       = CENTER_SHAPES[center]}
         {@const fill    = defined ? CENTER_COLORS_DEFINED[center] : '#181823'}
         {@const stroke  = defined ? CENTER_COLORS_DEFINED[center] : '#46465a'}
-        {@const sw      = 1}
+        {@const sw      = 3}
 
         {#if s.type === 'rect'}
           <rect
             x={pos.x - s.w / 2} y={pos.y - s.h / 2}
-            width={s.w} height={s.h} rx="4"
+            width={s.w} height={s.h} rx="11"
             {fill} {stroke} stroke-width={sw}
           />
         {:else}
@@ -188,20 +188,20 @@
       {/each}
     </g>
 
-    <!-- ── 3. Gate markers + numbers (Phase 1.4.K — uniform Rave style) ──── -->
+    <!-- ── 3. Gate markers + numbers (Phase 1.4.K — uniform style) ────────── -->
     <g>
       {#each gateEntries as g}
         {#if g.active}
           <circle
-            cx={g.pos.x} cy={g.pos.y} r="6.5"
-            fill={MARKER_FILL} stroke="#5a5a62" stroke-width="0.5"
+            cx={g.pos.x} cy={g.pos.y} r="18"
+            fill={MARKER_FILL} stroke="#5a5a62" stroke-width="1.5"
           />
         {/if}
         <text
           x={g.pos.x} y={g.pos.y}
           text-anchor="middle" dominant-baseline="central"
           fill={g.active ? '#ffffff' : '#909098'}
-          font-size={g.active ? '7' : '6'}
+          font-size="16"
           font-weight={g.active ? '600' : '400'}
           font-family="system-ui, sans-serif"
           pointer-events="none"

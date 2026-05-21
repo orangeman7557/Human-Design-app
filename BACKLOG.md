@@ -104,12 +104,9 @@ then compute the true node from the Moon's instantaneous orbit.
 
 ## Bodygraph polish remaining (Phase 3)
 
-Phase 1.4 (completed 2026-05-19) brought the bodygraph visually close to
-the Rave reference. Structural accuracy: correct centre sizes and positions,
-gate positions inside each centre (all verified), parallel channel groups
-with perpendicular offsets, correct colouring (Personality/Design/Both/
-Inactive), split-circle markers for Both gates, defined-centre amber border,
-Heart repositioned in the Throat↔G gap.
+La rebase de geometría (2026-05-21) reemplazó todo el sistema de coordenadas:
+viewBox `1058×1630`, vértices explícitos de centros y 64 posiciones de puertas
+tomadas directamente del referencial (`docs/bodygraph-reference-coordinates.txt`).
 
 What still remains for Phase 3 visual fidelity:
 
@@ -119,21 +116,16 @@ What still remains for Phase 3 visual fidelity:
   it paints red, which conflates Both with pure Design visually).
 - **Centre identifier inside G** (just the letter "G", as in classical
   bodygraphs). No other centres are labelled. Deferred by user decision.
-- **Per-gate fine-tuning against high-res Rave reference.** Gate positions
-  were rescaled proportionally; some may still be slightly off. Requires
-  a manual side-by-side comparison with a reference image.
 - **Optional decorative human silhouette** behind the bodygraph (purely
-  aesthetic, common in Rave-style apps).
-- **Layout responsiveness on very narrow screens.** The current viewBox
-  `380×620` works down to ~340 px wide; below that the gate numbers get
-  crowded.
-- **Inactive gate text visibility.** After Phase 1.4.E the undefined centre
-  background is `#181823`; gate text is `#909098`. Verify real-device
-  legibility at small viewport sizes.
-- **PARALLEL_SPACING tuning.** Current offset is 4.5 px between parallel
-  channels. This value was chosen analytically; after visual review it may
-  need adjustment (wider for dense groups like G↔Throat with 4 channels,
-  narrower for sparse groups).
+  aesthetic, common in classic HD apps).
+- **Layout responsiveness on very narrow screens.** The SVG scales via
+  `width: 100%; height: auto`; the internal viewBox is `1058×1630` so
+  gate numbers and markers scale proportionally. Verify legibility at
+  narrow viewports after the geometry rebase.
+- **Inactive gate text visibility.** Gate text is `#909098` on `#181823`
+  background. Verify real-device legibility at small viewport sizes.
+- **PARALLEL_SPACING tuning.** Current offset is 12 px (scaled from 4.5
+  in the old viewBox). After visual review it may need adjustment.
 
 ## Known tech debt
 
