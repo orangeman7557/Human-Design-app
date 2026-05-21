@@ -68,67 +68,15 @@
     return INACTIVE_COLOR; // inactive — just a ghost skeleton
   }
 
-  // ── Parallel channel offsets (Phase 1.4.C) ─────────────────────────────────
-  // Channels sharing the same centre-pair are shifted perpendicularly so
-  // they appear as parallel lines rather than overlapping.
-  //
-  // Spacing between adjacent parallel channels (px in viewBox units).
-  const PARALLEL_SPACING = 12;
-
-  // Canonical key for a centre-pair (order-independent).
-  function centrePairKey(g1, g2) {
-    const c1 = CENTER_BY_GATE[g1];
-    const c2 = CENTER_BY_GATE[g2];
-    return c1 < c2 ? `${c1}|${c2}` : `${c2}|${c1}`;
-  }
-
-  // Group channels by centre-pair.
-  const cpGroups = /** @type {Record<string, Array<[number,number]>>} */ ({});
-  for (const [g1, g2] of CHANNELS) {
-    const key = centrePairKey(g1, g2);
-    if (!cpGroups[key]) cpGroups[key] = [];
-    cpGroups[key].push([g1, g2]);
-  }
-
-  // For each multi-channel group, compute a shared perpendicular direction
-  // (perpendicular to the mean direction of all channels in the group).
-  // Then assign each channel its scalar offset along that perpendicular.
-  /** @type {Record<string, { ox: number, oy: number }>} */
-  const channelOffsets = {};
-
-  for (const [, channels] of Object.entries(cpGroups)) {
-    if (channels.length <= 1) continue;
-
-    // Mean direction unit vector across all channels in the group.
-    let sumDx = 0, sumDy = 0;
-    for (const [g1, g2] of channels) {
-      const p1 = GATE_POSITIONS[g1], p2 = GATE_POSITIONS[g2];
-      const len = Math.hypot(p2.x - p1.x, p2.y - p1.y) || 1;
-      sumDx += (p2.x - p1.x) / len;
-      sumDy += (p2.y - p1.y) / len;
-    }
-    const avgLen = Math.hypot(sumDx, sumDy) || 1;
-    // Perpendicular: rotate 90° counter-clockwise → (-dy, dx).
-    const px = -sumDy / avgLen;
-    const py =  sumDx / avgLen;
-
-    const n = channels.length;
-    channels.forEach(([g1, g2], i) => {
-      const scalar = (i - (n - 1) / 2) * PARALLEL_SPACING;
-      channelOffsets[`${g1}-${g2}`] = { ox: scalar * px, oy: scalar * py };
-    });
-  }
-
   // ── Channel halves (pre-computed) ──────────────────────────────────────────
   const channelHalves = CHANNELS.map(([g1, g2]) => {
     const p1 = GATE_POSITIONS[g1];
     const p2 = GATE_POSITIONS[g2];
-    const off = channelOffsets[`${g1}-${g2}`] ?? { ox: 0, oy: 0 };
     return {
-      x1: p1.x + off.ox, y1: p1.y + off.oy,
-      mx: (p1.x + p2.x) / 2 + off.ox,
-      my: (p1.y + p2.y) / 2 + off.oy,
-      x2: p2.x + off.ox, y2: p2.y + off.oy,
+      x1: p1.x, y1: p1.y,
+      mx: (p1.x + p2.x) / 2,
+      my: (p1.y + p2.y) / 2,
+      x2: p2.x, y2: p2.y,
       c1: halfColor(gateState(g1)),
       c2: halfColor(gateState(g2)),
     };
