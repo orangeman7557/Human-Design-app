@@ -32,6 +32,7 @@
     CENTER_SHAPES,
     CENTER_COLORS_DEFINED,
     GATE_POSITIONS,
+    GATE10_CHANNEL_PATHS,
     centerPoints,
   } from '$lib/hd/bodygraph-geometry.js';
 
@@ -70,15 +71,20 @@
 
   // ── Channel halves (pre-computed) ──────────────────────────────────────────
   const channelHalves = CHANNELS.map(([g1, g2]) => {
+    const c1 = halfColor(gateState(g1));
+    const c2 = halfColor(gateState(g2));
+    const custom = GATE10_CHANNEL_PATHS[`${g1}-${g2}`];
+    if (custom) {
+      return { custom: true, pathA: custom.pathA, pathB: custom.pathB, c1, c2 };
+    }
     const p1 = GATE_POSITIONS[g1];
     const p2 = GATE_POSITIONS[g2];
     return {
+      custom: false,
       x1: p1.x, y1: p1.y,
-      mx: (p1.x + p2.x) / 2,
-      my: (p1.y + p2.y) / 2,
+      mx: (p1.x + p2.x) / 2, my: (p1.y + p2.y) / 2,
       x2: p2.x, y2: p2.y,
-      c1: halfColor(gateState(g1)),
-      c2: halfColor(gateState(g2)),
+      c1, c2,
     };
   });
 
@@ -106,14 +112,23 @@
     <!-- ── 1. Channels (two halves per channel, behind the centres) ──────── -->
     <g>
       {#each channelHalves as ch}
-        <line
-          x1={ch.x1} y1={ch.y1} x2={ch.mx} y2={ch.my}
-          stroke={ch.c1} stroke-width="10" stroke-linecap="butt"
-        />
-        <line
-          x1={ch.mx} y1={ch.my} x2={ch.x2} y2={ch.y2}
-          stroke={ch.c2} stroke-width="10" stroke-linecap="butt"
-        />
+        {#if ch.custom}
+          <polyline points={ch.pathA} fill="none"
+            stroke={ch.c1} stroke-width="10" stroke-linecap="butt" stroke-linejoin="miter"
+          />
+          <polyline points={ch.pathB} fill="none"
+            stroke={ch.c2} stroke-width="10" stroke-linecap="butt" stroke-linejoin="miter"
+          />
+        {:else}
+          <line
+            x1={ch.x1} y1={ch.y1} x2={ch.mx} y2={ch.my}
+            stroke={ch.c1} stroke-width="10" stroke-linecap="butt"
+          />
+          <line
+            x1={ch.mx} y1={ch.my} x2={ch.x2} y2={ch.y2}
+            stroke={ch.c2} stroke-width="10" stroke-linecap="butt"
+          />
+        {/if}
       {/each}
     </g>
 

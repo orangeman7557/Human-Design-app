@@ -149,7 +149,6 @@ CANALES
 6–59
 7–31
 9–52
-10–20 10–34 10–57
 11–56
 12–22
 13–33
@@ -175,3 +174,27 @@ CANALES
 39–55
 42–53
 47–64
+
+Caso especial
+10-20, 10-57 y 10-34
+
+La puerta 10 tiene estos tres canales. Estos canales no son rectas directas puerta-a-puerta. Necesitan trazarse como polilíneas con quiebres calculados.
+Para ello, implementa una función proyectarSobreRecta(puntoA, puntoB, y) que devuelva el punto de la recta A-B a una altura y dada, por interpolación lineal: x = A.x + (B.x − A.x) · (y − A.y) / (B.y − A.y).
+
+Con esa función, traza los tres canales así:
+
+Canal 10-20: polilínea gate10 → Q → gate20.
+Canal 10-57: polilínea gate10 → Q → gate57.
+Canal 10-34: polilínea gate10 → Q → Q2 → gate34, donde:
+
+Donde
+Q = proyectarSobreRecta(gate20, gate57, gate10.y).
+(Q es la intersección de la horizontal que pasa por la puerta 10 con la recta 20-57)
+Q2 = proyectarSobreRecta(gate20, gate57, yViraje)
+(Q2 es el punto de quiebre en la recta 20-57 desde donde sale la recta hacia 34)
+siendo
+yViraje = gate57.y − FACTOR_VIRAJE · (gate57.y − gate20.y)
+
+Define la constante FACTOR_VIRAJE = 0.10.
+
+Ningún punto de quiebre debe aparecer como literal numérico en el trazado: todos derivan de las coordenadas de las puertas vía la función. Si cambiara la coordenada de una puerta, los quiebres deben recalcularse solos.

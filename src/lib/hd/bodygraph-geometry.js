@@ -148,3 +148,39 @@ export function centerPoints(name) {
   if (s.type === 'polygon') return s.points;
   return null;
 }
+
+// ── Gate-10 channel paths ─────────────────────────────────────────────────────
+// Gates 10-20, 10-34 and 10-57 cannot be drawn as straight lines because gate
+// 10 sits at the left vertex of the G diamond while its partners span three
+// different centres. They share a common trunk that follows the line between
+// gates 20 and 57, branching from gate 10 at Q (the intersection of that line
+// with the horizontal through gate 10).
+
+export const FACTOR_VIRAJE = 0.10;
+
+/** Returns the point on line A→B at the given y (linear interpolation). */
+function proyectarSobreRecta(A, B, y) {
+  const x = A.x + (B.x - A.x) * (y - A.y) / (B.y - A.y);
+  return { x, y };
+}
+
+function buildGate10Paths() {
+  const g10 = GATE_POSITIONS[10];
+  const g20 = GATE_POSITIONS[20];
+  const g34 = GATE_POSITIONS[34];
+  const g57 = GATE_POSITIONS[57];
+
+  const Q  = proyectarSobreRecta(g20, g57, g10.y);
+  const yViraje = g57.y - FACTOR_VIRAJE * (g57.y - g20.y);
+  const Q2 = proyectarSobreRecta(g20, g57, yViraje);
+
+  const pts = (...ps) => ps.map(p => `${Math.round(p.x)},${Math.round(p.y)}`).join(' ');
+
+  return {
+    '10-20': { pathA: pts(g10, Q), pathB: pts(Q, g20) },
+    '10-34': { pathA: pts(g10, Q), pathB: pts(Q, Q2, g34) },
+    '10-57': { pathA: pts(g10, Q), pathB: pts(Q, g57) },
+  };
+}
+
+export const GATE10_CHANNEL_PATHS = buildGate10Paths();
