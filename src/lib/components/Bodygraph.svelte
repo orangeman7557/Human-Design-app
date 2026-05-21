@@ -58,10 +58,9 @@
   // skeleton is always present. Personality is the same hue,
   // just brighter, so structure-vs-activation reads via brightness + the
   // gate markers themselves.
-  const PERS_COLOR     = '#7dd3f0'; // sky blue — Personality activations
+  const PERS_COLOR     = '#9898a8'; // dark gray — Personality activations
   const DES_COLOR      = '#e84672'; // hot pink-red — Design activations
   const INACTIVE_COLOR = '#dadce0'; // light grey-white — visible skeleton
-  const MARKER_FILL    = '#1c2540'; // navy behind active gate numbers
 
   function halfColor(state) {
     if (state === 'des' || state === 'both') return DES_COLOR;
@@ -114,19 +113,19 @@
       {#each channelHalves as ch}
         {#if ch.custom}
           <polyline points={ch.pathA} fill="none"
-            stroke={ch.c1} stroke-width="10" stroke-linecap="butt" stroke-linejoin="miter"
+            stroke={ch.c1} stroke-width="12" stroke-linecap="butt" stroke-linejoin="miter"
           />
           <polyline points={ch.pathB} fill="none"
-            stroke={ch.c2} stroke-width="10" stroke-linecap="butt" stroke-linejoin="miter"
+            stroke={ch.c2} stroke-width="12" stroke-linecap="butt" stroke-linejoin="miter"
           />
         {:else}
           <line
             x1={ch.x1} y1={ch.y1} x2={ch.mx} y2={ch.my}
-            stroke={ch.c1} stroke-width="10" stroke-linecap="butt"
+            stroke={ch.c1} stroke-width="12" stroke-linecap="butt"
           />
           <line
             x1={ch.mx} y1={ch.my} x2={ch.x2} y2={ch.y2}
-            stroke={ch.c2} stroke-width="10" stroke-linecap="butt"
+            stroke={ch.c2} stroke-width="12" stroke-linecap="butt"
           />
         {/if}
       {/each}
@@ -162,14 +161,14 @@
       {#each gateEntries as g}
         {#if g.active}
           <circle
-            cx={g.pos.x} cy={g.pos.y} r="18"
-            fill={MARKER_FILL} stroke="#5a5a62" stroke-width="1.5"
+            cx={g.pos.x} cy={g.pos.y} r="15"
+            fill="#4a2060" stroke="#5a5a62" stroke-width="1.5"
           />
         {/if}
         <text
           x={g.pos.x} y={g.pos.y}
           text-anchor="middle" dominant-baseline="central"
-          fill={g.active ? '#ffffff' : g.inDefinedCenter ? '#1c2540' : '#909098'}
+          fill={g.active ? '#ffffff' : g.inDefinedCenter ? '#4a2060' : '#909098'}
           font-size="16"
           font-weight={g.active ? '600' : '400'}
           font-family="system-ui, sans-serif"
