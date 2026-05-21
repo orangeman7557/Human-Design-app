@@ -164,7 +164,7 @@ function proyectarSobreRecta(A, B, y) {
   return { x, y };
 }
 
-function buildGate10Paths() {
+function buildIntegrationPaths() {
   const g10 = GATE_POSITIONS[10];
   const g20 = GATE_POSITIONS[20];
   const g34 = GATE_POSITIONS[34];
@@ -177,10 +177,13 @@ function buildGate10Paths() {
   const pts = (...ps) => ps.map(p => `${Math.round(p.x)},${Math.round(p.y)}`).join(' ');
 
   return {
-    '10-20': { pathA: pts(g10, Q), pathB: pts(Q, g20) },
-    '10-34': { pathA: pts(g10, Q), pathB: pts(Q, Q2, g34) },
-    '10-57': { pathA: pts(g10, Q), pathB: pts(Q, g57) },
+    '10-20': { pathA: pts(g10, Q),      pathB: pts(Q, g20)       },
+    '10-34': { pathA: pts(g10, Q),      pathB: pts(Q, Q2, g34)   },
+    '10-57': { pathA: pts(g10, Q),      pathB: pts(Q, g57)       },
+    '20-34': { pathA: pts(g20, Q),      pathB: pts(Q, Q2, g34)   },
+    '20-57': { pathA: pts(g20, Q),      pathB: pts(Q, g57)       },
+    '34-57': { pathA: pts(g34, Q2),     pathB: pts(Q2, g57)      },
   };
 }
 
-export const GATE10_CHANNEL_PATHS = buildGate10Paths();
+export const INTEGRATION_CHANNEL_PATHS = buildIntegrationPaths();

@@ -149,6 +149,9 @@ CANALES
 6–59
 7–31
 9–52
+10-20*caso especial
+10-34*caso especial
+10-57*caso especial
 11–56
 12–22
 13–33
@@ -156,8 +159,8 @@ CANALES
 17–62
 18–58
 19–49
-20–34
-20–57
+20–34*caso especial
+20–57*caso especial
 21–45
 23–43
 24–61
@@ -168,7 +171,7 @@ CANALES
 29–46
 30–41
 32–54
-34–57
+34–57*caso especial
 35–36
 37–40
 39–55
@@ -176,22 +179,33 @@ CANALES
 47–64
 
 Caso especial
-10-20, 10-57 y 10-34
+34-57
+El punto medio de este canal no será la mitad, vendrá definido por el punto Q (ver a continuación)
 
-La puerta 10 tiene estos tres canales. Estos canales no son rectas directas puerta-a-puerta. Necesitan trazarse como polilíneas con quiebres calculados.
+Caso especial
+10-20
+10-57
+10-34
+34-20
+34-57
+
+Estos canales no son rectas directas puerta-a-puerta. Necesitan trazarse como polilíneas con quiebres calculados.
 Para ello, implementa una función proyectarSobreRecta(puntoA, puntoB, y) que devuelva el punto de la recta A-B a una altura y dada, por interpolación lineal: x = A.x + (B.x − A.x) · (y − A.y) / (B.y − A.y).
 
 Con esa función, traza los tres canales así:
 
 Canal 10-20: polilínea gate10 → Q → gate20.
 Canal 10-57: polilínea gate10 → Q → gate57.
-Canal 10-34: polilínea gate10 → Q → Q2 → gate34, donde:
+Canal 10-34: polilínea gate10 → Q → Q2 → gate34.
+Canal 34-20: polilínea gate34 → Q2 → gate20.
+Canal 34-57: polilínea gate34 → Q2 → gate57.
 
-Donde
+donde:
+Q es la intersección de la horizontal que pasa por la puerta 10 con la recta 20-57,
+Q2 es el punto de quiebre en la recta 20-57 desde donde sale la recta hacia 34,
+siendo:
 Q = proyectarSobreRecta(gate20, gate57, gate10.y).
-(Q es la intersección de la horizontal que pasa por la puerta 10 con la recta 20-57)
 Q2 = proyectarSobreRecta(gate20, gate57, yViraje)
-(Q2 es el punto de quiebre en la recta 20-57 desde donde sale la recta hacia 34)
 siendo
 yViraje = gate57.y − FACTOR_VIRAJE · (gate57.y − gate20.y)
 

@@ -32,7 +32,7 @@
     CENTER_SHAPES,
     CENTER_COLORS_DEFINED,
     GATE_POSITIONS,
-    GATE10_CHANNEL_PATHS,
+    INTEGRATION_CHANNEL_PATHS,
     centerPoints,
   } from '$lib/hd/bodygraph-geometry.js';
 
@@ -73,7 +73,7 @@
   const channelHalves = CHANNELS.map(([g1, g2]) => {
     const c1 = halfColor(gateState(g1));
     const c2 = halfColor(gateState(g2));
-    const custom = GATE10_CHANNEL_PATHS[`${g1}-${g2}`];
+    const custom = INTEGRATION_CHANNEL_PATHS[`${g1}-${g2}`];
     if (custom) {
       return { custom: true, pathA: custom.pathA, pathB: custom.pathB, c1, c2 };
     }
