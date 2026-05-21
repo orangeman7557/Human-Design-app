@@ -135,10 +135,16 @@
   });
 
   // ── Gate render entries (one per gate, all 64) ─────────────────────────────
+  const definedCenterSet = new Set(chart.definedCenters);
+
   const gateEntries = Object.entries(GATE_POSITIONS).map(([gateStr, pos]) => {
     const gate = Number(gateStr);
     const state = gateState(gate);
-    return { gate, pos, state, active: state !== 'inactive' };
+    return {
+      gate, pos, state,
+      active: state !== 'inactive',
+      inDefinedCenter: definedCenterSet.has(CENTER_BY_GATE[gate]),
+    };
   });
 </script>
 
@@ -200,7 +206,7 @@
         <text
           x={g.pos.x} y={g.pos.y}
           text-anchor="middle" dominant-baseline="central"
-          fill={g.active ? '#ffffff' : '#909098'}
+          fill={g.active ? '#ffffff' : g.inDefinedCenter ? '#1c2540' : '#909098'}
           font-size="16"
           font-weight={g.active ? '600' : '400'}
           font-family="system-ui, sans-serif"
