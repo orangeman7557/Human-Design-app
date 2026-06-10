@@ -153,18 +153,20 @@ Colores de centros definidos: Head/G amarillo `#e5cf3d`, Ajna verde `#6cb46c`, T
 - **Fase 1.1 — Cálculo astronómico:** 13 cuerpos (Personality + Design), gate/line mapping, tipo/estrategia/autoridad/perfil/definición. Validado contra dos cartas reales.
 - **Fase 1.2 — Autocomplete de ciudad + timezone automática:** Nominatim con debounce/abort, `tz-lookup` para timezone, dedup y ranking de resultados.
 - **Fase 1.3 — Bodygraph SVG funcional:** 9 centros en formas correctas, 36 canales gate-to-gate, color coding básico.
+- **Fase 1.4 — Precisión visual del bodygraph:** centros y puertas con coordenadas del referencial (viewBox 1058×1630), circuito de integración como polilíneas calculadas, colores refinados, split-circle para puertas Both.
+- **Fase 2 — Persistencia local:** IndexedDB vía Dexie.js (`src/lib/db/charts.js`). Guardar/listar/renombrar/borrar cartas (diálogos nativos por ahora). Exportar/importar JSON. Se guarda el dato de nacimiento y la carta se recalcula al abrir.
+
 ### Pendiente
 
-- **Fase 1.4 — Precisión visual del bodygraph** (en curso): tamaños y formas de centros, posicionamiento de puertas, canales paralelos, marcadores Rave-style (navy+blanco), split-circle para puertas Both, borde ámbar en centros definidos, Heart reposicionado.
-- **Fase 2 — Persistencia local:** IndexedDB vía Dexie.js. Guardar/listar/renombrar/borrar cartas. Exportar/importar JSON.
-- **Fase 3 — Pulido visual + modo hora desconocida:** bodygraph fiel al Rave clásico (canales Both con rayas blanco/rojo, fine-tuning de posiciones de puertas, responsividad en pantallas muy estrechas). Modo "hora desconocida" con slider.
-- **Fase 4 — Carta compuesta + exportar PNG:** overlay visual de dos cartas, botón de exportación como imagen.
-- **Cierre — Estabilización:** tests contra cartas reales, bug-fixing. Opcional: packaging como TWA para Google Play.
-- **Fase 5 (futuro) — Tránsitos:** vista de tránsitos en tiempo real sobre una carta guardada.
+- **Fase 3 — Pulido visual** (siguiente): resumen clave encima del bodygraph, bodygraph ~5-10% más pequeño (que quepa en una pantalla), datos de nacimiento compactos, tipo como 5 opciones siempre visibles con la activa marcada (extensible a autoridad y definición), lista de canales completos y puertas colgantes, canales Both rayados blanco/rojo, contraste de puertas inactivas, revisión responsive.
+- **Fase 4 — Modo hora desconocida:** carta a mediodía local con avisos + slider para ver qué marcadores grandes cambian según la hora.
+- **Fase 5 — Exportar PNG:** compartir el bodygraph como imagen. **Cierra el MVP.** Después, estabilización: tests contra cartas reales, bug-fixing, opcional TWA para Google Play.
+- **Fase 6 — Guardado en línea:** sincronización opcional en la nube (local-only sigue siendo el default).
+- **Fase 7 — Carta compuesta:** overlay visual de dos cartas guardadas.
+- **Fase 8 — Tránsitos:** vista de tránsitos en tiempo real sobre una carta guardada.
 
 ### Deuda técnica conocida
 
-- `Bodygraph.svelte` tiene código de offsets perpendiculares para canales paralelos. La tarea **C1** (posicionar puertas por geometría para que los canales paralelos emerjan solos) quedó incompleta — el código de offsets sigue activo y no se puede eliminar todavía.
 - Canal **30-41** (caso edge de medio canal) pendiente de verificar en B2.
 - Nominatim usa el endpoint público sin `User-Agent` explícito — válido para bajo tráfico; a revisar si crece.
 - Algunos comentarios de código aún en español (legado de fases 0/1.1) — se migran al inglés cuando se toca el archivo.

@@ -92,13 +92,20 @@ then compute the true node from the Moon's instantaneous orbit.
 
 ## Features already identified for future phases
 
-- **Phase 5 (planned):** **transits** view over a saved bodygraph.
-- **Advanced composite:** beyond the combined visual, compute relationship
-  dynamics (electromagnetic channels, dominance, compromise, companionship).
+Roadmap renumbered 2026-06-10: 3 visual polish → 4 unknown hour →
+5 PNG export (MVP closes) → 6 online sync → 7 composite → 8 transits.
+
+- **Phase 6 (planned):** optional cloud sync (local-only stays the default).
+- **Phase 7 (planned):** composite chart. **Advanced composite** beyond the
+  combined visual: relationship dynamics (electromagnetic channels,
+  dominance, compromise, companionship).
+- **Phase 8 (planned):** **transits** view over a saved bodygraph.
+- **Centre names on the bodygraph.** Decided 2026-06-10: instead of a lone
+  "G" identifier, all centres will get proper name labels at some later
+  point. Not scheduled yet.
 - **Textual interpretations** of type, authority, profile, centers, channels.
   Written from scratch or from free sources — never copied from Jovian
   Archive.
-- **Optional cloud sync** (keeping local-only as the default).
 - **Multi-language activation**: the architecture is already multi-language
   ready; English translation pending once there's traction.
 
@@ -128,6 +135,7 @@ What still remains for Phase 3 visual fidelity:
   esquinas afiladas. Redondear suavemente los vértices (SVG `stroke-linejoin`
   o paths con `rx`) daría un acabado más pulido sin alterar la geometría.
   Evaluar centro a centro — probablemente más relevante en Corazón y Bazo.
+  *Out of Phase 3 by user decision.*
 
 - **Presentación visual de la información básica.** El resumen textual
   (tipo, estrategia, autoridad, perfil, definición) se muestra como texto
@@ -140,10 +148,10 @@ What still remains for Phase 3 visual fidelity:
   Personality and Design, the corresponding channel half should alternate
   white/red along its length rather than solidly painting it red (currently
   it paints red, which conflates Both with pure Design visually).
-- **Centre identifier inside G** (just the letter "G", as in classical
-  bodygraphs). No other centres are labelled. Deferred by user decision.
+  *Scheduled in Phase 3 (TASKS.md).*
 - **Optional decorative human silhouette** behind the bodygraph (purely
-  aesthetic, common in classic HD apps).
+  aesthetic, common in classic HD apps). *Out of Phase 3 by user decision;
+  may be discarded.*
 - **Layout responsiveness on very narrow screens.** The SVG scales via
   `width: 100%; height: auto`; the internal viewBox is `1058×1630` so
   gate numbers and markers scale proportionally. Verify legibility at

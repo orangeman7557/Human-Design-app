@@ -17,12 +17,12 @@ Statuses:
 The deeper context (technical trade-offs, future ideas, deferred decisions)
 lives in [`BACKLOG.md`](./BACKLOG.md).
 
-Last updated: 2026-05-21.
+Last updated: 2026-06-10.
 
-> Latest change: Sesión de polish del bodygraph — circuito de integración
-> (canales 10/20/34/57 como polilíneas calculadas), ajuste de posiciones de
-> puertas desde el referencial, y refinamiento de colores (Personality blanco,
-> Design rosa-rojo, inactivo gris tenue, marcador morado oscuro).
+> Latest change: Phase 2 (persistencia local) completada y validada por el
+> usuario. Roadmap renumerado: 3 pulido visual → 4 hora desconocida →
+> 5 export PNG (cierre MVP) → 6 guardado en línea → 7 carta compuesta →
+> 8 tránsitos.
 
 ---
 
@@ -109,23 +109,48 @@ Subtareas completadas:
   (antes gris claro, ilegible sobre fondos de color).
 - ✅ `.npmrc` con `legacy-peer-deps=true` — arregla build en Cloudflare.
 
+## ✅ Phase 2 — Local persistence (completada 2026-06-10)
+
+- IndexedDB via Dexie (`src/lib/db/charts.js`). Stores the birth input
+  data only; the chart is recomputed on load, so saved records benefit
+  from future calculation improvements.
+- "Guardar carta" button on the chart page (native `prompt()` for the
+  name). "Cartas guardadas" list on the home page: open / rename / delete
+  (native dialogs — visual polish deferred).
+- Export all charts to one JSON file; import appends (no dedup).
+- Fix found during testing: IndexedDB can't structured-clone Svelte 5
+  `$state` proxies — records are saved via `$state.snapshot`.
+- Validated by the user locally; merged to `main` and deployed.
+
 ## ⬜ Pending
 
-- **Phase 2 — Local persistence + chart list.** IndexedDB via Dexie.js.
-  Save / list / rename / delete charts. Export/import all charts to a single
-  JSON file. Only metadata kept per chart: name.
-- **Phase 3 — Visual polish + unknown-birth-time handling.** Final visual
-  pass on the bodygraph (faithful classic, classic). Dark theme finalised
-  (typography, palette). "Unknown hour" mode: chart at local noon with
-  visual disclaimers + a slider to scrub the hour and see which large
-  markers (type, authority, profile) shift.
-- **Phase 4 — Composite chart + share as image.** Select two saved charts
-  and render a combined bodygraph (visual overlay distinguishing each
-  person). PNG export button for sharing. Closes the MVP.
-- **Closure — Stabilisation + optional Play Store packaging.** Hands-on
-  testing against several real charts. Bug-fixing. Optional: package as a
-  Trusted Web Activity (TWA) for Google Play (one-time $25 developer fee).
-- **Phase 5 (future) — Transits.** View live transits over a saved chart.
+- **Phase 3 — Visual polish (next up).** Scope agreed 2026-06-10:
+  - Key summary (type, strategy, authority, profile, definition) moved
+    **above** the bodygraph in a compact horizontal layout.
+  - Bodygraph ~5-10% smaller so the full chart fits one screen height.
+  - Birth data (name, date, place) shown compactly on the chart page.
+  - Type as 5 always-visible options with the active one highlighted
+    (same visual language as defined/undefined centres); if it works
+    well, extend the pattern to authority and definition.
+  - List of complete channels (numbers + centres only — no Jovian
+    keynote names) and list of hanging gates.
+  - Striped white/red "Both" channels; colour artifacts at the
+    integration-circuit polyline joints; inactive gate contrast on
+    undefined centres; narrow-screen review at the end.
+  - Out of scope (user decision): centre labels (proper centre names
+    deferred to later — see BACKLOG), decorative silhouette, rounded
+    centre corners.
+- **Phase 4 — Unknown birth time mode.** Chart at local noon with visual
+  disclaimers + a slider to scrub the hour and see which large markers
+  (type, authority, profile) shift.
+- **Phase 5 — PNG export.** Share the bodygraph as an image. **Closes the
+  MVP.** Followed by a stabilisation pass: hands-on testing against real
+  charts, bug-fixing, optional TWA packaging for Google Play.
+- **Phase 6 — Online sync.** Optional cloud persistence of saved charts
+  (local-only stays the default).
+- **Phase 7 — Composite chart.** Two saved charts rendered as a combined
+  bodygraph (visual overlay distinguishing each person).
+- **Phase 8 — Transits.** View live transits over a saved chart.
 
 ---
 
