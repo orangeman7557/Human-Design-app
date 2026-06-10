@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "astronomy-engine": "^2.1.19",
+    "dexie": "^4.4.3",
     "luxon": "^3.5.0",
     "tz-lookup": "^6.1.25"
   }

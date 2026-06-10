@@ -6,8 +6,16 @@
   // form can be submitted as-is without going through the autocomplete on
   // first load.
 
+  import { onMount } from 'svelte';
   import { goto } from '$app/navigation';
   import CityAutocomplete from '$lib/components/CityAutocomplete.svelte';
+  import {
+    listCharts,
+    renameChart,
+    deleteChart,
+    exportCharts,
+    importCharts
+  } from '$lib/db/charts.js';
 
   let name = $state('orangeman7557');
   let date = $state('1984-03-13');
@@ -52,6 +60,73 @@
       submitting = false;
     }
   }
+
+  /** @type {import('$lib/db/charts.js').SavedChart[]} */
+  let savedCharts = $state([]);
+  /** @type {string | null} */
+  let listError = $state(null);
+  /** @type {HTMLInputElement | undefined} */
+  let importInput = $state();
+
+  onMount(refreshList);
+
+  async function refreshList() {
+    try {
+      savedCharts = await listCharts();
+    } catch (e) {
+      listError = e instanceof Error ? e.message : String(e);
+    }
+  }
+
+  function openSaved(c) {
+    sessionStorage.setItem('birthData', JSON.stringify(c.birth));
+    goto('/chart');
+  }
+
+  async function renameSaved(c) {
+    const name = window.prompt('Nuevo nombre:', c.name);
+    if (name === null || !name.trim()) return;
+    await renameChart(c.id, name.trim());
+    await refreshList();
+  }
+
+  async function deleteSaved(c) {
+    if (!window.confirm(`¿Borrar la carta "${c.name}"?`)) return;
+    await deleteChart(c.id);
+    await refreshList();
+  }
+
+  async function doExport() {
+    const json = await exportCharts();
+    const blob = new Blob([json], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'human-design-charts.json';
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  async function doImport(e) {
+    listError = null;
+    const file = e.target.files?.[0];
+    if (!file) return;
+    try {
+      const count = await importCharts(await file.text());
+      await refreshList();
+      window.alert(`${count} carta(s) importada(s).`);
+    } catch (err) {
+      listError = err instanceof Error ? err.message : String(err);
+    } finally {
+      e.target.value = '';
+    }
+  }
+
+  function formatDate(c) {
+    const d = c.birth?.date ?? '';
+    const t = c.birth?.time ?? '';
+    return `${d} ${t}`.trim();
+  }
 </script>
 
 <main>
@@ -89,6 +164,45 @@
       {submitting ? 'Calculando…' : 'Calcular carta'}
     </button>
   </form>
+
+  <section class="saved">
+    <h2>Cartas guardadas</h2>
+
+    {#if listError}
+      <p class="error">{listError}</p>
+    {/if}
+
+    {#if savedCharts.length === 0}
+      <p class="empty">No hay cartas guardadas todavía.</p>
+    {:else}
+      <ul>
+        {#each savedCharts as c (c.id)}
+          <li>
+            <button class="chart-open" onclick={() => openSaved(c)}>
+              <span class="chart-name">{c.name}</span>
+              <span class="chart-meta">{formatDate(c)} · {c.birth?.placeLabel ?? ''}</span>
+            </button>
+            <button class="icon" onclick={() => renameSaved(c)} aria-label="Renombrar">✎</button>
+            <button class="icon" onclick={() => deleteSaved(c)} aria-label="Borrar">✕</button>
+          </li>
+        {/each}
+      </ul>
+    {/if}
+
+    <div class="io">
+      <button class="secondary" onclick={doExport} disabled={savedCharts.length === 0}>
+        Exportar JSON
+      </button>
+      <button class="secondary" onclick={() => importInput?.click()}>Importar JSON</button>
+      <input
+        type="file"
+        accept="application/json,.json"
+        bind:this={importInput}
+        onchange={doImport}
+        hidden
+      />
+    </div>
+  </section>
 
   <footer>
     <small>v0.1.0 · source-available · free for noncommercial use · Built with AI assistance</small>
@@ -175,6 +289,97 @@
     color: var(--danger);
     font-size: 0.9rem;
     margin: 0;
+  }
+
+  .saved {
+    margin-top: 3rem;
+  }
+  .saved h2 {
+    font-size: 0.8rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    margin: 0 0 0.75rem;
+  }
+  .empty {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin: 0;
+  }
+  .saved ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .saved li {
+    display: flex;
+    align-items: stretch;
+    gap: 0.4rem;
+  }
+  .chart-open {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    text-align: left;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text);
+    padding: 0.6rem 0.85rem;
+    font-family: inherit;
+    cursor: pointer;
+  }
+  .chart-open:hover {
+    border-color: var(--accent);
+  }
+  .chart-name {
+    font-size: 0.95rem;
+    font-weight: 500;
+  }
+  .chart-meta {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .icon {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    border-radius: var(--radius);
+    width: 2.4rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+  }
+  .icon:hover {
+    color: var(--text);
+    border-color: var(--accent);
+  }
+  .io {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+  .secondary {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 0.55rem 0.9rem;
+    border-radius: var(--radius);
+    font-size: 0.85rem;
+    font-family: inherit;
+    cursor: pointer;
+  }
+  .secondary:disabled {
+    opacity: 0.5;
+    cursor: default;
   }
 
   footer {

@@ -2,6 +2,7 @@
   import { onMount } from 'svelte';
   import { computeChart } from '$lib/hd/chart.js';
   import { CENTERS, PLANETS } from '$lib/hd/constants.js';
+  import { saveChart } from '$lib/db/charts.js';
   import Bodygraph from '$lib/components/Bodygraph.svelte';
 
   // Etiquetas humanas. En la próxima iteración esto vivirá en i18n.
@@ -72,6 +73,27 @@
   /** @type {string | null} */
   let error = $state(null);
   let loading = $state(true);
+  /** @type {Object | null} */
+  let birthData = $state(null);
+  let saved = $state(false);
+  /** @type {string | null} */
+  let saveError = $state(null);
+
+  async function save() {
+    if (!birthData || saved) return;
+    saveError = null;
+    const suggested = birthData.name || birthData.placeLabel || 'Sin nombre';
+    const name = window.prompt('Nombre para esta carta:', suggested);
+    if (name === null) return;
+    try {
+      // $state.snapshot strips the Svelte reactivity proxy; IndexedDB
+      // structured clone fails on proxied objects.
+      await saveChart(name.trim() || suggested, $state.snapshot(birthData));
+      saved = true;
+    } catch (e) {
+      saveError = e instanceof Error ? e.message : String(e);
+    }
+  }
 
   onMount(async () => {
     try {
@@ -83,6 +105,7 @@
         return;
       }
       const birth = JSON.parse(raw);
+      birthData = birth;
       chart = await computeChart(birth);
     } catch (e) {
       console.error(e);
@@ -101,7 +124,16 @@
   <header>
     <button class="back" onclick={back} aria-label="Volver">←</button>
     <h1>Tu carta</h1>
+    {#if chart}
+      <button class="save" onclick={save} disabled={saved}>
+        {saved ? 'Guardada ✓' : 'Guardar carta'}
+      </button>
+    {/if}
   </header>
+
+  {#if saveError}
+    <p class="status error">No se pudo guardar: {saveError}</p>
+  {/if}
 
   {#if loading}
     <p class="status">Calculando…</p>
@@ -198,6 +230,23 @@
     border-radius: 50%;
     font-size: 1.2rem;
     cursor: pointer;
+  }
+  .save {
+    margin-left: auto;
+    background: var(--accent);
+    color: #1a1408;
+    border: none;
+    padding: 0.55rem 0.9rem;
+    border-radius: var(--radius);
+    font-size: 0.85rem;
+    font-weight: 500;
+    font-family: inherit;
+    cursor: pointer;
+  }
+  .save:disabled {
+    background: var(--surface-2);
+    color: var(--text-muted);
+    cursor: default;
   }
   h1 {
     font-size: 1.5rem;
