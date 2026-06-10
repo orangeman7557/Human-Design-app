@@ -166,7 +166,39 @@
   </form>
 
   <section class="saved">
-    <h2>Cartas guardadas</h2>
+    <div class="saved-head">
+      <h2>Cartas guardadas</h2>
+      <div class="io">
+        <button
+          class="io-btn"
+          onclick={doExport}
+          disabled={savedCharts.length === 0}
+          title="Exportar JSON"
+          aria-label="Exportar JSON"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3v12" /><path d="m8 11 4 4 4-4" /><path d="M4 21h16" />
+          </svg>
+        </button>
+        <button
+          class="io-btn"
+          onclick={() => importInput?.click()}
+          title="Importar JSON"
+          aria-label="Importar JSON"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 15V3" /><path d="m8 7 4-4 4 4" /><path d="M4 21h16" />
+          </svg>
+        </button>
+        <input
+          type="file"
+          accept="application/json,.json"
+          bind:this={importInput}
+          onchange={doImport}
+          hidden
+        />
+      </div>
+    </div>
 
     {#if listError}
       <p class="error">{listError}</p>
@@ -189,19 +221,6 @@
       </ul>
     {/if}
 
-    <div class="io">
-      <button class="secondary" onclick={doExport} disabled={savedCharts.length === 0}>
-        Exportar JSON
-      </button>
-      <button class="secondary" onclick={() => importInput?.click()}>Importar JSON</button>
-      <input
-        type="file"
-        accept="application/json,.json"
-        bind:this={importInput}
-        onchange={doImport}
-        hidden
-      />
-    </div>
   </section>
 
   <footer>
@@ -294,13 +313,38 @@
   .saved {
     margin-top: 3rem;
   }
+  .saved-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+  }
   .saved h2 {
     font-size: 0.8rem;
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.06em;
     color: var(--text-muted);
-    margin: 0 0 0.75rem;
+    margin: 0;
+  }
+  .io-btn {
+    display: grid;
+    place-items: center;
+    width: 1.9rem;
+    height: 1.9rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text-muted);
+    cursor: pointer;
+  }
+  .io-btn:hover:not(:disabled) {
+    color: var(--text);
+    border-color: var(--accent);
+  }
+  .io-btn:disabled {
+    opacity: 0.45;
+    cursor: default;
   }
   .empty {
     color: var(--text-muted);
@@ -364,22 +408,7 @@
   }
   .io {
     display: flex;
-    gap: 0.5rem;
-    margin-top: 1rem;
-  }
-  .secondary {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    color: var(--text);
-    padding: 0.55rem 0.9rem;
-    border-radius: var(--radius);
-    font-size: 0.85rem;
-    font-family: inherit;
-    cursor: pointer;
-  }
-  .secondary:disabled {
-    opacity: 0.5;
-    cursor: default;
+    gap: 0.4rem;
   }
 
   footer {

@@ -129,6 +129,19 @@ La rebase de geometría (2026-05-21) reemplazó todo el sistema de coordenadas:
 viewBox `1058×1630`, vértices explícitos de centros y 64 posiciones de puertas
 tomadas directamente del referencial (`docs/bodygraph-reference-coordinates.txt`).
 
+**Review before closing Phase 3** (user requests, 2026-06-10):
+
+- **Stronger highlight for the active "Tipo" chip.** The amber outline may
+  be too subtle next to the four grey ones; make the selected type stand
+  out more.
+- **Move the four info cards (estrategia, autoridad, perfil, definición)
+  to the upper-left side of the bodygraph.** There is empty space there
+  and it could look good while shortening the page.
+- **Centres list on the upper-right side of the bodygraph.** On selecting
+  a centre, temporarily show a pointer line marking that centre on the
+  graph. This could replace the need for centre name labels drawn on the
+  bodygraph itself.
+
 What still remains for Phase 3 visual fidelity:
 
 - **Rounded corners on centre shapes.** Los triángulos y el rombo tienen
@@ -137,12 +150,10 @@ What still remains for Phase 3 visual fidelity:
   Evaluar centro a centro — probablemente más relevante en Corazón y Bazo.
   *Out of Phase 3 by user decision.*
 
-- **Presentación visual de la información básica.** El resumen textual
-  (tipo, estrategia, autoridad, perfil, definición) se muestra como texto
-  plano. Propuesta: mostrar las opciones de tipo como chips/tarjetas
-  coloreadas igual que los centros definidos — el tipo activo con su color,
-  las demás opciones en gris. Aplicar la misma lógica a autoridad y
-  definición. Esto unifica el lenguaje visual del bodygraph con el resumen.
+- **Presentación visual de la información básica.** El tipo ya se muestra
+  como chips (las 5 opciones visibles, la activa marcada — Fase 3,
+  2026-06-10). Pendiente por decisión del usuario: aplicar el mismo patrón
+  a **autoridad** y **definición** más adelante.
 
 - **Striped "Both" channel halves.** When a gate is activated by *both*
   Personality and Design, the corresponding channel half should alternate
