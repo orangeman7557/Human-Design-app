@@ -14,8 +14,19 @@
     renameChart,
     deleteChart,
     exportCharts,
-    importCharts
+    importCharts,
+    reorderCharts,
+    setChartType
   } from '$lib/db/charts.js';
+  import { computeChart } from '$lib/hd/chart.js';
+
+  const TYPE_LABELS = {
+    generator: 'Generator',
+    'manifesting-generator': 'Manifesting Generator',
+    projector: 'Projector',
+    manifestor: 'Manifestor',
+    reflector: 'Reflector'
+  };
 
   let name = $state('orangeman7557');
   let date = $state('1984-03-13');
@@ -32,6 +43,54 @@
   let submitting = $state(false);
   /** @type {string | null} */
   let error = $state(null);
+
+  // ── Unknown birth time (Phase 4) ──────────────────────────────────────
+  // Checking the box disables manual time entry and reveals a 0-24h
+  // slider (half-hour steps). The slider hour is written into `time`, so
+  // submitting works unchanged; a live preview shows the resulting type.
+  let unknownTime = $state(false);
+  let sliderVal = $state(24); // half-hours → 12:00
+  /** @type {string | null} */
+  let previewType = $state(null);
+  let previewBusy = $state(false);
+  let previewSeq = 0;
+
+  const sliderTime = $derived(
+    `${String(Math.floor(sliderVal / 2)).padStart(2, '0')}:${sliderVal % 2 === 0 ? '00' : '30'}`
+  );
+
+  $effect(() => {
+    if (unknownTime) time = sliderTime;
+  });
+
+  $effect(() => {
+    if (!unknownTime || !place) {
+      previewType = null;
+      previewBusy = false;
+      return;
+    }
+    const birth = {
+      name: null,
+      date,
+      time: sliderTime,
+      timezone: place.timezone,
+      latitude: place.latitude,
+      longitude: place.longitude
+    };
+    const seq = ++previewSeq;
+    previewBusy = true;
+    const t = setTimeout(async () => {
+      try {
+        const { type } = await computeChart(birth);
+        if (seq === previewSeq) previewType = type;
+      } catch {
+        if (seq === previewSeq) previewType = null;
+      } finally {
+        if (seq === previewSeq) previewBusy = false;
+      }
+    }, 150);
+    return () => clearTimeout(t);
+  });
 
   function submit(e) {
     e.preventDefault();
@@ -73,9 +132,47 @@
   async function refreshList() {
     try {
       savedCharts = await listCharts();
+      backfillTypes();
     } catch (e) {
       listError = e instanceof Error ? e.message : String(e);
     }
+  }
+
+  // Charts saved before 3.E (or imported without it) lack the denormalised
+  // type — compute it once and persist it.
+  async function backfillTypes() {
+    for (const c of savedCharts) {
+      if (c.type) continue;
+      try {
+        const { type } = await computeChart(c.birth);
+        await setChartType(c.id, type);
+        c.type = type;
+      } catch {
+        // leave untyped; the chart page will surface any real data problem
+      }
+    }
+  }
+
+  // Drag & drop reordering (HTML5 DnD; list order persisted on drop).
+  /** @type {number | null} */
+  let dragIndex = $state(null);
+
+  function dragStart(i) {
+    dragIndex = i;
+  }
+  function dragOver(e, i) {
+    e.preventDefault();
+    if (dragIndex === null || dragIndex === i) return;
+    const arr = [...savedCharts];
+    const [moved] = arr.splice(dragIndex, 1);
+    arr.splice(i, 0, moved);
+    savedCharts = arr;
+    dragIndex = i;
+  }
+  async function dragEnd() {
+    if (dragIndex === null) return;
+    dragIndex = null;
+    await reorderCharts(savedCharts.map((c) => c.id));
   }
 
   function openSaved(c) {
@@ -147,14 +244,49 @@
     </label>
 
     <label>
-      <span>Hora local de nacimiento</span>
-      <input type="time" bind:value={time} required />
-    </label>
-
-    <label>
       <span>Lugar de nacimiento</span>
       <CityAutocomplete bind:value={place} />
     </label>
+
+    <div class="field">
+      <span class="field-head">
+        <span>Hora local de nacimiento</span>
+        <label class="check">
+          <input type="checkbox" bind:checked={unknownTime} />
+          Hora desconocida
+        </label>
+      </span>
+      {#if !unknownTime}
+        <input type="time" bind:value={time} required aria-label="Hora local de nacimiento" />
+      {:else}
+        <div class="slider-block">
+          <p class="slider-hint">Elige una hora para calcular la carta:</p>
+          <input
+            type="range"
+            min="0"
+            max="47"
+            step="1"
+            bind:value={sliderVal}
+            aria-label="Hora estimada"
+          />
+          <div class="slider-scale" aria-hidden="true">
+            <span>0h</span><span>6h</span><span>12h</span><span>18h</span><span>24h</span>
+          </div>
+          <div class="slider-info">
+            <span class="slider-time">{sliderTime}</span>
+            <span class="slider-type">
+              {#if !place}
+                Selecciona una ciudad
+              {:else if previewBusy}
+                …
+              {:else}
+                {TYPE_LABELS[previewType] ?? '—'}
+              {/if}
+            </span>
+          </div>
+        </div>
+      {/if}
+    </div>
 
     {#if error}
       <p class="error">{error}</p>
@@ -173,8 +305,8 @@
           class="io-btn"
           onclick={doExport}
           disabled={savedCharts.length === 0}
-          title="Exportar JSON"
-          aria-label="Exportar JSON"
+          data-tip="Exportar cartas"
+          aria-label="Exportar cartas"
         >
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M12 3v12" /><path d="m8 11 4 4 4-4" /><path d="M4 21h16" />
@@ -183,8 +315,8 @@
         <button
           class="io-btn"
           onclick={() => importInput?.click()}
-          title="Importar JSON"
-          aria-label="Importar JSON"
+          data-tip="Importar cartas"
+          aria-label="Importar cartas"
         >
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M12 15V3" /><path d="m8 7 4-4 4 4" /><path d="M4 21h16" />
@@ -208,10 +340,22 @@
       <p class="empty">No hay cartas guardadas todavía.</p>
     {:else}
       <ul>
-        {#each savedCharts as c (c.id)}
-          <li>
+        {#each savedCharts as c, i (c.id)}
+          <li
+            draggable="true"
+            class:dragging={dragIndex === i}
+            ondragstart={() => dragStart(i)}
+            ondragover={(e) => dragOver(e, i)}
+            ondragend={dragEnd}
+          >
+            <span class="drag" aria-hidden="true">⠿</span>
             <button class="chart-open" onclick={() => openSaved(c)}>
-              <span class="chart-name">{c.name}</span>
+              <span class="chart-name">
+                {c.name}
+                {#if c.type}
+                  <span class="chart-type">{TYPE_LABELS[c.type] ?? c.type}</span>
+                {/if}
+              </span>
               <span class="chart-meta">{formatDate(c)} · {c.birth?.placeLabel ?? ''}</span>
             </button>
             <button class="icon" onclick={() => renameSaved(c)} aria-label="Renombrar">✎</button>
@@ -221,6 +365,7 @@
       </ul>
     {/if}
 
+    <p class="local-note">Las cartas se guardan solo en este dispositivo.</p>
   </section>
 
   <footer>
@@ -286,6 +431,108 @@
     outline: none;
     border-color: var(--accent);
   }
+  input:disabled {
+    opacity: 0.45;
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+  .field-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 0.72rem;
+  }
+  .check {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.35rem;
+    text-transform: none;
+    letter-spacing: normal;
+    font-size: 0.78rem;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .check input[type='checkbox'] {
+    accent-color: var(--accent);
+    margin: 0;
+    cursor: pointer;
+  }
+
+  .slider-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 0.7rem 0.85rem 0.55rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .slider-hint {
+    margin: 0;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+  .slider-scale {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    opacity: 0.8;
+    margin-top: -0.3rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Instant tooltip (no native title delay). */
+  [data-tip] {
+    position: relative;
+  }
+  [data-tip]:hover::after {
+    content: attr(data-tip);
+    position: absolute;
+    bottom: calc(100% + 7px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-size: 0.75rem;
+    padding: 0.3rem 0.55rem;
+    border-radius: 7px;
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 5;
+  }
+  .slider-block input[type='range'] {
+    width: 100%;
+    accent-color: var(--accent);
+    padding: 0;
+    margin: 0;
+    background: none;
+    border: none;
+  }
+  .slider-info {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+  }
+  .slider-time {
+    font-size: 0.95rem;
+    color: var(--text);
+    font-variant-numeric: tabular-nums;
+  }
+  .slider-type {
+    font-size: 0.85rem;
+    color: var(--accent);
+  }
 
   button[type='submit'] {
     margin-top: 1rem;
@@ -311,7 +558,32 @@
   }
 
   .saved {
-    margin-top: 3rem;
+    margin-top: 2.75rem;
+    border-top: 1px solid var(--border);
+    padding-top: 1.75rem;
+  }
+  .saved li.dragging {
+    opacity: 0.5;
+  }
+  .drag {
+    align-self: center;
+    color: var(--text-muted);
+    opacity: 0.55;
+    cursor: grab;
+    font-size: 0.85rem;
+    user-select: none;
+  }
+  .chart-type {
+    color: var(--text-muted);
+    font-weight: 400;
+    font-size: 0.78rem;
+    margin-left: 0.35rem;
+  }
+  .local-note {
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    opacity: 0.65;
+    margin: 0.9rem 0 0;
   }
   .saved-head {
     display: flex;

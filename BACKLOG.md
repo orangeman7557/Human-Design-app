@@ -109,40 +109,18 @@ Roadmap renumbered 2026-06-10: 3 visual polish → 4 unknown hour →
 - **Multi-language activation**: the architecture is already multi-language
   ready; English translation pending once there's traction.
 
-## Bodygraph — pendientes de color y visibilidad
-
-- **Colores en los quiebres de polilíneas (circuito integración).** En los
-  canales 10-20, 10-57, 10-34, 20-34, 20-57 y 34-57, el relleno de color
-  cambia en el punto de quiebre (Q o Q2), pero en los vértices de la
-  polilínea SVG el `stroke-linejoin` puede dejar artefactos visuales o el
-  color de cada mitad no se percibe limpiamente. Revisar y ajustar.
-
-- **Visibilidad de puertas inactivas en centros sin definir.** El número de
-  puerta en gris (`#909098`) sobre fondo de centro indefinido (`#181823`)
-  tiene poco contraste. Subir ligeramente el brillo del texto o bajar el
-  fondo del centro para mejorar la legibilidad sin romper la jerarquía
-  visual activo / inactivo.
-
 ## Bodygraph polish remaining (Phase 3)
 
 La rebase de geometría (2026-05-21) reemplazó todo el sistema de coordenadas:
 viewBox `1058×1630`, vértices explícitos de centros y 64 posiciones de puertas
 tomadas directamente del referencial (`docs/bodygraph-reference-coordinates.txt`).
 
-**Review before closing Phase 3** (user requests, 2026-06-10):
+The pre-close review items requested 2026-06-10 (stronger type highlight,
+info cards upper-left of the graph, centres list upper-right with pointer
+line, plus a second batch of chip/hover/home-screen adjustments) are
+tracked as **block 3.E in TASKS.md**.
 
-- **Stronger highlight for the active "Tipo" chip.** The amber outline may
-  be too subtle next to the four grey ones; make the selected type stand
-  out more.
-- **Move the four info cards (estrategia, autoridad, perfil, definición)
-  to the upper-left side of the bodygraph.** There is empty space there
-  and it could look good while shortening the page.
-- **Centres list on the upper-right side of the bodygraph.** On selecting
-  a centre, temporarily show a pointer line marking that centre on the
-  graph. This could replace the need for centre name labels drawn on the
-  bodygraph itself.
-
-What still remains for Phase 3 visual fidelity:
+What still remains in backlog for visual fidelity:
 
 - **Rounded corners on centre shapes.** Los triángulos y el rombo tienen
   esquinas afiladas. Redondear suavemente los vértices (SVG `stroke-linejoin`
@@ -155,22 +133,9 @@ What still remains for Phase 3 visual fidelity:
   2026-06-10). Pendiente por decisión del usuario: aplicar el mismo patrón
   a **autoridad** y **definición** más adelante.
 
-- **Striped "Both" channel halves.** When a gate is activated by *both*
-  Personality and Design, the corresponding channel half should alternate
-  white/red along its length rather than solidly painting it red (currently
-  it paints red, which conflates Both with pure Design visually).
-  *Scheduled in Phase 3 (TASKS.md).*
 - **Optional decorative human silhouette** behind the bodygraph (purely
   aesthetic, common in classic HD apps). *Out of Phase 3 by user decision;
   may be discarded.*
-- **Layout responsiveness on very narrow screens.** The SVG scales via
-  `width: 100%; height: auto`; the internal viewBox is `1058×1630` so
-  gate numbers and markers scale proportionally. Verify legibility at
-  narrow viewports after the geometry rebase.
-- **Inactive gate text visibility.** Gate text is `#909098` on `#181823`
-  background. Verify real-device legibility at small viewport sizes.
-- **PARALLEL_SPACING tuning.** Current offset is 12 px (scaled from 4.5
-  in the old viewBox). After visual review it may need adjustment.
 
 ## Dependency conflict: wrangler v4 vs adapter-cloudflare
 

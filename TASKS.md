@@ -19,10 +19,9 @@ lives in [`BACKLOG.md`](./BACKLOG.md).
 
 Last updated: 2026-06-10.
 
-> Latest change: Phase 2 (persistencia local) completada y validada por el
-> usuario. Roadmap renumerado: 3 pulido visual → 4 hora desconocida →
-> 5 export PNG (cierre MVP) → 6 guardado en línea → 7 carta compuesta →
-> 8 tránsitos.
+> Latest change: 3.E y Fase 4 implementadas y verificadas en navegador por
+> el asistente (2026-06-10) — pendientes de validación del usuario antes
+> de commit. Fase 3 queda cerrada con 3.F (esta actualización de docs).
 
 ---
 
@@ -124,25 +123,45 @@ Subtareas completadas:
 
 ## ⬜ Pending
 
-- **Phase 3 — Visual polish (next up).** Scope agreed 2026-06-10:
-  - Key summary (type, strategy, authority, profile, definition) moved
-    **above** the bodygraph in a compact horizontal layout.
-  - Bodygraph ~5-10% smaller so the full chart fits one screen height.
-  - Birth data (name, date, place) shown compactly on the chart page.
-  - Type as 5 always-visible options with the active one highlighted
-    (same visual language as defined/undefined centres); if it works
-    well, extend the pattern to authority and definition.
-  - List of complete channels (numbers + centres only — no Jovian
-    keynote names) and list of hanging gates.
-  - Striped white/red "Both" channels; colour artifacts at the
-    integration-circuit polyline joints; inactive gate contrast on
-    undefined centres; narrow-screen review at the end.
-  - Out of scope (user decision): centre labels (proper centre names
-    deferred to later — see BACKLOG), decorative silhouette, rounded
-    centre corners.
-- **Phase 4 — Unknown birth time mode.** Chart at local noon with visual
-  disclaimers + a slider to scrub the hour and see which large markers
-  (type, authority, profile) shift.
+- **Phase 3 — Visual polish (in progress).** Blocks:
+  - ✅ **3.A** Summary above the bodygraph; bodygraph ~8% smaller; birth
+    data line; chart title = chart name.
+  - ✅ **3.B** Type as 5 always-visible chips, ordered by population share
+    with the % shown small. (Authority/definition pattern deferred — BACKLOG.)
+  - ✅ **3.C** Complete-channels and hanging-gates columns side by side;
+    "Puertas activas" section removed; planet symbols in the activations
+    table; icon export/import buttons on the home screen.
+  - ✅ **3.D** Striped white/red "Both" channel halves; round joins fix the
+    integration-polyline artifacts; inactive gate contrast raised;
+    narrow-screen review (375px, no overflow).
+  - ✅ **3.E** Layout + interaction round (implemented 2026-06-10, pending
+    user validation):
+    - Active type chip in solid amber (stronger highlight).
+    - Four info cards overlay the upper-left of the bodygraph; centres
+      list overlays the upper-right; hover/tap on a centre draws a
+      temporary amber pointer line + outline marking it on the graph.
+      On <680px both fall back to normal flow (cards grid, chips row).
+    - Hanging-gates emphasis swapped: defined-centre gates in active
+      style, undefined-centre ones in legible gray.
+    - "Both" stripes at ~70% red / 30% white (dasharray 10/22).
+    - Birth data line left-aligned with the title text.
+    - Channel chips in active style, numbers only.
+    - Hovering a channel/gate chip highlights its centre chip(s), dims
+      the rest and highlights matching activations in the planets table.
+    - Home: "Las cartas se guardan solo en este dispositivo" note;
+      divider before "Cartas guardadas"; drag & drop reordering
+      (HTML5 DnD, order persisted in a new `sortOrder` field — Dexie
+      schema v2 with upgrade); chart type shown next to each saved name
+      (denormalised `type` stored on save, lazily backfilled for older
+      records).
+  - ✅ **3.F** Docs closing pass — this update.
+- **Phase 4 — Unknown birth time mode** (implemented 2026-06-10, pending
+  user validation). Form order now date → place → time. "Hora desconocida"
+  checkbox disables the time field and reveals a 0-24h slider (30-min
+  steps); scrubbing computes and shows the resulting type for that hour
+  (debounced) and writes the hour into the disabled time field, which is
+  what "Calcular carta" uses. Unchecking restores manual entry; changing
+  date/place recomputes the preview.
 - **Phase 5 — PNG export.** Share the bodygraph as an image. **Closes the
   MVP.** Followed by a stabilisation pass: hands-on testing against real
   charts, bug-fixing, optional TWA packaging for Google Play.

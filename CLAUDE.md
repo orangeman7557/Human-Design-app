@@ -120,9 +120,10 @@ El usuario introduce su fecha, hora y lugar de nacimiento → la app calcula su 
 |---|---|
 | Personality | `#ffffff` (blanco puro) |
 | Design | `#e84672` (rosa-rojo) |
-| Both (Personality + Design) | `#e84672` (igual que Design; canal rayado pendiente) |
-| Inactive (skeleton) | `#dadce0` (gris claro, siempre visible) |
-| Marcador de puerta activa (fill) | `#1c2540` (navy) |
+| Both (Personality + Design) | rayas blancas sobre base `#e84672` (stroke-dasharray) |
+| Inactive (skeleton) | `#606070` (gris tenue, siempre visible) |
+| Marcador de puerta activa (fill) | `#4a2060` (morado oscuro) |
+| Puertas inactivas (texto) | `#4a2060` en centro definido / `#aaaab4` en indefinido |
 | Centros definidos (stroke) | color de fill del centro (sin borde separado) |
 | Centros indefinidos (fill / stroke) | `#181823` / `#46465a` |
 
@@ -158,8 +159,8 @@ Colores de centros definidos: Head/G amarillo `#e5cf3d`, Ajna verde `#6cb46c`, T
 
 ### Pendiente
 
-- **Fase 3 — Pulido visual** (siguiente): resumen clave encima del bodygraph, bodygraph ~5-10% más pequeño (que quepa en una pantalla), datos de nacimiento compactos, tipo como 5 opciones siempre visibles con la activa marcada (extensible a autoridad y definición), lista de canales completos y puertas colgantes, canales Both rayados blanco/rojo, contraste de puertas inactivas, revisión responsive.
-- **Fase 4 — Modo hora desconocida:** carta a mediodía local con avisos + slider para ver qué marcadores grandes cambian según la hora.
+- **Fase 3 — Pulido visual** (implementada, en validación): bloques A-F completos — resumen y centros como overlays a los lados del bodygraph con línea señaladora, tipo como chips con % de población, columnas de canales/colgantes con interacciones hover hacia centros y activaciones, canales Both rayados 70/30, cartas guardadas con tipo, nota local y reordenado drag & drop (Dexie schema v2). Detalle en TASKS.md.
+- **Fase 4 — Modo hora desconocida** (implementada, en validación): formulario en orden fecha-lugar-hora; checkbox "Hora desconocida" que deshabilita el campo y muestra un slider 0-24h (pasos de 30 min) con preview del tipo resultante; la hora del slider es la que usa "Calcular carta".
 - **Fase 5 — Exportar PNG:** compartir el bodygraph como imagen. **Cierra el MVP.** Después, estabilización: tests contra cartas reales, bug-fixing, opcional TWA para Google Play.
 - **Fase 6 — Guardado en línea:** sincronización opcional en la nube (local-only sigue siendo el default).
 - **Fase 7 — Carta compuesta:** overlay visual de dos cartas guardadas.
