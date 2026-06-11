@@ -281,7 +281,21 @@
     const t = c.birth?.time ?? '';
     return `${d} ${t}`.trim();
   }
+
+  // Touch has no hover, so there a tap toggles the tooltip via the global
+  // .tip-open class (see app.css). Buttons are excluded: on them the tap
+  // already runs the action and the tooltip would linger on top of it.
+  function tipTap(e) {
+    const touch = window.matchMedia('(pointer: coarse)').matches;
+    const el = touch ? e.target.closest('[data-tip]:not(button)') : null;
+    for (const open of document.querySelectorAll('.tip-open')) {
+      if (open !== el) open.classList.remove('tip-open');
+    }
+    el?.classList.toggle('tip-open');
+  }
 </script>
+
+<svelte:window onclick={tipTap} />
 
 <main>
   <header>

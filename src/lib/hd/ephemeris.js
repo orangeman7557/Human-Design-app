@@ -3,8 +3,11 @@
 // Usamos `astronomy-engine` (JavaScript puro, sin WASM) para las posiciones
 // geocéntricas aparentes de Sol, Luna y planetas. Los nodos lunares no vienen
 // en la librería como función directa, así que el Nodo Norte lo calculamos
-// con la fórmula clásica de Meeus para el nodo medio (precisión sobrada para
-// HD: el error frente al nodo verdadero es <2°, y una línea HD mide 0,9375°).
+// como nodo verdadero osculante (igual que TRUE_NODE de Swiss Ephemeris,
+// el que usan las herramientas HD de referencia). El nodo medio de Meeus
+// que usábamos antes se desvía hasta ~1.75° del verdadero — suficiente para
+// cruzar un límite de puerta (bug: 1984-01-30 daba Projector en vez de
+// Reflector por una puerta 26 falsa del Nodo Sur de Design).
 
 import * as Astronomy from 'astronomy-engine';
 
@@ -51,18 +54,21 @@ function eclipticLongitude(name, time) {
 }
 
 /**
- * Nodo Norte lunar medio (Ω) en grados, fórmula de Meeus (Astronomical
- * Algorithms, cap. 47), válida para fechas razonables de uso humano.
+ * Nodo Norte lunar verdadero (osculante) en grados: nodo ascendente del
+ * plano orbital instantáneo de la Luna, en eclíptica de la fecha. Es el
+ * mismo valor que TRUE_NODE de Swiss Ephemeris.
  * @param {number} jd
  */
-function meanLunarNorthNode(jd) {
-  const T = (jd - 2451545.0) / 36525;
-  const omega =
-    125.0445479 -
-    1934.1362891 * T +
-    0.0020754 * T * T +
-    (T * T * T) / 467441 -
-    (T * T * T * T) / 60616000;
+function trueLunarNorthNode(jd) {
+  const time = new Astronomy.AstroTime(jdToDate(jd));
+  const state = Astronomy.RotateState(
+    Astronomy.Rotation_EQJ_ECT(time),
+    Astronomy.GeoMoonState(time)
+  );
+  // Angular momentum h = r × v; the ascending node lies along ẑ × h.
+  const hx = state.y * state.vz - state.z * state.vy;
+  const hy = state.z * state.vx - state.x * state.vz;
+  const omega = Math.atan2(hy, hx) * (180 / Math.PI) + 90;
   return ((omega % 360) + 360) % 360;
 }
 
@@ -82,7 +88,7 @@ export function getPlanetLongitudes(jd) {
   }
   longs.moon = eclipticLongitude('moon', time);
   longs.earth = (longs.sun + 180) % 360;
-  longs.northNode = meanLunarNorthNode(jd);
+  longs.northNode = trueLunarNorthNode(jd);
   longs.southNode = (longs.northNode + 180) % 360;
 
   return longs;

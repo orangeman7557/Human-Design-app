@@ -139,6 +139,17 @@
       String(a.gates) === String(b.gates);
   }
 
+  // Touch has no hover, so there a tap toggles the tooltip via the global
+  // .tip-open class (see app.css). Buttons are excluded: on them the tap
+  // already runs the action and the tooltip would linger on top of it.
+  function tipTap(e) {
+    const el = isTouch() ? e.target.closest('[data-tip]:not(button)') : null;
+    for (const open of document.querySelectorAll('.tip-open')) {
+      if (open !== el) open.classList.remove('tip-open');
+    }
+    el?.classList.toggle('tip-open');
+  }
+
   // Definition islands: connected groups of defined centres, plus the
   // hanging gates whose missing partner sits in a *different* island —
   // i.e. the gates that would bridge the split.
@@ -582,7 +593,7 @@
   {/if}
 </main>
 
-<svelte:window onclick={() => (hover = null)} />
+<svelte:window onclick={(e) => { hover = null; tipTap(e); }} />
 
 <style>
   main {

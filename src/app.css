@@ -37,3 +37,31 @@ a {
 button {
   font-family: inherit;
 }
+
+/* Tap-toggled tooltip for touch devices (no hover there). The .tip-open
+   class is set by the pages' tipTap window handler; this rule is the twin
+   of the scoped [data-tip]:hover rules and lives here because Svelte would
+   prune a scoped selector whose class never appears in the template. */
+[data-tip].tip-open {
+  position: relative;
+}
+[data-tip].tip-open::after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: calc(100% + 7px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-size: 0.75rem;
+  font-weight: 400;
+  padding: 0.3rem 0.55rem;
+  border-radius: 7px;
+  white-space: pre;
+  text-transform: none;
+  letter-spacing: normal;
+  text-align: left;
+  pointer-events: none;
+  z-index: 5;
+}
