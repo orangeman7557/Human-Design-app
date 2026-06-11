@@ -115,13 +115,25 @@
    *        | null} */
   let hover = $state(null);
 
+  function isTouch() {
+    return window.matchMedia('(pointer: coarse)').matches;
+  }
+  // Mouse hover only: on touch devices the browser fires synthetic
+  // mouseenter together with the tap, which would cancel the tap's toggle,
+  // so there everything goes through pin() instead.
   function setHover(h) {
+    if (isTouch()) return;
     hover = h;
   }
-  // Tap = pin: stays until the user clicks anywhere else (window handler).
+  // Tap/click = pin: stays until the user clicks anywhere else (window
+  // handler). On touch, tapping the same element again toggles it off.
   function pin(e, h) {
     e.stopPropagation();
-    hover = h;
+    hover = isTouch() && sameHover(hover, h) ? null : h;
+  }
+  function sameHover(a, b) {
+    return !!a && !!b && a.kind === b.kind && a.center === b.center &&
+      String(a.gates) === String(b.gates);
   }
 
   // Definition islands: connected groups of defined centres, plus the
@@ -229,31 +241,53 @@
   let captureEl = $state();
   let sharing = $state(false);
 
+  function imageFileName() {
+    return `${(birthData?.name || 'carta').trim().replace(/\s+/g, '-')}-human-design.png`;
+  }
+
+  async function captureBlob() {
+    const blob = await toBlob(captureEl, { backgroundColor: '#0b0b0d', pixelRatio: 2 });
+    if (!blob) throw new Error('No se pudo generar la imagen.');
+    return blob;
+  }
+
+  function downloadBlob(blob) {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = imageFileName();
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
   async function share() {
     if (!captureEl || sharing) return;
     sharing = true;
     try {
-      const blob = await toBlob(captureEl, { backgroundColor: '#0b0b0d', pixelRatio: 2 });
-      if (!blob) throw new Error('No se pudo generar la imagen.');
-      const fileName = `${(birthData?.name || 'carta').trim().replace(/\s+/g, '-')}-human-design.png`;
-      const file = new File([blob], fileName, { type: 'image/png' });
-      // Desktop share sheets often lack a "save file" target, so reserve
-      // the native sheet for touch devices and download directly elsewhere.
-      const touchDevice = window.matchMedia('(pointer: coarse)').matches;
-      if (touchDevice && navigator.canShare?.({ files: [file] })) {
+      const blob = await captureBlob();
+      const file = new File([blob], imageFileName(), { type: 'image/png' });
+      if (navigator.canShare?.({ files: [file] })) {
         await navigator.share({ files: [file], title: 'Carta Human Design' });
       } else {
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = fileName;
-        a.click();
-        URL.revokeObjectURL(url);
+        // No share sheet available (typical on desktop): just download.
+        downloadBlob(blob);
       }
     } catch (e) {
       if (e?.name !== 'AbortError') {
         saveError = e instanceof Error ? e.message : String(e);
       }
+    } finally {
+      sharing = false;
+    }
+  }
+
+  async function download() {
+    if (!captureEl || sharing) return;
+    sharing = true;
+    try {
+      downloadBlob(await captureBlob());
+    } catch (e) {
+      saveError = e instanceof Error ? e.message : String(e);
     } finally {
       sharing = false;
     }
@@ -305,9 +339,39 @@
     <button class="back" onclick={back} aria-label="Volver">←</button>
     <h1>{birthData?.name?.trim() || 'Tu carta'}</h1>
     {#if chart}
-      <button class="save" onclick={save} disabled={saved}>
-        {saved ? 'Guardada ✓' : 'Guardar carta'}
-      </button>
+      <div class="actions">
+        <div class="img-actions">
+          <button
+            class="img-btn"
+            onclick={share}
+            disabled={sharing}
+            data-tip={sharing ? 'Generando imagen…' : 'Compartir'}
+            aria-label="Compartir carta"
+          >
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="18" cy="5" r="3" />
+              <circle cx="6" cy="12" r="3" />
+              <circle cx="18" cy="19" r="3" />
+              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+              <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+            </svg>
+          </button>
+          <button
+            class="img-btn"
+            onclick={download}
+            disabled={sharing}
+            data-tip={sharing ? 'Generando imagen…' : 'Descargar imagen'}
+            aria-label="Descargar imagen"
+          >
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3v12" /><path d="m8 11 4 4 4-4" /><path d="M4 21h16" />
+            </svg>
+          </button>
+        </div>
+        <button class="save" onclick={save} disabled={saved}>
+          {saved ? 'Guardada ✓' : 'Guardar carta'}
+        </button>
+      </div>
     {/if}
   </header>
 
@@ -363,21 +427,24 @@
       </div>
 
       <div class="overlay right">
-        <button
-          class="png-btn"
-          onclick={share}
-          disabled={sharing}
-          data-tip={sharing ? 'Generando imagen…' : 'Compartir'}
-          aria-label="Compartir carta"
-        >
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="18" cy="5" r="3" />
-            <circle cx="6" cy="12" r="3" />
-            <circle cx="18" cy="19" r="3" />
-            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
-            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
-          </svg>
-        </button>
+        <div class="card">
+          <span class="label">Centros ({chart.definedCenters.length})</span>
+          <div class="center-list">
+            {#each CENTERS as c}
+              <button
+                class="cc"
+                class:on={chart.definedCenters.includes(c)}
+                class:focus={hoverCenters.has(c)}
+                class:dimmed={hover && hover.kind !== 'center' && !hoverCenters.has(c)}
+                onmouseenter={() => setHover({ kind: 'center', center: c, gates: [] })}
+                onmouseleave={() => setHover(null)}
+                onclick={(e) => pin(e, { kind: 'center', center: c, gates: [] })}
+              >
+                {CENTER_LABELS[c]}
+              </button>
+            {/each}
+          </div>
+        </div>
       </div>
 
       <Bodygraph
@@ -386,25 +453,6 @@
         onCenterHover={(c) => setHover(c ? { kind: 'center', center: c, gates: [] } : null)}
       />
     </div>
-
-    <section>
-      <h2>Centros definidos ({chart.definedCenters.length})</h2>
-      <div class="chips">
-        {#each CENTERS as c}
-          <button
-            class="cc"
-            class:on={chart.definedCenters.includes(c)}
-            class:focus={hoverCenters.has(c)}
-            class:dimmed={hover && hover.kind !== 'center' && !hoverCenters.has(c)}
-            onmouseenter={() => setHover({ kind: 'center', center: c, gates: [] })}
-            onmouseleave={() => setHover(null)}
-            onclick={(e) => pin(e, { kind: 'center', center: c, gates: [] })}
-          >
-            {CENTER_LABELS[c]}
-          </button>
-        {/each}
-      </div>
-    </section>
 
     <div class="cols">
       <section>
@@ -489,6 +537,10 @@
       </table>
     </section>
     </div>
+
+    <footer>
+      <small>v0.1.0 · source-available · free for noncommercial use · Built with AI assistance</small>
+    </footer>
   {/if}
 </main>
 
@@ -517,7 +569,6 @@
     cursor: pointer;
   }
   .save {
-    margin-left: auto;
     background: var(--accent);
     color: #1a1408;
     border: none;
@@ -664,33 +715,58 @@
     position: absolute;
     top: 0;
     right: 0;
+    width: 158px;
     display: flex;
     flex-direction: column;
-    gap: 0.3rem;
-    align-items: flex-end;
+    gap: 0.45rem;
+    align-items: stretch;
     z-index: 1;
   }
-  .png-btn {
+  .actions {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .img-actions {
+    display: flex;
+    gap: 0.4rem;
+  }
+  .img-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 2.5rem;
-    height: 2.5rem;
+    width: 2rem;
+    height: 2rem;
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--radius);
     color: var(--text);
     cursor: pointer;
   }
-  .png-btn:hover {
+  .img-btn:hover {
     border-color: var(--accent);
   }
-  .png-btn:disabled {
+  .img-btn:disabled {
     opacity: 0.5;
     cursor: progress;
   }
   .card.pointer {
     cursor: pointer;
+  }
+  .center-list {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.3rem;
+    margin-top: 0.2rem;
+  }
+
+  footer {
+    margin-top: 4rem;
+    text-align: center;
+    color: var(--text-muted);
+    opacity: 0.6;
   }
   .cc {
     font-family: inherit;
@@ -751,11 +827,37 @@
     }
     .overlay.right {
       position: static;
+      width: auto;
+      margin-bottom: 0.75rem;
+    }
+    .center-list {
       flex-direction: row;
       flex-wrap: wrap;
-      align-items: center;
-      justify-content: flex-end;
-      margin-bottom: 0.75rem;
+      justify-content: center;
+    }
+    /* Types in two centred rows: G + MG, then P / M / R. */
+    .type-list {
+      display: grid;
+      grid-template-columns: repeat(6, auto);
+      justify-content: center;
+      column-gap: 0.35rem;
+      row-gap: 0.3rem;
+    }
+    .tchip:nth-child(-n + 2) {
+      grid-column: span 3;
+      justify-self: center;
+    }
+    .tchip:nth-child(n + 3) {
+      grid-column: span 2;
+      justify-self: center;
+    }
+    .actions {
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0.4rem;
+    }
+    .img-actions {
+      order: 2;
     }
     .save {
       padding: 0.4rem 0.65rem;

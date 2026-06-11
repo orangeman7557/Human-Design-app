@@ -100,12 +100,27 @@
     spellcheck="false"
   />
 
-  <span class="hint" class:ok={value} class:warn={query.length >= 3 && !loading && results.length === 0 && !value}>
+  {#if value}
+    <svg
+      class="ok-icon"
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="var(--success)"
+      stroke-width="3"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-label="Lugar confirmado"
+    >
+      <polyline points="20 6 9 17 4 12" />
+    </svg>
+  {/if}
+
+  <span class="hint" class:warn={query.length >= 3 && !loading && results.length === 0 && !value}>
     {#if loading}
       Buscando…
-    {:else if value}
-      Lugar confirmado · zona horaria {value.timezone}
-    {:else if query.length >= 3 && results.length === 0}
+    {:else if !value && query.length >= 3 && results.length === 0}
       Sin resultados
     {:else}
       &nbsp;
@@ -132,7 +147,7 @@
     background: var(--surface);
     border: 1px solid var(--border);
     color: var(--text);
-    padding: 0.7rem 0.85rem;
+    padding: 0.7rem 2.4rem 0.7rem 0.85rem;
     border-radius: var(--radius);
     font-size: 1rem;
     font-family: inherit;
@@ -142,15 +157,20 @@
     outline: none;
     border-color: var(--accent);
   }
+  /* Subtle in-field confirmation, mirroring the native date/time icons. */
+  .ok-icon {
+    position: absolute;
+    right: 0.85rem;
+    top: 0.95rem;
+    pointer-events: none;
+    opacity: 0.85;
+  }
   .hint {
     display: block;
     margin-top: 0.3rem;
     font-size: 0.75rem;
     color: var(--text-muted);
     min-height: 1em;
-  }
-  .hint.ok {
-    color: var(--success);
   }
   .hint.warn {
     color: var(--danger);

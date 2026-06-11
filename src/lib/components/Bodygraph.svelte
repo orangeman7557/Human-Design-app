@@ -190,41 +190,25 @@
     role="img"
     aria-label="Bodygraph Human Design"
   >
-    <!-- ── 0. Faint human silhouette (decorative, behind everything) ─────── -->
-    <g fill="#15151e" stroke="#15151e" pointer-events="none" aria-hidden="true">
-      <!-- head + neck -->
-      <circle cx="529" cy="155" r="112" stroke="none" />
-      <rect x="492" y="245" width="74" height="70" rx="24" stroke="none" />
-      <!-- torso: shoulders → waist → hips, gently curved -->
-      <path
-        stroke="none"
-        d="M529 295
-           C 415 300 345 345 326 430
-           C 310 505 312 610 326 730
-           C 338 845 356 965 386 1072
-           L 672 1072
-           C 702 965 720 845 732 730
-           C 746 610 748 505 732 430
-           C 713 345 643 300 529 295 Z"
-      />
-      <!-- arms with a soft elbow bend -->
-      <polyline
-        points="340,455 282,690 258,945"
-        fill="none" stroke-width="74" stroke-linecap="round" stroke-linejoin="round"
-      />
-      <polyline
-        points="718,455 776,690 800,945"
-        fill="none" stroke-width="74" stroke-linecap="round" stroke-linejoin="round"
-      />
-      <!-- legs with a slight knee bend, feet apart -->
-      <polyline
-        points="462,1065 442,1320 416,1572"
-        fill="none" stroke-width="92" stroke-linecap="round" stroke-linejoin="round"
-      />
-      <polyline
-        points="596,1065 616,1320 642,1572"
-        fill="none" stroke-width="92" stroke-linecap="round" stroke-linejoin="round"
-      />
+    <!-- ── 0. Faint human bust (decorative, behind everything) ───────────── -->
+    <!-- Head, neck and shoulders that fade out below the chest — schematic
+         on purpose, like classic HD chart backgrounds. -->
+    <defs>
+      <linearGradient id="silhouette-fade" gradientUnits="userSpaceOnUse" x1="0" y1="40" x2="0" y2="880">
+        <stop offset="0" stop-color="#15151e" />
+        <stop offset="0.45" stop-color="#15151e" />
+        <stop offset="1" stop-color="#15151e" stop-opacity="0" />
+      </linearGradient>
+    </defs>
+    <g fill="url(#silhouette-fade)" pointer-events="none" aria-hidden="true">
+      <circle cx="529" cy="160" r="115" />
+      <rect x="488" y="250" width="82" height="78" rx="26" />
+      <path d="M529 308
+               C 425 312 352 348 310 410
+               C 268 472 242 575 232 720
+               L 226 870 L 832 870 L 826 720
+               C 816 575 790 472 748 410
+               C 706 348 633 312 529 308 Z" />
     </g>
 
     <!-- ── 1. Channels (two halves per channel, behind the centres) ──────── -->
@@ -330,8 +314,8 @@
           {/if}
           {#if alert}
             <circle
-              cx={g.pos.x} cy={g.pos.y} r="22"
-              fill="none" stroke="#e84672" stroke-width="5"
+              cx={g.pos.x} cy={g.pos.y} r="16"
+              fill="none" stroke="#e84672" stroke-width="4"
             />
           {/if}
           <text

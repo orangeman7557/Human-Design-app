@@ -317,7 +317,15 @@
         <input type="time" bind:value={time} required aria-label="Hora local de nacimiento" />
       {:else}
         <div class="slider-block">
-          <p class="slider-hint">Elige una hora para calcular la carta:</p>
+          <p class="slider-hint">Elige una hora aproximada para calcular la carta:</p>
+          <input
+            type="range"
+            min="0"
+            max="47"
+            step="1"
+            bind:value={sliderVal}
+            aria-label="Hora estimada"
+          />
           {#if typeBands.length}
             <div class="bands" aria-hidden="true">
               {#each typeBands as b}
@@ -334,14 +342,6 @@
           {:else if bandsBusy}
             <p class="bands-busy">Calculando los tipos del día…</p>
           {/if}
-          <input
-            type="range"
-            min="0"
-            max="47"
-            step="1"
-            bind:value={sliderVal}
-            aria-label="Hora estimada"
-          />
           <div class="slider-scale" aria-hidden="true">
             <span>0h</span><span>6h</span><span>12h</span><span>18h</span><span>24h</span>
           </div>
@@ -554,12 +554,12 @@
     font-size: 0.8rem;
     color: var(--text-muted);
   }
+  /* overflow must stay visible so the [data-tip] tooltip isn't clipped;
+     the rounded ends are applied per segment instead. */
   .bands {
     display: flex;
     width: 100%;
     height: 1.5rem;
-    border-radius: 6px;
-    overflow: hidden;
     gap: 1px;
   }
   .band {
@@ -571,6 +571,16 @@
     color: var(--text-muted);
     background: var(--surface-2);
     min-width: 0;
+    overflow: hidden;
+  }
+  .band:first-child {
+    border-radius: 6px 0 0 6px;
+  }
+  .band:last-child {
+    border-radius: 0 6px 6px 0;
+  }
+  .band[data-tip] {
+    overflow: visible;
   }
   .band.active {
     background: var(--accent-soft);
