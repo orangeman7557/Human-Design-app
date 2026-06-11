@@ -19,18 +19,21 @@ lives in [`BACKLOG.md`](./BACKLOG.md).
 
 Last updated: 2026-06-11.
 
-> Latest change (2026-06-11): **arreglado el bug GRAVE de cálculo** — el
-> nodo lunar medio (Meeus) se sustituye por el nodo verdadero osculante
-> (caso 1984-01-30 ya da Reflector; carta de referencia revalidada, líneas
-> de nodos ahora coinciden con la herramienta de referencia). También:
-> tooltips ahora funcionan con tap en táctil, tap en un centro del SVG
-> fija el destacado, la pastilla canal/puerta seleccionada se destaca, y
-> en móvil "Guardar carta" queda a la altura del título con los iconos
-> compartir/descargar debajo. **Pendiente para cerrar Fase 5 / MVP (ver
-> BACKLOG, "Known bugs & pre-MVP tasks")**: descarga de imagen rota en
-> escritorio, tipografía de cabecera, autocompletado por prefijos
-> ("mad" → Madrid) y quitar el prerrelleno del formulario (con atajo
-> oculto en la "r" de "chart" para los datos del autor).
+> Latest change (2026-06-11, second batch): **cerrados todos los puntos
+> pre-MVP**. PNG arreglado en escritorio (el clon heredaba el
+> `margin: 0 auto` y desplazaba todo el contenido) y en móvil (márgenes
+> laterales ahora de 12px y sin banda vacía inferior); nombre de fichero
+> `nombre carta YYYY-MM-DD-HHMM-ciudad.png`. Subtítulo de cabecera
+> alineado con el título y hueco ajustado (escritorio y móvil).
+> Formulario inicial sin prerrelleno — atajo oculto en la "r" de "Chart"
+> rellena los datos del autor (smoke test). En móvil el formulario va
+> centrado y el check "Hora desconocida" pasa a estar bajo el campo de
+> hora. La mejora del buscador de lugares y otras cuatro menores quedan
+> en BACKLOG ("Possible improvements"), fuera de la Fase 5. **La Fase 5 /
+> MVP queda lista para validación final del usuario.** Antes de esto, en
+> el primer batch del día: nodo verdadero (bug GRAVE), tooltips táctiles,
+> tap en centros del SVG, chip seleccionada destacada+atenuado, botones
+> móviles de cabecera.
 
 ---
 
@@ -176,12 +179,12 @@ Subtareas completadas:
   all viewports) captures the **whole chart view** (summary, bodygraph,
   centres, channels, gates, activations) to PNG via `html-to-image` and
   opens the native share sheet (`navigator.share` with files); falls back
-  to downloading the PNG. **Closes the MVP** once the remaining pre-MVP
-  items in BACKLOG ("Known bugs & pre-MVP tasks") land: desktop PNG
-  download fix, header typography, prefix-friendly place autocomplete,
-  and removing the form pre-fill (hidden "r"-of-"chart" shortcut instead).
-  Followed by a stabilisation pass: hands-on testing against real charts,
-  bug-fixing, optional TWA packaging for Google Play.
+  to downloading the PNG. All pre-MVP items landed 2026-06-11 (PNG capture
+  fixed on desktop and mobile, file naming, header typography, pre-fill
+  removed behind the hidden "r" shortcut, centred mobile form). **Closes
+  the MVP once the user validates this batch.** Followed by a
+  stabilisation pass: hands-on testing against real charts, bug-fixing,
+  optional TWA packaging for Google Play.
 - **Phase 6 — Online sync.** Optional cloud persistence of saved charts
   (local-only stays the default).
 - **Phase 7 — Composite chart.** Two saved charts rendered as a combined
@@ -200,8 +203,9 @@ Subtareas completadas:
 
 - Live URL: <https://human-design-chart-app.orangeman7557.workers.dev/>
 - Repo: <https://github.com/orangeman7557/human-design-chart-app>
-- Validation case: orangeman7557's own chart, hard-coded as pre-fill in
-  `src/routes/+page.svelte` for quick smoke-testing.
+- Validation case: orangeman7557's own chart — hidden shortcut: clicking
+  the "r" of "Chart" in the home title pre-fills the form
+  (`fillAuthorData` in `src/routes/+page.svelte`).
 - Decisions log + accepted trade-offs: [`BACKLOG.md`](./BACKLOG.md).
 - Authorship + AI assistance disclosure: [`README.md`](./README.md).
 

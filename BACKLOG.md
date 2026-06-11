@@ -64,24 +64,45 @@ Fixed in the 2026-06-11 batch:
   button sits at title height with share/download below, level with the
   date-place line.
 
-Still pending before closing Phase 5 / the MVP:
+Fixed in the second 2026-06-11 batch (Phase 5 close):
 
-- **Desktop image download renders wrong.** The PNG produced by the
-  download button on desktop comes out broken (user report). Reproduce
-  and fix (`captureBlob` in `src/routes/chart/+page.svelte`,
-  `html-to-image`).
-- **Chart header typography.** Align the date-time-place subtitle with the
-  main title, and fix the title↔subtitle spacing (desktop and mobile —
-  on mobile the gap is too large).
-- **Place autocomplete must work with prefixes.** Typing "mad" should
-  already surface Madrid; today the full name is needed. Related groundwork
-  in "Known tech debt" (Nominatim `/search` is geared toward full-form
-  geocoding; a Photon attempt was reverted).
-- **Remove the form pre-fill.** The author's birth data must no longer
-  pre-populate the initial form in the MVP. Replace it with a hidden
-  shortcut: clicking/tapping the "r" of "chart" in the home title
-  pre-fills the form with the author's data, so the quick smoke test
-  stays available without exposing it.
+- ✅ **Desktop image download rendered wrong.** Root cause: html-to-image
+  copies the live node's computed margin into the clone, so `<main>`'s
+  desktop `margin: 0 auto` centring became a ~190px left shift that pushed
+  the content off-canvas and clipped it. The clone now gets `margin: 0`, a
+  small uniform 12px padding (mobile side margins were a huge 48px), and a
+  height recomputed without the footer band (the old bottom gap). PNG file
+  name is now `nombre carta YYYY-MM-DD-HHMM-ciudad.png` (city = label up
+  to the first comma).
+- ✅ **Chart header typography.** Date-time-place subtitle left-aligns
+  with the title text on both breakpoints; title↔subtitle gap tightened.
+- ✅ **Form pre-fill removed.** The form starts empty; clicking the "r"
+  of "Chart" in the home title (hidden shortcut) pre-fills the author's
+  smoke-test data.
+- ✅ **Mobile form centring.** Labels, field text and the unknown-time
+  checkbox centred on mobile; the checkbox sits below the time field
+  there (top-right of the field label on desktop, as before).
+
+## Possible improvements (not scheduled, not part of Phase 5)
+
+- **Place search should match partial names.** Not about prefixes per se:
+  the finder must work when the user hasn't typed the full city name —
+  "mad" should surface Madrid, "barce" Barcelona, "dusse" Düsseldorf.
+  Today the full name is needed. Related groundwork in "Known tech debt"
+  (Nominatim `/search` is geared toward full-form geocoding; a Photon
+  attempt was reverted).
+- **Mobile date field: allow typing the numbers.** Besides the calendar
+  picker, some users find typing the digits more comfortable than
+  scrolling years in the calendar.
+- **Birth-place error messages placement.** Shown below the field they
+  look cramped; consider showing them to the right of the "Lugar de
+  nacimiento" label instead.
+- **Unknown-hour slider should respect the current time.** Checking
+  "Hora desconocida" should start the slider at whatever hour was already
+  entered (not always 12:00); unchecking should keep the slider's hour in
+  the time field.
+- **Back arrow on the chart page.** The ← glyph looks small and
+  off-centre inside its circle; fix the sizing/centring.
 
 ## Astronomical precision (HD variables: color, tone, base)
 

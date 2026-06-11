@@ -1,10 +1,10 @@
 <script>
   // Birth-data entry form.
   //
-  // Pre-filled with orangeman7557's chart as the validation test case. The
-  // `place` state carries pre-resolved latitude/longitude/timezone so the
-  // form can be submitted as-is without going through the autocomplete on
-  // first load.
+  // The form starts empty. orangeman7557's chart (the validation test case)
+  // is behind a hidden shortcut: clicking the "r" of "Chart" in the title
+  // pre-fills the form, with place carrying pre-resolved
+  // latitude/longitude/timezone so it submits without the autocomplete.
 
   import { onMount } from 'svelte';
   import { goto } from '$app/navigation';
@@ -28,17 +28,25 @@
     reflector: 'Reflector'
   };
 
-  let name = $state('orangeman7557');
-  let date = $state('1984-03-13');
-  let time = $state('09:30');
+  let name = $state('');
+  let date = $state('');
+  let time = $state('');
 
   /** @type {{ label: string, latitude: number, longitude: number, timezone: string } | null} */
-  let place = $state({
-    label: 'Madrid, Comunidad de Madrid, España',
-    latitude: 40.4168,
-    longitude: -3.7038,
-    timezone: 'Europe/Madrid'
-  });
+  let place = $state(null);
+
+  // Hidden smoke-test shortcut (the "r" of "Chart" in the title).
+  function fillAuthorData() {
+    name = 'orangeman7557';
+    date = '1984-03-13';
+    time = '09:30';
+    place = {
+      label: 'Madrid, Comunidad de Madrid, España',
+      latitude: 40.4168,
+      longitude: -3.7038,
+      timezone: 'Europe/Madrid'
+    };
+  }
 
   let submitting = $state(false);
   /** @type {string | null} */
@@ -299,7 +307,8 @@
 
 <main>
   <header>
-    <h1>Human Design Chart</h1>
+    <!-- The "r" of "Chart" is the hidden smoke-test shortcut. -->
+    <h1>Human Design Cha<span class="rr" role="presentation" onclick={fillAuthorData}>r</span>t</h1>
     <p class="tagline">Introduce tus datos de nacimiento.</p>
   </header>
 
@@ -322,10 +331,6 @@
     <div class="field">
       <span class="field-head">
         <span>Hora local de nacimiento</span>
-        <label class="check">
-          <input type="checkbox" bind:checked={unknownTime} />
-          Hora desconocida
-        </label>
       </span>
       {#if !unknownTime}
         <input type="time" bind:value={time} required aria-label="Hora local de nacimiento" />
@@ -373,6 +378,10 @@
           </div>
         </div>
       {/if}
+      <label class="check">
+        <input type="checkbox" bind:checked={unknownTime} />
+        Hora desconocida
+      </label>
     </div>
 
     {#if error}
@@ -525,6 +534,8 @@
   }
 
   .field {
+    /* Anchor for the absolutely-positioned checkbox on desktop. */
+    position: relative;
     display: flex;
     flex-direction: column;
     gap: 0.35rem;
@@ -540,6 +551,10 @@
     font-size: 0.72rem;
   }
   .check {
+    /* Desktop: in the label row, top right (its classic spot). */
+    position: absolute;
+    top: 0;
+    right: 0;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -554,6 +569,25 @@
     accent-color: var(--accent);
     margin: 0;
     cursor: pointer;
+  }
+
+  /* Mobile: labels, field text and the checkbox centred; the checkbox
+     moves below the time field, reading as the alternative to filling
+     it in. */
+  @media (max-width: 520px) {
+    label span,
+    .field-head {
+      text-align: center;
+      justify-content: center;
+    }
+    form :global(input:not([type='checkbox']):not([type='range'])) {
+      text-align: center;
+    }
+    .check {
+      position: static;
+      justify-content: center;
+      margin-top: 0.15rem;
+    }
   }
 
   .slider-block {

@@ -27,6 +27,12 @@
   // selection until the user picks a result.
   let query = $state(value?.label ?? '');
 
+  // Keep the visible text in sync when the parent sets the place
+  // programmatically (e.g. the hidden smoke-test pre-fill).
+  $effect(() => {
+    if (value && value.label !== query) query = value.label;
+  });
+
   let results = $state(/** @type {{ label: string, latitude: number, longitude: number }[]} */ ([]));
   let loading = $state(false);
   let focused = $state(false);

@@ -92,7 +92,7 @@ El usuario introduce su fecha, hora y lugar de nacimiento → la app calcula su 
 - **Constantes y datos de referencia** viven en `constants.js`. La lógica no importa datos fijos de otros archivos.
 - **Comentarios de cabecera en archivos de geometría/cálculo** documentan las fases que los modificaron (registro de cambios arquitectónico).
 - **Idioma de los comentarios:** inglés en el código. El usuario se comunica en español; la UI también está en español (pendiente de internacionalización formal en fases futuras).
-- **Caso de prueba de validación:** el formulario está pre-rellenado con los datos de orangeman7557 (1984-03-13, 09:30, Madrid) como smoke test rápido.
+- **Caso de prueba de validación:** atajo oculto — pinchar la "r" de "Chart" en el título de la home rellena el formulario con los datos de orangeman7557 (1984-03-13, 09:30, Madrid) como smoke test rápido.
 - **No hay tests automatizados.** Validación manual contra la carta conocida del autor.
 
 ---

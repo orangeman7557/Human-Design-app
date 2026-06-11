@@ -261,29 +261,50 @@
   let captureEl = $state();
   let sharing = $state(false);
 
+  // "nombre carta YYYY-MM-DD-HHMM-ciudad.png" — city = placeLabel up to
+  // the first comma.
   function imageFileName() {
-    return `${(birthData?.name || 'carta').trim().replace(/\s+/g, '-')}-human-design.png`;
+    const name = (birthData?.name || 'carta').trim();
+    const time = (birthData?.time || '').replace(':', '');
+    const place = (birthData?.placeLabel || '').split(',')[0].trim();
+    const tail = [birthData?.date, time, place].filter(Boolean).join('-');
+    return [name, tail].filter(Boolean).join(' ') + '.png';
   }
 
   async function captureBlob() {
     // Capture <main> so the header (name + birth data) is part of the
     // image, filtering out interactive chrome (back button, action
-    // buttons and their tooltips, footer). Extra horizontal padding so
-    // the image isn't cramped.
-    const padX = 48;
-    const padY = 32;
+    // buttons and their tooltips, footer). The clone is re-padded with a
+    // small uniform margin: html-to-image copies the live node's computed
+    // margin (the desktop `margin: 0 auto` centring becomes a ~190px
+    // left shift that pushed everything off-canvas) and <main>'s own
+    // padding (4rem bottom) plus the removed footer left a huge empty
+    // band at the bottom.
+    const pad = 12;
+    const cs = getComputedStyle(captureEl);
+    const contentW =
+      captureEl.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+    const footer = captureEl.querySelector('footer');
+    const fcs = footer ? getComputedStyle(footer) : null;
+    const footerH = footer
+      ? footer.offsetHeight + parseFloat(fcs.marginTop) + parseFloat(fcs.marginBottom)
+      : 0;
+    const contentH =
+      captureEl.clientHeight -
+      parseFloat(cs.paddingTop) -
+      parseFloat(cs.paddingBottom) -
+      footerH;
     const blob = await toBlob(captureEl, {
       backgroundColor: '#0b0b0d',
       pixelRatio: 2,
-      // The output canvas defaults to the node's original size, so it must
-      // be widened explicitly along with the (border-box) clone, otherwise
-      // the added padding clips the right edge.
-      width: captureEl.offsetWidth + padX * 2,
-      height: captureEl.offsetHeight + padY * 2,
+      width: contentW + pad * 2,
+      height: contentH + pad * 2,
       style: {
-        padding: `${padY}px ${padX}px`,
+        margin: '0',
         maxWidth: 'none',
-        width: `${captureEl.offsetWidth + padX * 2}px`
+        padding: `${pad}px`,
+        width: `${contentW + pad * 2}px`,
+        height: `${contentH + pad * 2}px`
       },
       filter: (node) =>
         !(
@@ -670,9 +691,9 @@
   .birth {
     color: var(--text-muted);
     font-size: 0.85rem;
-    /* Left-aligned with the title text (back button 2.25rem + gap 1rem).
-       Alignment/spacing fine-tuning pending — see BACKLOG. */
-    margin: 0 0 1.5rem 3.25rem;
+    /* Left-aligned with the title text (back button 2.25rem + gap 1rem);
+       slight negative top margin tucks it right under the title. */
+    margin: -0.15rem 0 1.5rem 3.25rem;
   }
 
   .type-list {
@@ -945,7 +966,8 @@
       height: 0;
     }
     .birth {
-      margin: 0.2rem 0 1.25rem 0;
+      /* Same title-text alignment as desktop, tight gap under the title. */
+      margin: -0.1rem 0 1.25rem 3.25rem;
     }
     /* Mobile: save stays at title height; share/download drop out of the
        header flow to a second row, level with the date-place line. */
