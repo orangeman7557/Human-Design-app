@@ -48,16 +48,24 @@ without competing against a clone of the same code.
 **Files touched in this change:**
 `LICENSE`, `NOTICE` (new), `README.md`, `package.json`, `BACKLOG.md`.
 
-## Known bugs — fix in the next batch (2026-06-11)
+## Known bugs & pre-MVP tasks (updated 2026-06-11)
 
-- **GRAVE — chart calculation error.** For **1984-01-30, 01:00, Madrid**
-  the app computes **Projector** but the correct type is **Reflector**
-  (i.e. it shows defined centres in a chart that should have none).
-  Something is off in the calculation chain — possibly an activation
-  landing on the wrong side of a gate boundary (ephemeris precision, mean
-  vs true node, timezone/DST handling for winter dates, or the design-time
-  88° solar-arc search). Review and fix; re-validate against the two known
-  reference charts afterwards.
+Fixed in the 2026-06-11 batch:
+
+- ✅ **GRAVE — chart calculation error** (1984-01-30, 01:00, Madrid gave
+  Projector instead of Reflector). Root cause: the mean lunar node — see
+  "Lunar node: mean vs true" below, now resolved.
+- ✅ **Tooltips unreachable on touch.** `[data-tip]` was `:hover`-only;
+  now a tap toggles them (global `.tip-open` class; buttons excluded —
+  there the tap is the action itself).
+- ✅ **Touch interaction round:** tapping a centre on the bodygraph SVG
+  now pins the highlight (it was mouse-only); the pinned/hovered channel
+  or gate chip now shows its own selected style; on mobile the save
+  button sits at title height with share/download below, level with the
+  date-place line.
+
+Still pending before closing Phase 5 / the MVP:
+
 - **Desktop image download renders wrong.** The PNG produced by the
   download button on desktop comes out broken (user report). Reproduce
   and fix (`captureBlob` in `src/routes/chart/+page.svelte`,
@@ -65,6 +73,15 @@ without competing against a clone of the same code.
 - **Chart header typography.** Align the date-time-place subtitle with the
   main title, and fix the title↔subtitle spacing (desktop and mobile —
   on mobile the gap is too large).
+- **Place autocomplete must work with prefixes.** Typing "mad" should
+  already surface Madrid; today the full name is needed. Related groundwork
+  in "Known tech debt" (Nominatim `/search` is geared toward full-form
+  geocoding; a Photon attempt was reverted).
+- **Remove the form pre-fill.** The author's birth data must no longer
+  pre-populate the initial form in the MVP. Replace it with a hidden
+  shortcut: clicking/tapping the "r" of "chart" in the home title
+  pre-fills the form with the author's data, so the quick smoke test
+  stays available without exposing it.
 
 ## Astronomical precision (HD variables: color, tone, base)
 
@@ -94,19 +111,22 @@ worth it.
    with a custom binding, or a Vercel Edge Function) that can use Swiss
    Ephemeris without browser bundling constraints.
 
-## Lunar node: mean vs true
+## Lunar node: mean vs true — RESOLVED 2026-06-11
 
-**Current decision:** the **mean North Node** is computed via Meeus'
-formula (chapter 47 of _Astronomical Algorithms_).
+**Decision (2026-06-11):** switched from Meeus' mean node to the
+**osculating true node** — the ascending node of the Moon's instantaneous
+orbital plane, computed in `ephemeris.js` from `astronomy-engine`'s
+`GeoMoonState` (position + velocity rotated to ecliptic of date, node
+taken from the orbital angular momentum). Same value as Swiss Ephemeris
+`TRUE_NODE`, which is what reference HD tools use.
 
-**Implication:** maximum deviation from the true node is ~1.5°. Less than
-the width of an HD gate (5.6°). For the vast majority of charts this doesn't
-affect the gate, but **for charts whose node falls near a gate boundary** it
-could differ from reference apps that use the true node.
-
-**When we revisit:** if validation against external sources (ihdschool,
-MyBodyGraph) reveals discrepancies in North/South Node activations. We'd
-then compute the true node from the Moon's instantaneous orbit.
+**Why:** exactly the failure mode anticipated here. The mean node deviates
+up to ~1.75° from the true node; for 1984-01-30, 01:00, Madrid that put
+the design South Node 0.7° inside gate 26, creating a false 26-44 channel
+(Projector instead of Reflector). With the true node it lands in gate 5
+and the chart is correctly a Reflector. Re-validated against the author's
+reference chart: same gates everywhere, and the personality node lines now
+match the reference tool too (16.5/9.5 where the mean node gave .6).
 
 ## Features already identified for future phases
 

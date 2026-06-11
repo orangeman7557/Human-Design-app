@@ -17,14 +17,20 @@ Statuses:
 The deeper context (technical trade-offs, future ideas, deferred decisions)
 lives in [`BACKLOG.md`](./BACKLOG.md).
 
-Last updated: 2026-06-10.
+Last updated: 2026-06-11.
 
-> Latest change (2026-06-11): fases 3, 4 y 5 implementadas y pulidas en
-> varias tandas de ajustes validadas por el usuario sobre la marcha.
-> **Dos bugs anotados para la próxima tanda (ver BACKLOG, "Known bugs")**:
-> uno GRAVE de cálculo (1984-01-30 01:00 Madrid → da Projector, debería
-> ser Reflector) y la descarga de imagen rota en escritorio + tipografía
-> de la cabecera. El MVP no se da por cerrado hasta resolverlos.
+> Latest change (2026-06-11): **arreglado el bug GRAVE de cálculo** — el
+> nodo lunar medio (Meeus) se sustituye por el nodo verdadero osculante
+> (caso 1984-01-30 ya da Reflector; carta de referencia revalidada, líneas
+> de nodos ahora coinciden con la herramienta de referencia). También:
+> tooltips ahora funcionan con tap en táctil, tap en un centro del SVG
+> fija el destacado, la pastilla canal/puerta seleccionada se destaca, y
+> en móvil "Guardar carta" queda a la altura del título con los iconos
+> compartir/descargar debajo. **Pendiente para cerrar Fase 5 / MVP (ver
+> BACKLOG, "Known bugs & pre-MVP tasks")**: descarga de imagen rota en
+> escritorio, tipografía de cabecera, autocompletado por prefijos
+> ("mad" → Madrid) y quitar el prerrelleno del formulario (con atajo
+> oculto en la "r" de "chart" para los datos del autor).
 
 ---
 
@@ -170,9 +176,12 @@ Subtareas completadas:
   all viewports) captures the **whole chart view** (summary, bodygraph,
   centres, channels, gates, activations) to PNG via `html-to-image` and
   opens the native share sheet (`navigator.share` with files); falls back
-  to downloading the PNG. **Closes the MVP.** Followed by a stabilisation
-  pass: hands-on testing against real charts, bug-fixing, optional TWA
-  packaging for Google Play.
+  to downloading the PNG. **Closes the MVP** once the remaining pre-MVP
+  items in BACKLOG ("Known bugs & pre-MVP tasks") land: desktop PNG
+  download fix, header typography, prefix-friendly place autocomplete,
+  and removing the form pre-fill (hidden "r"-of-"chart" shortcut instead).
+  Followed by a stabilisation pass: hands-on testing against real charts,
+  bug-fixing, optional TWA packaging for Google Play.
 - **Phase 6 — Online sync.** Optional cloud persistence of saved charts
   (local-only stays the default).
 - **Phase 7 — Composite chart.** Two saved charts rendered as a combined

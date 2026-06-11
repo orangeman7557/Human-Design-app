@@ -139,6 +139,12 @@
       String(a.gates) === String(b.gates);
   }
 
+  // While a channel/gate chip is hovered or pinned, every other chip dims
+  // so the selected one stands alone.
+  function dimsAgainstChipHover(h) {
+    return (hover?.kind === 'channel' || hover?.kind === 'gate') && !sameHover(hover, h);
+  }
+
   // Touch has no hover, so there a tap toggles the tooltip via the global
   // .tip-open class (see app.css). Buttons are excluded: on them the tap
   // already runs the action and the tooltip would linger on top of it.
@@ -495,6 +501,7 @@
         {chart}
         highlight={graphHighlight}
         onCenterHover={(c) => setHover(c ? { kind: 'center', center: c, gates: [] } : null)}
+        onCenterClick={(e, c) => pin(e, { kind: 'center', center: c, gates: [] })}
       />
     </div>
 
@@ -510,7 +517,9 @@
                 class="chip on"
                 role="presentation"
                 class:focus={relatedToHoverCenter(g1, g2)}
-                class:dimmed={hover?.kind === 'center' && !relatedToHoverCenter(g1, g2)}
+                class:selected={sameHover(hover, { kind: 'channel', gates: [g1, g2] })}
+                class:dimmed={(hover?.kind === 'center' && !relatedToHoverCenter(g1, g2)) ||
+                  dimsAgainstChipHover({ kind: 'channel', gates: [g1, g2] })}
                 onmouseenter={() => setHover({ kind: 'channel', gates: [g1, g2] })}
                 onmouseleave={() => setHover(null)}
                 onclick={(e) => pin(e, { kind: 'channel', gates: [g1, g2] })}
@@ -541,8 +550,10 @@
                 class:soft={!chart.definedCenters.includes(CENTER_BY_GATE[g])}
                 role="presentation"
                 class:focus={relatedToHoverCenter(g)}
+                class:selected={sameHover(hover, { kind: 'gate', gates: [g] })}
                 class:dimmed={(hover?.kind === 'center' && !relatedToHoverCenter(g)) ||
-                  hover?.kind === 'definition'}
+                  hover?.kind === 'definition' ||
+                  dimsAgainstChipHover({ kind: 'gate', gates: [g] })}
                 onmouseenter={() => setHover({ kind: 'gate', gates: [g] })}
                 onmouseleave={() => setHover(null)}
                 onclick={(e) => pin(e, { kind: 'gate', gates: [g] })}
@@ -875,6 +886,20 @@
   .cols .chip.dimmed {
     opacity: 0.18;
   }
+  /* The chip whose own highlight is active (hovered or pinned) — mirrors
+     the centre-chip focus colours: amber fill when active, white outline
+     when soft. */
+  .cols .chip.selected {
+    opacity: 1;
+    border-color: var(--text);
+    color: var(--text);
+  }
+  .cols .chip.on.selected {
+    border-color: var(--accent);
+    background: var(--accent);
+    color: #1a1408;
+    font-weight: 600;
+  }
   @media (max-width: 679px) {
     .graph {
       display: flex;
@@ -922,14 +947,15 @@
     .birth {
       margin: 0.2rem 0 1.25rem 0;
     }
-    /* Mobile: icons below the save button. */
-    .actions {
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 0.4rem;
+    /* Mobile: save stays at title height; share/download drop out of the
+       header flow to a second row, level with the date-place line. */
+    header {
+      position: relative;
     }
     .img-actions {
-      order: 2;
+      position: absolute;
+      top: calc(100% + 0.2rem);
+      right: 0;
     }
     .save {
       padding: 0.4rem 0.65rem;

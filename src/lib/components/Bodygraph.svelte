@@ -49,13 +49,22 @@
    * opacity, so undefined centres never turn see-through.
    * `onCenterHover(center | null)` fires while the pointer is over a centre
    * shape, letting the page mirror the highlight on its chips.
+   * `onCenterClick(event, center)` fires on tap/click — the page pins the
+   * highlight there (the only way to trigger it on touch, where hover
+   * doesn't exist).
    * @type {{
    *   chart: import('$lib/hd/chart.js').Chart,
    *   highlight?: { centers: string[], gates: number[], channels: string[] },
-   *   onCenterHover?: ((center: string | null) => void) | null
+   *   onCenterHover?: ((center: string | null) => void) | null,
+   *   onCenterClick?: ((event: MouseEvent, center: string) => void) | null
    * }}
    */
-  let { chart, highlight = { centers: [], gates: [], channels: [] }, onCenterHover = null } = $props();
+  let {
+    chart,
+    highlight = { centers: [], gates: [], channels: [] },
+    onCenterHover = null,
+    onCenterClick = null
+  } = $props();
 
   const hlCenters = $derived(new Set(highlight.centers));
   const hlGates = $derived(new Set(highlight.gates));
@@ -288,6 +297,7 @@
             class="center-shape"
             onmouseenter={() => onCenterHover?.(center)}
             onmouseleave={() => onCenterHover?.(null)}
+            onclick={(e) => onCenterClick?.(e, center)}
           />
         {:else}
           <path
@@ -296,6 +306,7 @@
             class="center-shape"
             onmouseenter={() => onCenterHover?.(center)}
             onmouseleave={() => onCenterHover?.(null)}
+            onclick={(e) => onCenterClick?.(e, center)}
           />
         {/if}
       {/each}
