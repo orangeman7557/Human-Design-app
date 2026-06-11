@@ -373,36 +373,6 @@
   <section class="saved">
     <div class="saved-head">
       <h2>Cartas guardadas</h2>
-      <div class="io">
-        <button
-          class="io-btn"
-          onclick={doExport}
-          disabled={savedCharts.length === 0}
-          data-tip="Exportar cartas"
-          aria-label="Exportar cartas"
-        >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 3v12" /><path d="m8 11 4 4 4-4" /><path d="M4 21h16" />
-          </svg>
-        </button>
-        <button
-          class="io-btn"
-          onclick={() => importInput?.click()}
-          data-tip="Importar cartas"
-          aria-label="Importar cartas"
-        >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 15V3" /><path d="m8 7 4-4 4 4" /><path d="M4 21h16" />
-          </svg>
-        </button>
-        <input
-          type="file"
-          accept="application/json,.json"
-          bind:this={importInput}
-          onchange={doImport}
-          hidden
-        />
-      </div>
     </div>
 
     {#if listError}
@@ -438,7 +408,39 @@
       </ul>
     {/if}
 
-    <p class="local-note">Las cartas se guardan solo en este dispositivo.</p>
+    <div class="saved-foot">
+      <p class="local-note">Las cartas se guardan solo en este dispositivo.</p>
+      <div class="io">
+        <button
+          class="io-btn"
+          onclick={doExport}
+          disabled={savedCharts.length === 0}
+          data-tip="Exportar cartas"
+          aria-label="Exportar cartas"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3v12" /><path d="m8 11 4 4 4-4" /><path d="M4 21h16" />
+          </svg>
+        </button>
+        <button
+          class="io-btn"
+          onclick={() => importInput?.click()}
+          data-tip="Importar cartas"
+          aria-label="Importar cartas"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 15V3" /><path d="m8 7 4-4 4 4" /><path d="M4 21h16" />
+          </svg>
+        </button>
+        <input
+          type="file"
+          accept="application/json,.json"
+          bind:this={importInput}
+          onchange={doImport}
+          hidden
+        />
+      </div>
+    </div>
   </section>
 
   <footer>
@@ -691,11 +693,18 @@
     font-size: 0.78rem;
     margin-left: 0.35rem;
   }
+  .saved-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-top: 0.9rem;
+  }
   .local-note {
     color: var(--text-muted);
     font-size: 0.75rem;
     opacity: 0.65;
-    margin: 0.9rem 0 0;
+    margin: 0;
   }
   .saved-head {
     display: flex;

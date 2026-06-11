@@ -246,7 +246,32 @@
   }
 
   async function captureBlob() {
-    const blob = await toBlob(captureEl, { backgroundColor: '#0b0b0d', pixelRatio: 2 });
+    // Capture <main> so the header (name + birth data) is part of the
+    // image, filtering out interactive chrome (back button, action
+    // buttons and their tooltips, footer). Extra horizontal padding so
+    // the image isn't cramped.
+    const padX = 48;
+    const padY = 32;
+    const blob = await toBlob(captureEl, {
+      backgroundColor: '#0b0b0d',
+      pixelRatio: 2,
+      // The output canvas defaults to the node's original size, so it must
+      // be widened explicitly along with the (border-box) clone, otherwise
+      // the added padding clips the right edge.
+      width: captureEl.offsetWidth + padX * 2,
+      height: captureEl.offsetHeight + padY * 2,
+      style: {
+        padding: `${padY}px ${padX}px`,
+        maxWidth: 'none',
+        width: `${captureEl.offsetWidth + padX * 2}px`
+      },
+      filter: (node) =>
+        !(
+          node.classList?.contains('back') ||
+          node.classList?.contains('actions') ||
+          node.tagName === 'FOOTER'
+        )
+    });
     if (!blob) throw new Error('No se pudo generar la imagen.');
     return blob;
   }
@@ -334,7 +359,7 @@
   }
 </script>
 
-<main>
+<main bind:this={captureEl}>
   <header>
     <button class="back" onclick={back} aria-label="Volver">←</button>
     <h1>{birthData?.name?.trim() || 'Tu carta'}</h1>
@@ -384,7 +409,6 @@
   {:else if error}
     <p class="status error">Error: {error}</p>
   {:else if chart}
-    <div class="capture" bind:this={captureEl}>
     {#if birthData}
       <p class="birth">{formatBirth(birthData)}</p>
     {/if}
@@ -394,11 +418,14 @@
         <div class="card">
           <span class="label">Tipo</span>
           <div class="type-list">
-            {#each TYPES as t}
+            {#each TYPES as t, i}
               <span class="tchip" class:on={chart.type === t.key}>
                 {t.label}
                 <span class="pct" data-tip={`representan el ${t.pct} de la población`}>{t.pct}</span>
               </span>
+              {#if i === 1}
+                <span class="row-break" aria-hidden="true"></span>
+              {/if}
             {/each}
           </div>
         </div>
@@ -428,14 +455,17 @@
 
       <div class="overlay right">
         <div class="card">
-          <span class="label">Centros ({chart.definedCenters.length})</span>
+          <span class="label">
+            Centros
+            <span class="count" data-tip="Centros definidos">({chart.definedCenters.length})</span>
+          </span>
           <div class="center-list">
             {#each CENTERS as c}
               <button
                 class="cc"
                 class:on={chart.definedCenters.includes(c)}
                 class:focus={hoverCenters.has(c)}
-                class:dimmed={hover && hover.kind !== 'center' && !hoverCenters.has(c)}
+                class:dimmed={hover && !hoverCenters.has(c)}
                 onmouseenter={() => setHover({ kind: 'center', center: c, gates: [] })}
                 onmouseleave={() => setHover(null)}
                 onclick={(e) => pin(e, { kind: 'center', center: c, gates: [] })}
@@ -536,7 +566,6 @@
         </tbody>
       </table>
     </section>
-    </div>
 
     <footer>
       <small>v0.1.0 · source-available · free for noncommercial use · Built with AI assistance</small>
@@ -554,9 +583,9 @@
   }
   header {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 1rem;
-    margin-bottom: 2rem;
+    margin-bottom: 0.4rem;
   }
   .back {
     background: var(--surface);
@@ -610,8 +639,9 @@
   .birth {
     color: var(--text-muted);
     font-size: 0.85rem;
-    /* Left-aligned with the title text: back button (2.25rem) + gap (1rem). */
-    margin: -1.4rem 0 1.5rem 3.25rem;
+    /* Left-aligned with the title text (back button 2.25rem + gap 1rem),
+       pulled up so it sits at the share/download icons' height. */
+    margin: -2.3rem 0 1.5rem 3.25rem;
   }
 
   .type-list {
@@ -643,6 +673,10 @@
   }
   .tchip .pct {
     cursor: help;
+  }
+  /* Forces the G+MG / P+M+R two-row split on mobile; inert on desktop. */
+  .row-break {
+    display: none;
   }
 
   /* Instant tooltip (no native title delay). */
@@ -722,15 +756,21 @@
     align-items: stretch;
     z-index: 1;
   }
+  /* Save button at title height, share/download below at subtitle height. */
   .actions {
     margin-left: auto;
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-end;
     gap: 0.5rem;
   }
   .img-actions {
     display: flex;
     gap: 0.4rem;
+    order: 2;
+  }
+  .count {
+    cursor: help;
   }
   .img-btn {
     display: inline-flex;
@@ -814,6 +854,10 @@
     opacity: 0.18;
   }
   @media (max-width: 679px) {
+    .graph {
+      display: flex;
+      flex-direction: column;
+    }
     .overlay.left {
       position: static;
       width: auto;
@@ -821,43 +865,40 @@
       grid-template-columns: 1fr 1fr;
       gap: 0.5rem;
       margin-bottom: 0.75rem;
+      order: 1;
     }
     .overlay.left .card:first-child {
       grid-column: 1 / -1;
     }
+    .graph > :global(.bodygraph-wrap) {
+      order: 2;
+    }
+    /* Centres card goes below the graph on mobile. */
     .overlay.right {
       position: static;
       width: auto;
-      margin-bottom: 0.75rem;
+      margin-top: 0.5rem;
+      order: 3;
     }
     .center-list {
       flex-direction: row;
       flex-wrap: wrap;
-      justify-content: center;
+      justify-content: flex-start;
     }
-    /* Types in two centred rows: G + MG, then P / M / R. */
+    /* Types in two left-aligned rows: G + MG, then P / M / R. */
     .type-list {
-      display: grid;
-      grid-template-columns: repeat(6, auto);
-      justify-content: center;
+      flex-direction: row;
+      flex-wrap: wrap;
       column-gap: 0.35rem;
       row-gap: 0.3rem;
     }
-    .tchip:nth-child(-n + 2) {
-      grid-column: span 3;
-      justify-self: center;
+    .type-list .row-break {
+      display: block;
+      flex-basis: 100%;
+      height: 0;
     }
-    .tchip:nth-child(n + 3) {
-      grid-column: span 2;
-      justify-self: center;
-    }
-    .actions {
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 0.4rem;
-    }
-    .img-actions {
-      order: 2;
+    .birth {
+      margin: 0.2rem 0 1.25rem 0;
     }
     .save {
       padding: 0.4rem 0.65rem;

@@ -191,24 +191,28 @@
     aria-label="Bodygraph Human Design"
   >
     <!-- ── 0. Faint human bust (decorative, behind everything) ───────────── -->
-    <!-- Head, neck and shoulders that fade out below the chest — schematic
-         on purpose, like classic HD chart backgrounds. -->
+    <!-- Blurred head/neck/shoulders fading out below the chest. Anatomy is
+         anchored to the graph: the figure's throat sits over the Throat
+         centre (y≈566), so the head wraps Head+Ajna. -->
     <defs>
-      <linearGradient id="silhouette-fade" gradientUnits="userSpaceOnUse" x1="0" y1="40" x2="0" y2="880">
+      <linearGradient id="silhouette-fade" gradientUnits="userSpaceOnUse" x1="0" y1="20" x2="0" y2="1150">
         <stop offset="0" stop-color="#15151e" />
-        <stop offset="0.45" stop-color="#15151e" />
+        <stop offset="0.5" stop-color="#15151e" />
         <stop offset="1" stop-color="#15151e" stop-opacity="0" />
       </linearGradient>
+      <filter id="silhouette-blur" x="-20%" y="-20%" width="140%" height="140%">
+        <feGaussianBlur stdDeviation="20" />
+      </filter>
     </defs>
-    <g fill="url(#silhouette-fade)" pointer-events="none" aria-hidden="true">
-      <circle cx="529" cy="160" r="115" />
-      <rect x="488" y="250" width="82" height="78" rx="26" />
-      <path d="M529 308
-               C 425 312 352 348 310 410
-               C 268 472 242 575 232 720
-               L 226 870 L 832 870 L 826 720
-               C 816 575 790 472 748 410
-               C 706 348 633 312 529 308 Z" />
+    <g fill="url(#silhouette-fade)" filter="url(#silhouette-blur)" pointer-events="none" aria-hidden="true">
+      <circle cx="524" cy="235" r="208" />
+      <rect x="452" y="420" width="144" height="230" rx="48" />
+      <path d="M524 630
+               C 388 640 286 690 234 770
+               C 188 845 166 950 158 1080
+               L 152 1180 L 896 1180 L 890 1080
+               C 882 950 860 845 814 770
+               C 762 690 660 640 524 630 Z" />
     </g>
 
     <!-- ── 1. Channels (two halves per channel, behind the centres) ──────── -->
@@ -336,7 +340,7 @@
   .bodygraph-wrap {
     width: 100%;
     max-width: 420px;
-    margin: 0 auto 2rem;
+    margin: 0 auto 0.25rem;
   }
 
   svg {

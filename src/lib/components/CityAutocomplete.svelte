@@ -165,12 +165,16 @@
     pointer-events: none;
     opacity: 0.85;
   }
+  /* Absolutely positioned so the empty state doesn't add extra spacing
+     between this field and the next one. */
   .hint {
-    display: block;
-    margin-top: 0.3rem;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin-top: 0.25rem;
     font-size: 0.75rem;
     color: var(--text-muted);
-    min-height: 1em;
+    pointer-events: none;
   }
   .hint.warn {
     color: var(--danger);
@@ -178,7 +182,7 @@
 
   .results {
     position: absolute;
-    top: calc(100% - 1.3rem);
+    top: 100%;
     left: 0;
     right: 0;
     margin: 0.4rem 0 0;
