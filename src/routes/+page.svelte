@@ -2,7 +2,7 @@
   // Birth-data entry form.
   //
   // The form starts empty. orangeman7557's chart (the validation test case)
-  // is behind a hidden shortcut: clicking the "r" of "Chart" in the title
+  // is behind a hidden shortcut: clicking the final period of the tagline
   // pre-fills the form, with place carrying pre-resolved
   // latitude/longitude/timezone so it submits without the autocomplete.
 
@@ -35,7 +35,7 @@
   /** @type {{ label: string, latitude: number, longitude: number, timezone: string } | null} */
   let place = $state(null);
 
-  // Hidden smoke-test shortcut (the "r" of "Chart" in the title).
+  // Hidden smoke-test shortcut (the final period of the tagline).
   function fillAuthorData() {
     name = 'orangeman7557';
     date = '1984-03-13';
@@ -192,7 +192,32 @@
   /** @type {HTMLInputElement | undefined} */
   let importInput = $state();
 
-  onMount(refreshList);
+  onMount(() => {
+    restoreLastBirth();
+    refreshList();
+  });
+
+  // Coming back from the chart page, the form keeps the data of the last
+  // chart that was on screen.
+  function restoreLastBirth() {
+    try {
+      const b = JSON.parse(sessionStorage.getItem('birthData'));
+      if (!b?.date) return;
+      name = b.name ?? '';
+      date = b.date;
+      time = b.time ?? '';
+      if (b.placeLabel && b.timezone) {
+        place = {
+          label: b.placeLabel,
+          latitude: b.latitude,
+          longitude: b.longitude,
+          timezone: b.timezone
+        };
+      }
+    } catch {
+      // ignore malformed storage
+    }
+  }
 
   async function refreshList() {
     try {
@@ -307,9 +332,11 @@
 
 <main>
   <header>
-    <!-- The "r" of "Chart" is the hidden smoke-test shortcut. -->
-    <h1>Human Design Cha<span class="rr" role="presentation" onclick={fillAuthorData}>r</span>t</h1>
-    <p class="tagline">Introduce tus datos de nacimiento.</p>
+    <h1>Human Design Chart</h1>
+    <!-- The final period is the hidden smoke-test shortcut. -->
+    <!-- onclickcapture attaches directly to the span (not delegated), so
+         it also responds when the page is driven programmatically. -->
+    <p class="tagline">Introduce tus datos de nacimiento<span role="presentation" onclickcapture={fillAuthorData}>.</span></p>
   </header>
 
   <form onsubmit={submit}>
@@ -496,6 +523,12 @@
     margin: 0;
     font-size: 0.9rem;
   }
+  /* Invisible enlarged hit area for the hidden shortcut — a bare period
+     would be a hopeless touch target. */
+  .tagline span {
+    padding: 0.6rem;
+    margin: -0.6rem;
+  }
 
   form {
     display: flex;
@@ -581,6 +614,20 @@
       justify-content: center;
     }
     form :global(input:not([type='checkbox']):not([type='range'])) {
+      text-align: center;
+    }
+    /* iOS WebKit ignores text-align on date/time inputs; their value is
+       rendered in a dedicated pseudo-element. Flexing it centres the
+       inner editor too. */
+    input::-webkit-date-and-time-value {
+      text-align: center;
+    }
+    input[type='date'],
+    input[type='time'] {
+      display: flex;
+      justify-content: center;
+    }
+    .slider-hint {
       text-align: center;
     }
     .check {

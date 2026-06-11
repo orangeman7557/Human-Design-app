@@ -76,8 +76,8 @@ Fixed in the second 2026-06-11 batch (Phase 5 close):
   to the first comma).
 - ✅ **Chart header typography.** Date-time-place subtitle left-aligns
   with the title text on both breakpoints; title↔subtitle gap tightened.
-- ✅ **Form pre-fill removed.** The form starts empty; clicking the "r"
-  of "Chart" in the home title (hidden shortcut) pre-fills the author's
+- ✅ **Form pre-fill removed.** The form starts empty; clicking the final
+  period of the home tagline (hidden shortcut) pre-fills the author's
   smoke-test data.
 - ✅ **Mobile form centring.** Labels, field text and the unknown-time
   checkbox centred on mobile; the checkbox sits below the time field

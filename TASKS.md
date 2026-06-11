@@ -25,8 +25,8 @@ Last updated: 2026-06-11.
 > laterales ahora de 12px y sin banda vacía inferior); nombre de fichero
 > `nombre carta YYYY-MM-DD-HHMM-ciudad.png`. Subtítulo de cabecera
 > alineado con el título y hueco ajustado (escritorio y móvil).
-> Formulario inicial sin prerrelleno — atajo oculto en la "r" de "Chart"
-> rellena los datos del autor (smoke test). En móvil el formulario va
+> Formulario inicial sin prerrelleno — atajo oculto en el punto final del
+> subtítulo de la home rellena los datos del autor (smoke test). En móvil el formulario va
 > centrado y el check "Hora desconocida" pasa a estar bajo el campo de
 > hora. La mejora del buscador de lugares y otras cuatro menores quedan
 > en BACKLOG ("Possible improvements"), fuera de la Fase 5. **La Fase 5 /
@@ -181,7 +181,7 @@ Subtareas completadas:
   opens the native share sheet (`navigator.share` with files); falls back
   to downloading the PNG. All pre-MVP items landed 2026-06-11 (PNG capture
   fixed on desktop and mobile, file naming, header typography, pre-fill
-  removed behind the hidden "r" shortcut, centred mobile form). **Closes
+  removed behind a hidden shortcut, centred mobile form). **Closes
   the MVP once the user validates this batch.** Followed by a
   stabilisation pass: hands-on testing against real charts, bug-fixing,
   optional TWA packaging for Google Play.
@@ -204,7 +204,7 @@ Subtareas completadas:
 - Live URL: <https://human-design-chart-app.orangeman7557.workers.dev/>
 - Repo: <https://github.com/orangeman7557/human-design-chart-app>
 - Validation case: orangeman7557's own chart — hidden shortcut: clicking
-  the "r" of "Chart" in the home title pre-fills the form
+  the final period of the home tagline pre-fills the form
   (`fillAuthorData` in `src/routes/+page.svelte`).
 - Decisions log + accepted trade-offs: [`BACKLOG.md`](./BACKLOG.md).
 - Authorship + AI assistance disclosure: [`README.md`](./README.md).

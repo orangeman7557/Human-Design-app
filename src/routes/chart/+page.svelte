@@ -310,6 +310,7 @@
         !(
           node.classList?.contains('back') ||
           node.classList?.contains('actions') ||
+          node.classList?.contains('img-actions') ||
           node.tagName === 'FOOTER'
         )
     });
@@ -400,39 +401,45 @@
   }
 </script>
 
+{#snippet imgButtons()}
+  <button
+    class="img-btn"
+    onclick={share}
+    disabled={sharing}
+    data-tip={sharing ? 'Generando imagen…' : 'Compartir'}
+    aria-label="Compartir carta"
+  >
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="18" cy="5" r="3" />
+      <circle cx="6" cy="12" r="3" />
+      <circle cx="18" cy="19" r="3" />
+      <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+      <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+    </svg>
+  </button>
+  <button
+    class="img-btn"
+    onclick={download}
+    disabled={sharing}
+    data-tip={sharing ? 'Generando imagen…' : 'Descargar imagen'}
+    aria-label="Descargar imagen"
+  >
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 3v12" /><path d="m8 11 4 4 4-4" /><path d="M4 21h16" />
+    </svg>
+  </button>
+{/snippet}
+
 <main bind:this={captureEl}>
   <header>
     <button class="back" onclick={back} aria-label="Volver">←</button>
     <h1>{birthData?.name?.trim() || 'Tu carta'}</h1>
     {#if chart}
       <div class="actions">
+        <!-- Desktop spot; on mobile the buttons render over the graph
+             corner instead (.graph-actions). -->
         <div class="img-actions">
-          <button
-            class="img-btn"
-            onclick={share}
-            disabled={sharing}
-            data-tip={sharing ? 'Generando imagen…' : 'Compartir'}
-            aria-label="Compartir carta"
-          >
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="18" cy="5" r="3" />
-              <circle cx="6" cy="12" r="3" />
-              <circle cx="18" cy="19" r="3" />
-              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
-              <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
-            </svg>
-          </button>
-          <button
-            class="img-btn"
-            onclick={download}
-            disabled={sharing}
-            data-tip={sharing ? 'Generando imagen…' : 'Descargar imagen'}
-            aria-label="Descargar imagen"
-          >
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 3v12" /><path d="m8 11 4 4 4-4" /><path d="M4 21h16" />
-            </svg>
-          </button>
+          {@render imgButtons()}
         </div>
         <button class="save" onclick={save} disabled={saved}>
           {saved ? 'Guardada ✓' : 'Guardar carta'}
@@ -492,6 +499,12 @@
           <span class="label">Definición</span>
           <span class="value">{DEFINITION_LABELS[chart.definition] ?? chart.definition}</span>
         </div>
+      </div>
+
+      <!-- Mobile only: share/download over the graph's empty top-right
+           corner, right below the Definición card. -->
+      <div class="img-actions graph-actions">
+        {@render imgButtons()}
       </div>
 
       <div class="overlay right">
@@ -823,6 +836,9 @@
     display: flex;
     gap: 0.4rem;
   }
+  .graph-actions {
+    display: none;
+  }
   .count {
     cursor: help;
   }
@@ -969,15 +985,21 @@
       /* Same title-text alignment as desktop, tight gap under the title. */
       margin: -0.1rem 0 1.25rem 3.25rem;
     }
-    /* Mobile: save stays at title height; share/download drop out of the
-       header flow to a second row, level with the date-place line. */
-    header {
-      position: relative;
+    /* Mobile: save stays at title height in the header; share/download
+       move over the graph's empty top-right corner, right below the
+       Definición card (the date-place line keeps the full width). The
+       negative bottom margin lets the graph start at the same height,
+       so the buttons overlap its empty corner instead of pushing it
+       down. */
+    .actions .img-actions {
+      display: none;
     }
-    .img-actions {
-      position: absolute;
-      top: calc(100% + 0.2rem);
-      right: 0;
+    .graph-actions {
+      display: flex;
+      order: 1;
+      align-self: flex-end;
+      margin: 0.45rem 0 calc(-2rem - 0.45rem);
+      z-index: 1;
     }
     .save {
       padding: 0.4rem 0.65rem;
