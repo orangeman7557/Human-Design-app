@@ -1,7 +1,8 @@
 <script>
   import { onMount } from 'svelte';
   import { computeChart } from '$lib/hd/chart.js';
-  import { CENTERS, PLANETS, CENTER_BY_GATE } from '$lib/hd/constants.js';
+  import { CENTERS, PLANETS, CENTER_BY_GATE, CHANNELS } from '$lib/hd/constants.js';
+  import { toBlob } from 'html-to-image';
   import { saveChart } from '$lib/db/charts.js';
   import Bodygraph from '$lib/components/Bodygraph.svelte';
 
@@ -110,37 +111,104 @@
   /** @type {{ kind: 'center', center: string, gates: number[] }
    *        | { kind: 'channel', gates: number[] }
    *        | { kind: 'gate', gates: number[] }
+   *        | { kind: 'definition', gates: number[] }
    *        | null} */
   let hover = $state(null);
-  let hoverTimer;
 
   function setHover(h) {
-    clearTimeout(hoverTimer);
     hover = h;
   }
-  function tapCenter(c) {
-    setHover({ kind: 'center', center: c, gates: [] });
-    // Touch devices get no mouseleave; auto-clear after a moment.
-    hoverTimer = setTimeout(() => (hover = null), 2500);
+  // Tap = pin: stays until the user clicks anywhere else (window handler).
+  function pin(e, h) {
+    e.stopPropagation();
+    hover = h;
   }
+
+  // Definition islands: connected groups of defined centres, plus the
+  // hanging gates whose missing partner sits in a *different* island —
+  // i.e. the gates that would bridge the split.
+  const islandOf = $derived.by(() => {
+    /** @type {Map<string, number>} */
+    const map = new Map();
+    if (!chart) return map;
+    const adj = new Map(chart.definedCenters.map((c) => [c, []]));
+    for (const [a, b] of chart.activeChannels) {
+      adj.get(CENTER_BY_GATE[a])?.push(CENTER_BY_GATE[b]);
+      adj.get(CENTER_BY_GATE[b])?.push(CENTER_BY_GATE[a]);
+    }
+    let island = 0;
+    for (const start of chart.definedCenters) {
+      if (map.has(start)) continue;
+      const queue = [start];
+      map.set(start, island);
+      while (queue.length) {
+        for (const next of adj.get(queue.pop()) ?? []) {
+          if (!map.has(next)) {
+            map.set(next, island);
+            queue.push(next);
+          }
+        }
+      }
+      island++;
+    }
+    return map;
+  });
+
+  const bridgeGates = $derived.by(() => {
+    if (!chart) return [];
+    const active = new Set(chart.activeGates);
+    const out = new Set();
+    for (const [a, b] of CHANNELS) {
+      const aOn = active.has(a);
+      const bOn = active.has(b);
+      if (aOn === bOn) continue;
+      const g = aOn ? a : b; // the hanging gate
+      const partner = aOn ? b : a;
+      const ia = islandOf.get(CENTER_BY_GATE[g]);
+      const ib = islandOf.get(CENTER_BY_GATE[partner]);
+      if (ia !== undefined && ib !== undefined && ia !== ib) out.add(g);
+    }
+    return [...out];
+  });
 
   // What the bodygraph emphasises for each hover kind:
   //   centre → only the centre; channel → channel + its two centres;
-  //   gate → its centre + the gate marker.
+  //   gate → its centre + the gate and its channel; definition → the
+  //   islands (defined centres + active channels) with the bridging
+  //   hanging gates ringed in red.
   const graphHighlight = $derived.by(() => {
-    if (!hover) return { centers: [], gates: [], channels: [] };
-    if (hover.kind === 'center') return { centers: [hover.center], gates: [], channels: [] };
+    if (!hover) return { centers: [], gates: [], channels: [], alertGates: [] };
+    if (hover.kind === 'center') {
+      return { centers: [hover.center], gates: [], channels: [], alertGates: [] };
+    }
+    if (hover.kind === 'definition') {
+      return {
+        centers: [...chart.definedCenters],
+        gates: chart.activeChannels.flat(),
+        channels: chart.activeChannels.map((p) => p.join('-')),
+        alertGates: bridgeGates
+      };
+    }
     const centers = [...new Set(hover.gates.map((g) => CENTER_BY_GATE[g]))];
     if (hover.kind === 'channel') {
-      return { centers, gates: hover.gates, channels: [hover.gates.join('-')] };
+      return { centers, gates: hover.gates, channels: [hover.gates.join('-')], alertGates: [] };
     }
-    return { centers, gates: hover.gates, channels: [] };
+    // gate: keep its own channel(s) lit so the active half isn't muted
+    const channels = CHANNELS.filter((p) => p.includes(hover.gates[0])).map((p) => p.join('-'));
+    return { centers, gates: hover.gates, channels, alertGates: [] };
   });
   const hoverCenters = $derived(new Set(graphHighlight.centers));
 
   /** Chip relation for centre hovers: is this gate's centre the hovered one? */
   function relatedToHoverCenter(...gates) {
     return hover?.kind === 'center' && gates.some((g) => CENTER_BY_GATE[g] === hover.center);
+  }
+
+  /** Activation highlight: the hovered gates, or every gate of a hovered centre. */
+  function actHl(gate) {
+    if (!hover) return false;
+    if (hover.kind === 'center') return CENTER_BY_GATE[gate] === hover.center;
+    return hover.gates.includes(gate);
   }
 
   function formatBirth(b) {
@@ -150,6 +218,39 @@
     const place =
       parts.length > 1 ? `${parts[0]}, ${parts[parts.length - 1]}` : parts[0];
     return [`${date}, ${b.time}`, place].filter(Boolean).join(' · ');
+  }
+
+  // Share the whole chart view (bodygraph + summary + lists) as a PNG via
+  // the native share sheet when available, downloading as fallback.
+  /** @type {HTMLElement | undefined} */
+  let captureEl = $state();
+  let sharing = $state(false);
+
+  async function share() {
+    if (!captureEl || sharing) return;
+    sharing = true;
+    try {
+      const blob = await toBlob(captureEl, { backgroundColor: '#0b0b0d', pixelRatio: 2 });
+      if (!blob) throw new Error('No se pudo generar la imagen.');
+      const fileName = `${(birthData?.name || 'carta').trim().replace(/\s+/g, '-')}-human-design.png`;
+      const file = new File([blob], fileName, { type: 'image/png' });
+      if (navigator.canShare?.({ files: [file] })) {
+        await navigator.share({ files: [file], title: 'Carta Human Design' });
+      } else {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = fileName;
+        a.click();
+        URL.revokeObjectURL(url);
+      }
+    } catch (e) {
+      if (e?.name !== 'AbortError') {
+        saveError = e instanceof Error ? e.message : String(e);
+      }
+    } finally {
+      sharing = false;
+    }
   }
 
   async function save() {
@@ -213,6 +314,7 @@
   {:else if error}
     <p class="status error">Error: {error}</p>
   {:else if chart}
+    <div class="capture" bind:this={captureEl}>
     {#if birthData}
       <p class="birth">{formatBirth(birthData)}</p>
     {/if}
@@ -242,7 +344,13 @@
           <span class="label">Perfil</span>
           <span class="value">{chart.profile}</span>
         </div>
-        <div class="card">
+        <div
+          class="card pointer"
+          role="presentation"
+          onmouseenter={() => setHover({ kind: 'definition', gates: [] })}
+          onmouseleave={() => setHover(null)}
+          onclick={(e) => pin(e, { kind: 'definition', gates: [] })}
+        >
           <span class="label">Definición</span>
           <span class="value">{DEFINITION_LABELS[chart.definition] ?? chart.definition}</span>
         </div>
@@ -251,14 +359,17 @@
       <div class="overlay right">
         <button
           class="png-btn"
-          disabled
-          data-tip="Exportar (próximamente)"
-          aria-label="Exportar (próximamente)"
+          onclick={share}
+          disabled={sharing}
+          data-tip={sharing ? 'Generando imagen…' : 'Compartir'}
+          aria-label="Compartir carta"
         >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="3" width="18" height="18" rx="3" />
-            <circle cx="8.5" cy="8.5" r="1.5" />
-            <path d="m21 15-5-5L5 21" />
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="18" cy="5" r="3" />
+            <circle cx="6" cy="12" r="3" />
+            <circle cx="18" cy="19" r="3" />
+            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
           </svg>
         </button>
       </div>
@@ -281,7 +392,7 @@
             class:dimmed={hover && hover.kind !== 'center' && !hoverCenters.has(c)}
             onmouseenter={() => setHover({ kind: 'center', center: c, gates: [] })}
             onmouseleave={() => setHover(null)}
-            onclick={() => tapCenter(c)}
+            onclick={(e) => pin(e, { kind: 'center', center: c, gates: [] })}
           >
             {CENTER_LABELS[c]}
           </button>
@@ -301,8 +412,10 @@
                 class="chip on"
                 role="presentation"
                 class:focus={relatedToHoverCenter(g1, g2)}
+                class:dimmed={hover?.kind === 'center' && !relatedToHoverCenter(g1, g2)}
                 onmouseenter={() => setHover({ kind: 'channel', gates: [g1, g2] })}
                 onmouseleave={() => setHover(null)}
+                onclick={(e) => pin(e, { kind: 'channel', gates: [g1, g2] })}
               >
                 {g1}-{g2}
               </span>
@@ -324,8 +437,12 @@
                 class:soft={!chart.definedCenters.includes(CENTER_BY_GATE[g])}
                 role="presentation"
                 class:focus={relatedToHoverCenter(g)}
+                class:alert={hover?.kind === 'definition' && bridgeGates.includes(g)}
+                class:dimmed={(hover?.kind === 'center' && !relatedToHoverCenter(g)) ||
+                  (hover?.kind === 'definition' && !bridgeGates.includes(g))}
                 onmouseenter={() => setHover({ kind: 'gate', gates: [g] })}
                 onmouseleave={() => setHover(null)}
+                onclick={(e) => pin(e, { kind: 'gate', gates: [g] })}
               >
                 {g}
               </span>
@@ -352,12 +469,12 @@
                 <span class="psym">{PLANET_SYMBOLS[p]}</span>{PLANET_LABELS[p]}
               </td>
               <td>
-                <span class="act" class:hl={hover?.gates.includes(chart.personality[p].gate)}>
+                <span class="act" class:hl={actHl(chart.personality[p].gate)}>
                   {chart.personality[p].gate}.{chart.personality[p].line}
                 </span>
               </td>
               <td>
-                <span class="act" class:hl={hover?.gates.includes(chart.design[p].gate)}>
+                <span class="act" class:hl={actHl(chart.design[p].gate)}>
                   {chart.design[p].gate}.{chart.design[p].line}
                 </span>
               </td>
@@ -366,8 +483,11 @@
         </tbody>
       </table>
     </section>
+    </div>
   {/if}
 </main>
+
+<svelte:window onclick={() => (hover = null)} />
 
 <style>
   main {
@@ -445,14 +565,15 @@
     gap: 0.3rem;
     margin-top: 0.2rem;
   }
+  /* Muted via explicit colours, not opacity — otherwise the population
+     tooltip rendered inside the chip becomes translucent too. */
   .tchip {
-    border: 1px solid var(--border);
+    border: 1px solid #232328;
     border-radius: 999px;
     background: var(--surface-2);
-    color: var(--text-muted);
+    color: #7e7e88;
     font-size: 0.7rem;
     padding: 0.12rem 0.55rem;
-    opacity: 0.6;
     white-space: nowrap;
   }
   .tchip.on {
@@ -548,16 +669,23 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 2rem;
-    height: 2rem;
+    width: 2.5rem;
+    height: 2.5rem;
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--radius);
-    color: var(--text-muted);
+    color: var(--text);
+    cursor: pointer;
+  }
+  .png-btn:hover {
+    border-color: var(--accent);
   }
   .png-btn:disabled {
     opacity: 0.5;
-    cursor: default;
+    cursor: progress;
+  }
+  .card.pointer {
+    cursor: pointer;
   }
   .cc {
     font-family: inherit;
@@ -601,6 +729,16 @@
   .cols .chip.soft.focus {
     box-shadow: 0 0 0 1.5px var(--text-muted);
   }
+  .cols .chip.dimmed {
+    opacity: 0.18;
+  }
+  /* Bridging gates that would close a split definition. */
+  .cols .chip.alert {
+    border-color: #e84672;
+    color: #e84672;
+    box-shadow: 0 0 0 1px #e84672;
+    opacity: 1;
+  }
   @media (max-width: 679px) {
     .overlay.left {
       position: static;
@@ -618,8 +756,12 @@
       flex-direction: row;
       flex-wrap: wrap;
       align-items: center;
-      justify-content: flex-start;
+      justify-content: flex-end;
       margin-bottom: 0.75rem;
+    }
+    .save {
+      padding: 0.4rem 0.65rem;
+      font-size: 0.78rem;
     }
   }
 

@@ -133,9 +133,8 @@ What still remains in backlog for visual fidelity:
   2026-06-10). Pendiente por decisión del usuario: aplicar el mismo patrón
   a **autoridad** y **definición** más adelante.
 
-- **Optional decorative human silhouette** behind the bodygraph (purely
-  aesthetic, common in classic HD apps). *Out of Phase 3 by user decision;
-  may be discarded.*
+- ~~Optional decorative human silhouette behind the bodygraph~~ — added
+  2026-06-11 (faint primitive figure drawn behind the channels layer).
 
 ## Dependency conflict: wrangler v4 vs adapter-cloudflare
 

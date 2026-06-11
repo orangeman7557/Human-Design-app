@@ -59,6 +59,63 @@
     `${String(Math.floor(sliderVal / 2)).padStart(2, '0')}:${sliderVal % 2 === 0 ? '00' : '30'}`
   );
 
+  const TYPE_ABBR = {
+    generator: 'G',
+    'manifesting-generator': 'MG',
+    projector: 'P',
+    manifestor: 'M',
+    reflector: 'R'
+  };
+
+  // Map of the whole day: which type results from each half-hour. Computed
+  // once per date/place (48 chart computations) and rendered as a segmented
+  // band over the slider, like classic HD birth-time rectifiers.
+  /** @type {{ type: string | null, span: number, from: number }[]} */
+  let typeBands = $state([]);
+  let bandsBusy = $state(false);
+  let bandSeq = 0;
+
+  $effect(() => {
+    if (!unknownTime || !place) {
+      typeBands = [];
+      bandsBusy = false;
+      return;
+    }
+    const d = date;
+    const pl = place;
+    const seq = ++bandSeq;
+    bandsBusy = true;
+    typeBands = [];
+    (async () => {
+      const types = [];
+      for (let v = 0; v <= 47; v++) {
+        const t = `${String(Math.floor(v / 2)).padStart(2, '0')}:${v % 2 === 0 ? '00' : '30'}`;
+        try {
+          const { type } = await computeChart({
+            name: null,
+            date: d,
+            time: t,
+            timezone: pl.timezone,
+            latitude: pl.latitude,
+            longitude: pl.longitude
+          });
+          types.push(type);
+        } catch {
+          types.push(null);
+        }
+        if (seq !== bandSeq) return;
+      }
+      const bands = [];
+      for (let i = 0; i < types.length; i++) {
+        const last = bands[bands.length - 1];
+        if (last && last.type === types[i]) last.span++;
+        else bands.push({ type: types[i], span: 1, from: i });
+      }
+      typeBands = bands;
+      bandsBusy = false;
+    })();
+  });
+
   $effect(() => {
     if (unknownTime) time = sliderTime;
   });
@@ -261,6 +318,20 @@
       {:else}
         <div class="slider-block">
           <p class="slider-hint">Elige una hora para calcular la carta:</p>
+          {#if typeBands.length}
+            <div class="bands" aria-hidden="true">
+              {#each typeBands as b}
+                <span
+                  class="band"
+                  class:active={sliderVal >= b.from && sliderVal < b.from + b.span}
+                  style={`flex-grow:${b.span}`}
+                  data-tip={TYPE_LABELS[b.type] ?? '—'}
+                >{b.span >= 3 ? (TYPE_ABBR[b.type] ?? '') : ''}</span>
+              {/each}
+            </div>
+          {:else if bandsBusy}
+            <p class="bands-busy">Calculando los tipos del día…</p>
+          {/if}
           <input
             type="range"
             min="0"
@@ -480,6 +551,35 @@
     margin: 0;
     font-size: 0.8rem;
     color: var(--text-muted);
+  }
+  .bands {
+    display: flex;
+    width: 100%;
+    height: 1.5rem;
+    border-radius: 6px;
+    overflow: hidden;
+    gap: 1px;
+  }
+  .band {
+    flex-basis: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.68rem;
+    color: var(--text-muted);
+    background: var(--surface-2);
+    min-width: 0;
+  }
+  .band.active {
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .bands-busy {
+    margin: 0;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    opacity: 0.7;
   }
   .slider-scale {
     display: flex;

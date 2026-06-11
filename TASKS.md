@@ -19,9 +19,12 @@ lives in [`BACKLOG.md`](./BACKLOG.md).
 
 Last updated: 2026-06-10.
 
-> Latest change: 3.E y Fase 4 implementadas y verificadas en navegador por
-> el asistente (2026-06-10) — pendientes de validación del usuario antes
-> de commit. Fase 3 queda cerrada con 3.F (esta actualización de docs).
+> Latest change (2026-06-11): segunda tanda de ajustes 3.E/4 + **Fase 5
+> (compartir imagen) implementada**: hover granular con definición e
+> islas/puertas-puente, pin por click, banda de tipos por hora en el
+> slider, silueta de fondo, bodygraph más compacto, compartir PNG de la
+> carta completa vía Web Share API (html-to-image). Nueva **Fase 9 — IA**
+> añadida al roadmap. En validación del usuario.
 
 ---
 
@@ -162,14 +165,25 @@ Subtareas completadas:
   (debounced) and writes the hour into the disabled time field, which is
   what "Calcular carta" uses. Unchecking restores manual entry; changing
   date/place recomputes the preview.
-- **Phase 5 — PNG export.** Share the bodygraph as an image. **Closes the
-  MVP.** Followed by a stabilisation pass: hands-on testing against real
-  charts, bug-fixing, optional TWA packaging for Google Play.
+- **Phase 5 — Share as image** (implemented 2026-06-11, pending user
+  validation). Share button on the chart page (share-2 icon, right side on
+  all viewports) captures the **whole chart view** (summary, bodygraph,
+  centres, channels, gates, activations) to PNG via `html-to-image` and
+  opens the native share sheet (`navigator.share` with files); falls back
+  to downloading the PNG. **Closes the MVP.** Followed by a stabilisation
+  pass: hands-on testing against real charts, bug-fixing, optional TWA
+  packaging for Google Play.
 - **Phase 6 — Online sync.** Optional cloud persistence of saved charts
   (local-only stays the default).
 - **Phase 7 — Composite chart.** Two saved charts rendered as a combined
   bodygraph (visual overlay distinguishing each person).
 - **Phase 8 — Transits.** View live transits over a saved chart.
+- **Phase 9 — AI handoff.** Lightweight AI integration: from any element
+  of the app (profile, type, a channel…) generate a ready-made prompt the
+  user can take to **their own** AI assistant — the AI does not run inside
+  the app, the app just makes redirecting the question easy (e.g. select
+  the profile and get the right prompt to learn about it). Exact UX to be
+  designed when the phase starts.
 
 ---
 

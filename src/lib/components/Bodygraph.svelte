@@ -60,13 +60,16 @@
   const hlCenters = $derived(new Set(highlight.centers));
   const hlGates = $derived(new Set(highlight.gates));
   const hlChannels = $derived(new Set(highlight.channels));
-  const dimming = $derived(hlCenters.size + hlGates.size + hlChannels.size > 0);
+  // alertGates: gates marked with a red ring (e.g. the hanging gates that
+  // would bridge a split definition). They stay at full strength.
+  const hlAlert = $derived(new Set(highlight.alertGates ?? []));
+  const dimming = $derived(hlCenters.size + hlGates.size + hlChannels.size + hlAlert.size > 0);
 
   function channelKept(ch) {
     return hlChannels.has(`${ch.g1}-${ch.g2}`);
   }
   function gateKept(gate) {
-    return hlGates.has(gate) || hlCenters.has(CENTER_BY_GATE[gate]);
+    return hlGates.has(gate) || hlAlert.has(gate) || hlCenters.has(CENTER_BY_GATE[gate]);
   }
 
   /** Opaque muting: blend a hex colour toward the page background. */
@@ -187,6 +190,26 @@
     role="img"
     aria-label="Bodygraph Human Design"
   >
+    <!-- ── 0. Faint human silhouette (decorative, behind everything) ─────── -->
+    <g fill="#15151e" pointer-events="none" aria-hidden="true">
+      <circle cx="529" cy="165" r="120" />
+      <!-- torso: shoulders → waist → hips -->
+      <path d="M529 270
+               C 380 285 300 340 280 430
+               C 262 515 268 700 295 870
+               C 312 980 330 1030 360 1060
+               L 698 1060
+               C 728 1030 746 980 763 870
+               C 790 700 796 515 778 430
+               C 758 340 678 285 529 270 Z" />
+      <!-- arms -->
+      <line x1="300" y1="430" x2="225" y2="930" stroke="#15151e" stroke-width="78" stroke-linecap="round" />
+      <line x1="758" y1="430" x2="833" y2="930" stroke="#15151e" stroke-width="78" stroke-linecap="round" />
+      <!-- legs -->
+      <line x1="445" y1="1050" x2="395" y2="1570" stroke="#15151e" stroke-width="95" stroke-linecap="round" />
+      <line x1="613" y1="1050" x2="663" y2="1570" stroke="#15151e" stroke-width="95" stroke-linecap="round" />
+    </g>
+
     <!-- ── 1. Channels (two halves per channel, behind the centres) ──────── -->
     <g>
       {#each channelHalves as ch}
@@ -277,6 +300,7 @@
     <g>
       {#each gateEntries as g}
         {@const gd = dimming && !gateKept(g.gate)}
+        {@const alert = hlAlert.has(g.gate)}
         {@const baseText = g.active ? '#ffffff' : g.inDefinedCenter ? '#4a2060' : '#aaaab4'}
         <g pointer-events="none">
           {#if g.active}
@@ -287,11 +311,17 @@
               stroke-width="1.5"
             />
           {/if}
+          {#if alert}
+            <circle
+              cx={g.pos.x} cy={g.pos.y} r="20"
+              fill="none" stroke="#e84672" stroke-width="3.5"
+            />
+          {/if}
           <text
             x={g.pos.x} y={g.pos.y}
             text-anchor="middle" dominant-baseline="central"
             fill={gd ? dimColor(baseText, 0.5) : baseText}
-            font-size="16"
+            font-size="17"
             font-weight={g.active ? '600' : '400'}
             font-family="system-ui, sans-serif"
           >{g.gate}</text>
@@ -304,7 +334,7 @@
 <style>
   .bodygraph-wrap {
     width: 100%;
-    max-width: 460px;
+    max-width: 420px;
     margin: 0 auto 2rem;
   }
 
