@@ -191,23 +191,40 @@
     aria-label="Bodygraph Human Design"
   >
     <!-- ── 0. Faint human silhouette (decorative, behind everything) ─────── -->
-    <g fill="#15151e" pointer-events="none" aria-hidden="true">
-      <circle cx="529" cy="165" r="120" />
-      <!-- torso: shoulders → waist → hips -->
-      <path d="M529 270
-               C 380 285 300 340 280 430
-               C 262 515 268 700 295 870
-               C 312 980 330 1030 360 1060
-               L 698 1060
-               C 728 1030 746 980 763 870
-               C 790 700 796 515 778 430
-               C 758 340 678 285 529 270 Z" />
-      <!-- arms -->
-      <line x1="300" y1="430" x2="225" y2="930" stroke="#15151e" stroke-width="78" stroke-linecap="round" />
-      <line x1="758" y1="430" x2="833" y2="930" stroke="#15151e" stroke-width="78" stroke-linecap="round" />
-      <!-- legs -->
-      <line x1="445" y1="1050" x2="395" y2="1570" stroke="#15151e" stroke-width="95" stroke-linecap="round" />
-      <line x1="613" y1="1050" x2="663" y2="1570" stroke="#15151e" stroke-width="95" stroke-linecap="round" />
+    <g fill="#15151e" stroke="#15151e" pointer-events="none" aria-hidden="true">
+      <!-- head + neck -->
+      <circle cx="529" cy="155" r="112" stroke="none" />
+      <rect x="492" y="245" width="74" height="70" rx="24" stroke="none" />
+      <!-- torso: shoulders → waist → hips, gently curved -->
+      <path
+        stroke="none"
+        d="M529 295
+           C 415 300 345 345 326 430
+           C 310 505 312 610 326 730
+           C 338 845 356 965 386 1072
+           L 672 1072
+           C 702 965 720 845 732 730
+           C 746 610 748 505 732 430
+           C 713 345 643 300 529 295 Z"
+      />
+      <!-- arms with a soft elbow bend -->
+      <polyline
+        points="340,455 282,690 258,945"
+        fill="none" stroke-width="74" stroke-linecap="round" stroke-linejoin="round"
+      />
+      <polyline
+        points="718,455 776,690 800,945"
+        fill="none" stroke-width="74" stroke-linecap="round" stroke-linejoin="round"
+      />
+      <!-- legs with a slight knee bend, feet apart -->
+      <polyline
+        points="462,1065 442,1320 416,1572"
+        fill="none" stroke-width="92" stroke-linecap="round" stroke-linejoin="round"
+      />
+      <polyline
+        points="596,1065 616,1320 642,1572"
+        fill="none" stroke-width="92" stroke-linecap="round" stroke-linejoin="round"
+      />
     </g>
 
     <!-- ── 1. Channels (two halves per channel, behind the centres) ──────── -->
@@ -313,8 +330,8 @@
           {/if}
           {#if alert}
             <circle
-              cx={g.pos.x} cy={g.pos.y} r="20"
-              fill="none" stroke="#e84672" stroke-width="3.5"
+              cx={g.pos.x} cy={g.pos.y} r="22"
+              fill="none" stroke="#e84672" stroke-width="5"
             />
           {/if}
           <text

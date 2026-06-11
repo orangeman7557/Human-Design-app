@@ -321,12 +321,14 @@
           {#if typeBands.length}
             <div class="bands" aria-hidden="true">
               {#each typeBands as b}
+                {@const label = TYPE_LABELS[b.type] ?? '—'}
+                {@const fits = label.length <= b.span * 1.3}
                 <span
                   class="band"
                   class:active={sliderVal >= b.from && sliderVal < b.from + b.span}
                   style={`flex-grow:${b.span}`}
-                  data-tip={TYPE_LABELS[b.type] ?? '—'}
-                >{b.span >= 3 ? (TYPE_ABBR[b.type] ?? '') : ''}</span>
+                  data-tip={fits ? undefined : label}
+                >{fits ? label : (TYPE_ABBR[b.type] ?? '')}</span>
               {/each}
             </div>
           {:else if bandsBusy}

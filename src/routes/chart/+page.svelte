@@ -154,6 +154,9 @@
     return map;
   });
 
+  // The *inactive* partner gates that, if activated, would complete a
+  // channel between two different islands — i.e. close the split. Shown
+  // with a red ring on the bodygraph only (they're not in any chip list).
   const bridgeGates = $derived.by(() => {
     if (!chart) return [];
     const active = new Set(chart.activeGates);
@@ -162,11 +165,11 @@
       const aOn = active.has(a);
       const bOn = active.has(b);
       if (aOn === bOn) continue;
-      const g = aOn ? a : b; // the hanging gate
-      const partner = aOn ? b : a;
-      const ia = islandOf.get(CENTER_BY_GATE[g]);
-      const ib = islandOf.get(CENTER_BY_GATE[partner]);
-      if (ia !== undefined && ib !== undefined && ia !== ib) out.add(g);
+      const hanging = aOn ? a : b;
+      const missing = aOn ? b : a;
+      const ia = islandOf.get(CENTER_BY_GATE[hanging]);
+      const ib = islandOf.get(CENTER_BY_GATE[missing]);
+      if (ia !== undefined && ib !== undefined && ia !== ib) out.add(missing);
     }
     return [...out];
   });
@@ -234,7 +237,10 @@
       if (!blob) throw new Error('No se pudo generar la imagen.');
       const fileName = `${(birthData?.name || 'carta').trim().replace(/\s+/g, '-')}-human-design.png`;
       const file = new File([blob], fileName, { type: 'image/png' });
-      if (navigator.canShare?.({ files: [file] })) {
+      // Desktop share sheets often lack a "save file" target, so reserve
+      // the native sheet for touch devices and download directly elsewhere.
+      const touchDevice = window.matchMedia('(pointer: coarse)').matches;
+      if (touchDevice && navigator.canShare?.({ files: [file] })) {
         await navigator.share({ files: [file], title: 'Carta Human Design' });
       } else {
         const url = URL.createObjectURL(blob);
@@ -437,9 +443,8 @@
                 class:soft={!chart.definedCenters.includes(CENTER_BY_GATE[g])}
                 role="presentation"
                 class:focus={relatedToHoverCenter(g)}
-                class:alert={hover?.kind === 'definition' && bridgeGates.includes(g)}
                 class:dimmed={(hover?.kind === 'center' && !relatedToHoverCenter(g)) ||
-                  (hover?.kind === 'definition' && !bridgeGates.includes(g))}
+                  hover?.kind === 'definition'}
                 onmouseenter={() => setHover({ kind: 'gate', gates: [g] })}
                 onmouseleave={() => setHover(null)}
                 onclick={(e) => pin(e, { kind: 'gate', gates: [g] })}
@@ -731,13 +736,6 @@
   }
   .cols .chip.dimmed {
     opacity: 0.18;
-  }
-  /* Bridging gates that would close a split definition. */
-  .cols .chip.alert {
-    border-color: #e84672;
-    color: #e84672;
-    box-shadow: 0 0 0 1px #e84672;
-    opacity: 1;
   }
   @media (max-width: 679px) {
     .overlay.left {
