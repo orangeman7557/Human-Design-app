@@ -103,6 +103,9 @@
     const inChannel = new Set(chart.activeChannels.flat());
     return chart.activeGates.filter((g) => !inChannel.has(g));
   });
+  const hangingInDefined = $derived(
+    hangingGates.filter((g) => chart?.definedCenters.includes(CENTER_BY_GATE[g])).length
+  );
 
   // Hover interlinking: one hover source at a time (a centre chip or SVG
   // centre, a channel chip, or a hanging-gate chip). Everything else —
@@ -509,7 +512,13 @@
       </section>
 
       <section>
-        <h2>Puertas colgantes ({hangingGates.length})</h2>
+        <h2>
+          Puertas colgantes
+          <span
+            class="count"
+            data-tip={`${hangingGates.length - hangingInDefined} puertas en centros indefinidos\n${hangingInDefined} puertas en centros definidos`}
+          >({hangingGates.length})</span>
+        </h2>
         {#if hangingGates.length === 0}
           <p class="none">Ninguna</p>
         {:else}
@@ -583,7 +592,7 @@
   }
   header {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     gap: 1rem;
     margin-bottom: 0.4rem;
   }
@@ -639,9 +648,9 @@
   .birth {
     color: var(--text-muted);
     font-size: 0.85rem;
-    /* Left-aligned with the title text (back button 2.25rem + gap 1rem),
-       pulled up so it sits at the share/download icons' height. */
-    margin: -2.3rem 0 1.5rem 3.25rem;
+    /* Left-aligned with the title text (back button 2.25rem + gap 1rem).
+       Alignment/spacing fine-tuning pending — see BACKLOG. */
+    margin: 0 0 1.5rem 3.25rem;
   }
 
   .type-list {
@@ -696,7 +705,11 @@
     font-weight: 400;
     padding: 0.3rem 0.55rem;
     border-radius: 7px;
-    white-space: nowrap;
+    /* pre: keeps single lines intact and honours \n in multi-line tips */
+    white-space: pre;
+    text-transform: none;
+    letter-spacing: normal;
+    text-align: left;
     pointer-events: none;
     z-index: 5;
   }
@@ -756,18 +769,16 @@
     align-items: stretch;
     z-index: 1;
   }
-  /* Save button at title height, share/download below at subtitle height. */
+  /* Desktop: share/download to the left of the save button, same row. */
   .actions {
     margin-left: auto;
     display: flex;
-    flex-direction: column;
-    align-items: flex-end;
+    align-items: center;
     gap: 0.5rem;
   }
   .img-actions {
     display: flex;
     gap: 0.4rem;
-    order: 2;
   }
   .count {
     cursor: help;
@@ -899,6 +910,15 @@
     }
     .birth {
       margin: 0.2rem 0 1.25rem 0;
+    }
+    /* Mobile: icons below the save button. */
+    .actions {
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0.4rem;
+    }
+    .img-actions {
+      order: 2;
     }
     .save {
       padding: 0.4rem 0.65rem;

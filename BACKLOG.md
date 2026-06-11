@@ -48,6 +48,24 @@ without competing against a clone of the same code.
 **Files touched in this change:**
 `LICENSE`, `NOTICE` (new), `README.md`, `package.json`, `BACKLOG.md`.
 
+## Known bugs — fix in the next batch (2026-06-11)
+
+- **GRAVE — chart calculation error.** For **1984-01-30, 01:00, Madrid**
+  the app computes **Projector** but the correct type is **Reflector**
+  (i.e. it shows defined centres in a chart that should have none).
+  Something is off in the calculation chain — possibly an activation
+  landing on the wrong side of a gate boundary (ephemeris precision, mean
+  vs true node, timezone/DST handling for winter dates, or the design-time
+  88° solar-arc search). Review and fix; re-validate against the two known
+  reference charts afterwards.
+- **Desktop image download renders wrong.** The PNG produced by the
+  download button on desktop comes out broken (user report). Reproduce
+  and fix (`captureBlob` in `src/routes/chart/+page.svelte`,
+  `html-to-image`).
+- **Chart header typography.** Align the date-time-place subtitle with the
+  main title, and fix the title↔subtitle spacing (desktop and mobile —
+  on mobile the gap is too large).
+
 ## Astronomical precision (HD variables: color, tone, base)
 
 **Current decision:** the app uses

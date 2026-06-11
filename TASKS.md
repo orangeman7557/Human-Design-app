@@ -19,12 +19,12 @@ lives in [`BACKLOG.md`](./BACKLOG.md).
 
 Last updated: 2026-06-10.
 
-> Latest change (2026-06-11): segunda tanda de ajustes 3.E/4 + **Fase 5
-> (compartir imagen) implementada**: hover granular con definición e
-> islas/puertas-puente, pin por click, banda de tipos por hora en el
-> slider, silueta de fondo, bodygraph más compacto, compartir PNG de la
-> carta completa vía Web Share API (html-to-image). Nueva **Fase 9 — IA**
-> añadida al roadmap. En validación del usuario.
+> Latest change (2026-06-11): fases 3, 4 y 5 implementadas y pulidas en
+> varias tandas de ajustes validadas por el usuario sobre la marcha.
+> **Dos bugs anotados para la próxima tanda (ver BACKLOG, "Known bugs")**:
+> uno GRAVE de cálculo (1984-01-30 01:00 Madrid → da Projector, debería
+> ser Reflector) y la descarga de imagen rota en escritorio + tipografía
+> de la cabecera. El MVP no se da por cerrado hasta resolverlos.
 
 ---
 
