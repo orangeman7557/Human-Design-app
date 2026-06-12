@@ -347,7 +347,12 @@
 
     <label>
       <span>Fecha de nacimiento</span>
-      <input type="date" bind:value={date} required />
+      <span class="dtwrap">
+        <input type="date" bind:value={date} required />
+        <span class="dt-value" class:muted={!date} aria-hidden="true">
+          {date ? date.split('-').reverse().join('/') : 'dd/mm/aaaa'}
+        </span>
+      </span>
     </label>
 
     <label>
@@ -360,7 +365,10 @@
         <span>Hora local de nacimiento</span>
       </span>
       {#if !unknownTime}
-        <input type="time" bind:value={time} required aria-label="Hora local de nacimiento" />
+        <span class="dtwrap">
+          <input type="time" bind:value={time} required aria-label="Hora local de nacimiento" />
+          <span class="dt-value" class:muted={!time} aria-hidden="true">{time || '--:--'}</span>
+        </span>
       {:else}
         <div class="slider-block">
           <p class="slider-hint">Elige una hora aproximada para calcular la carta:</p>
@@ -566,6 +574,20 @@
     opacity: 0.45;
   }
 
+  /* Wrapper for date/time inputs: anchors the mobile-only centred value
+     overlay (.dt-value, hidden on desktop — see the media query). */
+  .dtwrap {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+  .dtwrap input {
+    width: 100%;
+  }
+  .dt-value {
+    display: none;
+  }
+
   .field {
     /* Anchor for the absolutely-positioned checkbox on desktop. */
     position: relative;
@@ -616,28 +638,28 @@
     form :global(input:not([type='checkbox']):not([type='range'])) {
       text-align: center;
     }
-    /* Mobile WebKit/Chromium render the date/time value inside shadow
-       parts that ignore the input's own text-align. Cover every known
-       part: -webkit-date-and-time-value (iOS Safari + Android Chrome),
-       -webkit-datetime-edit + fields wrapper (desktop-style editor). */
-    input[type='date'],
-    input[type='time'] {
+    /* Native date/time widgets ignore text-align and the shadow-part
+       hacks on Android Chrome, so on small screens the real value is
+       painted transparent and our own centred overlay shows it instead.
+       The input keeps the taps, so the native picker opens as always. */
+    .dtwrap input {
+      color: transparent;
+    }
+    .dt-value {
+      position: absolute;
+      inset: 0;
       display: flex;
+      align-items: center;
       justify-content: center;
-      text-align: center;
+      pointer-events: none;
+      color: var(--text);
+      font-size: 1rem;
+      text-transform: none;
+      letter-spacing: normal;
     }
-    input::-webkit-date-and-time-value {
-      text-align: center;
-      width: 100%;
-      flex: 1;
-    }
-    input::-webkit-datetime-edit {
-      width: 100%;
-      text-align: center;
-    }
-    input::-webkit-datetime-edit-fields-wrapper {
-      width: 100%;
-      justify-content: center;
+    .dt-value.muted {
+      color: var(--text-muted);
+      opacity: 0.7;
     }
     .slider-hint {
       text-align: center;
