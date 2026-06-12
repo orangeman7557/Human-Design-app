@@ -103,6 +103,9 @@ Fixed in the second 2026-06-11 batch (Phase 5 close):
   the time field.
 - **Back arrow on the chart page.** The ← glyph looks small and
   off-centre inside its circle; fix the sizing/centring.
+- **Small, subtle clear-form button on the home screen.** Now that the
+  form keeps the last chart's data when coming back, offer a discreet
+  way to empty all the fields at once.
 
 ## Astronomical precision (HD variables: color, tone, base)
 

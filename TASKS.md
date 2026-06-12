@@ -17,23 +17,22 @@ Statuses:
 The deeper context (technical trade-offs, future ideas, deferred decisions)
 lives in [`BACKLOG.md`](./BACKLOG.md).
 
-Last updated: 2026-06-11.
+Last updated: 2026-06-12.
 
-> Latest change (2026-06-11, second batch): **cerrados todos los puntos
-> pre-MVP**. PNG arreglado en escritorio (el clon heredaba el
-> `margin: 0 auto` y desplazaba todo el contenido) y en móvil (márgenes
-> laterales ahora de 12px y sin banda vacía inferior); nombre de fichero
-> `nombre carta YYYY-MM-DD-HHMM-ciudad.png`. Subtítulo de cabecera
-> alineado con el título y hueco ajustado (escritorio y móvil).
-> Formulario inicial sin prerrelleno — atajo oculto en el punto final del
-> subtítulo de la home rellena los datos del autor (smoke test). En móvil el formulario va
-> centrado y el check "Hora desconocida" pasa a estar bajo el campo de
-> hora. La mejora del buscador de lugares y otras cuatro menores quedan
-> en BACKLOG ("Possible improvements"), fuera de la Fase 5. **La Fase 5 /
-> MVP queda lista para validación final del usuario.** Antes de esto, en
-> el primer batch del día: nodo verdadero (bug GRAVE), tooltips táctiles,
-> tap en centros del SVG, chip seleccionada destacada+atenuado, botones
-> móviles de cabecera.
+> Latest change (2026-06-12): **MVP cerrado — Fase 5 validada por el
+> usuario.** Último retoque: título y subtítulo centrados en el PNG
+> exportado (solo en la exportación, vía clase `.capturing` durante la
+> captura). El cierre acumuló (2026-06-11): nodo verdadero (bug GRAVE de
+> cálculo), tooltips táctiles, tap en centros del SVG, chip seleccionada
+> destacada + atenuado del resto, PNG arreglado en escritorio y móvil
+> con nomenclatura `nombre carta YYYY-MM-DD-HHMM-ciudad.png`, tipografía
+> de cabecera, formulario sin prerrelleno (atajo oculto en el punto
+> final del subtítulo de la home), formulario móvil centrado, botones
+> compartir/descargar en la esquina del bodygraph en móvil, y el
+> formulario conserva los datos al volver de la carta. Siguiente:
+> estabilización (pruebas con cartas reales) y, cuando toquen, las
+> mejoras menores de BACKLOG ("Possible improvements" — incluye nueva:
+> botón sutil para vaciar el formulario).
 
 ---
 
@@ -133,9 +132,9 @@ Subtareas completadas:
   `$state` proxies — records are saved via `$state.snapshot`.
 - Validated by the user locally; merged to `main` and deployed.
 
-## ⬜ Pending
+## ✅ Phases 3-5 — Visual polish, unknown hour, share as image (MVP closed 2026-06-12)
 
-- **Phase 3 — Visual polish (in progress).** Blocks:
+- **Phase 3 — Visual polish.** Blocks:
   - ✅ **3.A** Summary above the bodygraph; bodygraph ~8% smaller; birth
     data line; chart title = chart name.
   - ✅ **3.B** Type as 5 always-visible chips, ordered by population share
@@ -146,8 +145,7 @@ Subtareas completadas:
   - ✅ **3.D** Striped white/red "Both" channel halves; round joins fix the
     integration-polyline artifacts; inactive gate contrast raised;
     narrow-screen review (375px, no overflow).
-  - ✅ **3.E** Layout + interaction round (implemented 2026-06-10, pending
-    user validation):
+  - ✅ **3.E** Layout + interaction round (2026-06-10):
     - Active type chip in solid amber (stronger highlight).
     - Four info cards overlay the upper-left of the bodygraph; centres
       list overlays the upper-right; hover/tap on a centre draws a
@@ -167,24 +165,28 @@ Subtareas completadas:
       (denormalised `type` stored on save, lazily backfilled for older
       records).
   - ✅ **3.F** Docs closing pass — this update.
-- **Phase 4 — Unknown birth time mode** (implemented 2026-06-10, pending
-  user validation). Form order now date → place → time. "Hora desconocida"
+- **Phase 4 — Unknown birth time mode** (2026-06-10, validated).
+  Form order now date → place → time. "Hora desconocida"
   checkbox disables the time field and reveals a 0-24h slider (30-min
   steps); scrubbing computes and shows the resulting type for that hour
   (debounced) and writes the hour into the disabled time field, which is
   what "Calcular carta" uses. Unchecking restores manual entry; changing
   date/place recomputes the preview.
-- **Phase 5 — Share as image** (implemented 2026-06-11, pending user
-  validation). Share button on the chart page (share-2 icon, right side on
-  all viewports) captures the **whole chart view** (summary, bodygraph,
-  centres, channels, gates, activations) to PNG via `html-to-image` and
-  opens the native share sheet (`navigator.share` with files); falls back
-  to downloading the PNG. All pre-MVP items landed 2026-06-11 (PNG capture
-  fixed on desktop and mobile, file naming, header typography, pre-fill
-  removed behind a hidden shortcut, centred mobile form). **Closes
-  the MVP once the user validates this batch.** Followed by a
-  stabilisation pass: hands-on testing against real charts, bug-fixing,
-  optional TWA packaging for Google Play.
+- **Phase 5 — Share as image** (2026-06-11, validated 2026-06-12).
+  Share/download buttons on the chart page capture the **whole chart
+  view** (summary, bodygraph, centres, channels, gates, activations) to
+  PNG via `html-to-image` — native share sheet on touch, download on
+  desktop. Export-only layout centres the title and birth line in the
+  image. File name: `nombre carta YYYY-MM-DD-HHMM-ciudad.png`. All
+  pre-MVP items landed 2026-06-11 (PNG capture fixed on desktop and
+  mobile, header typography, pre-fill removed behind a hidden shortcut,
+  centred mobile form). **The MVP is closed.**
+
+## ⬜ Pending
+
+- **Stabilisation pass (post-MVP).** Hands-on testing against real
+  charts, bug-fixing, optional TWA packaging for Google Play. Minor UX
+  items live in BACKLOG ("Possible improvements").
 - **Phase 6 — Online sync.** Optional cloud persistence of saved charts
   (local-only stays the default).
 - **Phase 7 — Composite chart.** Two saved charts rendered as a combined
