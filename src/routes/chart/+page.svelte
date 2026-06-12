@@ -1,5 +1,5 @@
 <script>
-  import { onMount } from 'svelte';
+  import { onMount, tick } from 'svelte';
   import { computeChart } from '$lib/hd/chart.js';
   import { CENTERS, PLANETS, CENTER_BY_GATE, CHANNELS } from '$lib/hd/constants.js';
   import { toBlob } from 'html-to-image';
@@ -272,6 +272,9 @@
   }
 
   async function captureBlob() {
+    // Wait for the .capturing class (set via `sharing`) to reach the DOM
+    // before cloning, so the export-only centring is picked up.
+    await tick();
     // Capture <main> so the header (name + birth data) is part of the
     // image, filtering out interactive chrome (back button, action
     // buttons and their tooltips, footer). The clone is re-padded with a
@@ -430,7 +433,9 @@
   </button>
 {/snippet}
 
-<main bind:this={captureEl}>
+<!-- While sharing, .capturing applies the export-only layout (centred
+     title and birth line) that the PNG clone picks up. -->
+<main bind:this={captureEl} class:capturing={sharing}>
   <header>
     <button class="back" onclick={back} aria-label="Volver">←</button>
     <h1>{birthData?.name?.trim() || 'Tu carta'}</h1>
@@ -707,6 +712,17 @@
     /* Left-aligned with the title text (back button 2.25rem + gap 1rem);
        slight negative top margin tucks it right under the title. */
     margin: -0.15rem 0 1.5rem 3.25rem;
+  }
+
+  /* Export-only layout: the back button and action buttons are filtered
+     out of the PNG clone, so while capturing the title and the birth
+     line are centred to keep the image header balanced. */
+  main.capturing header {
+    justify-content: center;
+  }
+  main.capturing .birth {
+    margin-left: 0;
+    text-align: center;
   }
 
   .type-list {
