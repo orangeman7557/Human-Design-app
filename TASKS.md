@@ -19,20 +19,24 @@ lives in [`BACKLOG.md`](./BACKLOG.md).
 
 Last updated: 2026-06-12.
 
-> Latest change (2026-06-12): **MVP cerrado — Fase 5 validada por el
-> usuario.** Último retoque: título y subtítulo centrados en el PNG
-> exportado (solo en la exportación, vía clase `.capturing` durante la
-> captura). El cierre acumuló (2026-06-11): nodo verdadero (bug GRAVE de
-> cálculo), tooltips táctiles, tap en centros del SVG, chip seleccionada
-> destacada + atenuado del resto, PNG arreglado en escritorio y móvil
-> con nomenclatura `nombre carta YYYY-MM-DD-HHMM-ciudad.png`, tipografía
-> de cabecera, formulario sin prerrelleno (atajo oculto en el punto
-> final del subtítulo de la home), formulario móvil centrado, botones
-> compartir/descargar en la esquina del bodygraph en móvil, y el
-> formulario conserva los datos al volver de la carta. Siguiente:
+> Latest change (2026-06-12): **MVP cerrado y validado en producción.**
+> Últimos retoques tras la validación de Fase 5: título y subtítulo
+> centrados en el PNG exportado, orden de la lista de centros (Sacral
+> tras Bazo y Plexo Solar), y fecha/hora del formulario centradas en
+> móvil mediante overlay propio (Android Chrome ignora `text-align` y
+> todos los pseudo-elementos del widget nativo; el valor nativo se pinta
+> transparente y un span centrado muestra el valor — el picker nativo
+> sigue abriéndose igual). El cierre acumuló además (2026-06-11): nodo
+> verdadero (bug GRAVE de cálculo), tooltips táctiles, tap en centros
+> del SVG, chip seleccionada destacada + atenuado, PNG arreglado en
+> escritorio y móvil (`nombre carta YYYY-MM-DD-HHMM-ciudad.png`),
+> tipografía de cabecera, atajo oculto en el punto final del subtítulo,
+> formulario móvil centrado, botones compartir/descargar en la esquina
+> del bodygraph y conservación de datos al volver. Siguiente:
 > estabilización (pruebas con cartas reales) y, cuando toquen, las
-> mejoras menores de BACKLOG ("Possible improvements" — incluye nueva:
-> botón sutil para vaciar el formulario).
+> mejoras menores de BACKLOG ("Possible improvements"). URL corta /
+> dominio propio: comentado 2026-06-12, aplazado por decisión del
+> usuario.
 
 ---
 
