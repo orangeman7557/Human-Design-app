@@ -181,6 +181,10 @@
   // ── Gate render entries (one per gate, all 64) ─────────────────────────────
   const definedCenterSet = new Set(chart.definedCenters);
 
+  // Inactive gate numbers on a defined centre: the dark purple reads on
+  // every defined fill except Root's dark brown, which needs a light tone.
+  const INACTIVE_TEXT_ON_DEFINED = { root: '#d8c8b0' };
+
   const gateEntries = Object.entries(GATE_POSITIONS).map(([gateStr, pos]) => {
     const gate = Number(gateStr);
     const state = gateState(gate);
@@ -225,53 +229,51 @@
     </g>
 
     <!-- ── 1. Channels (two halves per channel, behind the centres) ──────── -->
-    <g>
-      {#each channelHalves as ch}
-        <g opacity={dimming && !channelKept(ch) ? 0.22 : 1}>
+    <!-- Two passes: inactive halves first, active halves on top. The
+         integration trunk (Q→Q2) is shared by the x-34 paths (coloured by
+         gate 34) and the Q→57 halves (coloured by gate 57); without this
+         z-order an inactive grey half paints over a completed channel's
+         stretch there (e.g. 20-34 complete with 57 undefined). -->
+    {#snippet channelHalf(ch, half)}
+      {@const color = half === 'a' ? ch.c1 : ch.c2}
+      {@const striped = half === 'a' ? ch.both1 : ch.both2}
+      <g opacity={dimming && !channelKept(ch) ? 0.22 : 1}>
         {#if ch.custom}
-          <polyline points={ch.pathA} fill="none"
-            stroke={ch.c1} stroke-width="12" stroke-linecap="round" stroke-linejoin="round"
+          {@const pts = half === 'a' ? ch.pathA : ch.pathB}
+          <polyline points={pts} fill="none"
+            stroke={color} stroke-width="12" stroke-linecap="round" stroke-linejoin="round"
           />
-          {#if ch.both1}
-            <polyline points={ch.pathA} fill="none"
-              stroke={PERS_COLOR} stroke-width="12" stroke-linecap="butt"
-              stroke-linejoin="round" stroke-dasharray={STRIPE_DASH}
-            />
-          {/if}
-          <polyline points={ch.pathB} fill="none"
-            stroke={ch.c2} stroke-width="12" stroke-linecap="round" stroke-linejoin="round"
-          />
-          {#if ch.both2}
-            <polyline points={ch.pathB} fill="none"
+          {#if striped}
+            <polyline points={pts} fill="none"
               stroke={PERS_COLOR} stroke-width="12" stroke-linecap="butt"
               stroke-linejoin="round" stroke-dasharray={STRIPE_DASH}
             />
           {/if}
         {:else}
-          <line
-            x1={ch.x1} y1={ch.y1} x2={ch.mx} y2={ch.my}
-            stroke={ch.c1} stroke-width="12" stroke-linecap="butt"
-          />
-          {#if ch.both1}
-            <line
-              x1={ch.x1} y1={ch.y1} x2={ch.mx} y2={ch.my}
-              stroke={PERS_COLOR} stroke-width="12" stroke-linecap="butt"
-              stroke-dasharray={STRIPE_DASH}
-            />
-          {/if}
-          <line
-            x1={ch.mx} y1={ch.my} x2={ch.x2} y2={ch.y2}
-            stroke={ch.c2} stroke-width="12" stroke-linecap="butt"
-          />
-          {#if ch.both2}
-            <line
-              x1={ch.mx} y1={ch.my} x2={ch.x2} y2={ch.y2}
+          {@const x1 = half === 'a' ? ch.x1 : ch.mx}
+          {@const y1 = half === 'a' ? ch.y1 : ch.my}
+          {@const x2 = half === 'a' ? ch.mx : ch.x2}
+          {@const y2 = half === 'a' ? ch.my : ch.y2}
+          <line {x1} {y1} {x2} {y2} stroke={color} stroke-width="12" stroke-linecap="butt" />
+          {#if striped}
+            <line {x1} {y1} {x2} {y2}
               stroke={PERS_COLOR} stroke-width="12" stroke-linecap="butt"
               stroke-dasharray={STRIPE_DASH}
             />
           {/if}
         {/if}
-        </g>
+      </g>
+    {/snippet}
+    <g>
+      {#each [false, true] as activePass}
+        {#each channelHalves as ch}
+          {#if (ch.s1 !== 'inactive') === activePass}
+            {@render channelHalf(ch, 'a')}
+          {/if}
+          {#if (ch.s2 !== 'inactive') === activePass}
+            {@render channelHalf(ch, 'b')}
+          {/if}
+        {/each}
       {/each}
     </g>
 
@@ -317,7 +319,11 @@
       {#each gateEntries as g}
         {@const gd = dimming && !gateKept(g.gate)}
         {@const alert = hlAlert.has(g.gate)}
-        {@const baseText = g.active ? '#ffffff' : g.inDefinedCenter ? '#4a2060' : '#aaaab4'}
+        {@const baseText = g.active
+          ? '#ffffff'
+          : g.inDefinedCenter
+            ? (INACTIVE_TEXT_ON_DEFINED[CENTER_BY_GATE[g.gate]] ?? '#4a2060')
+            : '#aaaab4'}
         <g pointer-events="none">
           {#if g.active}
             <circle

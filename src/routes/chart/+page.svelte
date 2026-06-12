@@ -1,5 +1,8 @@
 <script>
   import { onMount, tick } from 'svelte';
+
+  // Injected by Vite's `define` from package.json (see vite.config.js).
+  const version = __APP_VERSION__;
   import { computeChart } from '$lib/hd/chart.js';
   import { CENTERS, PLANETS, CENTER_BY_GATE, CHANNELS } from '$lib/hd/constants.js';
   import { toBlob } from 'html-to-image';
@@ -611,8 +614,16 @@
         <thead>
           <tr>
             <th></th>
-            <th>Personality</th>
-            <th>Design</th>
+            <th>
+              <span class="side-head" data-tip="Se define en el momento del nacimiento">
+                <span class="side-dot personality" aria-hidden="true"></span>Personality
+              </span>
+            </th>
+            <th>
+              <span class="side-head" data-tip={'Se define 88° de arco solar antes\ndel nacimiento (~88 días)'}>
+                <span class="side-dot design" aria-hidden="true"></span>Design
+              </span>
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -638,7 +649,7 @@
     </section>
 
     <footer>
-      <small>v0.1.0 · source-available · free for noncommercial use · Built with AI assistance</small>
+      <small>v{version} · source-available · free for noncommercial use · Built with AI assistance</small>
     </footer>
   {/if}
 </main>
@@ -751,6 +762,10 @@
     font-size: 0.85rem;
     padding: 0.3rem 0.75rem;
     opacity: 1;
+    /* Long labels (Manifesting Generator) overflow the narrow desktop
+       type card if kept on one line. */
+    white-space: normal;
+    text-align: center;
   }
   .tchip .pct {
     cursor: help;
@@ -1069,6 +1084,26 @@
     display: inline-block;
     width: 1.3em;
     opacity: 0.8;
+  }
+
+  .side-head {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+    cursor: help;
+  }
+  /* Same colours the two sides use on gates/channels in the graph. */
+  .side-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex: none;
+  }
+  .side-dot.personality {
+    background: #ffffff;
+  }
+  .side-dot.design {
+    background: #e84672;
   }
 
   .chips {

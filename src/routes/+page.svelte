@@ -8,6 +8,9 @@
 
   import { onMount } from 'svelte';
   import { goto } from '$app/navigation';
+
+  // Injected by Vite's `define` from package.json (see vite.config.js).
+  const version = __APP_VERSION__;
   import CityAutocomplete from '$lib/components/CityAutocomplete.svelte';
   import {
     listCharts,
@@ -34,6 +37,22 @@
 
   /** @type {{ label: string, latitude: number, longitude: number, timezone: string } | null} */
   let place = $state(null);
+
+  // Remounts CityAutocomplete on form clear (its free-text query is
+  // internal state that a null `place` deliberately doesn't wipe).
+  let formEpoch = $state(0);
+
+  function clearForm() {
+    name = '';
+    date = '';
+    time = '';
+    place = null;
+    unknownTime = false;
+    sliderVal = 24;
+    error = null;
+    sessionStorage.removeItem('birthData');
+    formEpoch++;
+  }
 
   // Hidden smoke-test shortcut (the final period of the tagline).
   function fillAuthorData() {
@@ -266,7 +285,9 @@
   }
 
   function openSaved(c) {
-    sessionStorage.setItem('birthData', JSON.stringify(c.birth));
+    // The saved (possibly renamed) chart name wins over whatever name was
+    // typed in the form before saving.
+    sessionStorage.setItem('birthData', JSON.stringify({ ...c.birth, name: c.name }));
     goto('/chart');
   }
 
@@ -342,7 +363,7 @@
   <form onsubmit={submit}>
     <label>
       <span>Nombre</span>
-      <input type="text" bind:value={name} placeholder="Opcional" autocomplete="off" />
+      <input type="text" bind:value={name} autocomplete="off" />
     </label>
 
     <label>
@@ -357,7 +378,9 @@
 
     <label>
       <span>Lugar de nacimiento</span>
-      <CityAutocomplete bind:value={place} />
+      {#key formEpoch}
+        <CityAutocomplete bind:value={place} />
+      {/key}
     </label>
 
     <div class="field">
@@ -425,6 +448,15 @@
 
     <button type="submit" disabled={submitting}>
       {submitting ? 'Calculando…' : 'Calcular carta'}
+    </button>
+
+    <!-- onclickcapture: direct listener, also usable when the page is
+         driven programmatically (delegated handlers need trusted events). -->
+    <button type="button" class="clear-link" onclickcapture={clearForm}>
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 12a9 9 0 1 1-2.64-6.36" /><path d="M21 3v6h-6" />
+      </svg>
+      Borrar formulario
     </button>
   </form>
 
@@ -502,7 +534,7 @@
   </section>
 
   <footer>
-    <small>v0.1.0 · source-available · free for noncommercial use · Built with AI assistance</small>
+    <small>v{version} · source-available · free for noncommercial use · Built with AI assistance</small>
   </footer>
 </main>
 
@@ -798,6 +830,27 @@
     color: var(--danger);
     font-size: 0.9rem;
     margin: 0;
+  }
+  /* Deliberately understated: a quiet escape hatch under the CTA, not a
+     competing action. */
+  .clear-link {
+    align-self: center;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    margin-top: -0.25rem;
+    background: none;
+    border: none;
+    padding: 0.2rem 0.4rem;
+    font-family: inherit;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    opacity: 0.6;
+    cursor: pointer;
+  }
+  .clear-link:hover {
+    opacity: 1;
+    color: var(--text);
   }
 
   .saved {
