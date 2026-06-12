@@ -103,9 +103,16 @@ Fixed in the second 2026-06-11 batch (Phase 5 close):
   the time field.
 - **Back arrow on the chart page.** The ← glyph looks small and
   off-centre inside its circle; fix the sizing/centring.
-- **Small, subtle clear-form button on the home screen.** Now that the
-  form keeps the last chart's data when coming back, offer a discreet
-  way to empty all the fields at once.
+- ~~Small, subtle clear-form button on the home screen~~ — done
+  2026-06-12 (quiet "Borrar formulario" link under the CTA).
+- **More human-looking background silhouette.** The current figure
+  behind the bodygraph is barely visible and too schematic. It should
+  read as a human profile, so people who know nothing about Human
+  Design understand the centres map to the body.
+- **Estimated weight/influence per planetary activation.** Surface the
+  commonly attributed relative weight of each activation (e.g. the Sun
+  is said to weigh far more than any other body). Research the usual
+  percentages before designing the UI.
 
 ## Astronomical precision (HD variables: color, tone, base)
 

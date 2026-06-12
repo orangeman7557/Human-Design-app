@@ -19,7 +19,21 @@ lives in [`BACKLOG.md`](./BACKLOG.md).
 
 Last updated: 2026-06-12.
 
-> Latest change (2026-06-12): **MVP cerrado y validado en producción.**
+> Latest change (2026-06-12, post-MVP batch **v0.1.1**): etiqueta git
+> `v0.1.0` en el commit del cierre del MVP; versión del footer leída de
+> package.json (fuente única vía Vite define); enlace sutil "Borrar
+> formulario" bajo el CTA; campo nombre sin placeholder; al abrir una
+> carta guardada se usa el nombre guardado/renombrado; cabeceras
+> Personality/Design con circulito de color a la derecha + tooltip
+> (nacimiento vs 88° de arco solar ≈ 88 días antes); chip de tipo activo
+> con salto de línea (Manifesting Generator desbordaba en escritorio);
+> bodygraph en dos pasadas de pintado (las mitades grises ya no tapan el
+> tramo común de 20-34/10-34 cuando la 57 está indefinida); puertas
+> inactivas legibles en Raíz definida (arena claro sobre marrón).
+> Política de versiones acordada: patch para arreglos, minor para fases
+> nuevas (Fase 6 → 0.2.0), 1.0.0 cuando se considere estable.
+>
+> Previo (2026-06-12): **MVP cerrado y validado en producción.**
 > Últimos retoques tras la validación de Fase 5: título y subtítulo
 > centrados en el PNG exportado, orden de la lista de centros (Sacral
 > tras Bazo y Plexo Solar), y fecha/hora del formulario centradas en
