@@ -616,15 +616,27 @@
     form :global(input:not([type='checkbox']):not([type='range'])) {
       text-align: center;
     }
-    /* iOS WebKit ignores text-align on date/time inputs; their value is
-       rendered in a dedicated pseudo-element. Flexing it centres the
-       inner editor too. */
-    input::-webkit-date-and-time-value {
-      text-align: center;
-    }
+    /* Mobile WebKit/Chromium render the date/time value inside shadow
+       parts that ignore the input's own text-align. Cover every known
+       part: -webkit-date-and-time-value (iOS Safari + Android Chrome),
+       -webkit-datetime-edit + fields wrapper (desktop-style editor). */
     input[type='date'],
     input[type='time'] {
       display: flex;
+      justify-content: center;
+      text-align: center;
+    }
+    input::-webkit-date-and-time-value {
+      text-align: center;
+      width: 100%;
+      flex: 1;
+    }
+    input::-webkit-datetime-edit {
+      width: 100%;
+      text-align: center;
+    }
+    input::-webkit-datetime-edit-fields-wrapper {
+      width: 100%;
       justify-content: center;
     }
     .slider-hint {

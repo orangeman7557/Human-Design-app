@@ -16,10 +16,11 @@ export const GATE_WHEEL_START = 302; // longitud eclíptica donde arranca la pue
 export const GATE_SIZE = 360 / 64;   // 5,625°
 export const LINE_SIZE = GATE_SIZE / 6; // 0,9375°
 
-// Los 9 centros del bodygraph.
+// The 9 bodygraph centres. Display order (centre chips list): sacral
+// goes after spleen and solar plexus by design decision.
 export const CENTERS = /** @type {const} */ ([
   'head', 'ajna', 'throat', 'g', 'heart',
-  'sacral', 'spleen', 'solarPlexus', 'root'
+  'spleen', 'solarPlexus', 'sacral', 'root'
 ]);
 
 // Centros que son motores (capaces de motorizar la Garganta).
