@@ -203,29 +203,28 @@
     role="img"
     aria-label="Bodygraph Human Design"
   >
-    <!-- ── 0. Faint human bust (decorative, behind everything) ───────────── -->
-    <!-- Blurred head/neck/shoulders fading out below the chest. Anatomy is
-         anchored to the graph: the figure's throat sits over the Throat
-         centre (y≈566), so the head wraps Head+Ajna. -->
-    <defs>
-      <linearGradient id="silhouette-fade" gradientUnits="userSpaceOnUse" x1="0" y1="20" x2="0" y2="1150">
-        <stop offset="0" stop-color="#15151e" />
-        <stop offset="0.5" stop-color="#15151e" />
-        <stop offset="1" stop-color="#15151e" stop-opacity="0" />
-      </linearGradient>
-      <filter id="silhouette-blur" x="-20%" y="-20%" width="140%" height="140%">
-        <feGaussianBlur stdDeviation="20" />
-      </filter>
-    </defs>
-    <g fill="url(#silhouette-fade)" filter="url(#silhouette-blur)" pointer-events="none" aria-hidden="true">
-      <circle cx="524" cy="235" r="208" />
-      <rect x="452" y="420" width="144" height="230" rx="48" />
-      <path d="M524 630
-               C 388 640 286 690 234 770
-               C 188 845 166 950 158 1080
-               L 152 1180 L 896 1180 L 890 1080
-               C 882 950 860 845 814 770
-               C 762 690 660 640 524 630 Z" />
+    <!-- ── 0. Human figure (decorative, behind everything) ───────────────── -->
+    <!-- Full-body crisp silhouette: head with ears wrapping Head+Ajna, neck
+         at the Throat, shoulders flaring into a bell shape that reaches the
+         bottom edge of the viewBox. The Spleen/Ego triangles intentionally
+         poke outside the figure's sides. -->
+    <g fill="#1e2940" pointer-events="none" aria-hidden="true">
+      <ellipse cx="524" cy="290" rx="118" ry="165" />
+      <ellipse cx="398" cy="330" rx="22" ry="38" />
+      <ellipse cx="650" cy="330" rx="22" ry="38" />
+      <rect x="472" y="400" width="104" height="120" />
+      <path d="M472 470
+               L 472 510
+               C 400 525, 330 555, 282 615
+               C 240 670, 230 700, 228 760
+               C 180 980, 120 1260, 75 1480
+               L 48 1630
+               L 1000 1630
+               L 973 1480
+               C 928 1260, 868 980, 820 760
+               C 818 700, 808 670, 766 615
+               C 718 555, 648 525, 576 510
+               L 576 470 Z" />
     </g>
 
     <!-- ── 1. Channels (two halves per channel, behind the centres) ──────── -->
