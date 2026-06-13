@@ -23,6 +23,10 @@ Last updated: 2026-06-13.
 > solo Sol, Tierra y Luna visibles; botón sutil "Mostrar más ▾ / Mostrar
 > menos ▴" bajo la tabla despliega los 13 cuerpos. Nota: el PNG
 > compartido/descargado captura la tabla en el estado en que esté.
+> Infra: los worktrees de sesión ya no instalan `node_modules` propio
+> (~244 MB cada uno) — resuelven desde el checkout principal y
+> `vite.config.js` lo permite en `server.fs.allow`; worktrees y ramas
+> viejas purgadas (~980 MB recuperados). Regla en CLAUDE.md §4.
 >
 > Previo (2026-06-12, post-MVP batch **v0.1.1**): etiqueta git
 > `v0.1.0` en el commit del cierre del MVP; versión del footer leída de

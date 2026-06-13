@@ -94,6 +94,7 @@ El usuario introduce su fecha, hora y lugar de nacimiento → la app calcula su 
 - **Idioma de los comentarios:** inglés en el código. El usuario se comunica en español; la UI también está en español (pendiente de internacionalización formal en fases futuras).
 - **Caso de prueba de validación:** atajo oculto — pinchar el punto final del subtítulo de la home ("…datos de nacimiento.") rellena el formulario con los datos de orangeman7557 (1984-03-13, 09:30, Madrid) como smoke test rápido.
 - **No hay tests automatizados.** Validación manual contra la carta conocida del autor.
+- **Nunca ejecutar `npm install` dentro de un worktree.** Las sesiones de IA trabajan en worktrees bajo `.claude/worktrees/` sin `node_modules` propio: Node resuelve las dependencias subiendo hasta el `node_modules` del checkout principal, y `vite.config.js` permite servirlas desde ahí. Si una tarea añade una dependencia nueva, instalarla en la carpeta principal del proyecto (`npm install <paquete>` en `/Users/i7up/Documents/Claude/Projects/human-design-app`).
 
 ---
 
