@@ -56,6 +56,10 @@ Open:
   channel dimming fix for the 20-34-10-57 group (commit `dcb09e9`) broke
   the painting of those channels when they are **active**. Repro: chart
   19/11/1984, 12:00, Madrid, España.
+- **Compute effect retries ~8× on error.** When `computeChart` throws,
+  the effect in `src/routes/chart/+page.svelte` re-runs and re-throws
+  the same error about eight times (console noise only; the user-facing
+  error message shows fine). Found in the 2026-06-13 QA pass.
 
 Fixed in the 2026-06-11 batch:
 
@@ -104,13 +108,22 @@ Fixed in the second 2026-06-11 batch (Phase 5 close):
 - **Birth-place error messages placement.** Shown below the field they
   look cramped; consider showing them to the right of the "Lugar de
   nacimiento" label instead.
-- **Unknown-hour slider should respect the current time.** Checking
-  "Hora desconocida" should start the slider at whatever hour was already
-  entered (not always 12:00); unchecking should keep the slider's hour in
-  the time field.
+- ~~Unknown-hour slider should respect the current time~~ — done
+  2026-06-13 (checking seeds the slider from the entered hour, rounded
+  to the nearest half-hour; unchecking keeps the slider's hour).
 - **Saved-chart list should show only "city, country".** The place label
   on each saved-chart chip currently includes the intermediate regions
-  (province, autonomous community…); shorten it to city + country.
+  (province, autonomous community…); shorten it to city + country. The
+  chart page header already does this trim — reuse it.
+- **City autocomplete surfaces regions and counties as cities.**
+  "Valencia" returns "Comunidad Valenciana, Comunidad Valenciana,
+  España" (duplicated label) and "Valencia County, Nuevo México" among
+  the suggestions. Filter or down-rank non-city entries and dedup
+  labels.
+- **Invalid-data error message mixes languages.** A chart with broken
+  stored data shows "Fecha/hora inválida:" followed by Luxon's raw
+  English message ("the zone … is not supported"). Nearly unreachable
+  for real users; low priority.
 - **Back arrow on the chart page (mobile).** The ← glyph looks small and
   off-centre inside its circle on the mobile version; fix the
   sizing/centring there.
@@ -201,6 +214,11 @@ subir de versión.
 
 ## Known tech debt
 
+- Channel **30-41** (half-channel edge case) still pending verification
+  against a reference tool. Partial check 2026-06-13: the chart
+  19/11/1984, 12:00, Madrid has 30-41 as a complete channel with Solar
+  Plexus and Root defined and the channel painted — structurally
+  consistent, but not yet contrasted with a reference chart.
 - A handful of older source files still carry Spanish code comments from
   Phase 0/1.1. They get translated to English as they're touched.
 - The Nominatim integration uses the public endpoint without an explicit
