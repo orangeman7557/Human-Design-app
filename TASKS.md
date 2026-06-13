@@ -19,7 +19,23 @@ lives in [`BACKLOG.md`](./BACKLOG.md).
 
 Last updated: 2026-06-13.
 
-> Latest change (2026-06-13, tarde): pasada de estabilización post-MVP.
+> Latest change (2026-06-13): plan de la **Fase 6** (handoff a IA + info
+> de elementos) acordado y registrado — sin empezar a implementar
+> todavía. UX: panel reutilizable (bottom-sheet en móvil / lateral en
+> escritorio) abierto por un único "ⓘ Saber más" contextual, no un icono
+> por chip, conservando el resaltado actual al pinchar. Handoff sin API
+> (coste y clave expuesta lo descartan): "Copiar prompt" siempre +
+> deep-links opcionales (ChatGPT/Claude/Perplexity; Gemini cae a copiar);
+> recordar la IA preferida. Texto propio solo para el núcleo (~35 piezas:
+> tipos, estrategias, autoridades, líneas de perfil, definiciones,
+> centros); las 64 puertas y 36 canales se delegan a la IA del usuario.
+> Legal verificado: los hechos del sistema no son copyrightables, la
+> expresión oficial sí, las marcas admiten uso nominativo → redacción
+> 100% propia + I Ching de dominio público + disclaimer de no-afiliación.
+> Multi-idioma desde el diseño. Sub-fases 6.A-6.E (piloto con los Tipos).
+> Detalle completo en BACKLOG. Versión objetivo 0.2.0.
+>
+> Previo (2026-06-13, tarde): pasada de estabilización post-MVP.
 > Arreglado el bug del circuito de integración (los canales 20-34/10-34/
 > 10-20 que comparten el tronco Q→Q2 se cortaban al hacer hover sobre una
 > chip de canal: el color opaco de atenuado pintaba encima del canal
@@ -237,15 +253,28 @@ Subtareas completadas:
 - **Stabilisation pass (post-MVP).** Hands-on testing against real
   charts, bug-fixing, optional TWA packaging for Google Play. Minor UX
   items live in BACKLOG ("Possible improvements").
-- **Phase 6 — AI handoff + element info.** Lightweight AI integration:
-  from any element of the app (profile, type, a channel…) generate a
-  ready-made prompt the user can take to **their own** AI assistant — the
-  AI does not run inside the app, the app just makes redirecting the
-  question easy (e.g. select the profile and get the right prompt to
-  learn about it). Also basic in-app textual info for each element (type,
-  authority, profile, centres, channels) — only if legally viable: own
-  wording or genuinely free sources, never copied from Jovian Archive.
-  Exact UX to be designed when the phase starts.
+- **Phase 6 — AI handoff + element info** (plan validated 2026-06-13;
+  full detail in BACKLOG). Lightweight, no-API AI integration: from any
+  element, build a ready-made, chart-personalised prompt the user takes to
+  **their own** AI — the AI never runs inside the app. Plus a small core
+  of original in-app text. Key decisions:
+  - UX: a single contextual "ⓘ Saber más" opens a reusable info panel
+    (bottom sheet on mobile / side panel on desktop); the existing
+    tap-to-highlight behaviour is kept (no icon per chip).
+  - Handoff: "Copy prompt" (always) + optional deep links (ChatGPT,
+    Claude, Perplexity; Gemini falls back to copy); remember preferred AI.
+    No API/backend (cost + key exposure rule it out); BYOK deferred.
+  - Content: own text only for the core (~35 pieces — types, strategies,
+    authorities, profile lines, definitions, centres). 64 gates + 36
+    channels delegate to the user's AI (minimal own info + "go deeper").
+  - Legal: facts aren't copyrightable, official expression is, trademarks
+    allow nominative use; 100% own wording + public-domain I Ching +
+    non-affiliation disclaimer. Not legal advice.
+  - Multi-language ready from the start (content + prompt templates
+    i18n-keyed).
+  - Sub-phases: 6.A scaffolding + pilot (the 5 Types) → 6.B core content →
+    6.C handoff polish → 6.D gates/channels via handoff → 6.E disclaimer +
+    docs.
 - **Phase 7 — Composite chart.** Two saved charts rendered as a combined
   bodygraph (visual overlay distinguishing each person).
 - **Phase 8 — Transits.** View live transits over a saved chart.
