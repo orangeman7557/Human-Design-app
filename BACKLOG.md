@@ -48,7 +48,14 @@ without competing against a clone of the same code.
 **Files touched in this change:**
 `LICENSE`, `NOTICE` (new), `README.md`, `package.json`, `BACKLOG.md`.
 
-## Known bugs & pre-MVP tasks (updated 2026-06-11)
+## Known bugs & pre-MVP tasks (updated 2026-06-13)
+
+Open:
+
+- **Integration-circuit channels paint wrong when active.** The uniform
+  channel dimming fix for the 20-34-10-57 group (commit `dcb09e9`) broke
+  the painting of those channels when they are **active**. Repro: chart
+  19/11/1984, 12:00, Madrid, España.
 
 Fixed in the 2026-06-11 batch:
 
@@ -101,6 +108,9 @@ Fixed in the second 2026-06-11 batch (Phase 5 close):
   "Hora desconocida" should start the slider at whatever hour was already
   entered (not always 12:00); unchecking should keep the slider's hour in
   the time field.
+- **Saved-chart list should show only "city, country".** The place label
+  on each saved-chart chip currently includes the intermediate regions
+  (province, autonomous community…); shorten it to city + country.
 - **Back arrow on the chart page (mobile).** The ← glyph looks small and
   off-centre inside its circle on the mobile version; fix the
   sizing/centring there.
