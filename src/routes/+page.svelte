@@ -75,8 +75,19 @@
   // Checking the box disables manual time entry and reveals a 0-24h
   // slider (half-hour steps). The slider hour is written into `time`, so
   // submitting works unchanged; a live preview shows the resulting type.
+  // Checking seeds the slider from any manually entered hour (nearest
+  // half-hour); unchecking leaves the slider's hour in the time field.
   let unknownTime = $state(false);
   let sliderVal = $state(24); // half-hours → 12:00
+
+  // Reads the checkbox from the event: onchange fires before bind:checked
+  // has updated `unknownTime`.
+  function seedSliderFromTime(e) {
+    if (!e.currentTarget.checked) return;
+    const m = /^(\d{2}):(\d{2})$/.exec(time);
+    if (!m) return;
+    sliderVal = Math.min(47, Number(m[1]) * 2 + Math.round(Number(m[2]) / 30));
+  }
   /** @type {string | null} */
   let previewType = $state(null);
   let previewBusy = $state(false);
@@ -437,7 +448,7 @@
         </div>
       {/if}
       <label class="check">
-        <input type="checkbox" bind:checked={unknownTime} />
+        <input type="checkbox" bind:checked={unknownTime} onchange={seedSliderFromTime} />
         Hora desconocida
       </label>
     </div>
