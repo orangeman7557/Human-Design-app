@@ -101,14 +101,11 @@ Fixed in the second 2026-06-11 batch (Phase 5 close):
   "Hora desconocida" should start the slider at whatever hour was already
   entered (not always 12:00); unchecking should keep the slider's hour in
   the time field.
-- **Back arrow on the chart page.** The ← glyph looks small and
-  off-centre inside its circle; fix the sizing/centring.
+- **Back arrow on the chart page (mobile).** The ← glyph looks small and
+  off-centre inside its circle on the mobile version; fix the
+  sizing/centring there.
 - ~~Small, subtle clear-form button on the home screen~~ — done
   2026-06-12 (quiet "Borrar formulario" link under the CTA).
-- **More human-looking background silhouette.** The current figure
-  behind the bodygraph is barely visible and too schematic. It should
-  read as a human profile, so people who know nothing about Human
-  Design understand the centres map to the body.
 - **Estimated weight/influence per planetary activation.** Surface the
   commonly attributed relative weight of each activation (e.g. the Sun
   is said to weigh far more than any other body). Research the usual
@@ -163,47 +160,21 @@ match the reference tool too (16.5/9.5 where the mean node gave .6).
 
 Roadmap renumbered 2026-06-10: 3 visual polish → 4 unknown hour →
 5 PNG export (MVP closes) → 6 online sync → 7 composite → 8 transits.
+Reordered 2026-06-13: AI handoff + element info moves up to Phase 6;
+online sync moves down to Phase 9.
 
-- **Phase 6 (planned):** optional cloud sync (local-only stays the default).
+- **Phase 6 (planned):** AI handoff + basic element info. Ready-made
+  prompts to take to the user's **own** AI assistant, plus in-app textual
+  descriptions of type, authority, profile, centres and channels —
+  written from scratch or from genuinely free sources, only if legally
+  viable (no plagiarism, never copied from Jovian Archive).
 - **Phase 7 (planned):** composite chart. **Advanced composite** beyond the
   combined visual: relationship dynamics (electromagnetic channels,
   dominance, compromise, companionship).
 - **Phase 8 (planned):** **transits** view over a saved bodygraph.
-- **Centre names on the bodygraph.** Decided 2026-06-10: instead of a lone
-  "G" identifier, all centres will get proper name labels at some later
-  point. Not scheduled yet.
-- **Textual interpretations** of type, authority, profile, centers, channels.
-  Written from scratch or from free sources — never copied from Jovian
-  Archive.
+- **Phase 9 (planned):** optional cloud sync (local-only stays the default).
 - **Multi-language activation**: the architecture is already multi-language
   ready; English translation pending once there's traction.
-
-## Bodygraph polish remaining (Phase 3)
-
-La rebase de geometría (2026-05-21) reemplazó todo el sistema de coordenadas:
-viewBox `1058×1630`, vértices explícitos de centros y 64 posiciones de puertas
-tomadas directamente del referencial (`docs/bodygraph-reference-coordinates.txt`).
-
-The pre-close review items requested 2026-06-10 (stronger type highlight,
-info cards upper-left of the graph, centres list upper-right with pointer
-line, plus a second batch of chip/hover/home-screen adjustments) are
-tracked as **block 3.E in TASKS.md**.
-
-What still remains in backlog for visual fidelity:
-
-- **Rounded corners on centre shapes.** Los triángulos y el rombo tienen
-  esquinas afiladas. Redondear suavemente los vértices (SVG `stroke-linejoin`
-  o paths con `rx`) daría un acabado más pulido sin alterar la geometría.
-  Evaluar centro a centro — probablemente más relevante en Corazón y Bazo.
-  *Out of Phase 3 by user decision.*
-
-- **Presentación visual de la información básica.** El tipo ya se muestra
-  como chips (las 5 opciones visibles, la activa marcada — Fase 3,
-  2026-06-10). Pendiente por decisión del usuario: aplicar el mismo patrón
-  a **autoridad** y **definición** más adelante.
-
-- ~~Optional decorative human silhouette behind the bodygraph~~ — added
-  2026-06-11 (faint primitive figure drawn behind the channels layer).
 
 ## Dependency conflict: wrangler v4 vs adapter-cloudflare
 
@@ -220,9 +191,6 @@ subir de versión.
 
 ## Known tech debt
 
-- Files from the first commit ended up with macOS permissions that prevent
-  the AI assistant's tools from modifying them. Current workaround: delete
-  and recreate. Root cause not yet investigated.
 - A handful of older source files still carry Spanish code comments from
   Phase 0/1.1. They get translated to English as they're touched.
 - The Nominatim integration uses the public endpoint without an explicit

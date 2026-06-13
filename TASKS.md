@@ -19,7 +19,16 @@ lives in [`BACKLOG.md`](./BACKLOG.md).
 
 Last updated: 2026-06-13.
 
-> Latest change (2026-06-13): tabla de activaciones plegada por defecto —
+> Latest change (2026-06-13): roadmap reordenado — la antigua Fase 9
+> (handoff a IA) pasa a ser la **Fase 6** y amplía su alcance: además de
+> los prompts para la IA del usuario incluirá información textual básica
+> de cada elemento (tipo, autoridad, perfil, centros, canales), siempre
+> que sea legalmente viable sin incurrir en plagio; el guardado en línea
+> pasa de Fase 6 a **Fase 9**. Backlog depurado: mejoras visuales ya
+> hechas o descartadas eliminadas (solo queda ajustar la flecha ← de
+> volver en móvil) y retirada la deuda de permisos macOS.
+>
+> Previo (2026-06-13): tabla de activaciones plegada por defecto —
 > solo Sol, Tierra y Luna visibles; botón sutil "Mostrar más ▾ / Mostrar
 > menos ▴" bajo la tabla despliega los 13 cuerpos. Nota: el PNG
 > compartido/descargado captura la tabla en el estado en que esté.
@@ -214,17 +223,20 @@ Subtareas completadas:
 - **Stabilisation pass (post-MVP).** Hands-on testing against real
   charts, bug-fixing, optional TWA packaging for Google Play. Minor UX
   items live in BACKLOG ("Possible improvements").
-- **Phase 6 — Online sync.** Optional cloud persistence of saved charts
-  (local-only stays the default).
+- **Phase 6 — AI handoff + element info.** Lightweight AI integration:
+  from any element of the app (profile, type, a channel…) generate a
+  ready-made prompt the user can take to **their own** AI assistant — the
+  AI does not run inside the app, the app just makes redirecting the
+  question easy (e.g. select the profile and get the right prompt to
+  learn about it). Also basic in-app textual info for each element (type,
+  authority, profile, centres, channels) — only if legally viable: own
+  wording or genuinely free sources, never copied from Jovian Archive.
+  Exact UX to be designed when the phase starts.
 - **Phase 7 — Composite chart.** Two saved charts rendered as a combined
   bodygraph (visual overlay distinguishing each person).
 - **Phase 8 — Transits.** View live transits over a saved chart.
-- **Phase 9 — AI handoff.** Lightweight AI integration: from any element
-  of the app (profile, type, a channel…) generate a ready-made prompt the
-  user can take to **their own** AI assistant — the AI does not run inside
-  the app, the app just makes redirecting the question easy (e.g. select
-  the profile and get the right prompt to learn about it). Exact UX to be
-  designed when the phase starts.
+- **Phase 9 — Online sync.** Optional cloud persistence of saved charts
+  (local-only stays the default).
 
 ---
 
