@@ -203,28 +203,34 @@
     role="img"
     aria-label="Bodygraph Human Design"
   >
-    <!-- ── 0. Human figure (decorative, behind everything) ───────────────── -->
-    <!-- Full-body crisp silhouette: head with ears wrapping Head+Ajna, neck
-         at the Throat, shoulders flaring into a bell shape that reaches the
-         bottom edge of the viewBox. The Spleen/Ego triangles intentionally
-         poke outside the figure's sides. -->
-    <g fill="#1e2940" pointer-events="none" aria-hidden="true">
-      <ellipse cx="524" cy="290" rx="118" ry="165" />
-      <ellipse cx="398" cy="330" rx="22" ry="38" />
-      <ellipse cx="650" cy="330" rx="22" ry="38" />
-      <rect x="472" y="400" width="104" height="120" />
-      <path d="M472 470
-               L 472 510
-               C 400 525, 330 555, 282 615
-               C 240 670, 230 700, 228 760
-               C 180 980, 120 1260, 75 1480
-               L 48 1630
-               L 1000 1630
-               L 973 1480
-               C 928 1260, 868 980, 820 760
-               C 818 700, 808 670, 766 615
-               C 718 555, 648 525, 576 510
-               L 576 470 Z" />
+    <!-- ── 0. Human bust (decorative, behind everything) ─────────────────── -->
+    <!-- Ethereal head + shoulders: earless dome wrapping Head+Ajna, neck at
+         the Throat, sloping shoulders. Below the chest the shape dissolves
+         via a vertical fade (no outline), softened by a light blur. -->
+    <defs>
+      <linearGradient id="silhouette-fade" gradientUnits="userSpaceOnUse" x1="0" y1="100" x2="0" y2="945">
+        <stop offset="0" stop-color="#171f2e" />
+        <stop offset="0.58" stop-color="#171f2e" />
+        <stop offset="0.82" stop-color="#171f2e" stop-opacity="0.25" />
+        <stop offset="1" stop-color="#171f2e" stop-opacity="0" />
+      </linearGradient>
+      <filter id="silhouette-blur" x="-15%" y="-15%" width="130%" height="130%">
+        <feGaussianBlur stdDeviation="9" />
+      </filter>
+    </defs>
+    <g fill="url(#silhouette-fade)" filter="url(#silhouette-blur)" pointer-events="none" aria-hidden="true">
+      <path d="M524 118
+               C 440 118, 398 190, 398 290
+               C 398 360, 430 425, 468 452
+               C 480 470, 482 485, 480 505
+               C 430 540, 345 562, 285 612
+               C 250 660, 140 840, 30 1000
+               L 1018 1000
+               C 908 840, 798 660, 763 612
+               C 703 562, 618 540, 568 505
+               C 566 485, 568 470, 580 452
+               C 618 425, 650 360, 650 290
+               C 650 190, 608 118, 524 118 Z" />
     </g>
 
     <!-- ── 1. Channels (two halves per channel, behind the centres) ──────── -->
