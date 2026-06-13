@@ -100,6 +100,9 @@
   /** @type {string | null} */
   let saveError = $state(null);
 
+  // Activations table shows Sun/Earth/Moon by default (first 3 of PLANETS).
+  let showAllPlanets = $state(false);
+
   // Hanging gates: active gates that don't complete any channel.
   const hangingGates = $derived.by(() => {
     if (!chart) return [];
@@ -627,7 +630,7 @@
           </tr>
         </thead>
         <tbody>
-          {#each PLANETS as p}
+          {#each (showAllPlanets ? PLANETS : PLANETS.slice(0, 3)) as p}
             <tr>
               <td class="planet">
                 <span class="psym">{PLANET_SYMBOLS[p]}</span>{PLANET_LABELS[p]}
@@ -646,6 +649,9 @@
           {/each}
         </tbody>
       </table>
+      <button class="show-more" onclick={() => (showAllPlanets = !showAllPlanets)}>
+        {showAllPlanets ? 'Mostrar menos ▴' : 'Mostrar más ▾'}
+      </button>
     </section>
 
     <footer>
@@ -1148,5 +1154,17 @@
   }
   .planet {
     color: var(--text-muted);
+  }
+  .show-more {
+    display: block;
+    padding: 0.45rem 0.6rem;
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    cursor: pointer;
+  }
+  .show-more:hover {
+    color: var(--accent);
   }
 </style>

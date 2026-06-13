@@ -17,9 +17,14 @@ Statuses:
 The deeper context (technical trade-offs, future ideas, deferred decisions)
 lives in [`BACKLOG.md`](./BACKLOG.md).
 
-Last updated: 2026-06-12.
+Last updated: 2026-06-13.
 
-> Latest change (2026-06-12, post-MVP batch **v0.1.1**): etiqueta git
+> Latest change (2026-06-13): tabla de activaciones plegada por defecto —
+> solo Sol, Tierra y Luna visibles; botón sutil "Mostrar más ▾ / Mostrar
+> menos ▴" bajo la tabla despliega los 13 cuerpos. Nota: el PNG
+> compartido/descargado captura la tabla en el estado en que esté.
+>
+> Previo (2026-06-12, post-MVP batch **v0.1.1**): etiqueta git
 > `v0.1.0` en el commit del cierre del MVP; versión del footer leída de
 > package.json (fuente única vía Vite define); enlace sutil "Borrar
 > formulario" bajo el CTA; campo nombre sin placeholder; al abrir una
