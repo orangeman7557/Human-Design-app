@@ -214,8 +214,23 @@
         <stop offset="0.82" stop-color="#171f2e" stop-opacity="0.25" />
         <stop offset="1" stop-color="#171f2e" stop-opacity="0" />
       </linearGradient>
-      <filter id="silhouette-blur" x="-15%" y="-15%" width="130%" height="130%">
-        <feGaussianBlur stdDeviation="9" />
+      <!-- Banding fixes: filters default to 8-bit linearRGB, which collapses
+           these dark sRGB tones into ~5 levels (huge bands) — force sRGB
+           interpolation. Residual 1-level quantisation steps are broken up
+           by fine noise grain clipped to the shape's own alpha (dithering). -->
+      <filter id="silhouette-blur" x="-15%" y="-15%" width="130%" height="130%" color-interpolation-filters="sRGB">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="9" result="shape" />
+        <feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="3" seed="7" result="noise" />
+        <feColorMatrix in="noise" type="matrix"
+          values="0 0 0 0 0.090
+                  0 0 0 0 0.122
+                  0 0 0 0 0.180
+                  0 0 0 0.10 0" result="dither" />
+        <feComposite in="dither" in2="shape" operator="in" result="ditherIn" />
+        <feMerge>
+          <feMergeNode in="shape" />
+          <feMergeNode in="ditherIn" />
+        </feMerge>
       </filter>
     </defs>
     <g fill="url(#silhouette-fade)" filter="url(#silhouette-blur)" pointer-events="none" aria-hidden="true">
@@ -239,10 +254,16 @@
          gate 34) and the Q→57 halves (coloured by gate 57); without this
          z-order an inactive grey half paints over a completed channel's
          stretch there (e.g. 20-34 complete with 57 undefined). -->
+    <!-- Dimming uses opaque dimColor (like the centres) instead of group
+         opacity: the integration polylines overlap on shared trunk stretches,
+         and stacked translucency there would read brighter than the rest. -->
     {#snippet channelHalf(ch, half)}
-      {@const color = half === 'a' ? ch.c1 : ch.c2}
+      {@const dim = dimming && !channelKept(ch)}
+      {@const baseColor = half === 'a' ? ch.c1 : ch.c2}
+      {@const color = dim ? dimColor(baseColor, 0.78) : baseColor}
+      {@const stripeColor = dim ? dimColor(PERS_COLOR, 0.78) : PERS_COLOR}
       {@const striped = half === 'a' ? ch.both1 : ch.both2}
-      <g opacity={dimming && !channelKept(ch) ? 0.22 : 1}>
+      <g>
         {#if ch.custom}
           {@const pts = half === 'a' ? ch.pathA : ch.pathB}
           <polyline points={pts} fill="none"
@@ -250,7 +271,7 @@
           />
           {#if striped}
             <polyline points={pts} fill="none"
-              stroke={PERS_COLOR} stroke-width="12" stroke-linecap="butt"
+              stroke={stripeColor} stroke-width="12" stroke-linecap="butt"
               stroke-linejoin="round" stroke-dasharray={STRIPE_DASH}
             />
           {/if}
@@ -262,7 +283,7 @@
           <line {x1} {y1} {x2} {y2} stroke={color} stroke-width="12" stroke-linecap="butt" />
           {#if striped}
             <line {x1} {y1} {x2} {y2}
-              stroke={PERS_COLOR} stroke-width="12" stroke-linecap="butt"
+              stroke={stripeColor} stroke-width="12" stroke-linecap="butt"
               stroke-dasharray={STRIPE_DASH}
             />
           {/if}
