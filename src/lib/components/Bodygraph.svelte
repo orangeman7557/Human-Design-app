@@ -290,15 +290,23 @@
         {/if}
       </g>
     {/snippet}
+    <!-- Dimmed halves paint before kept ones for the same reason: the
+         opaque dim colour would otherwise cover a highlighted channel's
+         stretch of the shared trunk (e.g. hovering the 20-34 chip while
+         10-34 shares Q→Q2). -->
     <g>
-      {#each [false, true] as activePass}
-        {#each channelHalves as ch}
-          {#if (ch.s1 !== 'inactive') === activePass}
-            {@render channelHalf(ch, 'a')}
-          {/if}
-          {#if (ch.s2 !== 'inactive') === activePass}
-            {@render channelHalf(ch, 'b')}
-          {/if}
+      {#each [true, false] as dimPass}
+        {#each [false, true] as activePass}
+          {#each channelHalves as ch}
+            {#if (dimming && !channelKept(ch)) === dimPass}
+              {#if (ch.s1 !== 'inactive') === activePass}
+                {@render channelHalf(ch, 'a')}
+              {/if}
+              {#if (ch.s2 !== 'inactive') === activePass}
+                {@render channelHalf(ch, 'b')}
+              {/if}
+            {/if}
+          {/each}
         {/each}
       {/each}
     </g>
