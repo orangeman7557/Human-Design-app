@@ -164,17 +164,16 @@ Colores de centros definidos: Head/G amarillo `#e5cf3d`, Ajna verde `#6cb46c`, T
 ### Pendiente
 
 - **Estabilización post-MVP:** pruebas con cartas reales, bug-fixing, opcional TWA para Google Play. Mejoras menores de UX en BACKLOG ("Possible improvements").
-- **Fase 6 — Guardado en línea:** sincronización opcional en la nube (local-only sigue siendo el default).
+- **Fase 6 — Integración IA (handoff) + info de elementos:** generar desde cualquier elemento de la app un prompt listo para llevar a la IA del propio usuario (la IA no corre dentro de la app), más información textual básica de cada elemento (tipo, autoridad, perfil, centros, canales) — solo si es legalmente viable: redacción propia o fuentes libres, nunca copiado de Jovian Archive. UX por diseñar.
 - **Fase 7 — Carta compuesta:** overlay visual de dos cartas guardadas.
 - **Fase 8 — Tránsitos:** vista de tránsitos en tiempo real sobre una carta guardada.
-- **Fase 9 — Integración IA (handoff):** generar desde cualquier elemento de la app un prompt listo para llevar a la IA del propio usuario (la IA no corre dentro de la app). UX por diseñar.
+- **Fase 9 — Guardado en línea:** sincronización opcional en la nube (local-only sigue siendo el default).
 
 ### Deuda técnica conocida
 
 - Canal **30-41** (caso edge de medio canal) pendiente de verificar en B2.
 - Nominatim usa el endpoint público sin `User-Agent` explícito — válido para bajo tráfico; a revisar si crece.
 - Algunos comentarios de código aún en español (legado de fases 0/1.1) — se migran al inglés cuando se toca el archivo.
-- Archivos del primer commit tienen permisos macOS que bloquean edición directa — workaround: borrar y recrear.
 
 ---
 
