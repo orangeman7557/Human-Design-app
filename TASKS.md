@@ -19,7 +19,21 @@ lives in [`BACKLOG.md`](./BACKLOG.md).
 
 Last updated: 2026-06-13.
 
-> Latest change (2026-06-13): roadmap reordenado — la antigua Fase 9
+> Latest change (2026-06-13, tarde): pasada de estabilización post-MVP.
+> Arreglado el bug del circuito de integración (los canales 20-34/10-34/
+> 10-20 que comparten el tronco Q→Q2 se cortaban al hacer hover sobre una
+> chip de canal: el color opaco de atenuado pintaba encima del canal
+> destacado; ahora se pinta primero lo atenuado y después lo destacado —
+> commit `196e9ea`, validado por el usuario). Mejora del slider de hora
+> desconocida: al marcar la casilla arranca en la hora ya escrita
+> (redondeada a la media hora) y al desmarcar conserva la hora del slider.
+> Pruebas manuales (timezones extremas, fechas límite, errores
+> controlados, guardado/renombrado/borrado, export PNG/JSON, móvil 375px):
+> sin incidencias nuevas salvo lo anotado en BACKLOG (retry ~8× del efecto
+> de cálculo, autocomplete que cuela regiones/condados, mensaje de error
+> mixto ES/EN).
+>
+> Previo (2026-06-13): roadmap reordenado — la antigua Fase 9
 > (handoff a IA) pasa a ser la **Fase 6** y amplía su alcance: además de
 > los prompts para la IA del usuario incluirá información textual básica
 > de cada elemento (tipo, autoridad, perfil, centros, canales), siempre

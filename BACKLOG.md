@@ -52,14 +52,20 @@ without competing against a clone of the same code.
 
 Open:
 
-- **Integration-circuit channels paint wrong when active.** The uniform
-  channel dimming fix for the 20-34-10-57 group (commit `dcb09e9`) broke
-  the painting of those channels when they are **active**. Repro: chart
-  19/11/1984, 12:00, Madrid, España.
 - **Compute effect retries ~8× on error.** When `computeChart` throws,
   the effect in `src/routes/chart/+page.svelte` re-runs and re-throws
   the same error about eight times (console noise only; the user-facing
   error message shows fine). Found in the 2026-06-13 QA pass.
+
+Fixed in the 2026-06-13 batch:
+
+- ✅ **Integration-circuit channels painted over highlighted halves on
+  hover.** The opaque-`dimColor` dimming (commit `dcb09e9`) kept the
+  single inactive→active two-pass z-order, so on the shared integration
+  trunk (Q→Q2) a dimmed channel's opaque half painted over a highlighted
+  channel's stretch, breaking its line on hover. Fixed by wrapping the
+  two passes in an outer dim-first/kept-last loop (commit `196e9ea`);
+  the non-dimmed view is unchanged. Repro was 19/11/1984, 12:00, Madrid.
 
 Fixed in the 2026-06-11 batch:
 
