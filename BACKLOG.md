@@ -245,19 +245,30 @@ personalidad, línea 1 de diseño). Explícame en lenguaje sencillo qué
 significa, cómo se manifiesta y qué tener en cuenta. No asumas que sé nada
 del sistema."
 
-**UX — one contextual "ⓘ Saber más", not an icon per chip.** Per-chip
-icons would clutter the minimalist layout, and there are many chips. Also,
-tapping a chip already pins the highlight (graph emphasis + dimming +
-activation pills) and that must stay. So:
+**UX — approved 2026-06-15 (mockup v3).** Tapping a chip already pins the
+highlight (graph emphasis + dimming + activation pills) and that stays. On
+top of it:
 
-- First tap/hover: unchanged (pins the highlight).
-- When an element is selected, a single contextual "ⓘ Saber más" affords
-  opening a reusable panel — a bottom sheet on mobile, a side panel on
-  desktop — with: element name, our own explanatory text (whatever level
-  exists), and actions (Copy prompt + optional Open in ChatGPT/Claude/…).
-- One reusable component serves every element kind; only the content
-  passed in changes. Reuses the existing hover/pin machinery in the chart
-  page.
+- *Info affordance — a single "i" glyph*, not an icon per chip (per-chip
+  icons would clutter, and there are many chips). It appears only on the
+  selected element: superscript over the top-right corner of a chip, or in
+  the top-right corner of a card (cajetín). Style: italic serif "i" in
+  white (not amber). States: discreet white when selected → brighter white
+  on hover/focus (affords click) → marked (solid white, inverted) while its
+  panel is open.
+- *Reusable panel* — bottom sheet on mobile, side panel on desktop; one
+  component for every element kind, only the content changes. Reuses the
+  existing hover/pin machinery. Holds: category eyebrow + element name +
+  close; two short paragraphs of *general* info (schematic/informative
+  tone); no visible disclaimer (we comply without stating it).
+- *"Saber más" menu at the foot of the panel — two buttons in a row*:
+  (1) "Copiar prompt" → expands the chart-personalised prompt + a Copy
+  button; (2) "Abrir IA" → opens a picker (ChatGPT / Claude / Perplexity +
+  a closing note: for other AIs, copy the prompt). Picking one opens it and
+  stores it as preferred; the button then shows that AI's icon + name and
+  opens it directly, with the chevron re-opening the picker to change it.
+- *Open detail*: the AI icon — real brand logos (nominative use, like
+  "share on…" buttons) vs. a generic AI glyph. Deferred to 6.C.
 
 **Architecture (multi-language ready from the start).**
 
@@ -289,6 +300,14 @@ activation pills) and that must stay. So:
 
 Open question for 6.C: exact list of AIs offered as deep links (ChatGPT /
 Claude / Perplexity confirmed; Gemini via copy).
+
+**Future exploration (revisit after Phase 6).** The info panel carries two
+kinds of content: *general* info (e.g. what the 5/1 profile means in the
+abstract) and *chart-specific* info (the user's own profile read together
+with their type, authority, etc.). Current plan: the panel text holds the
+general info and the AI prompt carries the personalised reading. Fine for
+now — worth exploring later whether to surface or highlight chart-specific
+info directly in the app (not just via the prompt).
 
 ## Features already identified for future phases
 

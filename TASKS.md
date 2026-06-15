@@ -17,9 +17,25 @@ Statuses:
 The deeper context (technical trade-offs, future ideas, deferred decisions)
 lives in [`BACKLOG.md`](./BACKLOG.md).
 
-Last updated: 2026-06-13.
+Last updated: 2026-06-15.
 
-> Latest change (2026-06-13): plan de la **Fase 6** (handoff a IA + info
+> Latest change (2026-06-15): **diseño de la UX del panel de Fase 6
+> aprobado** (mockup v3, validado por el usuario). La «i» de información
+> (cursiva, blanca, tres estados: discreta al seleccionar, realzada en
+> hover, marcada al pulsar) aparece sobre el elemento seleccionado —
+> superpuesta al chip o arriba a la derecha del cajetín — y abre un panel
+> reutilizable (bottom-sheet en móvil / lateral en escritorio) con
+> información general en dos párrafos y, al pie, un menú «Saber más» de
+> dos botones en fila: «Copiar prompt» (despliega el prompt personalizado
+> + botón copiar) y «Abrir IA» (selector ChatGPT/Claude/Perplexity que
+> recuerda la preferida y luego muestra su icono+nombre; nota final para
+> otras IA). Sin disclaimer visible (se cumple, no se rotula). Anotada
+> además la exploración futura de info general vs. específica. Detalle en
+> BACKLOG (§ Phase 6 plan, "UX approved 2026-06-15"). Siguiente sesión:
+> arrancar **6.A** (andamiaje + piloto con el Tipo Generator). Sin código
+> todavía.
+>
+> Previo (2026-06-13): plan de la **Fase 6** (handoff a IA + info
 > de elementos) acordado y registrado — sin empezar a implementar
 > todavía. UX: panel reutilizable (bottom-sheet en móvil / lateral en
 > escritorio) abierto por un único "ⓘ Saber más" contextual, no un icono
@@ -253,14 +269,19 @@ Subtareas completadas:
 - **Stabilisation pass (post-MVP).** Hands-on testing against real
   charts, bug-fixing, optional TWA packaging for Google Play. Minor UX
   items live in BACKLOG ("Possible improvements").
-- **Phase 6 — AI handoff + element info** (plan validated 2026-06-13;
-  full detail in BACKLOG). Lightweight, no-API AI integration: from any
-  element, build a ready-made, chart-personalised prompt the user takes to
-  **their own** AI — the AI never runs inside the app. Plus a small core
-  of original in-app text. Key decisions:
-  - UX: a single contextual "ⓘ Saber más" opens a reusable info panel
-    (bottom sheet on mobile / side panel on desktop); the existing
-    tap-to-highlight behaviour is kept (no icon per chip).
+- **Phase 6 — AI handoff + element info** (plan validated 2026-06-13,
+  panel UX approved 2026-06-15 — mockup v3; full detail in BACKLOG). Next
+  step: 6.A. Lightweight, no-API AI integration: from any element, build a
+  ready-made, chart-personalised prompt the user takes to **their own** AI
+  — the AI never runs inside the app. Plus a small core of original in-app
+  text. Key decisions:
+  - UX (approved, mockup v3): a single italic "i" on the selected element
+    (over the chip's top-right, or the card's top-right corner) opens a
+    reusable info panel (bottom sheet on mobile / side panel on desktop);
+    the existing tap-to-highlight is kept (no icon per chip). The panel
+    foot has a "Saber más" menu — two buttons in a row: "Copiar prompt"
+    (expands the personalised prompt) and "Abrir IA" (picker that remembers
+    the preferred AI, then shows its icon + name).
   - Handoff: "Copy prompt" (always) + optional deep links (ChatGPT,
     Claude, Perplexity; Gemini falls back to copy); remember preferred AI.
     No API/backend (cost + key exposure rule it out); BYOK deferred.
@@ -268,13 +289,13 @@ Subtareas completadas:
     authorities, profile lines, definitions, centres). 64 gates + 36
     channels delegate to the user's AI (minimal own info + "go deeper").
   - Legal: facts aren't copyrightable, official expression is, trademarks
-    allow nominative use; 100% own wording + public-domain I Ching +
-    non-affiliation disclaimer. Not legal advice.
+    allow nominative use; 100% own wording + public-domain I Ching. No
+    visible disclaimer (comply without stating it). Not legal advice.
   - Multi-language ready from the start (content + prompt templates
     i18n-keyed).
-  - Sub-phases: 6.A scaffolding + pilot (the 5 Types) → 6.B core content →
-    6.C handoff polish → 6.D gates/channels via handoff → 6.E disclaimer +
-    docs.
+  - Sub-phases: 6.A scaffolding + pilot (the 5 Types, starting with
+    Generator) → 6.B core content → 6.C handoff polish (incl. AI icon) →
+    6.D gates/channels via handoff → 6.E docs close.
 - **Phase 7 — Composite chart.** Two saved charts rendered as a combined
   bodygraph (visual overlay distinguishing each person).
 - **Phase 8 — Transits.** View live transits over a saved chart.
