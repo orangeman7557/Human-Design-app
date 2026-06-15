@@ -5,10 +5,23 @@ Design charts. Free for any noncommercial use. See [License](#license).
 
 ## Status
 
-In active development. Phase 1 covers the birth-data form, city autocomplete,
-astronomical calculation, and textual chart output. Visual bodygraph
-rendering and chart management features come in subsequent phases — see
-[`BACKLOG.md`](./BACKLOG.md).
+**MVP complete and live in production.** From birth date, time, and place the
+app computes a full Human Design chart and renders an interactive SVG
+bodygraph alongside a textual summary: type, strategy, authority, profile,
+definition, defined centres, complete channels, hanging gates, and the
+planetary activations table. It also supports saving charts locally
+(IndexedDB), JSON export/import, an "unknown birth time" mode, and sharing the
+chart as a PNG.
+
+Development continues beyond the MVP — the next milestone is an AI handoff
+feature plus per-element explanatory text (Phase 6). [`TASKS.md`](./TASKS.md)
+is the canonical, up-to-date project state; [`BACKLOG.md`](./BACKLOG.md) holds
+deferred decisions and known debt.
+
+The app ships a web manifest. Making it **installable** (add-to-home-screen,
+and eventually a Play Store build via TWA) is a planned goal — it still needs
+app icons and a minimal service worker. Full **offline** support is an
+optional, not-yet-committed extra. See [`BACKLOG.md`](./BACKLOG.md).
 
 ## About authorship
 
@@ -45,7 +58,7 @@ Build settings expected in Cloudflare:
 
 - Build command: `npm run build`
 - Deploy command: `npx wrangler deploy`
-- Environment variable: `NODE_VERSION=20`
+- Environment variable: `NODE_VERSION=22`
 
 ## Local development (optional)
 
@@ -93,9 +106,13 @@ merits.
    calculation, textual chart output, SVG bodygraph.
 3. **Phase 2** — Local persistence (IndexedDB), chart list, export/import
    to file.
-4. **Phase 3** — Visual polish (classic-faithful style) and "unknown
-   birth time" handling.
-5. **Phase 4** — Composite chart and PNG sharing.
-6. **Phase 5 (planned)** — Transits.
+4. **Phase 3** — Visual polish (classic-faithful style).
+5. **Phase 4** — "Unknown birth time" handling.
+6. **Phase 5** — Share chart as a PNG. *(MVP closes here.)*
+7. **Phase 6 (next)** — AI handoff + per-element explanatory text.
+8. **Phase 7 (planned)** — Composite chart.
+9. **Phase 8 (planned)** — Transits.
+10. **Phase 9 (planned)** — Optional online sync.
 
-Details and deferred decisions in [`BACKLOG.md`](./BACKLOG.md).
+Live status in [`TASKS.md`](./TASKS.md); deferred decisions and known debt in
+[`BACKLOG.md`](./BACKLOG.md).

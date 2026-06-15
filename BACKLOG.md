@@ -100,6 +100,124 @@ Fixed in the second 2026-06-11 batch (Phase 5 close):
   checkbox centred on mobile; the checkbox sits below the time field
   there (top-right of the field label on desktop, as before).
 
+## Audit 2026-06-15 — improvement proposals (UNCONFIRMED)
+
+External-style audit pass over what's built up to v0.1.1, across best
+practices, maintainability/sustainability, distribution, clean code and UX
+(it deliberately did **not** assess unbuilt future phases). **These are
+proposals, not decisions.** The author has not confirmed most of them, so
+they are parked here to triage later. The only item actioned from this pass
+so far is the README refresh (stale status / phase numbering / `NODE_VERSION`
+corrected).
+
+### Confirmed as a project goal
+
+- **Installable app (PWA install → TWA / Google Play).** Already part of the
+  project's intent; recorded here so it's explicit, and it may deserve its
+  own later phase. What's missing today:
+  - The [manifest](./static/manifest.webmanifest) has **no icons**, and there
+    are no favicon / apple-touch-icons in `static/`. Icons (≥192px and 512px)
+    plus the existing manifest fields are the baseline for add-to-home-screen.
+  - For the browser's "Install" prompt (and a quality TWA / Play build) a
+    **minimal service worker** with a `fetch` handler is required — there is
+    none today (verified: no service worker anywhere in the repo).
+  - Open decision: a dedicated "installability / packaging" phase, or fold it
+    into an existing later phase.
+
+### Optional / potential
+
+- **Offline support (POTENTIAL — may be dropped).** A service worker could
+  cache the app shell so it runs without network. It's the same SW the install
+  prompt needs, so the two are related but separable (you can be installable
+  with minimal/network-first caching without committing to full offline).
+  Author's note: offline is *potential / removable* and probably won't add
+  much weight — that's correct: a shell-caching SW is light (it caches assets
+  already downloaded; the SW file itself is tiny). **Caveat to resolve:**
+  `CLAUDE.md` currently lists "works offline as a PWA" as part of the value
+  prop, which is not true today — if offline is dropped, soften that wording;
+  if kept, implement it. (`CLAUDE.md` not edited yet.)
+
+### To evaluate — higher value
+
+- **Automated tests for the calculation core.** None exist today. The whole
+  value of the app is calculation correctness, and the core
+  ([gates.js](./src/lib/hd/gates.js), [ephemeris.js](./src/lib/hd/ephemeris.js),
+  [chart.js](./src/lib/hd/chart.js)) is pure functions with known
+  input→output pairs — the easiest possible thing to test. A grave bug already
+  shipped once (mean vs. true lunar node). *What "tests" means here, plainly:*
+  a small script that computes a couple of known birth charts and checks the
+  result still matches the expected gates / type — an automatic safety net so
+  a future edit can't silently break the maths. A tiny `vitest` suite freezing
+  the author's chart plus the ones already verified by hand would do it.
+
+### To evaluate — distribution / docs
+
+- Social / discovery metadata: Open Graph + Twitter Card tags in
+  [app.html](./src/app.html) so a shared URL shows a title / description /
+  image; favicon + touch icons (overlaps with installability above).
+- Possibly prerender just the home route for SEO / first paint (the chart page
+  stays SPA). Today both routes are `ssr:false` / `prerender:false`, so
+  crawlers and link-preview bots see a near-empty shell.
+- `CONTRIBUTING.md` + the CLA the license decision log already requires for
+  external PRs; optional CSP / security headers via the Cloudflare adapter.
+
+### To evaluate — clean code (low confidence; verify before acting)
+
+- `await` on synchronous functions in [chart.js](./src/lib/hd/chart.js)
+  (`dateToJd`, `getPlanetLongitudes`, `computeDesignJd` aren't async) — works,
+  but misleading.
+- Unused `activeChannels` parameter in `computeAuthority`
+  ([chart.js](./src/lib/hd/chart.js)).
+- Dangling JSDoc: [Bodygraph.svelte](./src/lib/components/Bodygraph.svelte)
+  references `import('$lib/hd/chart.js').Chart`, but `chart.js` exports no
+  `Chart` typedef, and the chart page types the chart as `any`. Define one
+  `@typedef Chart` and reuse it.
+- Label duplication (`TYPE_LABELS` / `TYPES` / `TYPE_ABBR`) across the home and
+  chart pages; consolidate into one labels module (also needed for i18n).
+- Stale comment in [+layout.js](./src/routes/+layout.js) (mentions
+  "adapter-static" while the project uses adapter-cloudflare).
+- Component size: home (~1006 lines) and chart (~1170) pages are large
+  (~half is CSS); extracting subcomponents (saved-charts list, unknown-time
+  slider, activations table) would help before Phase 6 / i18n.
+
+### To evaluate — repo hygiene (low confidence; verify before acting)
+
+- `src/lib/hd/bodygraph-geometry.js.bak` and
+  `docs/bodygraph-reference-coordinates-backup.txt` are git-tracked manual
+  backups (git history already covers this).
+- `.wrangler/state/*.sqlite` (local miniflare cache) is git-tracked, and
+  [.gitignore](./.gitignore) does not exclude `.wrangler/`. Add it and untrack
+  the cache + backups.
+
+### To evaluate — UX / accessibility (low confidence; verify before acting)
+
+- Keyboard + screen-reader access to the rich hover / pin interaction: the
+  channel, hanging-gate and "Definición" elements are
+  `<span>` / `<div role="presentation">` with click/hover handlers and no
+  keyboard path (the centres list already uses `<button>`, good). The place
+  autocomplete isn't an ARIA combobox.
+- Native `prompt` / `confirm` / `alert` for rename / delete / import (already
+  known debt; clashes with the otherwise polished look).
+- The dev shortcut (author pre-fill on the tagline period) ships in the
+  production bundle.
+
+### Contested / needs reproduction
+
+- **Saved-chart reorder on touch.** The audit flagged HTML5 drag-and-drop as
+  touch-unsupported, but the author reports it works on **Android 16 / Brave**.
+  So it's likely a non-issue on Android Chromium; the historical gap is iOS
+  Safari (no HTML5 DnD). **Verify on iOS specifically before treating it as a
+  bug — may be nothing.**
+
+### Performance (low confidence; measure first)
+
+- Measure the production bundle, then consider lazy-loading rarely-first-used
+  deps (`html-to-image` only on share; `astronomy-engine` / `luxon` /
+  `tz-lookup` until a chart is computed) for faster first paint on mobile.
+- The unknown-hour band computes 48 charts on the main thread
+  ([+page.svelte](./src/routes/+page.svelte)); a web worker or chunked yielding
+  would avoid potential jank (it's already sequence-guarded).
+
 ## Possible improvements (not scheduled, not part of Phase 5)
 
 - **Place search should match partial names.** Not about prefixes per se:
