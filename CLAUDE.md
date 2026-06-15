@@ -13,7 +13,7 @@ El usuario introduce su fecha, hora y lugar de nacimiento → la app calcula su 
 
 **Para quién:** personas interesadas en Human Design que quieren calcular y consultar su carta sin depender de servicios externos de pago. La app está orientada al uso personal y no comercial (ver licencia).
 
-**Problema que resuelve:** las herramientas de referencia (MyBodyGraph, iHD) son de pago o requieren cuenta. Esta app es gratuita para uso no comercial, funciona offline como PWA, y mantiene los datos exclusivamente en el dispositivo del usuario.
+**Problema que resuelve:** las herramientas de referencia (MyBodyGraph, iHD) son de pago o requieren cuenta. Esta app es gratuita para uso no comercial y mantiene los datos exclusivamente en el dispositivo del usuario. (Hacerla **instalable** como PWA es un objetivo del proyecto; el funcionamiento **offline** completo está pendiente de decidir — si será 100% offline o no. Ver BACKLOG, auditoría 2026-06-15.)
 
 **Licencia:** PolyForm Noncommercial 1.0.0 — source-available, libre para uso no comercial. El autor es el único titular de copyright. Cualquier contribución externa requiere CLA antes del merge.
 
