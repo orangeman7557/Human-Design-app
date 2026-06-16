@@ -1,13 +1,14 @@
 <!-- AI-authored — reusable element info panel (Phase 6.A). -->
 <!-- Bottom sheet on mobile (slides up), right-hand drawer on desktop -->
-<!-- (slides in from the right). Holds the element's general info plus a -->
-<!-- "Saber más usando IA" section: -->
-<!--   - an inline angle selector ("Sobre esta carta" / "Info general") that -->
-<!--     picks which prompt the actions use (hidden when only one applies). -->
+<!-- (slides in from the right). Holds the element's general info (its own -->
+<!-- scroll area, so the IA section below stays visible) plus a "Saber más -->
+<!-- usando IA" section: -->
+<!--   - an inline angle selector ("Sobre esta carta" / "Info general") whose -->
+<!--     menu floats up over the label (hidden when only one applies). -->
 <!--   - two actions: "Abrir IA" (deep link, remembers the choice) and -->
 <!--     "Copiar prompt" (copies straight away, green "Copiado" feedback). -->
-<!--   - a subtle "ver/editar prompt" toggle that reveals the editable text; -->
-<!--     both actions send/copy whatever that editable text holds. -->
+<!--   - a subtle "Ver/editar prompt" text toggle that reveals the editable -->
+<!--     text; both actions send/copy whatever that editable text holds. -->
 <!-- One instance serves every element kind; only the props change. -->
 <script>
   import { untrack } from 'svelte';
@@ -148,9 +149,11 @@
       <button class="close" type="button" onclick={onclose} aria-label="Cerrar">✕</button>
     </header>
 
-    {#each info.paragraphs as p}
-      <p class="para">{p}</p>
-    {/each}
+    <div class="info-body">
+      {#each info.paragraphs as p}
+        <p class="para">{p}</p>
+      {/each}
+    </div>
 
     <div class="sep"></div>
 
@@ -158,31 +161,22 @@
       <span class="eyebrow">Saber más usando IA</span>
       {#if hasAngles}
         <span class="eyebrow dash" aria-hidden="true">—</span>
-        <button class="angle" type="button" onclick={() => (angleOpen = !angleOpen)} aria-expanded={angleOpen}>
-          {angle === 'chart' ? 'Sobre esta carta' : 'Info general'}
-          <svg class="chev" class:up={angleOpen} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="m6 9 6 6 6-6" />
-          </svg>
-        </button>
+        <span class="angle-wrap">
+          <button class="angle" type="button" onclick={() => (angleOpen = !angleOpen)} aria-expanded={angleOpen}>
+            {angle === 'chart' ? 'Sobre esta carta' : 'Info general'}
+            <svg class="chev" class:up={angleOpen} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+          {#if angleOpen}
+            <ul class="angle-dd">
+              <li><button type="button" class:on={angle === 'chart'} onclick={() => setAngle('chart')}>Sobre esta carta</button></li>
+              <li><button type="button" class:on={angle === 'general'} onclick={() => setAngle('general')}>Info general</button></li>
+            </ul>
+          {/if}
+        </span>
       {/if}
     </div>
-
-    {#if angleOpen}
-      <ul class="angle-dd">
-        <li>
-          <button type="button" class:on={angle === 'chart'} onclick={() => setAngle('chart')}>
-            Sobre esta carta
-            {#if angle === 'chart'}<svg class="ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 6" /></svg>{/if}
-          </button>
-        </li>
-        <li>
-          <button type="button" class:on={angle === 'general'} onclick={() => setAngle('general')}>
-            Info general
-            {#if angle === 'general'}<svg class="ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 6" /></svg>{/if}
-          </button>
-        </li>
-      </ul>
-    {/if}
 
     <div class="menu">
       {#if preferred}
@@ -239,10 +233,7 @@
 
     <div class="subrow">
       <button class="vedit" type="button" onclick={toggleShowPrompt} aria-expanded={showPrompt}>
-        {showPrompt ? 'ocultar prompt' : 'ver/editar prompt'}
-        <svg class="chev" class:up={showPrompt} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="m6 9 6 6 6-6" />
-        </svg>
+        {showPrompt ? 'Ocultar prompt' : 'Ver/editar prompt'}
       </button>
       {#if copied}
         <span class="copied" transition:fade={{ duration: 120 }}>
@@ -315,6 +306,7 @@
     align-items: flex-start;
     justify-content: space-between;
     gap: 0.5rem;
+    flex: none;
   }
   .eyebrow {
     font-size: 0.7rem;
@@ -340,6 +332,18 @@
   .close:hover {
     color: var(--text);
   }
+  /* The info text gets its own scroll area, capped so the IA section below
+     stays visible. ~3 paragraphs on mobile, ~4 on desktop. */
+  .info-body {
+    max-height: 24rem;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+  @media (min-width: 680px) {
+    .info-body {
+      max-height: 26rem;
+    }
+  }
   .para {
     font-size: 0.9rem;
     line-height: 1.6;
@@ -349,6 +353,13 @@
   .sep {
     border-top: 1px solid var(--border);
     margin: 1.9rem 0 0.95rem;
+    flex: none;
+  }
+  /* Twice the air above the IA section on desktop. */
+  @media (min-width: 680px) {
+    .sep {
+      margin-top: 3.8rem;
+    }
   }
   .menu-head {
     display: flex;
@@ -356,6 +367,12 @@
     flex-wrap: wrap;
     gap: 0.4rem;
   }
+  .angle-wrap {
+    position: relative;
+    display: inline-flex;
+  }
+  /* Same size/typeface and colour as the section label; only the chevron
+     is amber to mark it as interactive. */
   .angle {
     display: inline-flex;
     align-items: center;
@@ -368,7 +385,7 @@
     font-size: 0.7rem;
     letter-spacing: 0.07em;
     text-transform: uppercase;
-    color: var(--text);
+    color: #8a8a93;
     cursor: pointer;
   }
   .angle .chev {
@@ -380,27 +397,31 @@
   .angle .chev.up {
     transform: rotate(180deg);
   }
+  /* Floats up over the label so opening it doesn't shift the rest. */
   .angle-dd {
+    position: absolute;
+    bottom: calc(100% + 6px);
+    left: -0.5rem;
     list-style: none;
-    margin: 0.55rem 0 0;
+    margin: 0;
     padding: 4px;
     border: 1px solid var(--border);
     border-radius: 9px;
     background: #1b1b1f;
-    width: 200px;
+    white-space: nowrap;
+    z-index: 5;
   }
   .angle-dd li button {
     width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.5rem;
+    text-align: left;
     background: none;
     border: none;
     color: #cfcfd4;
     font-family: inherit;
-    font-size: 0.8rem;
-    padding: 0.5rem 0.6rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    padding: 0.4rem 0.55rem;
     border-radius: 6px;
     cursor: pointer;
   }
@@ -408,13 +429,7 @@
     background: var(--surface-2);
   }
   .angle-dd li button.on {
-    background: var(--accent-soft);
     color: var(--accent);
-  }
-  .angle-dd .ck {
-    width: 14px;
-    height: 14px;
-    flex: none;
   }
   .menu {
     display: flex;
@@ -539,36 +554,28 @@
     color: #76767e;
     padding: 0.55rem 0.7rem;
   }
-  /* Subtle "ver/editar prompt" text toggle (like the angle selector) on the
-     left, with the transient green "Copiado" feedback on the right. */
+  /* "Ver/editar prompt" toggle (same grey as the section label, no chevron)
+     on the left; the transient green "Copiado" feedback on the right, kept
+     close under the copy button. */
   .subrow {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 0.75rem;
-    min-height: 1.2rem;
-    margin-top: 0.7rem;
+    margin-top: 0.5rem;
   }
   .vedit {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.25rem;
     background: none;
     border: none;
     padding: 0;
     margin: 0;
     font-family: inherit;
     font-size: 0.78rem;
-    color: var(--text-muted);
+    color: #8a8a93;
     cursor: pointer;
   }
   .vedit:hover {
     color: var(--text);
-  }
-  .vedit .chev {
-    width: 13px;
-    height: 13px;
-    color: var(--accent);
   }
   .copied {
     display: inline-flex;
