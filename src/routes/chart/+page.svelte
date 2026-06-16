@@ -8,6 +8,10 @@
   import { toBlob } from 'html-to-image';
   import { saveChart } from '$lib/db/charts.js';
   import Bodygraph from '$lib/components/Bodygraph.svelte';
+  import ElementInfo from '$lib/components/ElementInfo.svelte';
+  import InfoDot from '$lib/components/InfoDot.svelte';
+  import { getElementInfo } from '$lib/hd/content/index.js';
+  import { buildPrompt } from '$lib/hd/prompts.js';
 
   // Etiquetas humanas. En la próxima iteración esto vivirá en i18n.
   const CENTER_LABELS = {
@@ -102,6 +106,38 @@
 
   // Activations table shows Sun/Earth/Moon by default (first 3 of PLANETS).
   let showAllPlanets = $state(false);
+
+  // Phase 6.A — element info panel. Pilot: the chart's type. The info "i"
+  // shows only on the selected element (a tapped type chip, or the type
+  // card) and only where content exists (Generator today; rest in 6.B).
+  let infoOpen = $state(false);
+  /** Which type element is selected, revealing its "i": 'chip' | 'card' | null. */
+  let typeSel = $state(null);
+  const typeInfo = $derived(chart ? getElementInfo('type', chart.type) : null);
+  const typePrompt = $derived(chart ? buildPrompt('type', chart.type, chart) : '');
+
+  // Desktop reveals the "i" on hover; touch reveals it on tap (no hover
+  // there). Everything routes through one handler per event on the card,
+  // branching on the target — nesting handlers that call stopPropagation is
+  // unreliable under Svelte's event delegation.
+  function typeTargetFor(e) {
+    return e.target.closest('.tchip.on') ? 'chip' : 'card';
+  }
+  function setTypeHover(e) {
+    if (isTouch()) return;
+    typeSel = typeTargetFor(e);
+  }
+  function clearTypeHover() {
+    if (isTouch() || infoOpen) return;
+    typeSel = null;
+  }
+  function onTypeCardClick(e) {
+    e.stopPropagation();
+    if (e.target.closest('.info-dot')) { infoOpen = true; return; }
+    if (!isTouch()) return; // desktop relies on hover
+    const target = typeTargetFor(e);
+    typeSel = typeSel === target ? null : target;
+  }
 
   // Hanging gates: active gates that don't complete any channel.
   const hangingGates = $derived.by(() => {
@@ -474,19 +510,35 @@
 
     <div class="graph">
       <div class="overlay left">
-        <div class="card">
+        <div
+          class="card type-card"
+          role="presentation"
+          onclick={onTypeCardClick}
+          onmouseover={setTypeHover}
+          onmouseleave={clearTypeHover}
+        >
           <span class="label">Tipo</span>
           <div class="type-list">
             {#each TYPES as t, i}
               <span class="tchip" class:on={chart.type === t.key}>
                 {t.label}
                 <span class="pct" data-tip={`representan el ${t.pct} de la población`}>{t.pct}</span>
+                {#if chart.type === t.key && typeSel === 'chip' && typeInfo}
+                  <span class="dot-slot">
+                    <InfoDot active={infoOpen} label={`Más información sobre ${t.label}`} />
+                  </span>
+                {/if}
               </span>
               {#if i === 1}
                 <span class="row-break" aria-hidden="true"></span>
               {/if}
             {/each}
           </div>
+          {#if typeSel === 'card' && typeInfo}
+            <span class="dot-slot card-dot">
+              <InfoDot active={infoOpen} label="Más información sobre tu tipo" />
+            </span>
+          {/if}
         </div>
         <div class="card">
           <span class="label">Estrategia</span>
@@ -660,7 +712,15 @@
   {/if}
 </main>
 
-<svelte:window onclick={(e) => { hover = null; tipTap(e); }} />
+<ElementInfo
+  open={infoOpen}
+  category="Tipo"
+  info={typeInfo}
+  prompt={typePrompt}
+  onclose={() => { infoOpen = false; typeSel = null; }}
+/>
+
+<svelte:window onclick={(e) => { hover = null; typeSel = null; tipTap(e); }} />
 
 <style>
   main {
@@ -752,6 +812,7 @@
   /* Muted via explicit colours, not opacity — otherwise the population
      tooltip rendered inside the chip becomes translucent too. */
   .tchip {
+    position: relative;
     border: 1px solid #232328;
     border-radius: 999px;
     background: var(--surface-2);
@@ -759,6 +820,21 @@
     font-size: 0.7rem;
     padding: 0.12rem 0.55rem;
     white-space: nowrap;
+  }
+  /* The info "i" sits as a superscript over the chip's top-right corner. */
+  .dot-slot {
+    position: absolute;
+    top: -9px;
+    right: -9px;
+    z-index: 1;
+  }
+  .type-card {
+    position: relative;
+  }
+  /* On the card itself the "i" tucks hard into the top-right corner. */
+  .card-dot {
+    top: 4px;
+    right: 4px;
   }
   .tchip.on {
     background: var(--accent);
@@ -803,7 +879,7 @@
     letter-spacing: normal;
     text-align: left;
     pointer-events: none;
-    z-index: 5;
+    z-index: 40;
   }
 
   .card {
@@ -1053,6 +1129,10 @@
   .pct {
     font-size: 0.7em;
     opacity: 0.75;
+    /* opacity makes .pct a stacking context that would otherwise trap its
+       tooltip behind the "i"; a z-index above the dot keeps the tip on top. */
+    position: relative;
+    z-index: 2;
   }
 
   .cols {

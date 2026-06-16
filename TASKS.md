@@ -17,9 +17,24 @@ Statuses:
 The deeper context (technical trade-offs, future ideas, deferred decisions)
 lives in [`BACKLOG.md`](./BACKLOG.md).
 
-Last updated: 2026-06-15.
+Last updated: 2026-06-16.
 
-> Latest change (2026-06-15): **diseño de la UX del panel de Fase 6
+> Latest change (2026-06-16): **Fase 6.A completada y validada** —
+> andamiaje del handoff a IA + info de elementos, con piloto en el Tipo.
+> Nuevos: módulo de contenido `src/lib/hd/content/` (es, i18n-ready),
+> generador de prompts `src/lib/hd/prompts.js`, handoff de IA
+> `src/lib/ai/handoff.js`, y componentes `InfoDot.svelte` (la «i») +
+> `ElementInfo.svelte` (panel reutilizable). En la página de carta la «i»
+> aparece por hover (escritorio) / tap (táctil) sobre el chip del tipo o
+> su cajetín, y abre el panel con info general (dos párrafos) + menú
+> «Saber más usando IA»: «Copiar prompt» (copia directa, texto editable) y
+> «Abrir IA» (deep-link ChatGPT/Claude/Perplexity con preferida recordada
+> en localStorage; Gemini → copiar). La «i» solo sale donde hay contenido:
+> hoy solo el Tipo **Generator** (el resto llega en 6.B). El icono de cada
+> IA es un glifo genérico provisional (logos reales en 6.C). Verificado en
+> escritorio y móvil. Siguiente: **6.B** (contenido del núcleo). 0.2.0.
+>
+> Previo (2026-06-15): **diseño de la UX del panel de Fase 6
 > aprobado** (mockup v3, validado por el usuario). La «i» de información
 > (cursiva, blanca, tres estados: discreta al seleccionar, realzada en
 > hover, marcada al pulsar) aparece sobre el elemento seleccionado —
@@ -270,8 +285,8 @@ Subtareas completadas:
   charts, bug-fixing, optional TWA packaging for Google Play. Minor UX
   items live in BACKLOG ("Possible improvements").
 - **Phase 6 — AI handoff + element info** (plan validated 2026-06-13,
-  panel UX approved 2026-06-15 — mockup v3; full detail in BACKLOG). Next
-  step: 6.A. Lightweight, no-API AI integration: from any element, build a
+  panel UX approved 2026-06-15 — mockup v3; full detail in BACKLOG). 6.A
+  done 2026-06-16; next: 6.B. Lightweight, no-API AI integration: from any element, build a
   ready-made, chart-personalised prompt the user takes to **their own** AI
   — the AI never runs inside the app. Plus a small core of original in-app
   text. Key decisions:
@@ -293,9 +308,10 @@ Subtareas completadas:
     visible disclaimer (comply without stating it). Not legal advice.
   - Multi-language ready from the start (content + prompt templates
     i18n-keyed).
-  - Sub-phases: 6.A scaffolding + pilot (the 5 Types, starting with
-    Generator) → 6.B core content → 6.C handoff polish (incl. AI icon) →
-    6.D gates/channels via handoff → 6.E docs close.
+  - Sub-phases: 6.A ✅ scaffolding + pilot (Type element; Generator
+    written; content module + InfoDot/ElementInfo + prompts + AI handoff) →
+    6.B core content (next) → 6.C handoff polish (real AI logos) → 6.D
+    gates/channels via handoff → 6.E docs close.
 - **Phase 7 — Composite chart.** Two saved charts rendered as a combined
   bodygraph (visual overlay distinguishing each person).
 - **Phase 8 — Transits.** View live transits over a saved chart.
