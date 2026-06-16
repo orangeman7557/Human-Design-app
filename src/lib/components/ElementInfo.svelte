@@ -1,15 +1,16 @@
 <!-- AI-authored — reusable element info panel (Phase 6.A). -->
 <!-- Bottom sheet on mobile (slides up), right-hand drawer on desktop -->
 <!-- (slides in from the right). Holds the element's general info plus a -->
-<!-- "Saber más usando IA" menu with two in-row tools: -->
-<!--   - "Copiar prompt": copies the prompt straight away and expands an -->
-<!--     editable copy of it; editing it clears the copied tick until the -->
-<!--     user copies again. -->
-<!--   - "Abrir IA": a picker that opens the user's AI with the prompt -->
-<!--     prefilled and remembers the choice. Once set, the button opens that -->
-<!--     AI directly; the chevron re-opens the picker to change it. -->
+<!-- "Saber más usando IA" section with: -->
+<!--   - an inline angle selector ("Sobre esta carta" / "Info general") that -->
+<!--     picks which prompt the actions use (hidden when only one applies). -->
+<!--   - "Copiar prompt": copies straight away and shows an editable copy; -->
+<!--     editing clears the tick until copied again. -->
+<!--   - "Abrir IA": opens the user's AI with the prompt prefilled and -->
+<!--     remembers the choice (chevron re-opens the picker to change it). -->
 <!-- One instance serves every element kind; only the props change. -->
 <script>
+  import { untrack } from 'svelte';
   import { fly } from 'svelte/transition';
   import { AIS, getPreferredAI, setPreferredAI, openAI } from '$lib/ai/handoff.js';
 
@@ -18,23 +19,28 @@
    *   open?: boolean,
    *   category?: string,
    *   info?: { title: string, paragraphs: string[] } | null,
-   *   prompt?: string,
+   *   prompts?: { general: string, chart: string | null } | null,
    *   onclose: () => void
    * }}
    */
-  let { open = false, category = '', info = null, prompt = '', onclose } = $props();
+  let { open = false, category = '', info = null, prompts = null, onclose } = $props();
 
   /** Which tool is expanded: 'prompt' | 'ai' | null. */
   let expanded = $state(null);
   let copied = $state(false);
   /** @type {{ id: string, label: string } | null} */
   let preferred = $state(null);
+  /** Active prompt angle: 'chart' | 'general'. */
+  let angle = $state('chart');
+  let angleOpen = $state(false);
   let editedPrompt = $state('');
-  // Drives the open direction (right drawer vs bottom sheet) of the transition.
   let wide = $state(false);
+  /** @type {HTMLTextAreaElement | undefined} */
+  let promptEl = $state();
 
-  // Track the breakpoint live so the transition direction is correct without
-  // a race against the open effect.
+  const hasAngles = $derived(!!prompts?.chart);
+
+  // Track the breakpoint live so the open direction is right without a race.
   $effect(() => {
     const mq = window.matchMedia('(min-width: 680px)');
     const update = () => (wide = mq.matches);
@@ -43,15 +49,37 @@
     return () => mq.removeEventListener('change', update);
   });
 
-  // Reset transient state and read the stored preference each time it opens.
+  // Reset transient state and pick the default angle each time it opens.
+  // Wrapped in untrack so reading angle/prompts here doesn't make the effect
+  // re-run (and reset the angle) every time the user switches angle.
   $effect(() => {
-    if (open) {
+    if (!open) return;
+    untrack(() => {
       expanded = null;
+      angleOpen = false;
       copied = false;
       preferred = getPreferredAI();
-      editedPrompt = prompt;
+      angle = prompts?.chart ? 'chart' : 'general';
+      editedPrompt = prompts?.[angle] ?? '';
+    });
+  });
+
+  // Keep the textarea sized to its content — also when switching angle
+  // swaps the text under it (a plain input listener wouldn't catch that).
+  $effect(() => {
+    editedPrompt;
+    if (promptEl) {
+      promptEl.style.height = 'auto';
+      promptEl.style.height = promptEl.scrollHeight + 'px';
     }
   });
+
+  function setAngle(a) {
+    angle = a;
+    angleOpen = false;
+    copied = false;
+    editedPrompt = prompts?.[a] ?? '';
+  }
 
   async function copyPrompt() {
     try {
@@ -62,8 +90,7 @@
     }
   }
 
-  // Opening the prompt tool copies straight away (the common intent); the
-  // editable box lets the user tweak it before re-copying.
+  // Opening the prompt tool copies straight away (the common intent).
   function togglePrompt() {
     if (expanded === 'prompt') {
       expanded = null;
@@ -82,17 +109,6 @@
     preferred = ai;
     expanded = null;
     openAI(ai, editedPrompt);
-  }
-
-  // Grow the textarea to fit its content so the whole prompt is visible.
-  function autogrow(node) {
-    const resize = () => {
-      node.style.height = 'auto';
-      node.style.height = node.scrollHeight + 'px';
-    };
-    resize();
-    node.addEventListener('input', resize);
-    return { destroy: () => node.removeEventListener('input', resize) };
   }
 
   function onkeydown(e) {
@@ -126,7 +142,36 @@
     {/each}
 
     <div class="sep"></div>
-    <div class="eyebrow">Saber más usando IA</div>
+
+    <div class="menu-head">
+      <span class="eyebrow">Saber más usando IA</span>
+      {#if hasAngles}
+        <span class="eyebrow dash" aria-hidden="true">—</span>
+        <button class="angle" type="button" onclick={() => (angleOpen = !angleOpen)} aria-expanded={angleOpen}>
+          {angle === 'chart' ? 'Sobre esta carta' : 'Info general'}
+          <svg class="chev" class:up={angleOpen} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="m6 9 6 6 6-6" />
+          </svg>
+        </button>
+      {/if}
+    </div>
+
+    {#if angleOpen}
+      <ul class="angle-dd">
+        <li>
+          <button type="button" class:on={angle === 'chart'} onclick={() => setAngle('chart')}>
+            Sobre esta carta
+            {#if angle === 'chart'}<svg class="ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 6" /></svg>{/if}
+          </button>
+        </li>
+        <li>
+          <button type="button" class:on={angle === 'general'} onclick={() => setAngle('general')}>
+            Info general
+            {#if angle === 'general'}<svg class="ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 6" /></svg>{/if}
+          </button>
+        </li>
+      </ul>
+    {/if}
 
     <div class="menu">
       <button class="mbtn" class:act={expanded === 'prompt'} type="button" onclick={togglePrompt}>
@@ -167,7 +212,7 @@
     </div>
 
     {#if expanded === 'prompt'}
-      <textarea class="pbox" bind:value={editedPrompt} oninput={() => (copied = false)} use:autogrow></textarea>
+      <textarea class="pbox" bind:this={promptEl} bind:value={editedPrompt} oninput={() => (copied = false)}></textarea>
       <div class="copy-row">
         <span class="hint">Copia el texto y pégalo en tu app de IA.</span>
         <button class="copy" type="button" onclick={copyPrompt}>{copied ? 'Copiado ✓' : 'Copiar'}</button>
@@ -285,6 +330,74 @@
     border-top: 1px solid var(--border);
     margin: 1.9rem 0 0.95rem;
   }
+  /* Inline angle selector: same size/typeface as the section label, only
+     the colour differs so the selectable value stands out. */
+  .menu-head {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+  .angle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font-family: inherit;
+    font-size: 0.7rem;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--text);
+    cursor: pointer;
+  }
+  .angle .chev {
+    width: 13px;
+    height: 13px;
+    color: var(--accent);
+    transition: transform 120ms;
+  }
+  .angle .chev.up {
+    transform: rotate(180deg);
+  }
+  .angle-dd {
+    list-style: none;
+    margin: 0.55rem 0 0;
+    padding: 4px;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    background: #1b1b1f;
+    width: 200px;
+  }
+  .angle-dd li button {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    background: none;
+    border: none;
+    color: #cfcfd4;
+    font-family: inherit;
+    font-size: 0.8rem;
+    padding: 0.5rem 0.6rem;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  .angle-dd li button:hover {
+    background: var(--surface-2);
+  }
+  .angle-dd li button.on {
+    background: var(--accent-soft);
+    color: var(--accent);
+  }
+  .angle-dd .ck {
+    width: 14px;
+    height: 14px;
+    flex: none;
+  }
   .menu {
     display: flex;
     gap: 0.5rem;
@@ -315,7 +428,6 @@
   .mbtn.act {
     border-color: var(--accent);
   }
-  /* Split button: open the preferred AI + a chevron that re-opens the picker. */
   .split {
     display: flex;
     border: 1px solid var(--border);
@@ -414,6 +526,7 @@
     font-size: 0.8rem;
     font-weight: 500;
     cursor: pointer;
+    white-space: nowrap;
   }
   .ai-list {
     list-style: none;

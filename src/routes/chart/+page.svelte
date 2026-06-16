@@ -11,7 +11,7 @@
   import ElementInfo from '$lib/components/ElementInfo.svelte';
   import InfoDot from '$lib/components/InfoDot.svelte';
   import { getElementInfo } from '$lib/hd/content/index.js';
-  import { buildPrompt } from '$lib/hd/prompts.js';
+  import { buildPrompts } from '$lib/hd/prompts.js';
 
   // Etiquetas humanas. En la próxima iteración esto vivirá en i18n.
   const CENTER_LABELS = {
@@ -114,7 +114,7 @@
   /** Which type element is selected, revealing its "i": 'chip' | 'card' | null. */
   let typeSel = $state(null);
   const typeInfo = $derived(chart ? getElementInfo('type', chart.type) : null);
-  const typePrompt = $derived(chart ? buildPrompt('type', chart.type, chart) : '');
+  const typePrompts = $derived(chart ? buildPrompts('type', chart.type, chart) : null);
 
   // Desktop reveals the "i" on hover; touch reveals it on tap (no hover
   // there). Everything routes through one handler per event on the card,
@@ -716,7 +716,7 @@
   open={infoOpen}
   category="Tipo"
   info={typeInfo}
-  prompt={typePrompt}
+  prompts={typePrompts}
   onclose={() => { infoOpen = false; typeSel = null; }}
 />
 

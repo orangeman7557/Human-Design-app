@@ -309,7 +309,9 @@ Subtareas completadas:
   - Multi-language ready from the start (content + prompt templates
     i18n-keyed).
   - Sub-phases: 6.A ✅ scaffolding + pilot (Type element; Generator
-    written; content module + InfoDot/ElementInfo + prompts + AI handoff) →
+    written; content module, InfoDot/ElementInfo, prompts, AI handoff, plus
+    an inline angle selector «Sobre esta carta»/«Info general» with
+    impersonal prompts — the chart may not be the user's) →
     6.B core content (next) → 6.C handoff polish (real AI logos) → 6.D
     gates/channels via handoff → 6.E docs close.
 - **Phase 7 — Composite chart.** Two saved charts rendered as a combined
