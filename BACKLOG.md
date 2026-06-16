@@ -388,6 +388,41 @@ top of it:
 - *Open detail*: the AI icon — real brand logos (nominative use, like
   "share on…" buttons) vs. a generic AI glyph. Deferred to 6.C.
 
+**6.A as built (2026-06-17) — final panel design.** The pilot (the Type
+element) shipped after several refinement rounds; this is the pattern 6.B
+replicates for the rest. It evolved from the mockup-v3 sketch above,
+chiefly in the IA section:
+
+- *Info "i"*: appears on hover (desktop) / tap (touch), on a chip or its
+  card; only where content exists. Opens the panel; reused via
+  `InfoDot.svelte`.
+- *Panel* (`ElementInfo.svelte`): drawer from the right on desktop
+  (≥680px), bottom sheet on mobile. Header (category + title) → info body →
+  IA section.
+- *Info body*: paragraphs in a capped-height scroll area (24rem mobile /
+  26rem desktop) so the IA section below stays visible; scrollbar appears
+  only on overflow. Generator ships with 3 paragraphs.
+- *"Saber más usando IA" section*:
+  - Inline angle selector right after the label (same size/typeface and
+    grey as the label, amber chevron): "Sobre esta carta" / "Info general".
+    Its menu floats up over the label so opening it doesn't shift the
+    layout. Hidden when only one angle applies.
+  - Two actions in a row: "Abrir IA" first (deep link; first tap opens the
+    picker, then opens the chosen AI directly, chevron re-opens the picker)
+    and "Copiar prompt" second (copies straight away, transient green
+    "Copiado" feedback).
+  - A subtle "Ver/editar prompt" text toggle reveals the editable prompt;
+    both actions send/copy whatever that editable text holds.
+- *Prompts* (`prompts.js`): `buildPrompts(kind, key, chart)` →
+  `{ general, chart }`. Both impersonal ("Para un Generador con autoridad
+  Sacral y perfil 3/5…") because the chart may belong to someone else;
+  `chart` is null when the angle doesn't apply (e.g. a non-own type chip →
+  general only).
+- *Files*: `src/lib/hd/content/` (es.js + index.js), `src/lib/hd/prompts.js`,
+  `src/lib/ai/handoff.js` (AIs Claude / ChatGPT / Perplexity, preference in
+  localStorage), `src/lib/components/InfoDot.svelte` + `ElementInfo.svelte`;
+  wired in `src/routes/chart/+page.svelte` (type chip + card).
+
 **Architecture (multi-language ready from the start).**
 
 - Content module, e.g. `src/lib/hd/content/` (Spanish first, shaped for

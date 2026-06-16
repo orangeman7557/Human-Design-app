@@ -164,7 +164,7 @@ Colores de centros definidos: Head/G amarillo `#e5cf3d`, Ajna verde `#6cb46c`, T
 ### Pendiente
 
 - **Estabilización post-MVP:** pruebas con cartas reales, bug-fixing, opcional TWA para Google Play. Mejoras menores de UX en BACKLOG ("Possible improvements").
-- **Fase 6 — Integración IA (handoff) + info de elementos:** generar desde cualquier elemento de la app un prompt listo para llevar a la IA del propio usuario (la IA no corre dentro de la app), más información textual básica de cada elemento (tipo, autoridad, perfil, centros, canales) — solo si es legalmente viable: redacción propia o fuentes libres, nunca copiado de Jovian Archive. UX del panel aprobada (jun 2026, mockup v3; detalle en TASKS/BACKLOG), pendiente de construir desde la Fase 6.A.
+- **Fase 6 — Integración IA (handoff) + info de elementos:** generar desde cualquier elemento de la app un prompt listo para llevar a la IA del propio usuario (la IA no corre dentro de la app), más información textual básica de cada elemento (tipo, autoridad, perfil, centros, canales) — solo si es legalmente viable: redacción propia o fuentes libres, nunca copiado de Jovian Archive. Fase 6.A construida (jun 2026: andamiaje + piloto con el Tipo Generator — panel reutilizable con info y selector de prompt para IA); pendiente la Fase 6.B (resto del contenido del núcleo). Detalle en TASKS/BACKLOG.
 - **Fase 7 — Carta compuesta:** overlay visual de dos cartas guardadas.
 - **Fase 8 — Tránsitos:** vista de tránsitos en tiempo real sobre una carta guardada.
 - **Fase 9 — Guardado en línea:** sincronización opcional en la nube (local-only sigue siendo el default).

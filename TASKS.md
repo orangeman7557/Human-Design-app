@@ -17,9 +17,33 @@ Statuses:
 The deeper context (technical trade-offs, future ideas, deferred decisions)
 lives in [`BACKLOG.md`](./BACKLOG.md).
 
-Last updated: 2026-06-16.
+Last updated: 2026-06-17.
 
-> Latest change (2026-06-16): **Fase 6.A completada y validada** —
+> Latest change (2026-06-17): **Fase 6.A cerrada** tras varias rondas de
+> refinamiento del panel (validadas en escritorio y móvil). Sobre el cierre
+> previo: (1) el prompt tiene **dos ángulos** mediante un selector de texto
+> en línea junto a «Saber más usando IA» — «Sobre esta carta» / «Info
+> general» — con desplegable flotante hacia arriba; (2) los prompts son
+> **impersonales** («Para un Generador con autoridad Sacral y perfil 3/5…»)
+> porque la carta puede ser de otra persona; (3) menú reordenado: «Abrir
+> IA» primero, «Copiar prompt» después (con feedback verde «Copiado»);
+> (4) el texto editable se muestra/oculta con un toggle sutil «Ver/editar
+> prompt»; ambos botones usan ese texto; (5) IAs en orden Claude, ChatGPT,
+> Perplexity; (6) info a tres párrafos con tope de altura + ascensor propio
+> (la sección IA queda siempre visible); (7) la «i» aparece por hover
+> (escritorio) / tap (táctil). Diseño final documentado en BACKLOG
+> (§ «6.A as built»).
+>
+> **Pendiente 6.B** (otra sesión): redactar contenido (3 párrafos + 2
+> prompts general/carta) para los 4 tipos restantes, 5 estrategias, 7
+> autoridades, 6 líneas de perfil, 5 definiciones y 9 centros; cablear la
+> «i» a los cajetines de Estrategia/Autoridad/Perfil/Definición y a los
+> chips de Centros (extender `content/es.js` y `prompts.js` con esos kinds
+> y el cableado en `chart/+page.svelte`). Decisión a tomar: para elementos
+> que no son de la carta (p. ej. otro tipo), el ángulo «esta carta» no
+> aplica → solo «Info general».
+>
+> Previo (2026-06-16): **Fase 6.A completada y validada** —
 > andamiaje del handoff a IA + info de elementos, con piloto en el Tipo.
 > Nuevos: módulo de contenido `src/lib/hd/content/` (es, i18n-ready),
 > generador de prompts `src/lib/hd/prompts.js`, handoff de IA
@@ -290,13 +314,14 @@ Subtareas completadas:
   ready-made, chart-personalised prompt the user takes to **their own** AI
   — the AI never runs inside the app. Plus a small core of original in-app
   text. Key decisions:
-  - UX (approved, mockup v3): a single italic "i" on the selected element
-    (over the chip's top-right, or the card's top-right corner) opens a
-    reusable info panel (bottom sheet on mobile / side panel on desktop);
-    the existing tap-to-highlight is kept (no icon per chip). The panel
-    foot has a "Saber más" menu — two buttons in a row: "Copiar prompt"
-    (expands the personalised prompt) and "Abrir IA" (picker that remembers
-    the preferred AI, then shows its icon + name).
+  - UX (6.A as built — full detail in BACKLOG): an "i" appears on the
+    selected element (hover on desktop / tap on touch, on a chip or its
+    card) and opens a reusable info panel (drawer on desktop / bottom sheet
+    on mobile) with the element's info (capped height + own scroll) and a
+    "Saber más usando IA" section: an inline angle selector "Sobre esta
+    carta"/"Info general", "Abrir IA" + "Copiar prompt", and a "Ver/editar
+    prompt" toggle for the editable text. Prompts are impersonal (the chart
+    may belong to someone else).
   - Handoff: "Copy prompt" (always) + optional deep links (ChatGPT,
     Claude, Perplexity; Gemini falls back to copy); remember preferred AI.
     No API/backend (cost + key exposure rule it out); BYOK deferred.
