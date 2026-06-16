@@ -15,7 +15,8 @@ export default {
       title: 'Generator',
       paragraphs: [
         'Tipo mayoritario: alrededor del 37 % de la población. Su rasgo definitorio es el centro Sacral definido, la fuente de energía vital del sistema, generativa y de carácter renovable.',
-        'Opera por respuesta: reacciona a lo que la vida le presenta en lugar de iniciar desde la mente. Comprometer su energía con lo correcto produce satisfacción; forzarla donde no corresponde, frustración.'
+        'Opera por respuesta: reacciona a lo que la vida le presenta en lugar de iniciar desde la mente. Comprometer su energía con lo correcto produce satisfacción; forzarla donde no corresponde, frustración.',
+        'En la práctica, el Sacral responde antes que la mente: ante algo concreto —una propuesta, una pregunta, una situación— surge una reacción visceral de atracción o rechazo. Seguir esa señal del cuerpo, en vez de razonar la decisión, es lo que mantiene su energía bien empleada.'
       ]
     }
   },

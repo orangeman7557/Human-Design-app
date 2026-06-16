@@ -9,8 +9,8 @@
 
 /** @type {{ id: string, label: string, url: (prompt: string) => string }[]} */
 export const AIS = [
-  { id: 'chatgpt', label: 'ChatGPT', url: (p) => `https://chatgpt.com/?q=${encodeURIComponent(p)}` },
   { id: 'claude', label: 'Claude', url: (p) => `https://claude.ai/new?q=${encodeURIComponent(p)}` },
+  { id: 'chatgpt', label: 'ChatGPT', url: (p) => `https://chatgpt.com/?q=${encodeURIComponent(p)}` },
   { id: 'perplexity', label: 'Perplexity', url: (p) => `https://www.perplexity.ai/search?q=${encodeURIComponent(p)}` }
 ];
 

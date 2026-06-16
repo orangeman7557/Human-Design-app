@@ -1,17 +1,17 @@
 <!-- AI-authored — reusable element info panel (Phase 6.A). -->
 <!-- Bottom sheet on mobile (slides up), right-hand drawer on desktop -->
 <!-- (slides in from the right). Holds the element's general info plus a -->
-<!-- "Saber más usando IA" section with: -->
+<!-- "Saber más usando IA" section: -->
 <!--   - an inline angle selector ("Sobre esta carta" / "Info general") that -->
 <!--     picks which prompt the actions use (hidden when only one applies). -->
-<!--   - "Copiar prompt": copies straight away and shows an editable copy; -->
-<!--     editing clears the tick until copied again. -->
-<!--   - "Abrir IA": opens the user's AI with the prompt prefilled and -->
-<!--     remembers the choice (chevron re-opens the picker to change it). -->
+<!--   - two actions: "Abrir IA" (deep link, remembers the choice) and -->
+<!--     "Copiar prompt" (copies straight away, green "Copiado" feedback). -->
+<!--   - a subtle "ver/editar prompt" toggle that reveals the editable text; -->
+<!--     both actions send/copy whatever that editable text holds. -->
 <!-- One instance serves every element kind; only the props change. -->
 <script>
   import { untrack } from 'svelte';
-  import { fly } from 'svelte/transition';
+  import { fly, fade } from 'svelte/transition';
   import { AIS, getPreferredAI, setPreferredAI, openAI } from '$lib/ai/handoff.js';
 
   /**
@@ -25,8 +25,8 @@
    */
   let { open = false, category = '', info = null, prompts = null, onclose } = $props();
 
-  /** Which tool is expanded: 'prompt' | 'ai' | null. */
-  let expanded = $state(null);
+  let aiOpen = $state(false);
+  let showPrompt = $state(false);
   let copied = $state(false);
   /** @type {{ id: string, label: string } | null} */
   let preferred = $state(null);
@@ -37,6 +37,8 @@
   let wide = $state(false);
   /** @type {HTMLTextAreaElement | undefined} */
   let promptEl = $state();
+  /** @type {ReturnType<typeof setTimeout> | undefined} */
+  let copyTimer;
 
   const hasAngles = $derived(!!prompts?.chart);
 
@@ -50,12 +52,13 @@
   });
 
   // Reset transient state and pick the default angle each time it opens.
-  // Wrapped in untrack so reading angle/prompts here doesn't make the effect
-  // re-run (and reset the angle) every time the user switches angle.
+  // untrack so reading angle/prompts here doesn't re-run the effect when the
+  // user later switches angle.
   $effect(() => {
     if (!open) return;
     untrack(() => {
-      expanded = null;
+      aiOpen = false;
+      showPrompt = false;
       angleOpen = false;
       copied = false;
       preferred = getPreferredAI();
@@ -65,7 +68,7 @@
   });
 
   // Keep the textarea sized to its content — also when switching angle
-  // swaps the text under it (a plain input listener wouldn't catch that).
+  // swaps the text under it.
   $effect(() => {
     editedPrompt;
     if (promptEl) {
@@ -77,38 +80,46 @@
   function setAngle(a) {
     angle = a;
     angleOpen = false;
-    copied = false;
     editedPrompt = prompts?.[a] ?? '';
   }
 
-  async function copyPrompt() {
-    try {
-      await navigator.clipboard.writeText(editedPrompt);
-      copied = true;
-    } catch {
-      copied = false;
-    }
+  function copyPrompt() {
+    navigator.clipboard
+      .writeText(editedPrompt)
+      .then(() => {
+        copied = true;
+        clearTimeout(copyTimer);
+        copyTimer = setTimeout(() => (copied = false), 2000);
+      })
+      .catch(() => {});
   }
 
-  // Opening the prompt tool copies straight away (the common intent).
-  function togglePrompt() {
-    if (expanded === 'prompt') {
-      expanded = null;
-      return;
+  // First time (no preference) the button opens the picker; once an AI is
+  // chosen it opens that AI directly, and the chevron re-opens the picker.
+  function aiButtonClick() {
+    if (preferred) {
+      openAI(preferred, editedPrompt);
+    } else {
+      aiOpen = !aiOpen;
+      if (aiOpen) showPrompt = false;
     }
-    expanded = 'prompt';
-    copyPrompt();
   }
 
   function toggleAiList() {
-    expanded = expanded === 'ai' ? null : 'ai';
+    aiOpen = !aiOpen;
+    if (aiOpen) showPrompt = false;
   }
 
   function chooseAI(ai) {
     setPreferredAI(ai.id);
     preferred = ai;
-    expanded = null;
+    aiOpen = false;
     openAI(ai, editedPrompt);
+  }
+
+  function toggleShowPrompt() {
+    showPrompt = !showPrompt;
+    if (showPrompt) aiOpen = false;
   }
 
   function onkeydown(e) {
@@ -174,15 +185,8 @@
     {/if}
 
     <div class="menu">
-      <button class="mbtn" class:act={expanded === 'prompt'} type="button" onclick={togglePrompt}>
-        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <rect x="9" y="9" width="13" height="13" rx="2" /><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
-        </svg>
-        Copiar prompt
-      </button>
-
       {#if preferred}
-        <div class="split" class:act={expanded === 'ai'}>
+        <div class="split" class:act={aiOpen}>
           <button class="split-go" type="button" onclick={() => openAI(preferred, editedPrompt)}>
             <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" /><path d="M15 3h6v6" /><path d="M10 14 21 3" />
@@ -193,33 +197,31 @@
             </svg>
           </button>
           <button class="split-toggle" type="button" onclick={toggleAiList} aria-label="Cambiar IA">
-            <svg class="chev" class:up={expanded === 'ai'} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <svg class="chev" class:up={aiOpen} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="m6 9 6 6 6-6" />
             </svg>
           </button>
         </div>
       {:else}
-        <button class="mbtn" class:act={expanded === 'ai'} type="button" onclick={toggleAiList}>
+        <button class="mbtn" class:act={aiOpen} type="button" onclick={aiButtonClick}>
           <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" /><path d="M15 3h6v6" /><path d="M10 14 21 3" />
           </svg>
           Abrir IA
-          <svg class="chev" class:up={expanded === 'ai'} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <svg class="chev" class:up={aiOpen} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="m6 9 6 6 6-6" />
           </svg>
         </button>
       {/if}
+      <button class="mbtn" type="button" onclick={copyPrompt}>
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="9" y="9" width="13" height="13" rx="2" /><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+        </svg>
+        Copiar prompt
+      </button>
     </div>
 
-    {#if expanded === 'prompt'}
-      <textarea class="pbox" bind:this={promptEl} bind:value={editedPrompt} oninput={() => (copied = false)}></textarea>
-      <div class="copy-row">
-        <span class="hint">Copia el texto y pégalo en tu app de IA.</span>
-        <button class="copy" type="button" onclick={copyPrompt}>{copied ? 'Copiado ✓' : 'Copiar'}</button>
-      </div>
-    {/if}
-
-    {#if expanded === 'ai'}
+    {#if aiOpen}
       <ul class="ai-list">
         {#each AIS as ai}
           <li>
@@ -233,6 +235,25 @@
         {/each}
         <li class="note">Para otras IA, usa «Copiar prompt» y pégalo donde quieras.</li>
       </ul>
+    {/if}
+
+    <div class="subrow">
+      <button class="vedit" type="button" onclick={toggleShowPrompt} aria-expanded={showPrompt}>
+        {showPrompt ? 'ocultar prompt' : 'ver/editar prompt'}
+        <svg class="chev" class:up={showPrompt} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="m6 9 6 6 6-6" />
+        </svg>
+      </button>
+      {#if copied}
+        <span class="copied" transition:fade={{ duration: 120 }}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 6" /></svg>
+          Copiado
+        </span>
+      {/if}
+    </div>
+
+    {#if showPrompt}
+      <textarea class="pbox" bind:this={promptEl} bind:value={editedPrompt}></textarea>
     {/if}
   </aside>
 {/if}
@@ -325,13 +346,10 @@
     color: #c4c4ca;
     margin: 0.7rem 0 0;
   }
-  /* Air between the info text and the "Saber más" divider. */
   .sep {
     border-top: 1px solid var(--border);
     margin: 1.9rem 0 0.95rem;
   }
-  /* Inline angle selector: same size/typeface as the section label, only
-     the colour differs so the selectable value stands out. */
   .menu-head {
     display: flex;
     align-items: baseline;
@@ -486,48 +504,6 @@
     transform: rotate(180deg);
     color: var(--accent);
   }
-  .pbox {
-    width: 100%;
-    box-sizing: border-box;
-    background: var(--surface-2);
-    border: 1px solid var(--border);
-    border-radius: 9px;
-    padding: 0.6rem 0.7rem;
-    margin-top: 0.65rem;
-    font-family: inherit;
-    font-size: 0.8rem;
-    line-height: 1.55;
-    color: var(--text);
-    resize: vertical;
-    overflow: hidden;
-  }
-  .pbox:focus {
-    outline: none;
-    border-color: var(--accent);
-  }
-  .copy-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.75rem;
-    margin-top: 0.45rem;
-  }
-  .hint {
-    font-size: 0.75rem;
-    color: var(--text-muted);
-    margin: 0;
-  }
-  .copy {
-    background: var(--accent);
-    color: #1a1408;
-    border: none;
-    border-radius: 8px;
-    padding: 0.4rem 0.9rem;
-    font-size: 0.8rem;
-    font-weight: 500;
-    cursor: pointer;
-    white-space: nowrap;
-  }
   .ai-list {
     list-style: none;
     margin: 0.6rem 0 0;
@@ -562,5 +538,66 @@
     line-height: 1.5;
     color: #76767e;
     padding: 0.55rem 0.7rem;
+  }
+  /* Subtle "ver/editar prompt" text toggle (like the angle selector) on the
+     left, with the transient green "Copiado" feedback on the right. */
+  .subrow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    min-height: 1.2rem;
+    margin-top: 0.7rem;
+  }
+  .vedit {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font-family: inherit;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    cursor: pointer;
+  }
+  .vedit:hover {
+    color: var(--text);
+  }
+  .vedit .chev {
+    width: 13px;
+    height: 13px;
+    color: var(--accent);
+  }
+  .copied {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    color: var(--success);
+    font-size: 0.78rem;
+  }
+  .copied svg {
+    width: 14px;
+    height: 14px;
+  }
+  .pbox {
+    width: 100%;
+    box-sizing: border-box;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    padding: 0.6rem 0.7rem;
+    margin-top: 0.6rem;
+    font-family: inherit;
+    font-size: 0.8rem;
+    line-height: 1.55;
+    color: var(--text);
+    resize: vertical;
+    overflow: hidden;
+  }
+  .pbox:focus {
+    outline: none;
+    border-color: var(--accent);
   }
 </style>

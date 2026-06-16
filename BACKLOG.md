@@ -416,8 +416,10 @@ top of it:
 - 6.D — Gates & channels via handoff (Level 2/3: minimal info + delegate).
 - 6.E — Legal disclaimer + docs close.
 
-Open question for 6.C: exact list of AIs offered as deep links (ChatGPT /
-Claude / Perplexity confirmed; Gemini via copy).
+Open question for 6.C: exact list of AIs offered as deep links. Confirmed
+order: Claude, ChatGPT, Perplexity (Gemini has no reliable URL prefill →
+copy). Add more popular AIs as deep links when feasible: Grok, DeepSeek,
+Gemini (needs a browser extension), Copilot, etc.
 
 **Future exploration (revisit after Phase 6).** The info panel carries two
 kinds of content: *general* info (e.g. what the 5/1 profile means in the
