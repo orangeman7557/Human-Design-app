@@ -19,7 +19,28 @@ lives in [`BACKLOG.md`](./BACKLOG.md).
 
 Last updated: 2026-06-17.
 
-> Latest change (2026-06-17): **Fase 6.A cerrada** tras varias rondas de
+> Latest change (2026-06-17): **Fase 6.B construida, validada (UX) y
+> mergeada a `main`** — solo queda la **revisión en detalle de los textos**
+> por el autor. Implementado y verificado en escritorio + móvil: contenido
+> propio (en `content/es.js`, con `**negrita**`/`*cursiva*`, enfoque en
+> gestión de energía y toma de decisiones) para los 6 conceptos
+> (Tipo/Estrategia/Autoridad/Perfil/Definición/Centros) + 4 tipos + 5
+> estrategias + 7 autoridades + 6 líneas de perfil + 5 definiciones + 9
+> centros; `prompts.js` extendido a todos los kinds + `concept`. Dos niveles
+> de «i»: la del **cajetín** explica el concepto; la del **valor/chip**, el
+> elemento concreto (el perfil se compone al vuelo de sus dos líneas).
+> Refinamientos: **una sola «i» a la vez** (cuerpo→concepto, elemento
+> interior→su «i»); la «i» del valor es **inline tras el texto** (tras la 2ª
+> línea si envuelve), sin reservar hueco ni provocar saltos; **todos** los
+> chips de Tipo tienen «i» (los no-propios solo «Info general»); aire
+> constante título↔texto en el drawer; **memoria del ángulo**
+> «Sobre esta carta»/«Info general» con primera línea explicativa en su
+> desplegable; copia con fallback (la API y `execCommand` están bloqueadas
+> en el iframe del preview, pero funciona en la app real); «i» un poco más
+> pequeña (17px) y pegada a la esquina del cajetín. Commits `656dc2d`,
+> `042abfd`, `0c29888`, `177d7af`. Detalle en BACKLOG (§ 6.B). 0.2.0.
+>
+> Previo (2026-06-17): **Fase 6.A cerrada** tras varias rondas de
 > refinamiento del panel (validadas en escritorio y móvil). Sobre el cierre
 > previo: (1) el prompt tiene **dos ángulos** mediante un selector de texto
 > en línea junto a «Saber más usando IA» — «Sobre esta carta» / «Info
@@ -310,7 +331,8 @@ Subtareas completadas:
   items live in BACKLOG ("Possible improvements").
 - **Phase 6 — AI handoff + element info** (plan validated 2026-06-13,
   panel UX approved 2026-06-15 — mockup v3; full detail in BACKLOG). 6.A
-  done 2026-06-16; next: 6.B. Lightweight, no-API AI integration: from any element, build a
+  done 2026-06-16, 6.B done 2026-06-17 (text review pending); next: 6.C.
+  Lightweight, no-API AI integration: from any element, build a
   ready-made, chart-personalised prompt the user takes to **their own** AI
   — the AI never runs inside the app. Plus a small core of original in-app
   text. Key decisions:
@@ -334,12 +356,12 @@ Subtareas completadas:
   - Multi-language ready from the start (content + prompt templates
     i18n-keyed).
   - Sub-phases (renumbered 2026-06-17: old 6.E → 6.F; new 6.E = activations
-    info): 6.A ✅ scaffolding + pilot (Type element) → 6.B 🟡 core content
-    (built 2026-06-17, UX validated on desktop + mobile and **merged to
-    main**; detailed text review still pending: concept "i" on the six cards
-    + specific "i" on each value/chip — one "i" at a time, no layout shift,
-    drawer air, angle memory — all kinds + prompts written, bold/italic
-    rendering) → 6.C handoff
+    info): 6.A ✅ scaffolding + pilot (Type element) → 6.B ✅ core content
+    (built, UX validated on desktop + mobile and **merged to main**
+    2026-06-17 — concept "i" on the six cards + specific "i" on each
+    value/chip, all kinds + prompts written, bold/italic, one "i" at a time,
+    inline value "i" with no layout shift, drawer air, angle memory; **only
+    open item: author's detailed review of the texts**) → 6.C handoff
     polish (real AI logos, prompt templates, AI list) → 6.D gates/channels
     via handoff (+ "i" on the channel/gate chips and on the "Canales
     completos"/"Puertas colgantes" titles; open problem: how to list ALL
