@@ -595,16 +595,11 @@
           onmouseleave={clearReveal}
         >
           <span class="label">Estrategia</span>
-          <span class="value" data-inner-key="strategy:value">
-            <span class="vtext">
-              {STRATEGY_LABELS[chart.strategy] ?? chart.strategy}
-              {#if innerReveal === 'strategy:value' || infoIsOpen('strategy', chart.strategy)}
-                <span class="dot-slot" data-info-cat="Estrategia" data-info-kind="strategy" data-info-key={chart.strategy}>
-                  <InfoDot active={infoIsOpen('strategy', chart.strategy)} label="Más información sobre esta estrategia" />
-                </span>
-              {/if}
-            </span>
-          </span>
+          <span class="value" data-inner-key="strategy:value"
+            >{STRATEGY_LABELS[chart.strategy] ?? chart.strategy}{#if innerReveal === 'strategy:value' || infoIsOpen('strategy', chart.strategy)}<span
+              class="dot-side"
+              data-info-cat="Estrategia" data-info-kind="strategy" data-info-key={chart.strategy}
+            ><InfoDot active={infoIsOpen('strategy', chart.strategy)} label="Más información sobre esta estrategia" /></span>{/if}</span>
           {#if cardReveal === 'strategy' || infoIsOpen('concept', 'strategy')}
             <span class="dot-slot card-dot" data-info-cat="Estrategia" data-info-kind="concept" data-info-key="strategy">
               <InfoDot active={infoIsOpen('concept', 'strategy')} label="Qué es la estrategia" />
@@ -619,16 +614,11 @@
           onmouseleave={clearReveal}
         >
           <span class="label">Autoridad</span>
-          <span class="value" data-inner-key="authority:value">
-            <span class="vtext">
-              {AUTHORITY_LABELS[chart.authority] ?? chart.authority}
-              {#if innerReveal === 'authority:value' || infoIsOpen('authority', chart.authority)}
-                <span class="dot-slot" data-info-cat="Autoridad" data-info-kind="authority" data-info-key={chart.authority}>
-                  <InfoDot active={infoIsOpen('authority', chart.authority)} label="Más información sobre esta autoridad" />
-                </span>
-              {/if}
-            </span>
-          </span>
+          <span class="value" data-inner-key="authority:value"
+            >{AUTHORITY_LABELS[chart.authority] ?? chart.authority}{#if innerReveal === 'authority:value' || infoIsOpen('authority', chart.authority)}<span
+              class="dot-side"
+              data-info-cat="Autoridad" data-info-kind="authority" data-info-key={chart.authority}
+            ><InfoDot active={infoIsOpen('authority', chart.authority)} label="Más información sobre esta autoridad" /></span>{/if}</span>
           {#if cardReveal === 'authority' || infoIsOpen('concept', 'authority')}
             <span class="dot-slot card-dot" data-info-cat="Autoridad" data-info-kind="concept" data-info-key="authority">
               <InfoDot active={infoIsOpen('concept', 'authority')} label="Qué es la autoridad" />
@@ -643,16 +633,11 @@
           onmouseleave={clearReveal}
         >
           <span class="label">Perfil</span>
-          <span class="value" data-inner-key="profile:value">
-            <span class="vtext">
-              {chart.profile}
-              {#if innerReveal === 'profile:value' || infoIsOpen('profile', chart.profile)}
-                <span class="dot-slot" data-info-cat="Perfil" data-info-kind="profile" data-info-key={chart.profile}>
-                  <InfoDot active={infoIsOpen('profile', chart.profile)} label="Más información sobre este perfil" />
-                </span>
-              {/if}
-            </span>
-          </span>
+          <span class="value" data-inner-key="profile:value"
+            >{chart.profile}{#if innerReveal === 'profile:value' || infoIsOpen('profile', chart.profile)}<span
+              class="dot-side"
+              data-info-cat="Perfil" data-info-kind="profile" data-info-key={chart.profile}
+            ><InfoDot active={infoIsOpen('profile', chart.profile)} label="Más información sobre este perfil" /></span>{/if}</span>
           {#if cardReveal === 'profile' || infoIsOpen('concept', 'profile')}
             <span class="dot-slot card-dot" data-info-cat="Perfil" data-info-kind="concept" data-info-key="profile">
               <InfoDot active={infoIsOpen('concept', 'profile')} label="Qué es el perfil" />
@@ -668,16 +653,11 @@
           onclick={(e) => cardClick(e, 'definition', () => pin(e, { kind: 'definition', gates: [] }))}
         >
           <span class="label">Definición</span>
-          <span class="value" data-inner-key="definition:value">
-            <span class="vtext">
-              {DEFINITION_LABELS[chart.definition] ?? chart.definition}
-              {#if innerReveal === 'definition:value' || infoIsOpen('definition', chart.definition)}
-                <span class="dot-slot" data-info-cat="Definición" data-info-kind="definition" data-info-key={chart.definition}>
-                  <InfoDot active={infoIsOpen('definition', chart.definition)} label="Más información sobre esta definición" />
-                </span>
-              {/if}
-            </span>
-          </span>
+          <span class="value" data-inner-key="definition:value"
+            >{DEFINITION_LABELS[chart.definition] ?? chart.definition}{#if innerReveal === 'definition:value' || infoIsOpen('definition', chart.definition)}<span
+              class="dot-side"
+              data-info-cat="Definición" data-info-kind="definition" data-info-key={chart.definition}
+            ><InfoDot active={infoIsOpen('definition', chart.definition)} label="Más información sobre esta definición" /></span>{/if}</span>
           {#if cardReveal === 'definition' || infoIsOpen('concept', 'definition')}
             <span class="dot-slot card-dot" data-info-cat="Definición" data-info-kind="concept" data-info-key="definition">
               <InfoDot active={infoIsOpen('concept', 'definition')} label="Qué es la definición" />
@@ -972,9 +952,11 @@
   .type-card {
     position: relative;
   }
-  /* On the card itself the "i" tucks hard into the top-right corner. */
+  /* On the card itself the "i" tucks hard into the top-right corner. The top
+     inset is a touch smaller than the right so the rounded corner doesn't make
+     the top gap look larger than the right one. */
   .card-dot {
-    top: 4px;
+    top: 2px;
     right: 4px;
   }
   /* Centre chips are <button>, so their "i" can't nest inside; it sits as a
@@ -983,14 +965,16 @@
     position: relative;
     display: inline-flex;
   }
-  /* The value "i" (specific strategy / authority / profile / definition)
-     floats as a superscript over the value text — like the chips do — so it
-     never reserves horizontal space nor pushes the value onto a new line.
-     .vtext shrink-wraps the value so the superscript anchors to its corner. */
-  .vtext {
-    position: relative;
-    display: inline-block;
-    max-width: 100%;
+  /* The value "i" (specific strategy / authority / profile / definition) sits
+     inline right after the value text — and after the last line when the value
+     wraps — vertically centred with it (not raised like a superscript). The
+     negative right margin cancels its own advance so it reserves no space and
+     never pushes the value onto an extra line. */
+  .dot-side {
+    display: inline-flex;
+    vertical-align: middle;
+    margin-left: 0.3rem;
+    margin-right: -1.4rem;
   }
   .tchip.on {
     background: var(--accent);
@@ -1058,6 +1042,9 @@
   .value {
     font-size: 0.85rem;
     color: var(--text);
+    /* Tall enough to hold the inline "i" so revealing it never bumps the
+       line height. */
+    line-height: 1.4;
   }
 
   /* ~8% narrower than the 720px container so the full graph fits one
