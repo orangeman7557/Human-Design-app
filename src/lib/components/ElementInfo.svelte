@@ -221,6 +221,7 @@
           </button>
           {#if angleOpen}
             <ul class="angle-dd">
+              <li class="dd-hint">Esta selección determina el prompt que se usa.</li>
               <li><button type="button" class:on={angle === 'chart'} onclick={() => setAngle('chart')}>Sobre esta carta</button></li>
               <li><button type="button" class:on={angle === 'general'} onclick={() => setAngle('general')}>Info general</button></li>
             </ul>
@@ -284,7 +285,7 @@
 
     <div class="subrow">
       <button class="vedit" type="button" onclick={toggleShowPrompt} aria-expanded={showPrompt}>
-        {showPrompt ? 'Ocultar prompt' : 'Ver/editar prompt'}
+        {showPrompt ? 'Ocultar prompt' : 'Ver/editar el prompt generado'}
       </button>
       {#if copied}
         <span class="copied" transition:fade={{ duration: 120 }}>
@@ -475,6 +476,19 @@
     background: #1b1b1f;
     white-space: nowrap;
     z-index: 5;
+  }
+  /* Leading explanatory line: what this selector actually changes. */
+  .angle-dd .dd-hint {
+    padding: 0.35rem 0.55rem 0.45rem;
+    max-width: 14rem;
+    font-size: 0.68rem;
+    line-height: 1.35;
+    letter-spacing: normal;
+    text-transform: none;
+    color: #8a8a93;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 4px;
+    white-space: normal;
   }
   .angle-dd li button {
     width: 100%;

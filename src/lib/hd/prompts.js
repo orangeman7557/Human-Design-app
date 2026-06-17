@@ -42,17 +42,22 @@ export function buildPrompts(kind, key, chart, lang = DEFAULT_LANG) {
 
   if (kind === 'type') {
     const type = L.type[key] ?? key;
-    const strategy = L.strategy[chart.strategy] ?? chart.strategy;
+    const isOwn = key === chart.type;
+    const strategy = isOwn ? L.strategy[chart.strategy] ?? chart.strategy : null;
     const authority = L.authority[chart.authority] ?? chart.authority;
     return {
       general:
         `Explícame de forma sencilla y práctica qué es el tipo ${type} en ` +
-        `Diseño Humano: cómo funciona su energía, su estrategia (${strategy}) ` +
-        `y qué señales indican que va por buen camino. ${NO_ASSUME}`,
-      chart:
-        `Para un ${type} con autoridad ${authority} y perfil ${chart.profile}, ` +
-        `explícame cómo se combinan estos rasgos y cómo se viven en el día a ` +
-        `día. ${NO_ASSUME}`
+        `Diseño Humano: cómo funciona su energía, su estrategia` +
+        (strategy ? ` (${strategy})` : '') +
+        ` y qué señales indican que va por buen camino. ${NO_ASSUME}`,
+      // The "Sobre esta carta" angle only makes sense for the chart's own
+      // type; for the other type chips there's nothing chart-specific to read.
+      chart: isOwn
+        ? `Para un ${type} con autoridad ${authority} y perfil ${chart.profile}, ` +
+          `explícame cómo se combinan estos rasgos y cómo se viven en el día a ` +
+          `día. ${NO_ASSUME}`
+        : null
     };
   }
 

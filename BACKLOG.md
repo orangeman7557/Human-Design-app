@@ -462,10 +462,16 @@ chiefly in the IA section:
     that element's "i". Driven by `cardReveal` vs `innerReveal` (mutually
     exclusive), set from a single `mouseover` per card that reads a
     `data-inner-key` on the inner element.
-  - The value "i" is laid out inline but kept in flow with `visibility`
-    (not conditional render), so it **never shifts the value** when it
-    appears/disappears. (A long value like "Plexo Solar (emocional)" may sit
-    on two lines, but stably.)
+  - The value "i" **floats as a superscript** over the value text (a
+    `.vtext` inline-block anchors it), so it reserves no horizontal space and
+    never pushes the value onto a new line. (A long value still wraps on its
+    own on very narrow cards — that's the text, not the "i".)
+  - All type chips (not just the active one) reveal an "i"; non-own types get
+    the general angle only (`buildPrompts` returns `chart: null` for them).
+  - Small refinements: the "i" + its circle shrank slightly (17px); the angle
+    selector's dropdown leads with a hint line ("Esta selección determina el
+    prompt que se usa."); the prompt toggle reads "Ver/editar el prompt
+    generado".
   - Content (`content/es.js`): own wording with `**bold**`/`*italic*`
     markers (rendered by `ElementInfo`), weighted toward energy management
     and decision-making. `prompts.js` extended to all kinds + `concept`.

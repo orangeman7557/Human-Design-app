@@ -25,15 +25,15 @@
 
 <style>
   .info-dot {
-    width: 19px;
-    height: 19px;
+    width: 17px;
+    height: 17px;
     border-radius: 50%;
     border: 1px solid #4a4a54;
     background: var(--surface-2);
     color: var(--text);
     font-family: Georgia, 'Times New Roman', serif;
     font-style: italic;
-    font-size: 12px;
+    font-size: 11px;
     line-height: 1;
     padding: 0;
     cursor: pointer;
