@@ -21,10 +21,11 @@
    *   category?: string,
    *   info?: { title: string, paragraphs: string[] } | null,
    *   prompts?: { general: string, chart: string | null } | null,
+   *   elementKey?: string,
    *   onclose: () => void
    * }}
    */
-  let { open = false, category = '', info = null, prompts = null, onclose } = $props();
+  let { open = false, category = '', info = null, prompts = null, elementKey = '', onclose } = $props();
 
   let aiOpen = $state(false);
   let showPrompt = $state(false);
@@ -52,10 +53,12 @@
     return () => mq.removeEventListener('change', update);
   });
 
-  // Reset transient state and pick the default angle each time it opens.
-  // untrack so reading angle/prompts here doesn't re-run the effect when the
-  // user later switches angle.
+  // Reset transient state and pick the default angle each time it opens — and
+  // also when the element changes while the panel stays open (reading
+  // elementKey here is what makes that re-run). untrack so reading
+  // angle/prompts inside doesn't re-run the effect when the user switches angle.
   $effect(() => {
+    elementKey;
     if (!open) return;
     untrack(() => {
       aiOpen = false;
@@ -126,6 +129,19 @@
   function onkeydown(e) {
     if (e.key === 'Escape' && open) onclose();
   }
+
+  // The content uses Markdown-style emphasis: **bold** and *italic*. Render it
+  // safely — the text is all ours, but we still escape HTML first and only
+  // then turn the markers into <strong>/<em>.
+  function renderInline(text) {
+    const esc = String(text)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+    return esc
+      .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+      .replace(/\*([^*]+)\*/g, '<em>$1</em>');
+  }
 </script>
 
 <svelte:window {onkeydown} />
@@ -151,7 +167,7 @@
 
     <div class="info-body">
       {#each info.paragraphs as p}
-        <p class="para">{p}</p>
+        <p class="para">{@html renderInline(p)}</p>
       {/each}
     </div>
 
@@ -349,6 +365,14 @@
     line-height: 1.6;
     color: #c4c4ca;
     margin: 0.7rem 0 0;
+  }
+  /* Emphasis comes from {@html}, so it isn't scoped — target it globally. */
+  .para :global(strong) {
+    color: var(--text);
+    font-weight: 600;
+  }
+  .para :global(em) {
+    font-style: italic;
   }
   .sep {
     border-top: 1px solid var(--border);

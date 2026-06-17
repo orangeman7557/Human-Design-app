@@ -333,12 +333,16 @@ Subtareas completadas:
     visible disclaimer (comply without stating it). Not legal advice.
   - Multi-language ready from the start (content + prompt templates
     i18n-keyed).
-  - Sub-phases: 6.A ✅ scaffolding + pilot (Type element; Generator
-    written; content module, InfoDot/ElementInfo, prompts, AI handoff, plus
-    an inline angle selector «Sobre esta carta»/«Info general» with
-    impersonal prompts — the chart may not be the user's) →
-    6.B core content (next) → 6.C handoff polish (real AI logos) → 6.D
-    gates/channels via handoff → 6.E docs close.
+  - Sub-phases (renumbered 2026-06-17: old 6.E → 6.F; new 6.E = activations
+    info): 6.A ✅ scaffolding + pilot (Type element) → 6.B 🟡 core content
+    (built 2026-06-17, **pending user validation**: concept "i" on the six
+    cards + specific "i" on each value/chip, all kinds + prompts written,
+    bold/italic rendering, validated on desktop + mobile) → 6.C handoff
+    polish (real AI logos, prompt templates, AI list) → 6.D gates/channels
+    via handoff (+ "i" on the channel/gate chips and on the "Canales
+    completos"/"Puertas colgantes" titles; open problem: how to list ALL
+    gates/channels — see BACKLOG) → 6.E activations info (general + per
+    element; may stay a possible improvement) → 6.F docs close.
 - **Phase 7 — Composite chart.** Two saved charts rendered as a combined
   bodygraph (visual overlay distinguishing each person).
 - **Phase 8 — Transits.** View live transits over a saved chart.

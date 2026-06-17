@@ -440,16 +440,55 @@ chiefly in the IA section:
   own info (centre + public-domain I Ching root) + a "go deeper with your
   AI" button. The handoff carries the weight here.
 
-**Sub-phases (one thing at a time; 0.2.0).**
+**Sub-phases (one thing at a time; 0.2.0). Renumbered 2026-06-17 — the old
+6.E (docs close) is now 6.F; a new 6.E covers activations info.**
 
 - 6.A — Scaffolding + pilot: content module + reusable panel wired to ONE
-  element kind (the 5 Types) to validate the full flow end-to-end (info +
+  element kind (the Type) to validate the full flow end-to-end (info +
   copy + deep link) before writing more.
-- 6.B — Core content (Level 1).
+- 6.B — Core content (Level 1). **Built 2026-06-17 (pending user
+  validation).** Two info levels wired, each with its own "i":
+  - *Concept* "i" on every card (Tipo, Estrategia, Autoridad, Perfil,
+    Definición, Centros) — explains the category. Angle: general only,
+    except **Centros**, which also offers "Sobre esta carta" (reads the
+    chart's defined/undefined mix).
+  - *Specific* "i" on the concrete value/chip: the active type chip, the
+    Estrategia/Autoridad/Perfil/Definición values, and each Centro chip —
+    explains that element, both angles. Profile is built on the fly from
+    its two line descriptions (`getProfileInfo`).
+  - Content (`content/es.js`): own wording with `**bold**`/`*italic*`
+    markers (rendered by `ElementInfo`), weighted toward energy management
+    and decision-making. `prompts.js` extended to all kinds + `concept`.
+    `ElementInfo` gained an `elementKey` prop so switching element while
+    the panel stays open resets the angle/state.
+  - Known cosmetic nit: a long card value (e.g. "Plexo Solar (emocional)")
+    can push its inline specific "i" onto the next line. Acceptable; polish
+    later if it bothers.
 - 6.C — Handoff polish: preferred-AI selector, tuned prompt templates,
-  remembered preference.
-- 6.D — Gates & channels via handoff (Level 2/3: minimal info + delegate).
-- 6.E — Legal disclaimer + docs close.
+  remembered preference, **real AI logos** (replace the provisional glyph),
+  review the AI list/order.
+- 6.D — Gates & channels via handoff (Level 2/3: minimal own info — centre +
+  public-domain I Ching root — and the weight goes to "go deeper with your
+  AI"). Wire the "i" to **complete-channel chips and hanging-gate chips**,
+  and — like the cards — to the **section titles** "Canales completos (xx)"
+  and "Puertas colgantes (yy)" (concept "i" for each).
+  - **Open problem to design here:** for gates and channels there should be
+    some way to surface a **full list of all 64 gates / 36 channels**, so
+    the user can reach the info for *any* of them, not only the active ones
+    on the chart. No solution chosen yet. Two candidate shapes:
+    (a) a dedicated browse/list section inside the info drawer; or
+    (b) **in-text links** — the panel text can include links that open a new
+    drawer with the info for whatever was clicked (sounds simpler, more
+    elegant and more extensible, but needs evaluating). Parked as a
+    possible improvement for now.
+- 6.E — **Activations info (new; may instead stay a possible improvement —
+  decide when we get there).** Same pattern as everything else: a general
+  "i" for the **Activaciones** section, plus an "i" for each element inside
+  it — the Personality / Design column headers, the planets, and each
+  individual activation (e.g. 30.3, 10.2). Ties in with the future
+  per-planet weight/influence idea (see "Possible improvements") once that
+  lands.
+- 6.F — Legal disclaimer + docs close (formerly 6.E). Bump to 0.2.0.
 
 Open question for 6.C: exact list of AIs offered as deep links. Confirmed
 order: Claude, ChatGPT, Perplexity (Gemini has no reliable URL prefill →
