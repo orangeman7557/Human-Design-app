@@ -26,13 +26,16 @@
    * @type {{
    *   open?: boolean,
    *   category?: string,
-   *   info?: { title: string, paragraphs: string[] } | null,
+   *   info?: { title: string, paragraphs: string[], list?: { label: string, kind: string, key: string }[] } | null,
    *   prompts?: { general: string, chart: string | null } | null,
    *   elementKey?: string,
+   *   canBack?: boolean,
+   *   onback?: () => void,
+   *   onnavigate?: (kind: string, key: string) => void,
    *   onclose: () => void
    * }}
    */
-  let { open = false, category = '', info = null, prompts = null, elementKey = '', onclose } = $props();
+  let { open = false, category = '', info = null, prompts = null, elementKey = '', canBack = false, onback, onnavigate, onclose } = $props();
 
   let aiOpen = $state(false);
   let showPrompt = $state(false);
@@ -46,6 +49,8 @@
   let wide = $state(false);
   /** @type {HTMLTextAreaElement | undefined} */
   let promptEl = $state();
+  /** @type {HTMLDivElement | undefined} */
+  let bodyEl = $state();
   /** @type {ReturnType<typeof setTimeout> | undefined} */
   let copyTimer;
 
@@ -77,6 +82,8 @@
       // 'general' without overwriting that memory.
       angle = prompts?.chart ? getPreferredAngle() : 'general';
       editedPrompt = prompts?.[angle] ?? '';
+      // Each stacked element starts scrolled to the top.
+      if (bodyEl) bodyEl.scrollTop = 0;
     });
   });
 
@@ -162,18 +169,43 @@
   }
 
   function onkeydown(e) {
-    if (e.key === 'Escape' && open) onclose();
+    // Escape steps back through the stack, then closes at the root.
+    if (e.key === 'Escape' && open) canBack ? onback?.() : onclose();
   }
 
-  // The content uses Markdown-style emphasis: **bold** and *italic*. Render it
-  // safely — the text is all ours, but we still escape HTML first and only
-  // then turn the markers into <strong>/<em>.
+  // In-text links (`[label](kind:key)`) are rendered as a subtle underline and
+  // open the linked element in a nested drawer. Clicks are delegated here from
+  // the content area.
+  function navFromEvent(e) {
+    const link = e.target.closest?.('[data-link]');
+    if (!link) return false;
+    e.preventDefault();
+    const raw = link.dataset.link;
+    const i = raw.indexOf(':');
+    onnavigate?.(raw.slice(0, i), raw.slice(i + 1));
+    return true;
+  }
+  function onContentClick(e) {
+    navFromEvent(e);
+  }
+  function onContentKeydown(e) {
+    if (e.key === 'Enter' || e.key === ' ') navFromEvent(e);
+  }
+
+  // The content uses Markdown-style emphasis: **bold** and *italic*, plus the
+  // link markup `[label](kind:key)`. Render it safely — the text is all ours,
+  // but we still escape HTML first and only then turn the markers into
+  // <strong>/<em>/<span class="ilink">.
   function renderInline(text) {
     const esc = String(text)
       .replace(/&/g, '&amp;')
       .replace(/</g, '&lt;')
       .replace(/>/g, '&gt;');
     return esc
+      .replace(
+        /\[([^\]]+)\]\(([a-z]+:[^)]+)\)/g,
+        '<span class="ilink" role="link" tabindex="0" data-link="$2">$1</span>'
+      )
       .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
       .replace(/\*([^*]+)\*/g, '<em>$1</em>');
   }
@@ -197,13 +229,27 @@
         {#if category}<div class="eyebrow">{category}</div>{/if}
         <h2>{info.title}</h2>
       </div>
-      <button class="close" type="button" onclick={onclose} aria-label="Cerrar">✕</button>
+      <div class="head-actions">
+        {#if canBack}
+          <button class="hbtn" type="button" onclick={onback} aria-label="Atrás">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6" /></svg>
+          </button>
+        {/if}
+        <button class="hbtn close" type="button" onclick={onclose} aria-label="Cerrar">✕</button>
+      </div>
     </header>
 
-    <div class="info-body">
+    <div class="info-body" bind:this={bodyEl} role="presentation" onclick={onContentClick} onkeydown={onContentKeydown}>
       {#each info.paragraphs as p}
         <p class="para">{@html renderInline(p)}</p>
       {/each}
+      {#if info.list}
+        <div class="index-list">
+          {#each info.list as item}
+            <button class="index-chip" type="button" onclick={() => onnavigate?.(item.kind, item.key)}>{item.label}</button>
+          {/each}
+        </div>
+      {/if}
     </div>
 
     <div class="sep"></div>
@@ -234,10 +280,13 @@
       {#if preferred}
         <div class="split" class:act={aiOpen}>
           <button class="split-go" type="button" onclick={() => openAI(preferred, editedPrompt)}>
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" /><path d="M15 3h6v6" /><path d="M10 14 21 3" />
+            </svg>
+            {preferred.label}
             <svg class="ai-logo" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
               <path d={preferred.icon} />
             </svg>
-            {preferred.label}
           </button>
           <button class="split-toggle" type="button" onclick={toggleAiList} aria-label="Cambiar IA">
             <svg class="chev" class:up={aiOpen} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -369,17 +418,29 @@
     margin: 0.15rem 0 0;
     color: var(--text);
   }
-  .close {
+  .head-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.1rem;
+    flex: none;
+  }
+  .hbtn {
     background: none;
     border: none;
     color: var(--text-muted);
     font-size: 1rem;
     cursor: pointer;
-    padding: 0.1rem 0.3rem;
+    padding: 0.15rem 0.3rem;
     line-height: 1;
+    display: inline-flex;
+    align-items: center;
   }
-  .close:hover {
+  .hbtn:hover {
     color: var(--text);
+  }
+  .hbtn svg {
+    width: 18px;
+    height: 18px;
   }
   /* The info text gets its own scroll area, capped so the IA section below
      stays visible. ~3 paragraphs on mobile, ~4 on desktop. */
@@ -412,6 +473,45 @@
   }
   .para :global(em) {
     font-style: italic;
+  }
+  /* In-text cross-reference links: a subtle underline (kept light so the text
+     doesn't feel cluttered), brightening on hover/focus. Rendered via {@html},
+     so not scoped. */
+  .para :global(.ilink) {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-color: #6a6a72;
+    text-underline-offset: 2px;
+    cursor: pointer;
+  }
+  .para :global(.ilink:hover),
+  .para :global(.ilink:focus-visible) {
+    color: var(--text);
+    text-decoration-color: var(--accent);
+    outline: none;
+  }
+  /* Full clickable index (all gates / all channels) inside the concept panel. */
+  .index-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin-top: 1rem;
+  }
+  .index-chip {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    color: var(--text-muted);
+    font-family: inherit;
+    font-size: 0.8rem;
+    padding: 0.2rem 0.6rem;
+    cursor: pointer;
+  }
+  .index-chip:hover,
+  .index-chip:focus-visible {
+    border-color: var(--accent);
+    color: var(--text);
+    outline: none;
   }
   .sep {
     border-top: 1px solid var(--border);

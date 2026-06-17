@@ -22,7 +22,7 @@ export default {
     type: {
       title: 'Los tipos',
       paragraphs: [
-        'El **tipo** es la primera y más importante distinción de tu carta: describe cómo está diseñada tu energía para interactuar con el mundo. Hay cinco —Generador, Generador Manifestante, Proyector, Manifestador y Reflector— y se determinan por qué centros están definidos y cómo se conectan con la garganta.',
+        'El **tipo** es la primera y más importante distinción de tu carta: describe cómo está diseñada tu energía para interactuar con el mundo. Hay cinco —[Generador](type:generator), [Generador Manifestante](type:manifesting-generator), [Proyector](type:projector), [Manifestador](type:manifestor) y [Reflector](type:reflector)— y se determinan por qué centros están definidos y cómo se conectan con la [garganta](center:throat).',
         'Conocer el tipo importa sobre todo por una razón práctica: cada uno tiene una forma propia y sana de **gestionar su energía y tomar decisiones**. Vivir según el diseño propio —en lugar de imitar a otros tipos— es lo que el sistema asocia con menos resistencia y desgaste.',
         'No es una etiqueta de personalidad ni un horóscopo, sino una descripción mecánica de cómo funciona tu energía. El valor está en usarlo como espejo: observar si tu manera de moverte por la vida coincide con la que tu carta sugiere.'
       ]
@@ -55,7 +55,7 @@ export default {
       title: 'La definición',
       paragraphs: [
         'La **definición** describe cómo están conectados entre sí tus centros definidos: si forman un único bloque de energía o varios grupos separados. Habla de la consistencia interna —qué partes de ti están siempre «encendidas» y enlazadas— y de cómo se integra esa energía.',
-        'Las variantes son: sin definición (Reflector, ningún centro definido), única (todo conectado en un grupo), split (dos grupos), triple split (tres) y cuádruple split (cuatro). Una definición única tiende a sentirse **autosuficiente**; las divididas suelen experimentar una **búsqueda de conexión**, a menudo a través de otras personas o de puertas concretas que tienden el puente entre los grupos.',
+        'Las variantes son: sin definición ([Reflector](type:reflector), ningún centro definido), única (todo conectado en un grupo), split (dos grupos), triple split (tres) y cuádruple split (cuatro). Una definición única tiende a sentirse **autosuficiente**; las divididas suelen experimentar una **búsqueda de conexión**, a menudo a través de otras personas o de puertas concretas que tienden el puente entre los grupos.',
         'En la práctica, la definición ayuda a entender qué tipo de compañía o entornos te completan. No es mejor ni peor tener más o menos divisiones: cada una describe una forma distinta de funcionar y de relacionarte.'
       ]
     },
@@ -90,7 +90,7 @@ export default {
     generator: {
       title: 'Generator',
       paragraphs: [
-        'Tipo mayoritario: alrededor del **37 % de la población**. Su rasgo definitorio es el centro Sacral definido, la fuente de energía vital del sistema, generativa y de carácter renovable.',
+        'Tipo mayoritario: alrededor del **37 % de la población**. Su rasgo definitorio es el [centro Sacral](center:sacral) definido, la fuente de energía vital del sistema, generativa y de carácter renovable.',
         'Opera por respuesta: **reacciona a lo que la vida le presenta** en lugar de iniciar desde la mente. Comprometer su energía con lo correcto produce satisfacción; forzarla donde no corresponde, frustración.',
         'En la práctica, el Sacral responde antes que la mente: ante algo concreto —una propuesta, una pregunta, una situación— surge una reacción visceral de atracción o rechazo. **Seguir esa señal del cuerpo**, en vez de razonar la decisión, es lo que mantiene su energía bien empleada.'
       ]
@@ -98,7 +98,7 @@ export default {
     'manifesting-generator': {
       title: 'Manifesting Generator',
       paragraphs: [
-        'Una variante del Generador (juntos rondan el **70 % de la población**): también tiene el Sacral definido, pero conectado —directa o indirectamente— con la garganta. Eso le da la energía generadora del Generador y, además, capacidad de manifestar y materializar con rapidez.',
+        'Una variante del [Generador](type:generator) (juntos rondan el **70 % de la población**): también tiene el [Sacral](center:sacral) definido, pero conectado —directa o indirectamente— con la [garganta](center:throat). Eso le da la energía generadora del Generador y, además, capacidad de manifestar y materializar con rapidez.',
         'Su estrategia es **responder y luego informar**: primero espera la respuesta sacral —el sí o el no del cuerpo— y, una vez lo tiene, avisa a quienes se verán afectados antes de lanzarse. Tiende a ser **polifacético, veloz y no lineal**: salta pasos, hace varias cosas a la vez y a veces tiene que volver atrás a rematar lo que se saltó.',
         'La clave para gestionar su energía es no dispersarse iniciando sin respuesta: cuando se compromete con lo que de verdad le enciende, avanza muy rápido; cuando fuerza por mente, acumula frustración y trabajo a medias.'
       ]
@@ -106,7 +106,7 @@ export default {
     projector: {
       title: 'Projector',
       paragraphs: [
-        'Cerca del **20 % de la población**. No tiene el Sacral definido, así que **no está diseñado para un trabajo constante** ni para sostener la misma energía que un Generador. Su don es otro: ver a los demás con enorme profundidad y saber guiar y orientar la energía ajena.',
+        'Cerca del **20 % de la población**. No tiene el [Sacral](center:sacral) definido, así que **no está diseñado para un trabajo constante** ni para sostener la misma energía que un [Generador](type:generator). Su don es otro: ver a los demás con enorme profundidad y saber guiar y orientar la energía ajena.',
         'Su estrategia es **esperar la invitación** para lo importante —el trabajo, el amor, el lugar donde vivir—. El Proyector necesita ser reconocido e invitado para que su sabiduría sea bien recibida; cuando se ofrece sin que se lo pidan, suele encontrar resistencia. Reconocimiento y éxito, frente a amargura, marcan si va por buen camino.',
         'En la gestión de la energía, su tarea es **descansar y dosificarse**: no compite en resistencia física, sino en penetración y maestría. Dormir y soltar antes de quedar agotado, y elegir bien a quién entregar su atención, es lo que sostiene su bienestar.'
       ]
@@ -114,7 +114,7 @@ export default {
     manifestor: {
       title: 'Manifestor',
       paragraphs: [
-        'Alrededor del **9 % de la población**, es el tipo más independiente. Tiene un centro motor conectado a la garganta, pero **el Sacral no está definido**, así que su energía no es constante: llega a impulsos, para iniciar y poner cosas en marcha, y luego necesita reposo.',
+        'Alrededor del **9 % de la población**, es el tipo más independiente. Tiene un centro motor conectado a la [garganta](center:throat), pero **el [Sacral](center:sacral) no está definido**, así que su energía no es constante: llega a impulsos, para iniciar y poner cosas en marcha, y luego necesita reposo.',
         'Su estrategia es **informar antes de actuar**. No se trata de pedir permiso, sino de avisar a quienes su impacto va a alcanzar: al hacerlo, reduce la resistencia y el rechazo que de otro modo encuentra a su alrededor. Hacerlo bien trae paz; no hacerlo, enfado y oposición.',
         'El Manifestador está aquí para **iniciar e impactar**, no para ejecutar de forma sostenida. Gestionar su energía pasa por respetar sus ciclos de empuje y descanso, y por proteger su autonomía sin aislarse de quienes le rodean.'
       ]
@@ -173,28 +173,28 @@ export default {
     emotional: {
       title: 'Autoridad emocional',
       paragraphs: [
-        'La autoridad más extendida. Quien la tiene posee el **Plexo Solar definido**, que funciona en ondas: el ánimo sube y baja con el tiempo, no por los hechos del momento. La regla de oro es clara: **no hay verdad en el ahora**.',
+        'La autoridad más extendida. Quien la tiene posee el **[Plexo Solar](center:solarPlexus) definido**, que funciona en ondas: el ánimo sube y baja con el tiempo, no por los hechos del momento. La regla de oro es clara: **no hay verdad en el ahora**.',
         'Para decidir bien, el diseño pide **esperar a recorrer la onda emocional** —dormir sobre ello, dejar pasar el tiempo, volver al asunto en distintos ánimos— antes de comprometerse. La claridad no es un destello instantáneo, sino lo que queda cuando la emoción se ha asentado. La prisa es su principal enemiga.'
       ]
     },
     sacral: {
       title: 'Autoridad sacral',
       paragraphs: [
-        'La autoridad de la mayoría de Generadores. Reside en el **centro Sacral**, que responde **en el momento** con un sonido o un impulso visceral —una especie de «ajá» de atracción o un «mmm-mmm» de rechazo— ante algo concreto.',
+        'La autoridad de la mayoría de Generadores. Reside en el **[centro Sacral](center:sacral)**, que responde **en el momento** con un sonido o un impulso visceral —una especie de «ajá» de atracción o un «mmm-mmm» de rechazo— ante algo concreto.',
         'Es una autoridad **inmediata y corporal**: no razona, reacciona. Funciona mejor con preguntas de sí/no y se nubla cuando la mente intenta argumentar la decisión. Aprender a captar y confiar en esa respuesta instantánea del vientre es la práctica central de quien la tiene.'
       ]
     },
     splenic: {
       title: 'Autoridad esplénica',
       paragraphs: [
-        'Reside en el **Bazo**, el centro más antiguo de la conciencia, ligado a la supervivencia, la salud y el instinto. Habla **en el presente y una sola vez**: un saber súbito, callado y espontáneo, sin repetición ni discurso.',
+        'Reside en el **[Bazo](center:spleen)**, el centro más antiguo de la conciencia, ligado a la supervivencia, la salud y el instinto. Habla **en el presente y una sola vez**: un saber súbito, callado y espontáneo, sin repetición ni discurso.',
         'Es la autoridad más **sutil y fugaz**: no insiste ni argumenta, por lo que es fácil pasarla por alto o racionalizarla después. Quien la tiene aprende a **fiarse de ese primer impulso instintivo** —ese «sí» o «no» tranquilo del cuerpo— en el instante en que aparece, porque no suele volver a hablar.'
       ]
     },
     ego: {
       title: 'Autoridad del ego',
       paragraphs: [
-        'Reside en el **centro del Corazón (Ego)**, el motor de la voluntad y el deseo. Aquí la decisión correcta se reconoce con una pregunta sincera: **¿lo quiero de verdad?, ¿qué hay en esto para mí?** No se trata de egoísmo, sino de honrar el propio querer.',
+        'Reside en el **[centro del Corazón (Ego)](center:heart)**, el motor de la voluntad y el deseo. Aquí la decisión correcta se reconoce con una pregunta sincera: **¿lo quiero de verdad?, ¿qué hay en esto para mí?** No se trata de egoísmo, sino de honrar el propio querer.',
         'Es una autoridad de **voluntad e impulso**, no de reflexión prolongada. Funciona cuando la persona escucha lo que realmente desea y es capaz de comprometerse con ello; se pierde cuando acepta cosas por deber o presión que su corazón no respalda.'
       ]
     },
@@ -311,14 +311,14 @@ export default {
     head: {
       title: 'Centro de la Cabeza',
       paragraphs: [
-        'Es un centro de **presión mental**: la fuerza que nos empuja a pensar, preguntar e inspirarnos. Genera las preguntas y la curiosidad, pero no las responde —eso es tarea del Ajna—.',
+        'Es un centro de **presión mental**: la fuerza que nos empuja a pensar, preguntar e inspirarnos. Genera las preguntas y la curiosidad, pero no las responde —eso es tarea del [Ajna](center:ajna)—.',
         '**Definido**, aporta una forma constante de inspirarse y de sentir la presión por entender. **Indefinido**, amplifica las preguntas y la inquietud mental de los demás: aquí conviene no dejarse arrastrar a resolver dudas que en realidad no son tuyas ni importan para tu vida.'
       ]
     },
     ajna: {
       title: 'Centro Ajna',
       paragraphs: [
-        'Es el centro de la **mente y la conceptualización**: procesa la información, forma ideas y da estructura a lo que pensamos, trabajando con la presión que le llega de la Cabeza.',
+        'Es el centro de la **mente y la conceptualización**: procesa la información, forma ideas y da estructura a lo que pensamos, trabajando con la presión que le llega de la [Cabeza](center:head).',
         '**Definido**, da una manera fija y fiable de pensar, con opiniones y certezas estables. **Indefinido**, ofrece una mente **flexible y abierta**, capaz de ver muchas perspectivas; su trampa es la presión por aparentar seguridad o aferrarse a una certeza prestada. Su don es no necesitar tener siempre una respuesta fija.'
       ]
     },

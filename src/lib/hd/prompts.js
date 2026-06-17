@@ -135,14 +135,18 @@ export function buildPrompts(kind, key, chart, lang = DEFAULT_LANG) {
     const center = L.center[CENTER_BY_GATE[g]] ?? '';
     const name = getIchingName(g, lang);
     const root = name ? `, cuya raíz es el hexagrama ${g} «${name}» del I Ching` : '';
+    // The "Sobre esta carta" angle only applies when the gate is actually
+    // active — gates reached through the full index may not be.
+    const active = chart?.activeGates?.includes(g);
     return {
       general:
         `Explícame de forma sencilla y práctica qué significa la puerta ${g} en ` +
         `Diseño Humano${center ? ` (en el centro ${center})` : ''}${root}: qué tema ` +
         `o energía representa y cómo se manifiesta. ${NO_ASSUME}`,
-      chart:
-        `En esta carta, la puerta ${g} está activa. Para ${who(L, chart)}, ` +
-        `explícame qué aporta esta puerta y cómo se vive en el día a día. ${NO_ASSUME}`
+      chart: active
+        ? `En esta carta, la puerta ${g} está activa. Para ${who(L, chart)}, ` +
+          `explícame qué aporta esta puerta y cómo se vive en el día a día. ${NO_ASSUME}`
+        : null
     };
   }
 
@@ -150,15 +154,21 @@ export function buildPrompts(kind, key, chart, lang = DEFAULT_LANG) {
     const [a, b] = String(key).split('-').map(Number);
     const ca = L.center[CENTER_BY_GATE[a]] ?? '';
     const cb = L.center[CENTER_BY_GATE[b]] ?? '';
+    // Likewise: only offer the chart angle when this channel is complete in
+    // the chart (reachable-but-inactive channels come via the full index).
+    const active = chart?.activeChannels?.some(
+      ([x, y]) => (x === a && y === b) || (x === b && y === a)
+    );
     return {
       general:
         `Explícame de forma sencilla y práctica qué significa el canal ${a}-${b} en ` +
         `Diseño Humano, que une los centros ${ca} y ${cb} (puertas ${a} y ${b}): qué ` +
         `energía aporta y cómo se manifiesta. ${NO_ASSUME}`,
-      chart:
-        `En esta carta, el canal ${a}-${b} está completo y define los centros ${ca} y ` +
-        `${cb}. Para ${who(L, chart)}, explícame qué aporta este canal y cómo se vive ` +
-        `en el día a día. ${NO_ASSUME}`
+      chart: active
+        ? `En esta carta, el canal ${a}-${b} está completo y define los centros ${ca} y ` +
+          `${cb}. Para ${who(L, chart)}, explícame qué aporta este canal y cómo se vive ` +
+          `en el día a día. ${NO_ASSUME}`
+        : null
     };
   }
 

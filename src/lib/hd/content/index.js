@@ -6,7 +6,7 @@
 // `key`, and optionally a language.
 
 import es from './es.js';
-import { CENTER_BY_GATE } from '../constants.js';
+import { CENTER_BY_GATE, CHANNELS } from '../constants.js';
 
 const LANGS = { es };
 export const DEFAULT_LANG = 'es';
@@ -29,6 +29,26 @@ export function getElementInfo(kind, key, lang = DEFAULT_LANG) {
 /** Whether an element has explanatory content (drives the info "i"). */
 export function hasElementInfo(kind, key, lang = DEFAULT_LANG) {
   return getElementInfo(kind, key, lang) != null;
+}
+
+/**
+ * Concept-level info (the card / section-title "i"). For the `channel` and
+ * `gate` concepts it also attaches a `list` of every channel / gate so the
+ * panel can offer a full clickable index (reach ANY element, not only the
+ * active ones) — Phase 6.D.
+ * @param {string} key 'type'|'strategy'|'authority'|'profile'|'definition'|'center'|'channel'|'gate'
+ * @param {string} [lang]
+ */
+export function getConceptInfo(key, lang = DEFAULT_LANG) {
+  const base = getElementInfo('concept', key, lang);
+  if (!base) return null;
+  if (key === 'channel') {
+    return { ...base, list: CHANNELS.map(([a, b]) => ({ label: `${a}-${b}`, kind: 'channel', key: `${a}-${b}` })) };
+  }
+  if (key === 'gate') {
+    return { ...base, list: Array.from({ length: 64 }, (_, i) => ({ label: `${i + 1}`, kind: 'gate', key: `${i + 1}` })) };
+  }
+  return base;
 }
 
 /**
@@ -70,7 +90,9 @@ export function getIchingName(gate, lang = DEFAULT_LANG) {
 // facts (centre membership, channel endpoints) plus the public-domain I Ching
 // root — and delegate the depth to the user's AI via the panel's prompt. So
 // their `{ title, paragraphs }` is built on the fly rather than hand-written
-// 64 + 36 times.
+// 64 + 36 times. Cross-references use the in-text link markup `[label](kind:key)`
+// (rendered as a subtle underline by ElementInfo) so a gate links its centre, a
+// channel links its centres and gates, etc. — clicking opens a nested drawer.
 
 /**
  * Info for a single gate.
@@ -87,7 +109,7 @@ export function getGateInfo(gate, lang = DEFAULT_LANG) {
   return {
     title: `Puerta ${g}`,
     paragraphs: [
-      `La puerta ${g} pertenece al **centro ${labels[center] ?? center}**: su energía se expresa a través de la función de ese centro.`,
+      `La puerta ${g} pertenece al **[centro ${labels[center] ?? center}](center:${center})**: su energía se expresa a través de la función de ese centro.`,
       name
         ? `Su raíz está en el hexagrama ${g} del I Ching, **«${name}»** (secuencia del rey Wen), el punto de partida clásico de su significado.`
         : `Su raíz está en el hexagrama ${g} del I Ching (secuencia del rey Wen).`,
@@ -113,8 +135,8 @@ export function getChannelInfo(pair, lang = DEFAULT_LANG) {
   return {
     title: `Canal ${a}-${b}`,
     paragraphs: [
-      `El canal ${a}-${b} conecta el **centro ${labels[ca] ?? ca}** (puerta ${a}) con el **centro ${labels[cb] ?? cb}** (puerta ${b}). Con sus dos puertas activas, el canal queda completo y define ambos centros.`,
-      `Une las puertas ${a}${na ? ` —hexagrama «${na}»—` : ''} y ${b}${nb ? ` —hexagrama «${nb}»—` : ''} del I Ching. Tenerlo completo aporta una corriente de energía constante y fiable entre esos dos centros.`,
+      `El canal ${a}-${b} conecta el **[centro ${labels[ca] ?? ca}](center:${ca})** ([puerta ${a}](gate:${a})) con el **[centro ${labels[cb] ?? cb}](center:${cb})** ([puerta ${b}](gate:${b})). Con sus dos puertas activas, el canal queda completo y define ambos centros.`,
+      `Une las puertas [${a}](gate:${a})${na ? ` —hexagrama «${na}»—` : ''} y [${b}](gate:${b})${nb ? ` —hexagrama «${nb}»—` : ''} del I Ching. Tenerlo completo aporta una corriente de energía constante y fiable entre esos dos centros.`,
       'Para una lectura detallada de este canal, usa el prompt de abajo con tu IA.'
     ]
   };

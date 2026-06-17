@@ -10,7 +10,7 @@
   import Bodygraph from '$lib/components/Bodygraph.svelte';
   import ElementInfo from '$lib/components/ElementInfo.svelte';
   import InfoDot from '$lib/components/InfoDot.svelte';
-  import { getElementInfo, getProfileInfo, getGateInfo, getChannelInfo } from '$lib/hd/content/index.js';
+  import { getElementInfo, getProfileInfo, getGateInfo, getChannelInfo, getConceptInfo } from '$lib/hd/content/index.js';
   import { buildPrompts } from '$lib/hd/prompts.js';
 
   // Etiquetas humanas. En la próxima iteración esto vivirá en i18n.
@@ -112,9 +112,15 @@
   // concept (what a Type, a Strategy, the Centres… are), and a *chip/value*
   // "i" explains the concrete element (this chart's type, the "split"
   // definition, the Sacral centre…). Both open the same reusable panel.
-  let infoOpen = $state(false);
-  /** @type {{ category: string, kind: string, key: string, info: any, prompts: any } | null} */
-  let infoData = $state(null);
+  // The panel is a *stack* of elements (Phase 6.D): opening from a chip/title
+  // starts a fresh stack of depth 1; an in-text link inside the panel pushes
+  // the linked element on top (a back arrow pops it). One ElementInfo renders
+  // the top of the stack.
+  /** @type {{ category: string, kind: string, key: string, info: any, prompts: any }[]} */
+  let infoStack = $state([]);
+  const infoOpen = $derived(infoStack.length > 0);
+  const infoTop = $derived(infoStack[infoStack.length - 1] ?? null);
+  const infoOrigin = $derived(infoStack[0] ?? null);
   /** Which card reveals its concept "i": 'type'|'strategy'|…|'center'|null. */
   let cardReveal = $state(null);
   /** Which inner element reveals its specific "i" ('type:generator',
@@ -122,23 +128,48 @@
    *  innerReveal is ever set, so exactly one "i" shows at a time. */
   let innerReveal = $state(null);
 
-  /** Is the panel currently showing this exact element? Drives the "i" marked state. */
-  function infoIsOpen(kind, key) {
-    return infoOpen && infoData?.kind === kind && infoData?.key === key;
-  }
+  const CATEGORY_BY_KIND = {
+    type: 'Tipo', strategy: 'Estrategia', authority: 'Autoridad',
+    profile: 'Perfil', definition: 'Definición', center: 'Centro',
+    channel: 'Canal', gate: 'Puerta'
+  };
 
-  function openInfoFor(category, kind, key) {
-    const info =
-      kind === 'profile' ? getProfileInfo(key)
+  /** Resolve an element's `{ title, paragraphs, list? }` by kind. */
+  function resolveInfo(kind, key) {
+    return kind === 'concept' ? getConceptInfo(key)
+      : kind === 'profile' ? getProfileInfo(key)
       : kind === 'gate' ? getGateInfo(key)
       : kind === 'channel' ? getChannelInfo(key)
       : getElementInfo(kind, key);
-    if (!info) return;
-    infoData = { category, kind, key, info, prompts: buildPrompts(kind, key, chart) };
-    infoOpen = true;
+  }
+
+  function buildEntry(category, kind, key) {
+    const info = resolveInfo(kind, key);
+    if (!info) return null;
+    return { category, kind, key, info, prompts: buildPrompts(kind, key, chart) };
+  }
+
+  /** Is the panel open *for* this element? Tracks the stack's origin so the
+   *  originating chip stays marked even while a deeper element shows. */
+  function infoIsOpen(kind, key) {
+    return !!infoOrigin && infoOrigin.kind === kind && infoOrigin.key === key;
+  }
+
+  // Open from a chip/title: a fresh stack.
+  function openInfoFor(category, kind, key) {
+    const entry = buildEntry(category, kind, key);
+    if (entry) infoStack = [entry];
+  }
+  // Follow an in-text link: push onto the current stack (or open fresh).
+  function navigateInfo(kind, key) {
+    const entry = buildEntry(CATEGORY_BY_KIND[kind] ?? '', kind, key);
+    if (entry) infoStack = [...infoStack, entry];
+  }
+  function backInfo() {
+    if (infoStack.length > 1) infoStack = infoStack.slice(0, -1);
   }
   function closeInfo() {
-    infoOpen = false;
+    infoStack = [];
     cardReveal = null;
     innerReveal = null;
   }
@@ -737,11 +768,13 @@
         >
           <h2>
             Canales completos ({chart.activeChannels.length})
-            {#if cardReveal === 'channels' || infoIsOpen('concept', 'channel')}
-              <span class="dot-h2" data-info-cat="Canales" data-info-kind="concept" data-info-key="channel">
-                <InfoDot active={infoIsOpen('concept', 'channel')} label="Qué son los canales" />
-              </span>
-            {/if}
+            <span class="dot-h2">
+              {#if cardReveal === 'channels' || infoIsOpen('concept', 'channel')}
+                <span class="dot-host" data-info-cat="Canales" data-info-kind="concept" data-info-key="channel">
+                  <InfoDot active={infoIsOpen('concept', 'channel')} label="Qué son los canales" />
+                </span>
+              {/if}
+            </span>
           </h2>
           {#if chart.activeChannels.length === 0}
             <p class="none">Ninguno</p>
@@ -788,11 +821,13 @@
               class="count"
               data-tip={`${hangingGates.length - hangingInDefined} puertas en centros indefinidos\n${hangingInDefined} puertas en centros definidos`}
             >({hangingGates.length})</span>
-            {#if cardReveal === 'gates' || infoIsOpen('concept', 'gate')}
-              <span class="dot-h2" data-info-cat="Puertas" data-info-kind="concept" data-info-key="gate">
-                <InfoDot active={infoIsOpen('concept', 'gate')} label="Qué son las puertas" />
-              </span>
-            {/if}
+            <span class="dot-h2">
+              {#if cardReveal === 'gates' || infoIsOpen('concept', 'gate')}
+                <span class="dot-host" data-info-cat="Puertas" data-info-kind="concept" data-info-key="gate">
+                  <InfoDot active={infoIsOpen('concept', 'gate')} label="Qué son las puertas" />
+                </span>
+              {/if}
+            </span>
           </h2>
           {#if hangingGates.length === 0}
             <p class="none">Ninguna</p>
@@ -880,10 +915,13 @@
 
 <ElementInfo
   open={infoOpen}
-  category={infoData?.category ?? ''}
-  info={infoData?.info ?? null}
-  prompts={infoData?.prompts ?? null}
-  elementKey={infoData ? `${infoData.kind}:${infoData.key}` : ''}
+  category={infoTop?.category ?? ''}
+  info={infoTop?.info ?? null}
+  prompts={infoTop?.prompts ?? null}
+  elementKey={infoTop ? `${infoTop.kind}:${infoTop.key}` : ''}
+  canBack={infoStack.length > 1}
+  onback={backInfo}
+  onnavigate={navigateInfo}
   onclose={closeInfo}
 />
 
@@ -1025,12 +1063,20 @@
     margin-right: -1.4rem;
   }
   /* The concept "i" on a section title ("Canales completos", "Puertas
-     colgantes") sits inline after the count. The h2 line-height (set below)
-     already reserves the dot's height, so revealing it never shifts the row. */
+     colgantes") sits inline after the count. The slot is *always* present at a
+     fixed size — only the "i" inside it toggles — so revealing it never grows
+     the line box nor shifts the chips below. */
   .dot-h2 {
     display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 17px;
+    height: 17px;
     vertical-align: middle;
     margin-left: 0.35rem;
+  }
+  .dot-host {
+    display: inline-flex;
   }
   .tchip.on {
     background: var(--accent);
@@ -1220,7 +1266,8 @@
     border-color: var(--accent);
     background: var(--accent);
     color: #1a1408;
-    font-weight: 600;
+    /* No font-weight change here: bolding widens the chip and reflows the
+       whole row. The solid amber fill is emphasis enough. */
   }
   .cc.dimmed {
     opacity: 0.18;
@@ -1248,7 +1295,7 @@
     border-color: var(--accent);
     background: var(--accent);
     color: #1a1408;
-    font-weight: 600;
+    /* Same reason as .cc.on.focus: no bold, so the chip doesn't reflow. */
   }
   @media (max-width: 679px) {
     .graph {
@@ -1421,6 +1468,16 @@
     width: 100%;
     border-collapse: collapse;
     font-size: 0.9rem;
+  }
+  /* Pin the planet-name column wide enough for the longest label ("Nodo
+     Norte") so expanding "Mostrar más" can't widen it and shift the value
+     columns. min-width (not width) is what the shrink-to-fit <main> honours
+     as a hard floor — a plain width gets minimised away; table-layout:fixed
+     would collapse the table to zero against that same shrink-to-fit main. */
+  thead th:first-child,
+  tbody td:first-child {
+    min-width: 8.5rem;
+    white-space: nowrap;
   }
   thead th {
     text-align: left;

@@ -17,9 +17,46 @@ Statuses:
 The deeper context (technical trade-offs, future ideas, deferred decisions)
 lives in [`BACKLOG.md`](./BACKLOG.md).
 
-Last updated: 2026-06-17.
+Last updated: 2026-06-18.
 
-> Latest change (2026-06-17): **Fases 6.C y 6.D construidas y verificadas
+> Latest change (2026-06-18): **Drawers anidados + índice completo de
+> puertas/canales + enlaces en el texto (sobre 6.C/6.D); verificado en
+> escritorio y móvil; revisión de textos por el autor aún pendiente.**
+> (1) **Logo de Claude corregido** a la ráfaga real (antes era la «A» de
+> Anthropic); y el botón «Abrir IA» recupera el icono de «salir de la app»
+> como guía **delante**, mostrando el logo de la IA elegida **después** del
+> nombre. (2) **Drawers anidados**: el panel pasa de un único `infoData` a
+> una **pila** `infoStack` en `chart/+page.svelte`; abrir desde un
+> chip/título inicia una pila nueva, un **enlace dentro del texto** hace
+> push, una **flecha «atrás» junto a la ✕** hace pop (Escape también) y la ✕
+> vacía la pila. Una sola instancia de `ElementInfo` pinta la cima; el reset
+> por `elementKey` intercambia el contenido y resetea el scroll. (3)
+> **Enlaces en el texto**: markup `[label](kind:key)` en el contenido →
+> `renderInline` lo pinta como **subrayado sutil** (`.ilink`) y delega el
+> clic para navegar. La info generada de puertas/canales emite enlaces a su
+> **centro** y a sus **puertas**; pasada manual de enlaces cruzados (nombres
+> de **centros** y **tipos**, p. ej. «garganta») en los textos del núcleo de
+> `es.js` —el resto de menciones quedan para la revisión de textos del
+> autor; el markup es trivial de extender. (4) **Índice completo**: el «i»
+> de concepto de **«Canales completos»** y **«Puertas colgantes»** abre un
+> panel con la **lista clicable de los 36 canales / 64 puertas**
+> (`getConceptInfo` adjunta `list`; `ElementInfo` la pinta como chips) —
+> **así queda resuelto el problema abierto de 6.D** (alcanzar cualquier
+> puerta/canal, no solo los activos). (5) **Fix de correctitud**: el ángulo
+> «Sobre esta carta» de puerta/canal solo aparece si el elemento está
+> **activo** en la carta (`activeGates`/`activeChannels`); los inactivos
+> alcanzados por el índice muestran solo «Info general». (6) **Tres ajustes
+> de layout sin salto**: los chips de **centro definido** ya no ensanchan al
+> activarse (se quitó el `font-weight: 600`); la **tabla de activaciones**
+> fija la 1ª columna con `min-width: 8.5rem` (en auto-layout, porque el
+> `<main>` es shrink-to-fit y `table-layout: fixed` la colapsa) para que
+> «Mostrar más» no desplace las columnas; y la **«i» de los títulos** de
+> sección vive en un hueco fijo siempre presente. (7) Anotado en BACKLOG:
+> sustituir los **diálogos nativos** (guardar/renombrar nombre, borrar,
+> importar) por uno propio que encaje con la estética, con fallback. Commits
+> previos `2cc1a7d` y `01c56c6`; este cierra el lote. 0.2.0.
+>
+> Previo (2026-06-17): **Fases 6.C y 6.D construidas y verificadas
 > en navegador (escritorio + móvil); falta la revisión de textos/UX por el
 > autor.** Commit del código `2cc1a7d` (+ corrección posterior del logo de
 > Claude). **6.C — handoff polish:** los iconos de IA pasan a ser
@@ -404,8 +441,9 @@ Subtareas completadas:
     via handoff (minimal generated info — centre + I Ching root — + "i" on
     the channel/gate chips and on the "Canales completos"/"Puertas
     colgantes" titles; built 2026-06-17, text/UX review pending; the "list
-    ALL gates/channels" open problem stays parked — recommended path now in
-    BACKLOG: in-text links → nested drawers) → 6.E activations info (general + per
+    ALL gates/channels" open problem **resolved 2026-06-18** via nested
+    drawers + a clickable index in the concept panels + in-text links) →
+    6.E activations info (general + per
     element; may stay a possible improvement) → 6.F docs close.
 - **Phase 7 — Composite chart.** Two saved charts rendered as a combined
   bodygraph (visual overlay distinguishing each person).
