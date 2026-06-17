@@ -335,9 +335,11 @@ Subtareas completadas:
     i18n-keyed).
   - Sub-phases (renumbered 2026-06-17: old 6.E → 6.F; new 6.E = activations
     info): 6.A ✅ scaffolding + pilot (Type element) → 6.B 🟡 core content
-    (built 2026-06-17, **pending user validation**: concept "i" on the six
-    cards + specific "i" on each value/chip, all kinds + prompts written,
-    bold/italic rendering, validated on desktop + mobile) → 6.C handoff
+    (built 2026-06-17, UX validated on desktop + mobile and **merged to
+    main**; detailed text review still pending: concept "i" on the six cards
+    + specific "i" on each value/chip — one "i" at a time, no layout shift,
+    drawer air, angle memory — all kinds + prompts written, bold/italic
+    rendering) → 6.C handoff
     polish (real AI logos, prompt templates, AI list) → 6.D gates/channels
     via handoff (+ "i" on the channel/gate chips and on the "Canales
     completos"/"Puertas colgantes" titles; open problem: how to list ALL

@@ -115,10 +115,12 @@
   let infoOpen = $state(false);
   /** @type {{ category: string, kind: string, key: string, info: any, prompts: any } | null} */
   let infoData = $state(null);
-  /** Which card reveals its "i"(s): 'type'|'strategy'|'authority'|'profile'|'definition'|'center'|null. */
+  /** Which card reveals its concept "i": 'type'|'strategy'|…|'center'|null. */
   let cardReveal = $state(null);
-  /** Which centre chip reveals its specific "i" (centre id), or null. */
-  let centerReveal = $state(null);
+  /** Which inner element reveals its specific "i" ('type:generator',
+   *  'strategy:value', 'center:head'…), or null. Only one of cardReveal /
+   *  innerReveal is ever set, so exactly one "i" shows at a time. */
+  let innerReveal = $state(null);
   // Kept only as an existence guard for the active type chip's "i".
   const typeInfo = $derived(chart ? getElementInfo('type', chart.type) : null);
 
@@ -136,23 +138,26 @@
   function closeInfo() {
     infoOpen = false;
     cardReveal = null;
-    centerReveal = null;
+    innerReveal = null;
   }
 
-  // Desktop reveals the "i" on hover; touch reveals it on tap.
-  function revealCard(id) {
-    if (!isTouch()) cardReveal = id;
+  // Desktop: one mouseover per card decides whether the pointer sits on an
+  // inner element (data-inner-key → show only its specific "i") or on the card
+  // body (show only the card's concept "i") — never both at once.
+  function cardOver(e, id) {
+    if (isTouch()) return;
+    const inner = e.target.closest('[data-inner-key]');
+    if (inner) { innerReveal = inner.dataset.innerKey; cardReveal = null; }
+    else { cardReveal = id; innerReveal = null; }
   }
-  function unrevealCard(id) {
-    if (!isTouch() && cardReveal === id) cardReveal = null;
+  function clearReveal() {
+    if (!isTouch()) { cardReveal = null; innerReveal = null; }
   }
 
-  // One click handler per info-bearing card. If the click landed on an "i",
-  // open that element; otherwise run the card's own behaviour (`extra`, e.g.
-  // Definición pinning the bodygraph) and, on touch, toggle the card reveal.
-  // stopPropagation keeps the window handler from clearing the reveal/hover
-  // underneath — nesting handlers under Svelte's event delegation is
-  // unreliable, so everything routes through this one handler.
+  // Touch: a tap toggles the reveal for whatever was tapped; tapping the "i"
+  // opens the panel. stopPropagation keeps the window handler from clearing
+  // the reveal underneath — nesting handlers under Svelte's event delegation
+  // is unreliable, so everything routes through this one handler.
   function cardClick(e, id, extra) {
     const dot = e.target.closest('[data-info-key]');
     if (dot) {
@@ -162,14 +167,25 @@
     }
     extra?.(e);
     e.stopPropagation();
-    if (isTouch()) cardReveal = cardReveal === id ? null : id;
+    if (!isTouch()) return;
+    const inner = e.target.closest('[data-inner-key]');
+    if (inner) {
+      innerReveal = innerReveal === inner.dataset.innerKey ? null : inner.dataset.innerKey;
+      cardReveal = null;
+    } else {
+      cardReveal = cardReveal === id ? null : id;
+      innerReveal = null;
+    }
   }
 
-  // Centre chips can't nest the "i" button (they're <button>), so it sits as a
-  // sibling; the tap still pins the bodygraph highlight and reveals the "i".
+  // Centre chips are <button>, so their tap is handled here (pin + reveal); the
+  // "i" sits as a sibling and opens via the card's click handler.
   function onCenterChipClick(e, c) {
     pin(e, { kind: 'center', center: c, gates: [] });
-    if (isTouch()) centerReveal = centerReveal === c ? null : c;
+    if (isTouch()) {
+      innerReveal = innerReveal === `center:${c}` ? null : `center:${c}`;
+      cardReveal = null;
+    }
   }
 
   // Hanging gates: active gates that don't complete any channel.
@@ -547,16 +563,16 @@
           class="card type-card"
           role="presentation"
           onclick={(e) => cardClick(e, 'type')}
-          onmouseenter={() => revealCard('type')}
-          onmouseleave={() => unrevealCard('type')}
+          onmouseover={(e) => cardOver(e, 'type')}
+          onmouseleave={clearReveal}
         >
           <span class="label">Tipo</span>
           <div class="type-list">
             {#each TYPES as t, i}
-              <span class="tchip" class:on={chart.type === t.key}>
+              <span class="tchip" class:on={chart.type === t.key} data-inner-key={`type:${t.key}`}>
                 {t.label}
                 <span class="pct" data-tip={`representan el ${t.pct} de la población`}>{t.pct}</span>
-                {#if chart.type === t.key && (cardReveal === 'type' || infoIsOpen('type', t.key)) && typeInfo}
+                {#if chart.type === t.key && (innerReveal === `type:${t.key}` || infoIsOpen('type', t.key)) && typeInfo}
                   <span class="dot-slot" data-info-cat="Tipo" data-info-kind="type" data-info-key={t.key}>
                     <InfoDot active={infoIsOpen('type', t.key)} label={`Más información sobre ${t.label}`} />
                   </span>
@@ -577,18 +593,16 @@
           class="card"
           role="presentation"
           onclick={(e) => cardClick(e, 'strategy')}
-          onmouseenter={() => revealCard('strategy')}
-          onmouseleave={() => unrevealCard('strategy')}
+          onmouseover={(e) => cardOver(e, 'strategy')}
+          onmouseleave={clearReveal}
         >
           <span class="label">Estrategia</span>
-          <span class="value">
-            {STRATEGY_LABELS[chart.strategy] ?? chart.strategy}
-            {#if cardReveal === 'strategy' || infoIsOpen('strategy', chart.strategy)}
-              <span class="dot-inline" data-info-cat="Estrategia" data-info-kind="strategy" data-info-key={chart.strategy}>
-                <InfoDot active={infoIsOpen('strategy', chart.strategy)} label="Más información sobre esta estrategia" />
-              </span>
-            {/if}
-          </span>
+          <span class="value" data-inner-key="strategy:value"
+            >{STRATEGY_LABELS[chart.strategy] ?? chart.strategy}<span
+              class="dot-inline"
+              class:show={innerReveal === 'strategy:value' || infoIsOpen('strategy', chart.strategy)}
+              data-info-cat="Estrategia" data-info-kind="strategy" data-info-key={chart.strategy}
+            ><InfoDot active={infoIsOpen('strategy', chart.strategy)} label="Más información sobre esta estrategia" /></span></span>
           {#if cardReveal === 'strategy' || infoIsOpen('concept', 'strategy')}
             <span class="dot-slot card-dot" data-info-cat="Estrategia" data-info-kind="concept" data-info-key="strategy">
               <InfoDot active={infoIsOpen('concept', 'strategy')} label="Qué es la estrategia" />
@@ -599,18 +613,16 @@
           class="card"
           role="presentation"
           onclick={(e) => cardClick(e, 'authority')}
-          onmouseenter={() => revealCard('authority')}
-          onmouseleave={() => unrevealCard('authority')}
+          onmouseover={(e) => cardOver(e, 'authority')}
+          onmouseleave={clearReveal}
         >
           <span class="label">Autoridad</span>
-          <span class="value">
-            {AUTHORITY_LABELS[chart.authority] ?? chart.authority}
-            {#if cardReveal === 'authority' || infoIsOpen('authority', chart.authority)}
-              <span class="dot-inline" data-info-cat="Autoridad" data-info-kind="authority" data-info-key={chart.authority}>
-                <InfoDot active={infoIsOpen('authority', chart.authority)} label="Más información sobre esta autoridad" />
-              </span>
-            {/if}
-          </span>
+          <span class="value" data-inner-key="authority:value"
+            >{AUTHORITY_LABELS[chart.authority] ?? chart.authority}<span
+              class="dot-inline"
+              class:show={innerReveal === 'authority:value' || infoIsOpen('authority', chart.authority)}
+              data-info-cat="Autoridad" data-info-kind="authority" data-info-key={chart.authority}
+            ><InfoDot active={infoIsOpen('authority', chart.authority)} label="Más información sobre esta autoridad" /></span></span>
           {#if cardReveal === 'authority' || infoIsOpen('concept', 'authority')}
             <span class="dot-slot card-dot" data-info-cat="Autoridad" data-info-kind="concept" data-info-key="authority">
               <InfoDot active={infoIsOpen('concept', 'authority')} label="Qué es la autoridad" />
@@ -621,18 +633,16 @@
           class="card"
           role="presentation"
           onclick={(e) => cardClick(e, 'profile')}
-          onmouseenter={() => revealCard('profile')}
-          onmouseleave={() => unrevealCard('profile')}
+          onmouseover={(e) => cardOver(e, 'profile')}
+          onmouseleave={clearReveal}
         >
           <span class="label">Perfil</span>
-          <span class="value">
-            {chart.profile}
-            {#if cardReveal === 'profile' || infoIsOpen('profile', chart.profile)}
-              <span class="dot-inline" data-info-cat="Perfil" data-info-kind="profile" data-info-key={chart.profile}>
-                <InfoDot active={infoIsOpen('profile', chart.profile)} label="Más información sobre este perfil" />
-              </span>
-            {/if}
-          </span>
+          <span class="value" data-inner-key="profile:value"
+            >{chart.profile}<span
+              class="dot-inline"
+              class:show={innerReveal === 'profile:value' || infoIsOpen('profile', chart.profile)}
+              data-info-cat="Perfil" data-info-kind="profile" data-info-key={chart.profile}
+            ><InfoDot active={infoIsOpen('profile', chart.profile)} label="Más información sobre este perfil" /></span></span>
           {#if cardReveal === 'profile' || infoIsOpen('concept', 'profile')}
             <span class="dot-slot card-dot" data-info-cat="Perfil" data-info-kind="concept" data-info-key="profile">
               <InfoDot active={infoIsOpen('concept', 'profile')} label="Qué es el perfil" />
@@ -642,19 +652,18 @@
         <div
           class="card pointer"
           role="presentation"
-          onmouseenter={() => { setHover({ kind: 'definition', gates: [] }); revealCard('definition'); }}
-          onmouseleave={() => { setHover(null); unrevealCard('definition'); }}
+          onmouseenter={() => setHover({ kind: 'definition', gates: [] })}
+          onmouseleave={() => { setHover(null); clearReveal(); }}
+          onmouseover={(e) => cardOver(e, 'definition')}
           onclick={(e) => cardClick(e, 'definition', () => pin(e, { kind: 'definition', gates: [] }))}
         >
           <span class="label">Definición</span>
-          <span class="value">
-            {DEFINITION_LABELS[chart.definition] ?? chart.definition}
-            {#if cardReveal === 'definition' || infoIsOpen('definition', chart.definition)}
-              <span class="dot-inline" data-info-cat="Definición" data-info-kind="definition" data-info-key={chart.definition}>
-                <InfoDot active={infoIsOpen('definition', chart.definition)} label="Más información sobre esta definición" />
-              </span>
-            {/if}
-          </span>
+          <span class="value" data-inner-key="definition:value"
+            >{DEFINITION_LABELS[chart.definition] ?? chart.definition}<span
+              class="dot-inline"
+              class:show={innerReveal === 'definition:value' || infoIsOpen('definition', chart.definition)}
+              data-info-cat="Definición" data-info-kind="definition" data-info-key={chart.definition}
+            ><InfoDot active={infoIsOpen('definition', chart.definition)} label="Más información sobre esta definición" /></span></span>
           {#if cardReveal === 'definition' || infoIsOpen('concept', 'definition')}
             <span class="dot-slot card-dot" data-info-cat="Definición" data-info-kind="concept" data-info-key="definition">
               <InfoDot active={infoIsOpen('concept', 'definition')} label="Qué es la definición" />
@@ -674,8 +683,8 @@
           class="card"
           role="presentation"
           onclick={(e) => cardClick(e, 'center')}
-          onmouseenter={() => revealCard('center')}
-          onmouseleave={() => unrevealCard('center')}
+          onmouseover={(e) => cardOver(e, 'center')}
+          onmouseleave={clearReveal}
         >
           <span class="label">
             Centros
@@ -683,12 +692,7 @@
           </span>
           <div class="center-list">
             {#each CENTERS as c}
-              <span
-                class="cc-wrap"
-                role="presentation"
-                onmouseenter={() => { if (!isTouch()) centerReveal = c; }}
-                onmouseleave={() => { if (!isTouch() && centerReveal === c) centerReveal = null; }}
-              >
+              <span class="cc-wrap" data-inner-key={`center:${c}`}>
                 <button
                   class="cc"
                   class:on={chart.definedCenters.includes(c)}
@@ -700,7 +704,7 @@
                 >
                   {CENTER_LABELS[c]}
                 </button>
-                {#if centerReveal === c || infoIsOpen('center', c)}
+                {#if innerReveal === `center:${c}` || infoIsOpen('center', c)}
                   <span class="dot-slot" data-info-cat="Centro" data-info-kind="center" data-info-key={c}>
                     <InfoDot active={infoIsOpen('center', c)} label={`Más información sobre el centro ${CENTER_LABELS[c]}`} />
                   </span>
@@ -843,7 +847,7 @@
   onclose={closeInfo}
 />
 
-<svelte:window onclick={(e) => { hover = null; cardReveal = null; centerReveal = null; tipTap(e); }} />
+<svelte:window onclick={(e) => { hover = null; cardReveal = null; innerReveal = null; tipTap(e); }} />
 
 <style>
   main {
@@ -966,11 +970,17 @@
     display: inline-flex;
   }
   /* The value "i" (specific strategy / authority / profile / definition) sits
-     inline, right after the value text. */
+     inline, right after the value text. It's always laid out (so it never
+     shifts the value when it appears) but only painted while revealed —
+     visibility:hidden keeps its box yet drops it from hit-testing. */
   .dot-inline {
     display: inline-flex;
     vertical-align: middle;
     margin-left: 0.35rem;
+    visibility: hidden;
+  }
+  .dot-inline.show {
+    visibility: visible;
   }
   .tchip.on {
     background: var(--accent);

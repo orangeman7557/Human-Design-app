@@ -13,7 +13,14 @@
 <script>
   import { untrack } from 'svelte';
   import { fly, fade } from 'svelte/transition';
-  import { AIS, getPreferredAI, setPreferredAI, openAI } from '$lib/ai/handoff.js';
+  import {
+    AIS,
+    getPreferredAI,
+    setPreferredAI,
+    openAI,
+    getPreferredAngle,
+    setPreferredAngle
+  } from '$lib/ai/handoff.js';
 
   /**
    * @type {{
@@ -66,7 +73,9 @@
       angleOpen = false;
       copied = false;
       preferred = getPreferredAI();
-      angle = prompts?.chart ? 'chart' : 'general';
+      // Reuse the remembered angle when both apply; a general-only panel shows
+      // 'general' without overwriting that memory.
+      angle = prompts?.chart ? getPreferredAngle() : 'general';
       editedPrompt = prompts?.[angle] ?? '';
     });
   });
@@ -84,18 +93,44 @@
   function setAngle(a) {
     angle = a;
     angleOpen = false;
+    setPreferredAngle(a);
     editedPrompt = prompts?.[a] ?? '';
   }
 
+  function flagCopied() {
+    copied = true;
+    clearTimeout(copyTimer);
+    copyTimer = setTimeout(() => (copied = false), 2000);
+  }
+
+  // Prefer the async Clipboard API; fall back to a hidden textarea +
+  // execCommand for contexts where it's blocked (e.g. some iframes / non-https
+  // previews), so the "Copiado" feedback is reliable.
   function copyPrompt() {
-    navigator.clipboard
-      .writeText(editedPrompt)
-      .then(() => {
-        copied = true;
-        clearTimeout(copyTimer);
-        copyTimer = setTimeout(() => (copied = false), 2000);
-      })
-      .catch(() => {});
+    const text = editedPrompt;
+    if (navigator.clipboard?.writeText) {
+      navigator.clipboard.writeText(text).then(flagCopied).catch(() => fallbackCopy(text));
+    } else {
+      fallbackCopy(text);
+    }
+  }
+
+  function fallbackCopy(text) {
+    try {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.setAttribute('readonly', '');
+      ta.style.position = 'fixed';
+      ta.style.top = '-1000px';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      const ok = document.execCommand('copy');
+      document.body.removeChild(ta);
+      if (ok) flagCopied();
+    } catch {
+      // Give up silently — the prompt is still visible to copy by hand.
+    }
   }
 
   // First time (no preference) the button opens the picker; once an AI is
@@ -351,6 +386,9 @@
   /* The info text gets its own scroll area, capped so the IA section below
      stays visible. ~3 paragraphs on mobile, ~4 on desktop. */
   .info-body {
+    /* The margin (not padding) keeps a constant gap below the header even
+       when the body is scrolled — the scroll box starts below the header. */
+    margin-top: 0.85rem;
     max-height: 24rem;
     overflow-y: auto;
     overscroll-behavior: contain;
@@ -365,6 +403,9 @@
     line-height: 1.6;
     color: #c4c4ca;
     margin: 0.7rem 0 0;
+  }
+  .info-body .para:first-child {
+    margin-top: 0;
   }
   /* Emphasis comes from {@html}, so it isn't scoped — target it globally. */
   .para :global(strong) {

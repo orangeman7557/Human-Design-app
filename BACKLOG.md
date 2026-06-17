@@ -446,8 +446,9 @@ chiefly in the IA section:
 - 6.A — Scaffolding + pilot: content module + reusable panel wired to ONE
   element kind (the Type) to validate the full flow end-to-end (info +
   copy + deep link) before writing more.
-- 6.B — Core content (Level 1). **Built 2026-06-17 (pending user
-  validation).** Two info levels wired, each with its own "i":
+- 6.B — Core content (Level 1). **Built 2026-06-17; UX validated + merged
+  to main, detailed text review pending (author).** Two info levels wired,
+  each with its own "i":
   - *Concept* "i" on every card (Tipo, Estrategia, Autoridad, Perfil,
     Definición, Centros) — explains the category. Angle: general only,
     except **Centros**, which also offers "Sobre esta carta" (reads the
@@ -456,14 +457,28 @@ chiefly in the IA section:
     Estrategia/Autoridad/Perfil/Definición values, and each Centro chip —
     explains that element, both angles. Profile is built on the fly from
     its two line descriptions (`getProfileInfo`).
+  - **Only one "i" shows at a time** (refinement): hovering/tapping the card
+    body shows the concept "i"; hovering/tapping an inner element shows only
+    that element's "i". Driven by `cardReveal` vs `innerReveal` (mutually
+    exclusive), set from a single `mouseover` per card that reads a
+    `data-inner-key` on the inner element.
+  - The value "i" is laid out inline but kept in flow with `visibility`
+    (not conditional render), so it **never shifts the value** when it
+    appears/disappears. (A long value like "Plexo Solar (emocional)" may sit
+    on two lines, but stably.)
   - Content (`content/es.js`): own wording with `**bold**`/`*italic*`
     markers (rendered by `ElementInfo`), weighted toward energy management
     and decision-making. `prompts.js` extended to all kinds + `concept`.
-    `ElementInfo` gained an `elementKey` prop so switching element while
-    the panel stays open resets the angle/state.
-  - Known cosmetic nit: a long card value (e.g. "Plexo Solar (emocional)")
-    can push its inline specific "i" onto the next line. Acceptable; polish
-    later if it bothers.
+  - `ElementInfo`: `elementKey` prop resets transient state when the element
+    changes while the panel stays open; constant gap (margin, not padding)
+    between header and the scrollable body so the title never touches the
+    text; **angle memory** — the last "Sobre esta carta"/"Info general"
+    choice is remembered (localStorage `hd:preferredAngle`) and reused as
+    the default for the next panel that offers both angles (general-only
+    panels show general without overwriting it); copy uses the Clipboard API
+    with an execCommand fallback (note: both are blocked inside the sandboxed
+    dev-preview iframe, so "Copiado" can't be shown there — it works on the
+    real https app, as already validated in 6.A).
 - 6.C — Handoff polish: preferred-AI selector, tuned prompt templates,
   remembered preference, **real AI logos** (replace the provisional glyph),
   review the AI list/order.

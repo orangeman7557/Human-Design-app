@@ -34,6 +34,29 @@ export function setPreferredAI(id) {
   }
 }
 
+// Remembered prompt angle ('chart' | 'general'), shared across panels: the
+// last angle the user picked is reused as the default the next time a panel
+// that offers both angles opens. Panels with only the general angle display
+// it but never overwrite this preference.
+const ANGLE_KEY = 'hd:preferredAngle';
+
+/** @returns {'chart' | 'general'} */
+export function getPreferredAngle() {
+  try {
+    return localStorage.getItem(ANGLE_KEY) === 'general' ? 'general' : 'chart';
+  } catch {
+    return 'chart';
+  }
+}
+
+export function setPreferredAngle(angle) {
+  try {
+    localStorage.setItem(ANGLE_KEY, angle);
+  } catch {
+    // Ignore — preference is a nicety, not required.
+  }
+}
+
 /** Open an AI in a new tab with the prompt prefilled. */
 export function openAI(ai, prompt) {
   window.open(ai.url(prompt), '_blank', 'noopener');
