@@ -19,7 +19,42 @@ lives in [`BACKLOG.md`](./BACKLOG.md).
 
 Last updated: 2026-06-17.
 
-> Latest change (2026-06-17): **Fase 6.B construida, validada (UX) y
+> Latest change (2026-06-17): **Fases 6.C y 6.D construidas y verificadas
+> en navegador (escritorio + móvil); falta la revisión de textos/UX por el
+> autor.** Commit del código `2cc1a7d` (+ corrección posterior del logo de
+> Claude). **6.C — handoff polish:** los iconos de IA pasan a ser
+> **logotipos de marca reales** (Claude = ráfaga de Anthropic, ChatGPT =
+> flor de OpenAI, Perplexity), renderizados con `currentColor` en el botón
+> de IA preferida y en el selector; orden confirmado Claude · ChatGPT ·
+> Perplexity (uso nominativo, ya aprobado). El `icon` (path SVG, viewBox
+> 0 0 24 24) vive en cada entrada de `AIS` en `ai/handoff.js`. **6.D —
+> puertas y canales vía handoff:** info mínima **generada al vuelo** desde
+> hechos mecánicos (centro de cada puerta vía `CENTER_BY_GATE`, extremos de
+> cada canal) + la **raíz I Ching** (nombre del hexagrama del rey Wen por
+> puerta, edición Wilhelm/Vogelmann en español; tabla `iching` de 64
+> nombres en `content/es.js`); la profundidad se delega al prompt para la
+> IA. Nuevos helpers `getGateInfo` / `getChannelInfo` / `getIchingName` en
+> `content/index.js`; `prompts.js` extendido con kinds `gate`/`channel`
+> (ambos ángulos, impersonales) + concepto `gate`/`channel`; conceptos
+> `channel` y `gate` añadidos a `es.js`. Cableada la «i» a los chips de
+> **canales completos** y **puertas colgantes** y a los **títulos de
+> sección** (concepto), reutilizando la maquinaria de «una sola i a la vez»:
+> cada sección se envuelve en `<div class="info-zone" role="presentation">`
+> con `cardOver`/`cardClick`/`clearReveal` e ids `channels`/`gates`; cada
+> chip va en `.cc-wrap` con `data-inner-key="channel:g-g"`/`"gate:g"` y la
+> «i» como `.dot-slot` (mismo patrón que los centros); la «i» del concepto
+> va inline en el `<h2>` (`.dot-h2`, con `line-height: 1.35` que reserva su
+> altura para no provocar saltos). `openInfoFor` resuelve `gate`/`channel`
+> con los nuevos generadores. **Pendiente del autor:** revisar los textos
+> (6.B, 6.C y 6.D, en especial los nombres de hexagramas) y validar la UX.
+> **Decisión de diseño registrada en BACKLOG (§ 6.D):** para el problema
+> abierto de 6.D (llegar a CUALQUIER puerta/canal, no solo los activos de la
+> carta) se recomienda **enlaces en el texto que abren drawers anidados**,
+> resueltos como **una sola pila de contenido en el mismo drawer + flecha
+> «atrás» junto a la ✕** (no drawers visualmente apilados). Sin implementar
+> aún. 0.2.0.
+>
+> Previo (2026-06-17): **Fase 6.B construida, validada (UX) y
 > mergeada a `main`** — solo queda la **revisión en detalle de los textos**
 > por el autor. Implementado y verificado en escritorio + móvil: contenido
 > propio (en `content/es.js`, con `**negrita**`/`*cursiva*`, enfoque en
@@ -331,7 +366,9 @@ Subtareas completadas:
   items live in BACKLOG ("Possible improvements").
 - **Phase 6 — AI handoff + element info** (plan validated 2026-06-13,
   panel UX approved 2026-06-15 — mockup v3; full detail in BACKLOG). 6.A
-  done 2026-06-16, 6.B done 2026-06-17 (text review pending); next: 6.C.
+  done 2026-06-16, 6.B–6.D done 2026-06-17 (text + UX review by the author
+  still pending); next: 6.E (activations info — may stay a possible
+  improvement) then 6.F (legal disclaimer + docs close, bump to 0.2.0).
   Lightweight, no-API AI integration: from any element, build a
   ready-made, chart-personalised prompt the user takes to **their own** AI
   — the AI never runs inside the app. Plus a small core of original in-app
@@ -361,11 +398,14 @@ Subtareas completadas:
     2026-06-17 — concept "i" on the six cards + specific "i" on each
     value/chip, all kinds + prompts written, bold/italic, one "i" at a time,
     inline value "i" with no layout shift, drawer air, angle memory; **only
-    open item: author's detailed review of the texts**) → 6.C handoff
-    polish (real AI logos, prompt templates, AI list) → 6.D gates/channels
-    via handoff (+ "i" on the channel/gate chips and on the "Canales
-    completos"/"Puertas colgantes" titles; open problem: how to list ALL
-    gates/channels — see BACKLOG) → 6.E activations info (general + per
+    open item: author's detailed review of the texts**) → 6.C ✅ handoff
+    polish (real brand logos for Claude/ChatGPT/Perplexity, order confirmed;
+    built 2026-06-17, text/UX review pending) → 6.D ✅ gates/channels
+    via handoff (minimal generated info — centre + I Ching root — + "i" on
+    the channel/gate chips and on the "Canales completos"/"Puertas
+    colgantes" titles; built 2026-06-17, text/UX review pending; the "list
+    ALL gates/channels" open problem stays parked — recommended path now in
+    BACKLOG: in-text links → nested drawers) → 6.E activations info (general + per
     element; may stay a possible improvement) → 6.F docs close.
 - **Phase 7 — Composite chart.** Two saved charts rendered as a combined
   bodygraph (visual overlay distinguishing each person).

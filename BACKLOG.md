@@ -488,23 +488,57 @@ chiefly in the IA section:
     with an execCommand fallback (note: both are blocked inside the sandboxed
     dev-preview iframe, so "Copiado" can't be shown there — it works on the
     real https app, as already validated in 6.A).
-- 6.C — Handoff polish: preferred-AI selector, tuned prompt templates,
-  remembered preference, **real AI logos** (replace the provisional glyph),
-  review the AI list/order.
-- 6.D — Gates & channels via handoff (Level 2/3: minimal own info — centre +
-  public-domain I Ching root — and the weight goes to "go deeper with your
-  AI"). Wire the "i" to **complete-channel chips and hanging-gate chips**,
-  and — like the cards — to the **section titles** "Canales completos (xx)"
-  and "Puertas colgantes (yy)" (concept "i" for each).
-  - **Open problem to design here:** for gates and channels there should be
-    some way to surface a **full list of all 64 gates / 36 channels**, so
-    the user can reach the info for *any* of them, not only the active ones
-    on the chart. No solution chosen yet. Two candidate shapes:
-    (a) a dedicated browse/list section inside the info drawer; or
-    (b) **in-text links** — the panel text can include links that open a new
-    drawer with the info for whatever was clicked (sounds simpler, more
-    elegant and more extensible, but needs evaluating). Parked as a
-    possible improvement for now.
+- 6.C — Handoff polish. **Built 2026-06-17 (text/UX review pending).** The
+  provisional star glyph is replaced by **real brand logos** (one SVG path
+  each, viewBox 0 0 24 24, `currentColor`) for Claude (the Anthropic burst —
+  corrected after a first commit briefly used the "A" wordmark), ChatGPT
+  (OpenAI) and Perplexity, carried as `icon` on each `AIS` entry in
+  `ai/handoff.js` and rendered in the preferred-AI button and the picker
+  list. AI list/order confirmed: Claude · ChatGPT · Perplexity (Gemini stays
+  copy-only). The preferred-AI selector + remembered preference were already
+  in place since 6.A and prompt templates were tuned in 6.B. Adding more
+  deep-link AIs (Grok, DeepSeek, Copilot, Gemini-via-extension) stays
+  possible later when feasible.
+- 6.D — Gates & channels via handoff. **Built 2026-06-17 (text/UX review
+  pending).** Level 2/3 info is **generated on the fly** instead of
+  hand-written 64 + 36 times: `getGateInfo` / `getChannelInfo` in
+  `content/index.js` compose `{ title, paragraphs }` from mechanical facts
+  (centre via `CENTER_BY_GATE`, channel endpoints) + the **public-domain I
+  Ching root** (King Wen hexagram name, Wilhelm/Vogelmann Spanish, from the
+  64-name `iching` table in `es.js`; `getIchingName`); the depth goes to the
+  AI prompt. `prompts.js` gained `gate`/`channel` kinds (both angles,
+  impersonal) + concept `gate`/`channel`; `es.js` gained concept `channel`
+  and `gate`. The "i" is wired to the **complete-channel chips, the
+  hanging-gate chips** and the **section titles** "Canales completos" /
+  "Puertas colgantes" (concept "i"), reusing the one-at-a-time reveal: each
+  section is wrapped in a `.info-zone` presentation div (ids
+  `channels`/`gates`) with `cardOver`/`cardClick`/`clearReveal`; each chip
+  sits in a `.cc-wrap` with `data-inner-key="channel:g-g"`/`"gate:g"` and a
+  `.dot-slot` "i" (same pattern as the centre chips); the concept "i" is
+  inline in the `<h2>` (`.dot-h2`; `h2 { line-height: 1.35 }` reserves its
+  height so revealing it never shifts the row). `openInfoFor` resolves
+  `gate`/`channel` via the new generators.
+  - **Open problem — full list of all 64 gates / 36 channels** (reach the
+    info for ANY element, not only the active ones on the chart). Still
+    **not built**. The author asked (2026-06-17) whether drawers could nest
+    so in-text links open another element's info (e.g. channel 10-57's text
+    links "puerta 10" → opens the gate-10 drawer). **Assessment / recommended
+    path (agreed direction, not yet scheduled):** yes, feasible and it is the
+    elegant solution — this is candidate (b) and it dissolves the browse-all
+    problem. Build it as a **single drawer with a content stack**, NOT
+    visually-stacked drawers: keep one `ElementInfo` instance and replace the
+    single `infoData` with an `infoStack` (array) — opening an element
+    *pushes*, a **back arrow next to the ✕** *pops*, the ✕ clears the stack.
+    The existing `elementKey`-driven reset already swaps content in place, so
+    the lift is small. Mechanics: extend `renderInline` (or the content) with
+    a link syntax (e.g. `gate:10` / `channel:10-57`), delegate clicks on
+    `.info-body` to push the target, and have the generators emit those links
+    (a channel links its two gates, a gate links its channels/centre, a
+    centre links its gates…). Caveats: keep links sparse so the text doesn't
+    turn noisy; reset scroll per level; the ‹ back / ✕ pair is a known,
+    legible pattern (fine on mobile bottom sheets). Visually-stacked drawers
+    (multiple scrims/sheets piling up) are rejected as cluttered. Parked
+    until the author greenlights.
 - 6.E — **Activations info (new; may instead stay a possible improvement —
   decide when we get there).** Same pattern as everything else: a general
   "i" for the **Activaciones** section, plus an "i" for each element inside
