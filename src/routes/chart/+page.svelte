@@ -10,7 +10,7 @@
   import Bodygraph from '$lib/components/Bodygraph.svelte';
   import ElementInfo from '$lib/components/ElementInfo.svelte';
   import InfoDot from '$lib/components/InfoDot.svelte';
-  import { getElementInfo, getProfileInfo } from '$lib/hd/content/index.js';
+  import { getElementInfo, getProfileInfo, getGateInfo, getChannelInfo } from '$lib/hd/content/index.js';
   import { buildPrompts } from '$lib/hd/prompts.js';
 
   // Etiquetas humanas. En la próxima iteración esto vivirá en i18n.
@@ -128,7 +128,11 @@
   }
 
   function openInfoFor(category, kind, key) {
-    const info = kind === 'profile' ? getProfileInfo(key) : getElementInfo(kind, key);
+    const info =
+      kind === 'profile' ? getProfileInfo(key)
+      : kind === 'gate' ? getGateInfo(key)
+      : kind === 'channel' ? getChannelInfo(key)
+      : getElementInfo(kind, key);
     if (!info) return;
     infoData = { category, kind, key, info, prompts: buildPrompts(kind, key, chart) };
     infoOpen = true;
@@ -724,62 +728,104 @@
 
     <div class="cols">
       <section>
-        <h2>Canales completos ({chart.activeChannels.length})</h2>
-        {#if chart.activeChannels.length === 0}
-          <p class="none">Ninguno</p>
-        {:else}
-          <div class="chips small">
-            {#each chart.activeChannels as [g1, g2]}
-              <span
-                class="chip on"
-                role="presentation"
-                class:focus={relatedToHoverCenter(g1, g2)}
-                class:selected={sameHover(hover, { kind: 'channel', gates: [g1, g2] })}
-                class:dimmed={(hover?.kind === 'center' && !relatedToHoverCenter(g1, g2)) ||
-                  dimsAgainstChipHover({ kind: 'channel', gates: [g1, g2] })}
-                onmouseenter={() => setHover({ kind: 'channel', gates: [g1, g2] })}
-                onmouseleave={() => setHover(null)}
-                onclick={(e) => pin(e, { kind: 'channel', gates: [g1, g2] })}
-              >
-                {g1}-{g2}
+        <div
+          class="info-zone"
+          role="presentation"
+          onclick={(e) => cardClick(e, 'channels')}
+          onmouseover={(e) => cardOver(e, 'channels')}
+          onmouseleave={clearReveal}
+        >
+          <h2>
+            Canales completos ({chart.activeChannels.length})
+            {#if cardReveal === 'channels' || infoIsOpen('concept', 'channel')}
+              <span class="dot-h2" data-info-cat="Canales" data-info-kind="concept" data-info-key="channel">
+                <InfoDot active={infoIsOpen('concept', 'channel')} label="Qué son los canales" />
               </span>
-            {/each}
-          </div>
-        {/if}
+            {/if}
+          </h2>
+          {#if chart.activeChannels.length === 0}
+            <p class="none">Ninguno</p>
+          {:else}
+            <div class="chips small">
+              {#each chart.activeChannels as [g1, g2]}
+                <span class="cc-wrap" data-inner-key={`channel:${g1}-${g2}`}>
+                  <span
+                    class="chip on"
+                    role="presentation"
+                    class:focus={relatedToHoverCenter(g1, g2)}
+                    class:selected={sameHover(hover, { kind: 'channel', gates: [g1, g2] })}
+                    class:dimmed={(hover?.kind === 'center' && !relatedToHoverCenter(g1, g2)) ||
+                      dimsAgainstChipHover({ kind: 'channel', gates: [g1, g2] })}
+                    onmouseenter={() => setHover({ kind: 'channel', gates: [g1, g2] })}
+                    onmouseleave={() => setHover(null)}
+                    onclick={(e) => pin(e, { kind: 'channel', gates: [g1, g2] })}
+                  >
+                    {g1}-{g2}
+                  </span>
+                  {#if innerReveal === `channel:${g1}-${g2}` || infoIsOpen('channel', `${g1}-${g2}`)}
+                    <span class="dot-slot" data-info-cat="Canal" data-info-kind="channel" data-info-key={`${g1}-${g2}`}>
+                      <InfoDot active={infoIsOpen('channel', `${g1}-${g2}`)} label={`Más información sobre el canal ${g1}-${g2}`} />
+                    </span>
+                  {/if}
+                </span>
+              {/each}
+            </div>
+          {/if}
+        </div>
       </section>
 
       <section>
-        <h2>
-          Puertas colgantes
-          <span
-            class="count"
-            data-tip={`${hangingGates.length - hangingInDefined} puertas en centros indefinidos\n${hangingInDefined} puertas en centros definidos`}
-          >({hangingGates.length})</span>
-        </h2>
-        {#if hangingGates.length === 0}
-          <p class="none">Ninguna</p>
-        {:else}
-          <div class="chips small">
-            {#each hangingGates as g}
-              <span
-                class="chip"
-                class:on={chart.definedCenters.includes(CENTER_BY_GATE[g])}
-                class:soft={!chart.definedCenters.includes(CENTER_BY_GATE[g])}
-                role="presentation"
-                class:focus={relatedToHoverCenter(g)}
-                class:selected={sameHover(hover, { kind: 'gate', gates: [g] })}
-                class:dimmed={(hover?.kind === 'center' && !relatedToHoverCenter(g)) ||
-                  hover?.kind === 'definition' ||
-                  dimsAgainstChipHover({ kind: 'gate', gates: [g] })}
-                onmouseenter={() => setHover({ kind: 'gate', gates: [g] })}
-                onmouseleave={() => setHover(null)}
-                onclick={(e) => pin(e, { kind: 'gate', gates: [g] })}
-              >
-                {g}
+        <div
+          class="info-zone"
+          role="presentation"
+          onclick={(e) => cardClick(e, 'gates')}
+          onmouseover={(e) => cardOver(e, 'gates')}
+          onmouseleave={clearReveal}
+        >
+          <h2>
+            Puertas colgantes
+            <span
+              class="count"
+              data-tip={`${hangingGates.length - hangingInDefined} puertas en centros indefinidos\n${hangingInDefined} puertas en centros definidos`}
+            >({hangingGates.length})</span>
+            {#if cardReveal === 'gates' || infoIsOpen('concept', 'gate')}
+              <span class="dot-h2" data-info-cat="Puertas" data-info-kind="concept" data-info-key="gate">
+                <InfoDot active={infoIsOpen('concept', 'gate')} label="Qué son las puertas" />
               </span>
-            {/each}
-          </div>
-        {/if}
+            {/if}
+          </h2>
+          {#if hangingGates.length === 0}
+            <p class="none">Ninguna</p>
+          {:else}
+            <div class="chips small">
+              {#each hangingGates as g}
+                <span class="cc-wrap" data-inner-key={`gate:${g}`}>
+                  <span
+                    class="chip"
+                    class:on={chart.definedCenters.includes(CENTER_BY_GATE[g])}
+                    class:soft={!chart.definedCenters.includes(CENTER_BY_GATE[g])}
+                    role="presentation"
+                    class:focus={relatedToHoverCenter(g)}
+                    class:selected={sameHover(hover, { kind: 'gate', gates: [g] })}
+                    class:dimmed={(hover?.kind === 'center' && !relatedToHoverCenter(g)) ||
+                      hover?.kind === 'definition' ||
+                      dimsAgainstChipHover({ kind: 'gate', gates: [g] })}
+                    onmouseenter={() => setHover({ kind: 'gate', gates: [g] })}
+                    onmouseleave={() => setHover(null)}
+                    onclick={(e) => pin(e, { kind: 'gate', gates: [g] })}
+                  >
+                    {g}
+                  </span>
+                  {#if innerReveal === `gate:${g}` || infoIsOpen('gate', `${g}`)}
+                    <span class="dot-slot" data-info-cat="Puerta" data-info-kind="gate" data-info-key={`${g}`}>
+                      <InfoDot active={infoIsOpen('gate', `${g}`)} label={`Más información sobre la puerta ${g}`} />
+                    </span>
+                  {/if}
+                </span>
+              {/each}
+            </div>
+          {/if}
+        </div>
       </section>
     </div>
 
@@ -894,6 +940,8 @@
     text-transform: uppercase;
     letter-spacing: 0.06em;
     font-size: 0.8rem;
+    /* Reserve the inline concept "i" height so revealing it doesn't shift the row. */
+    line-height: 1.35;
   }
   .status {
     color: var(--text-muted);
@@ -975,6 +1023,14 @@
     vertical-align: middle;
     margin-left: 0.3rem;
     margin-right: -1.4rem;
+  }
+  /* The concept "i" on a section title ("Canales completos", "Puertas
+     colgantes") sits inline after the count. The h2 line-height (set below)
+     already reserves the dot's height, so revealing it never shifts the row. */
+  .dot-h2 {
+    display: inline-flex;
+    vertical-align: middle;
+    margin-left: 0.35rem;
   }
   .tchip.on {
     background: var(--accent);

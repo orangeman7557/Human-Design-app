@@ -66,6 +66,22 @@ export default {
         'Un centro **definido** funciona de forma fija y fiable: es una energía consistente que aportas siempre, tuya y constante. Un centro **indefinido** no es un defecto: es una zona abierta donde recibes y amplificas la energía de los demás y del entorno; es donde más aprendes, pero también donde es fácil dejarse condicionar y confundir lo ajeno con lo propio.',
         'Mirar tus centros es una de las claves más prácticas para la **gestión de la energía**: los definidos marcan lo que ofreces de manera estable, y los indefinidos, dónde conviene no tomar decisiones desde una presión prestada. En tu carta, los centros coloreados están definidos y los que se ven vacíos están abiertos.'
       ]
+    },
+    channel: {
+      title: 'Los canales',
+      paragraphs: [
+        'Los **canales** son las 36 conexiones del bodygraph: cada uno une dos puertas situadas en centros distintos. Un canal **completo** —con sus dos puertas activas— enlaza esos dos centros, los define y crea una corriente de energía estable y fiable entre ellos.',
+        'Los canales son los que, en conjunto, determinan tu **tipo, tu definición y qué centros están definidos**. Por eso son la columna vertebral mecánica de la carta: no describen un rasgo aislado, sino una forma constante en que dos áreas de tu energía trabajan juntas.',
+        'Cada canal combina los temas de sus dos puertas (y de sus hexagramas del I Ching). Para una lectura detallada de un canal concreto, su panel ofrece un prompt listo para llevar a tu IA.'
+      ]
+    },
+    gate: {
+      title: 'Las puertas',
+      paragraphs: [
+        'Las **puertas** son las 64 activaciones posibles del bodygraph, una por cada hexagrama del I Ching. Cada puerta vive en un centro concreto y aporta un matiz específico de energía o carácter; al nacer, tus planetas «encienden» un conjunto de ellas.',
+        'Una puerta activa que no encuentra a su pareja —la del otro extremo de su canal— queda **colgante**: aporta su tema pero busca completarse, a menudo a través de otra persona que tenga la puerta complementaria. Cuando las dos puertas de un canal están activas, el canal se forma y define sus dos centros.',
+        'Cada puerta hunde su raíz en un hexagrama del I Ching clásico (secuencia del rey Wen), de dominio público. Ese hexagrama es el punto de partida de su significado; para profundizar en una puerta concreta, su panel ofrece un prompt listo para tu IA.'
+      ]
     }
   },
 
@@ -355,6 +371,76 @@ export default {
         '**Definido**, aporta una forma constante de manejar la presión y el estrés. **Indefinido**, **amplifica la prisa** y la sensación de tener que quitarse cuanto antes lo pendiente de encima; su aprendizaje es no dejarse empujar a decisiones apresuradas solo para aliviar una presión que, en buena parte, es prestada.'
       ]
     }
+  },
+
+  // Public-domain root of each gate: its King Wen hexagram name (gate N ↔
+  // hexagram N). Names follow the classic Wilhelm/Vogelmann Spanish edition.
+  // Used as the I Ching anchor in the gate/channel info (Phase 6.D).
+  iching: {
+    1: 'Lo Creativo',
+    2: 'Lo Receptivo',
+    3: 'La Dificultad Inicial',
+    4: 'La Necedad Juvenil',
+    5: 'La Espera',
+    6: 'El Conflicto',
+    7: 'El Ejército',
+    8: 'La Solidaridad',
+    9: 'La Fuerza Domesticadora de lo Pequeño',
+    10: 'El Porte',
+    11: 'La Paz',
+    12: 'El Estancamiento',
+    13: 'La Comunidad con los Hombres',
+    14: 'La Posesión de lo Grande',
+    15: 'La Modestia',
+    16: 'El Entusiasmo',
+    17: 'El Seguimiento',
+    18: 'El Trabajo en lo Echado a Perder',
+    19: 'El Acercamiento',
+    20: 'La Contemplación',
+    21: 'La Mordedura Tajante',
+    22: 'La Gracia',
+    23: 'La Desintegración',
+    24: 'El Retorno',
+    25: 'La Inocencia',
+    26: 'La Fuerza Domesticadora de lo Grande',
+    27: 'La Nutrición',
+    28: 'La Preponderancia de lo Grande',
+    29: 'Lo Abismal (el Agua)',
+    30: 'Lo Adherente (el Fuego)',
+    31: 'El Influjo',
+    32: 'La Duración',
+    33: 'La Retirada',
+    34: 'El Poder de lo Grande',
+    35: 'El Progreso',
+    36: 'El Oscurecimiento de la Luz',
+    37: 'La Familia',
+    38: 'El Antagonismo',
+    39: 'El Impedimento',
+    40: 'La Liberación',
+    41: 'La Merma',
+    42: 'El Aumento',
+    43: 'El Desbordamiento',
+    44: 'El Ir al Encuentro',
+    45: 'La Reunión',
+    46: 'La Subida',
+    47: 'La Desazón',
+    48: 'El Pozo',
+    49: 'La Revolución',
+    50: 'El Caldero',
+    51: 'Lo Suscitativo (la Conmoción)',
+    52: 'El Aquietamiento (la Montaña)',
+    53: 'La Evolución',
+    54: 'La Muchacha que se Casa',
+    55: 'La Plenitud',
+    56: 'El Andariego',
+    57: 'Lo Suave (el Viento)',
+    58: 'Lo Sereno (el Lago)',
+    59: 'La Disolución',
+    60: 'La Restricción',
+    61: 'La Verdad Interior',
+    62: 'La Preponderancia de lo Pequeño',
+    63: 'Después de la Consumación',
+    64: 'Antes de la Consumación'
   },
 
   // Natural-language labels used to build AI prompts. Kept separate from the

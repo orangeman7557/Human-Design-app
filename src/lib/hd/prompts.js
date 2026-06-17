@@ -15,7 +15,8 @@
 // exception is the centres concept, which reads the chart's defined/undefined
 // mix).
 
-import { getPromptLabels, DEFAULT_LANG } from './content/index.js';
+import { getPromptLabels, getIchingName, DEFAULT_LANG } from './content/index.js';
+import { CENTER_BY_GATE } from './constants.js';
 
 const NO_ASSUME = 'No asumas conocimiento previo del sistema.';
 
@@ -129,6 +130,38 @@ export function buildPrompts(kind, key, chart, lang = DEFAULT_LANG) {
     };
   }
 
+  if (kind === 'gate') {
+    const g = Number(key);
+    const center = L.center[CENTER_BY_GATE[g]] ?? '';
+    const name = getIchingName(g, lang);
+    const root = name ? `, cuya raíz es el hexagrama ${g} «${name}» del I Ching` : '';
+    return {
+      general:
+        `Explícame de forma sencilla y práctica qué significa la puerta ${g} en ` +
+        `Diseño Humano${center ? ` (en el centro ${center})` : ''}${root}: qué tema ` +
+        `o energía representa y cómo se manifiesta. ${NO_ASSUME}`,
+      chart:
+        `En esta carta, la puerta ${g} está activa. Para ${who(L, chart)}, ` +
+        `explícame qué aporta esta puerta y cómo se vive en el día a día. ${NO_ASSUME}`
+    };
+  }
+
+  if (kind === 'channel') {
+    const [a, b] = String(key).split('-').map(Number);
+    const ca = L.center[CENTER_BY_GATE[a]] ?? '';
+    const cb = L.center[CENTER_BY_GATE[b]] ?? '';
+    return {
+      general:
+        `Explícame de forma sencilla y práctica qué significa el canal ${a}-${b} en ` +
+        `Diseño Humano, que une los centros ${ca} y ${cb} (puertas ${a} y ${b}): qué ` +
+        `energía aporta y cómo se manifiesta. ${NO_ASSUME}`,
+      chart:
+        `En esta carta, el canal ${a}-${b} está completo y define los centros ${ca} y ` +
+        `${cb}. Para ${who(L, chart)}, explícame qué aporta este canal y cómo se vive ` +
+        `en el día a día. ${NO_ASSUME}`
+    };
+  }
+
   return { general: '', chart: null };
 }
 
@@ -174,6 +207,22 @@ function conceptPrompts(L, key, chart) {
           `Explícame de forma sencilla y práctica qué es la definición en Diseño ` +
           `Humano (sin definición, única, split, triple y cuádruple split) y qué ` +
           `dice sobre cómo se conecta la energía de una persona. ${NO_ASSUME}`,
+        chart: null
+      };
+    case 'channel':
+      return {
+        general:
+          `Explícame de forma sencilla y práctica qué son los canales en Diseño ` +
+          `Humano, cómo se forman al activarse sus dos puertas, qué significa que un ` +
+          `canal esté completo y cómo definen los centros. ${NO_ASSUME}`,
+        chart: null
+      };
+    case 'gate':
+      return {
+        general:
+          `Explícame de forma sencilla y práctica qué son las puertas en Diseño ` +
+          `Humano, su relación con los 64 hexagramas del I Ching, y la diferencia ` +
+          `entre una puerta que completa un canal y una puerta «colgante». ${NO_ASSUME}`,
         chart: null
       };
     case 'center': {

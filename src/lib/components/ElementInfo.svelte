@@ -37,7 +37,7 @@
   let aiOpen = $state(false);
   let showPrompt = $state(false);
   let copied = $state(false);
-  /** @type {{ id: string, label: string } | null} */
+  /** @type {{ id: string, label: string, icon: string } | null} */
   let preferred = $state(null);
   /** Active prompt angle: 'chart' | 'general'. */
   let angle = $state('chart');
@@ -234,13 +234,10 @@
       {#if preferred}
         <div class="split" class:act={aiOpen}>
           <button class="split-go" type="button" onclick={() => openAI(preferred, editedPrompt)}>
-            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" /><path d="M15 3h6v6" /><path d="M10 14 21 3" />
+            <svg class="ai-logo" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d={preferred.icon} />
             </svg>
             {preferred.label}
-            <svg class="ai-glyph" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <path d="M12 3l1.6 4.4L18 9l-4.4 1.6L12 15l-1.6-4.4L6 9l4.4-1.6z" />
-            </svg>
           </button>
           <button class="split-toggle" type="button" onclick={toggleAiList} aria-label="Cambiar IA">
             <svg class="chev" class:up={aiOpen} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -272,8 +269,8 @@
         {#each AIS as ai}
           <li>
             <button type="button" onclick={() => chooseAI(ai)}>
-              <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" /><path d="M15 3h6v6" /><path d="M10 14 21 3" />
+              <svg class="ai-logo" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d={ai.icon} />
               </svg>
               {ai.label}
             </button>
@@ -581,10 +578,12 @@
     color: var(--accent);
     flex: none;
   }
-  .ai-glyph {
-    width: 14px;
-    height: 14px;
-    color: var(--accent);
+  /* Real brand logos — keep their own colour (currentColor = text) rather
+     than the amber accent, so each mark reads as itself. */
+  .ai-logo {
+    width: 15px;
+    height: 15px;
+    color: var(--text);
     flex: none;
   }
   .chev {

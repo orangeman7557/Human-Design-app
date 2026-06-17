@@ -6,6 +6,7 @@
 // `key`, and optionally a language.
 
 import es from './es.js';
+import { CENTER_BY_GATE } from '../constants.js';
 
 const LANGS = { es };
 export const DEFAULT_LANG = 'es';
@@ -58,4 +59,63 @@ export function getProfileInfo(profile, lang = DEFAULT_LANG) {
 /** Natural-language labels used to build prompts. */
 export function getPromptLabels(lang = DEFAULT_LANG) {
   return pack(lang).promptLabels;
+}
+
+/** I Ching hexagram name for a gate (gate N ↔ hexagram N), or null. */
+export function getIchingName(gate, lang = DEFAULT_LANG) {
+  return pack(lang).iching?.[Number(gate)] ?? null;
+}
+
+// Gates and channels (Phase 6.D) carry only minimal own info — the mechanical
+// facts (centre membership, channel endpoints) plus the public-domain I Ching
+// root — and delegate the depth to the user's AI via the panel's prompt. So
+// their `{ title, paragraphs }` is built on the fly rather than hand-written
+// 64 + 36 times.
+
+/**
+ * Info for a single gate.
+ * @param {number|string} gate
+ * @param {string} [lang]
+ * @returns {{ title: string, paragraphs: string[] } | null}
+ */
+export function getGateInfo(gate, lang = DEFAULT_LANG) {
+  const g = Number(gate);
+  const center = CENTER_BY_GATE[g];
+  if (!center) return null;
+  const labels = pack(lang).promptLabels.center;
+  const name = getIchingName(g, lang);
+  return {
+    title: `Puerta ${g}`,
+    paragraphs: [
+      `La puerta ${g} pertenece al **centro ${labels[center] ?? center}**: su energía se expresa a través de la función de ese centro.`,
+      name
+        ? `Su raíz está en el hexagrama ${g} del I Ching, **«${name}»** (secuencia del rey Wen), el punto de partida clásico de su significado.`
+        : `Su raíz está en el hexagrama ${g} del I Ching (secuencia del rey Wen).`,
+      'Para una lectura detallada de esta puerta, usa el prompt de abajo con tu IA.'
+    ]
+  };
+}
+
+/**
+ * Info for a channel given as a "g1-g2" string or [g1, g2] pair.
+ * @param {string|number[]} pair
+ * @param {string} [lang]
+ * @returns {{ title: string, paragraphs: string[] } | null}
+ */
+export function getChannelInfo(pair, lang = DEFAULT_LANG) {
+  const [a, b] = Array.isArray(pair) ? pair.map(Number) : String(pair).split('-').map(Number);
+  const ca = CENTER_BY_GATE[a];
+  const cb = CENTER_BY_GATE[b];
+  if (!ca || !cb) return null;
+  const labels = pack(lang).promptLabels.center;
+  const na = getIchingName(a, lang);
+  const nb = getIchingName(b, lang);
+  return {
+    title: `Canal ${a}-${b}`,
+    paragraphs: [
+      `El canal ${a}-${b} conecta el **centro ${labels[ca] ?? ca}** (puerta ${a}) con el **centro ${labels[cb] ?? cb}** (puerta ${b}). Con sus dos puertas activas, el canal queda completo y define ambos centros.`,
+      `Une las puertas ${a}${na ? ` —hexagrama «${na}»—` : ''} y ${b}${nb ? ` —hexagrama «${nb}»—` : ''} del I Ching. Tenerlo completo aporta una corriente de energía constante y fiable entre esos dos centros.`,
+      'Para una lectura detallada de este canal, usa el prompt de abajo con tu IA.'
+    ]
+  };
 }
