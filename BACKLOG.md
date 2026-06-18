@@ -555,14 +555,32 @@ chiefly in the IA section:
       shows when that element is actually active in the chart**
       (`activeGates` / `activeChannels` in `prompts.js`) — elements reached via
       the index that aren't on the chart show **general only**.
-- 6.E — **Activations info (new; may instead stay a possible improvement —
-  decide when we get there).** Same pattern as everything else: a general
-  "i" for the **Activaciones** section, plus an "i" for each element inside
-  it — the Personality / Design column headers, the planets, and each
-  individual activation (e.g. 30.3, 10.2). Ties in with the future
-  per-planet weight/influence idea (see "Possible improvements") once that
-  lands.
-- 6.F — Legal disclaimer + docs close (formerly 6.E). Bump to 0.2.0.
+- 6.E — **Activations info. Built 2026-06-18 (text/UX review pending).** Same
+  pattern as everything else, on the **Activaciones** table: a concept "i" on
+  the section title; an "i" on the **Personality / Design** headers and on the
+  new **Peso** header; an "i" on each **planet** (13 own-voice keynotes); and
+  each **activation cell is a button that opens its gate drawer** (reusing 6.D)
+  — that's how "each individual activation" is reached, instead of a separate
+  "i" per cell. New content in `es.js` (`concept.activation`, `activationCol`,
+  `planet`, `promptLabels.planet`) + `prompts.js` kinds (`activationCol`,
+  `planet`, concept `activation`, all general-only for now — a chart angle per
+  planet is a future nicety). **Per-planet weight delivered:** a discreet last
+  column **"Peso"** (smaller, muted, faint tier gradient) with a header tooltip
+  + "i". Weights are **PROVISIONAL pending the author's review**
+  (`activationWeight` in `es.js`, `getActivationWeight`): the only firm HD
+  figure is **Sun+Earth ≈ 70%**, so the per-planet tiers (high = Sun/Earth,
+  mid = Nodes, low = the rest) are a defensible ordering, not an official
+  table — the "i"/tooltip say so. The Peso column is pinned (`min-width`) so
+  "medio" rows can't jitter the table on expand.
+- 6.F — **Reframed 2026-06-18 (author): footer "Acerca de" modal instead of a
+  bare disclaimer.** The footer shows an **"Acerca de"** link (active-language
+  label) that opens an info window holding: the **legal disclaimers**
+  (non-affiliation, not legal advice), the **"Hecho con asistencia de IA"**
+  line moved here, and likely **author**, a **donate** option, a **report a
+  bug** link, etc. (exact contents TBD — "ya lo veremos"). Could reuse the
+  `ElementInfo` drawer/scrim. Until then the footer just carries the version +
+  short license line (now in Spanish — the English footer was a bug, fixed
+  2026-06-18). Still the last sub-phase; bump to 0.2.0 when it lands.
 
 Open question for 6.C: exact list of AIs offered as deep links. Confirmed
 order: Claude, ChatGPT, Perplexity (Gemini has no reliable URL prefill →

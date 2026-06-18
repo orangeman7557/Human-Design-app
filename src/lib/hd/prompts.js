@@ -150,6 +150,31 @@ export function buildPrompts(kind, key, chart, lang = DEFAULT_LANG) {
     };
   }
 
+  if (kind === 'activationCol') {
+    const what = {
+      personality: 'la parte consciente (Personality), calculada en el momento del nacimiento',
+      design: 'la parte inconsciente (Design), calculada unos 88 días antes del nacimiento',
+      weight: 'el peso o influencia relativa de cada activación planetaria (el Sol y la Tierra pesan más)'
+    };
+    return {
+      general:
+        `Explícame de forma sencilla y práctica qué es ${what[key] ?? key} en Diseño ` +
+        `Humano y por qué importa al leer una carta. ${NO_ASSUME}`,
+      chart: null
+    };
+  }
+
+  if (kind === 'planet') {
+    const name = L.planet?.[key] ?? key;
+    return {
+      general:
+        `Explícame de forma sencilla y práctica qué representa ${name} en Diseño ` +
+        `Humano: qué área de la vida o de la energía matiza y cómo se interpreta su ` +
+        `activación (su puerta y línea). ${NO_ASSUME}`,
+      chart: null
+    };
+  }
+
   if (kind === 'channel') {
     const [a, b] = String(key).split('-').map(Number);
     const ca = L.center[CENTER_BY_GATE[a]] ?? '';
@@ -233,6 +258,14 @@ function conceptPrompts(L, key, chart) {
           `Explícame de forma sencilla y práctica qué son las puertas en Diseño ` +
           `Humano, su relación con los 64 hexagramas del I Ching, y la diferencia ` +
           `entre una puerta que completa un canal y una puerta «colgante». ${NO_ASSUME}`,
+        chart: null
+      };
+    case 'activation':
+      return {
+        general:
+          `Explícame de forma sencilla y práctica qué son las activaciones planetarias ` +
+          `en Diseño Humano, qué diferencia hay entre Personality (consciente) y Design ` +
+          `(inconsciente), y por qué el Sol y la Tierra son las más importantes. ${NO_ASSUME}`,
         chart: null
       };
     case 'center': {

@@ -86,6 +86,14 @@ export function getIchingName(gate, lang = DEFAULT_LANG) {
   return pack(lang).iching?.[Number(gate)] ?? null;
 }
 
+/**
+ * Relative weight of a planet's activation (Phase 6.E) — `{ tier, label }` or
+ * null. PROVISIONAL (see es.js): only Sun+Earth ≈ 70% is firm.
+ */
+export function getActivationWeight(planet, lang = DEFAULT_LANG) {
+  return pack(lang).activationWeight?.[planet] ?? null;
+}
+
 // Gates and channels (Phase 6.D) carry only minimal own info — the mechanical
 // facts (centre membership, channel endpoints) plus the public-domain I Ching
 // root — and delegate the depth to the user's AI via the panel's prompt. So

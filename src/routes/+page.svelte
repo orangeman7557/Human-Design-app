@@ -545,7 +545,7 @@
   </section>
 
   <footer>
-    <small>v{version} · source-available · free for noncommercial use · Built with AI assistance</small>
+    <small>v{version} · código disponible · gratis para uso no comercial · Hecho con asistencia de IA</small>
   </footer>
 </main>
 

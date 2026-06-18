@@ -82,6 +82,14 @@ export default {
         'Una puerta activa que no encuentra a su pareja —la del otro extremo de su canal— queda **colgante**: aporta su tema pero busca completarse, a menudo a través de otra persona que tenga la puerta complementaria. Cuando las dos puertas de un canal están activas, el canal se forma y define sus dos centros.',
         'Cada puerta hunde su raíz en un hexagrama del I Ching clásico (secuencia del rey Wen), de dominio público. Ese hexagrama es el punto de partida de su significado; para profundizar en una puerta concreta, su panel ofrece un prompt listo para tu IA.'
       ]
+    },
+    activation: {
+      title: 'Las activaciones',
+      paragraphs: [
+        'Las **activaciones** son las posiciones de los planetas en tu nacimiento, traducidas a puertas y líneas del Diseño Humano. Cada cuerpo «enciende» una puerta concreta (y su línea), y el conjunto de todas ellas es lo que construye tu carta: centros, canales, tipo, autoridad y perfil.',
+        'Se calculan en **dos momentos**, de ahí las dos columnas: *Personality* usa la posición en el instante del nacimiento (lo consciente); *Design* usa la de unos 88 días antes —88° de arco solar— (lo inconsciente). Por eso tienes dos activaciones por planeta.',
+        'No todas pesan igual: el **Sol y la Tierra** concentran la mayor parte del significado y el resto matiza; la columna *Peso* resume esa influencia relativa. Toca una activación para abrir la puerta correspondiente.'
+      ]
     }
   },
 
@@ -373,6 +381,147 @@ export default {
     }
   },
 
+  // ── Activations (Phase 6.E): the table's column headers and planets. ──
+  activationCol: {
+    personality: {
+      title: 'Personality (consciente)',
+      paragraphs: [
+        'La columna **Personality** representa lo **consciente**: lo que reconoces como «tú», tu mente y tu personalidad. Se calcula con la posición de los planetas en el **instante exacto del nacimiento**.',
+        'Es la parte de la carta con la que te identificas y de la que sueles ser consciente. En el bodygraph se pinta en blanco.'
+      ]
+    },
+    design: {
+      title: 'Design (inconsciente)',
+      paragraphs: [
+        'La columna **Design** representa lo **inconsciente**: el cuerpo, lo heredado, lo que opera sin que lo controles y que otros ven en ti antes que tú. Se calcula unos **88 días antes del nacimiento** (88° de arco solar).',
+        'Es la parte más corporal y menos accesible a la mente; suele expresarse de forma automática. En el bodygraph se pinta en rojo.'
+      ]
+    },
+    weight: {
+      title: 'Peso de la activación',
+      paragraphs: [
+        'No todas las activaciones influyen por igual. La enseñanza más extendida en Diseño Humano sitúa al **Sol y la Tierra** como lo más determinante —se les suele atribuir en torno al **70 %** del significado de la carta—; los **Nodos** describen sobre todo el entorno y la dirección de vida; y el resto de planetas **matizan**.',
+        'La columna *Peso* resume esa influencia relativa de forma orientativa (**alto / medio / bajo**). Es una guía aproximada, no una cifra oficial del sistema: úsala para saber por dónde empezar a leer la carta —siempre por el Sol y la Tierra—.'
+      ]
+    }
+  },
+
+  // Each of the 13 bodies (Phase 6.E). Own-voice keynotes from general,
+  // public-domain astrological/HD associations.
+  planet: {
+    sun: {
+      title: 'Sol',
+      paragraphs: [
+        'El **Sol** es la activación más importante de la carta: marca tu **expresión esencial**, la energía que irradias y el propósito que encarnas. Con la Tierra concentra la mayor parte del significado (~70 %).',
+        'Su puerta de personalidad suele leerse como la nota dominante de quién eres de forma consciente.'
+      ]
+    },
+    earth: {
+      title: 'Tierra',
+      paragraphs: [
+        'La **Tierra** equilibra al Sol: es lo que te **arraiga y estabiliza**, el suelo sobre el que se sostiene tu propósito. Forma con el Sol el eje más determinante de la carta.',
+        'Aporta el contrapeso práctico a la energía solar: lo que necesitas para mantenerte centrado.'
+      ]
+    },
+    moon: {
+      title: 'Luna',
+      paragraphs: [
+        'La **Luna** señala lo que te **impulsa y mantiene en marcha**: el motor de la continuidad en el día a día. En el Reflector cobra un papel central, al recorrer su ciclo de unos 28 días.',
+        'Habla de aquello que sostiene tu movimiento cuando el entusiasmo inicial ya pasó.'
+      ]
+    },
+    northNode: {
+      title: 'Nodo Norte',
+      paragraphs: [
+        'El **Nodo Norte** describe la **dirección y el entorno** hacia los que se orienta la segunda parte de la vida (de forma aproximada, a partir de la madurez). Marca hacia dónde vas.',
+        'No es un rasgo de carácter sino un **contexto**: el escenario donde tu energía se despliega mejor.'
+      ]
+    },
+    southNode: {
+      title: 'Nodo Sur',
+      paragraphs: [
+        'El **Nodo Sur** describe el **entorno** de la primera parte de la vida: el escenario del que partes. Con el Nodo Norte forma el eje de tu trayectoria.',
+        'Habla del «de dónde vienes» en términos de ambiente y dirección, más que de personalidad.'
+      ]
+    },
+    mercury: {
+      title: 'Mercurio',
+      paragraphs: [
+        'Mercurio rige la **comunicación y el pensamiento**: lo que necesitas expresar y compartir, y cómo conectas ideas con los demás.',
+        'Matiza la manera en que hablas y transmites.'
+      ]
+    },
+    venus: {
+      title: 'Venus',
+      paragraphs: [
+        'Venus se asocia a los **valores, los afectos y el sentido de lo correcto**: lo que aprecias, cómo amas y qué consideras justo o bello.',
+        'Aporta el tono de tus vínculos y de tu moral personal.'
+      ]
+    },
+    mars: {
+      title: 'Marte',
+      paragraphs: [
+        'Marte representa la **energía, el impulso y la inmadurez** que se va puliendo con los años: el empuje, a veces desordenado, sobre todo en la juventud.',
+        'Habla de cómo canalizas la fuerza y la acción.'
+      ]
+    },
+    jupiter: {
+      title: 'Júpiter',
+      paragraphs: [
+        'Júpiter se asocia a la **expansión, la ley y la abundancia**: los principios que te benefician y dónde encuentras crecimiento.',
+        'Aporta el sentido de protección y de lo que te hace prosperar.'
+      ]
+    },
+    saturn: {
+      title: 'Saturno',
+      paragraphs: [
+        'Saturno es la **disciplina y el límite**: el «juez» que exige rigor, corrige y marca lo que aprendes a base de constancia.',
+        'Señala dónde la madurez llega a través del esfuerzo y la responsabilidad.'
+      ]
+    },
+    uranus: {
+      title: 'Urano',
+      paragraphs: [
+        'Urano representa lo **singular y lo inusual**: tu originalidad y aquello en lo que sigues un camino propio, fuera de lo convencional.',
+        'Se asocia también al cambio, la ciencia y lo inesperado.'
+      ]
+    },
+    neptune: {
+      title: 'Neptuno',
+      paragraphs: [
+        'Neptuno se asocia a lo **espiritual, lo sutil y la ilusión**: la niebla que envuelve lo que aún no se ve con claridad, y la apertura a lo trascendente.',
+        'Aporta sensibilidad e imaginación; a veces, una confusión que se despeja con el tiempo.'
+      ]
+    },
+    pluto: {
+      title: 'Plutón',
+      paragraphs: [
+        'Plutón es la **verdad y la transformación**: lo que se remueve en profundidad, los procesos psicológicos y los cambios que rehacen desde dentro.',
+        'Señala dónde la vida te confronta con lo esencial para transformarte.'
+      ]
+    }
+  },
+
+  // Relative weight of each activation (Phase 6.E). PROVISIONAL — pending the
+  // author's review. The only firm figure in HD is Sun+Earth ≈ 70%; the rest
+  // is a defensible ordering (Nodes = environment/direction → medium), not an
+  // official per-planet table. `tier` drives styling; `label` is shown.
+  activationWeight: {
+    sun: { tier: 'high', label: 'alto' },
+    earth: { tier: 'high', label: 'alto' },
+    moon: { tier: 'low', label: 'bajo' },
+    northNode: { tier: 'mid', label: 'medio' },
+    southNode: { tier: 'mid', label: 'medio' },
+    mercury: { tier: 'low', label: 'bajo' },
+    venus: { tier: 'low', label: 'bajo' },
+    mars: { tier: 'low', label: 'bajo' },
+    jupiter: { tier: 'low', label: 'bajo' },
+    saturn: { tier: 'low', label: 'bajo' },
+    uranus: { tier: 'low', label: 'bajo' },
+    neptune: { tier: 'low', label: 'bajo' },
+    pluto: { tier: 'low', label: 'bajo' }
+  },
+
   // Public-domain root of each gate: its King Wen hexagram name (gate N ↔
   // hexagram N). Names follow the classic Wilhelm/Vogelmann Spanish edition.
   // Used as the I Ching anchor in the gate/channel info (Phase 6.D).
@@ -486,6 +635,21 @@ export default {
       spleen: 'Bazo',
       solarPlexus: 'Plexo Solar',
       root: 'Raíz'
+    },
+    planet: {
+      sun: 'el Sol',
+      earth: 'la Tierra',
+      moon: 'la Luna',
+      northNode: 'el Nodo Norte',
+      southNode: 'el Nodo Sur',
+      mercury: 'Mercurio',
+      venus: 'Venus',
+      mars: 'Marte',
+      jupiter: 'Júpiter',
+      saturn: 'Saturno',
+      uranus: 'Urano',
+      neptune: 'Neptuno',
+      pluto: 'Plutón'
     }
   }
 };

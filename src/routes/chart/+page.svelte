@@ -10,7 +10,7 @@
   import Bodygraph from '$lib/components/Bodygraph.svelte';
   import ElementInfo from '$lib/components/ElementInfo.svelte';
   import InfoDot from '$lib/components/InfoDot.svelte';
-  import { getElementInfo, getProfileInfo, getGateInfo, getChannelInfo, getConceptInfo } from '$lib/hd/content/index.js';
+  import { getElementInfo, getProfileInfo, getGateInfo, getChannelInfo, getConceptInfo, getActivationWeight } from '$lib/hd/content/index.js';
   import { buildPrompts } from '$lib/hd/prompts.js';
 
   // Etiquetas humanas. En la próxima iteración esto vivirá en i18n.
@@ -131,7 +131,8 @@
   const CATEGORY_BY_KIND = {
     type: 'Tipo', strategy: 'Estrategia', authority: 'Autoridad',
     profile: 'Perfil', definition: 'Definición', center: 'Centro',
-    channel: 'Canal', gate: 'Puerta'
+    channel: 'Canal', gate: 'Puerta', activationCol: 'Activaciones',
+    planet: 'Planeta'
   };
 
   /** Resolve an element's `{ title, paragraphs, list? }` by kind. */
@@ -172,6 +173,12 @@
     infoStack = [];
     cardReveal = null;
     innerReveal = null;
+  }
+  // Tapping an activation (e.g. 30.3) opens its gate; stopPropagation keeps the
+  // info-zone's cardClick from also toggling the section reveal.
+  function actClick(e, gate) {
+    e.stopPropagation();
+    openInfoFor('Puerta', 'gate', String(gate));
   }
 
   // Desktop: one mouseover per card decides whether the pointer sits on an
@@ -865,50 +872,70 @@
     </div>
 
     <section>
-      <h2>Activaciones</h2>
-      <table>
-        <thead>
-          <tr>
-            <th></th>
-            <th>
-              <span class="side-head" data-tip="Se define en el momento del nacimiento">
-                Personality<span class="side-dot personality" aria-hidden="true"></span>
+      <div
+        class="info-zone"
+        role="presentation"
+        onclick={(e) => cardClick(e, 'activations')}
+        onmouseover={(e) => cardOver(e, 'activations')}
+        onmouseleave={clearReveal}
+      >
+        <h2>
+          Activaciones
+          <span class="dot-h2">
+            {#if cardReveal === 'activations' || infoIsOpen('concept', 'activation')}
+              <span class="dot-host" data-info-cat="Activaciones" data-info-kind="concept" data-info-key="activation">
+                <InfoDot active={infoIsOpen('concept', 'activation')} label="Qué son las activaciones" />
               </span>
-            </th>
-            <th>
-              <span class="side-head" data-tip={'Se define 88° de arco solar antes\ndel nacimiento (~88 días)'}>
-                Design<span class="side-dot design" aria-hidden="true"></span>
-              </span>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {#each (showAllPlanets ? PLANETS : PLANETS.slice(0, 3)) as p}
+            {/if}
+          </span>
+        </h2>
+        <table>
+          <thead>
             <tr>
-              <td class="planet">
-                <span class="psym">{PLANET_SYMBOLS[p]}</span>{PLANET_LABELS[p]}
-              </td>
-              <td>
-                <span class="act" class:hl={actHl(chart.personality[p].gate)}>
-                  {chart.personality[p].gate}.{chart.personality[p].line}
-                </span>
-              </td>
-              <td>
-                <span class="act" class:hl={actHl(chart.design[p].gate)}>
-                  {chart.design[p].gate}.{chart.design[p].line}
-                </span>
-              </td>
+              <th></th>
+              <th data-inner-key="actcol:personality">
+                <span class="side-head" data-tip="Se define en el momento del nacimiento">Personality<span class="side-dot personality" aria-hidden="true"></span></span>{#if innerReveal === 'actcol:personality' || infoIsOpen('activationCol', 'personality')}<span class="dot-side" data-info-cat="Activaciones" data-info-kind="activationCol" data-info-key="personality"><InfoDot active={infoIsOpen('activationCol', 'personality')} label="Qué es Personality" /></span>{/if}
+              </th>
+              <th data-inner-key="actcol:design">
+                <span class="side-head" data-tip={'Se define 88° de arco solar antes\ndel nacimiento (~88 días)'}>Design<span class="side-dot design" aria-hidden="true"></span></span>{#if innerReveal === 'actcol:design' || infoIsOpen('activationCol', 'design')}<span class="dot-side" data-info-cat="Activaciones" data-info-kind="activationCol" data-info-key="design"><InfoDot active={infoIsOpen('activationCol', 'design')} label="Qué es Design" /></span>{/if}
+              </th>
+              <th class="weight-col" data-inner-key="actcol:weight">
+                <span class="side-head" data-tip={'Influencia relativa de la activación\n(el Sol y la Tierra pesan más)'}>Peso</span>{#if innerReveal === 'actcol:weight' || infoIsOpen('activationCol', 'weight')}<span class="dot-side" data-info-cat="Activaciones" data-info-kind="activationCol" data-info-key="weight"><InfoDot active={infoIsOpen('activationCol', 'weight')} label="Qué es el peso" /></span>{/if}
+              </th>
             </tr>
-          {/each}
-        </tbody>
-      </table>
-      <button class="show-more" onclick={() => (showAllPlanets = !showAllPlanets)}>
-        {showAllPlanets ? 'Mostrar menos ▴' : 'Mostrar más ▾'}
-      </button>
+          </thead>
+          <tbody>
+            {#each (showAllPlanets ? PLANETS : PLANETS.slice(0, 3)) as p}
+              {@const w = getActivationWeight(p)}
+              <tr>
+                <td class="planet" data-inner-key={`planet:${p}`}>
+                  <span class="psym">{PLANET_SYMBOLS[p]}</span>{PLANET_LABELS[p]}{#if innerReveal === `planet:${p}` || infoIsOpen('planet', p)}<span class="dot-side" data-info-cat="Planeta" data-info-kind="planet" data-info-key={p}><InfoDot active={infoIsOpen('planet', p)} label={`Más información sobre ${PLANET_LABELS[p]}`} /></span>{/if}
+                </td>
+                <td>
+                  <button class="act act-btn" class:hl={actHl(chart.personality[p].gate)} onclick={(e) => actClick(e, chart.personality[p].gate)}>
+                    {chart.personality[p].gate}.{chart.personality[p].line}
+                  </button>
+                </td>
+                <td>
+                  <button class="act act-btn" class:hl={actHl(chart.design[p].gate)} onclick={(e) => actClick(e, chart.design[p].gate)}>
+                    {chart.design[p].gate}.{chart.design[p].line}
+                  </button>
+                </td>
+                <td class="weight-col">
+                  {#if w}<span class="weight-val" data-tier={w.tier}>{w.label}</span>{/if}
+                </td>
+              </tr>
+            {/each}
+          </tbody>
+        </table>
+        <button class="show-more" onclick={(e) => { e.stopPropagation(); showAllPlanets = !showAllPlanets; }}>
+          {showAllPlanets ? 'Mostrar menos ▴' : 'Mostrar más ▾'}
+        </button>
+      </div>
     </section>
 
     <footer>
-      <small>v{version} · source-available · free for noncommercial use · Built with AI assistance</small>
+      <small>v{version} · código disponible · gratis para uso no comercial · Hecho con asistencia de IA</small>
     </footer>
   {/if}
 </main>
@@ -1411,6 +1438,33 @@
     font-weight: 600;
     border-color: var(--accent);
     background: var(--accent-soft);
+  }
+  /* Activation values are now buttons (tap → open the gate). Reset the native
+     button chrome so they read exactly like the old <span>. */
+  .act-btn {
+    background: none;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+  }
+  /* Pin the Peso column wide enough for its longest label ("medio") so that
+     expanding "Mostrar más" — which first introduces "medio" rows — can't
+     widen it and jitter the whole table. */
+  thead th.weight-col,
+  tbody td.weight-col {
+    min-width: 4.5rem;
+  }
+  /* "Peso" column: deliberately discreet (smaller, muted), with a faint tier
+     gradient so the eye lands on the heavy activations (Sun/Earth) first. */
+  .weight-val {
+    font-size: 0.78rem;
+    color: #5a5a62;
+  }
+  .weight-val[data-tier='high'] {
+    color: #9a9aa2;
+  }
+  .weight-val[data-tier='mid'] {
+    color: #76767e;
   }
 
   .psym {

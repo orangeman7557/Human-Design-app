@@ -19,7 +19,29 @@ lives in [`BACKLOG.md`](./BACKLOG.md).
 
 Last updated: 2026-06-18.
 
-> Latest change (2026-06-18): **Drawers anidados + índice completo de
+> Latest change (2026-06-18): **Fase 6.E construida y verificada (escritorio
+> + móvil); revisión de textos por el autor pendiente.** Info de la tabla
+> **Activaciones**, mismo patrón: «i» de concepto en el título; «i» en las
+> cabeceras **Personality / Design** y en la nueva cabecera **Peso**; «i» en
+> cada **planeta** (13 fichas propias); y cada **activación es un botón que
+> abre el drawer de su puerta** (reusa 6.D) — así se accede a cada activación
+> sin un «i» por celda. **Peso por planeta:** última columna **«Peso»**
+> discreta (más pequeña, atenuada, con leve gradiente por nivel) + tooltip e
+> «i» en su cabecera. Los pesos son **provisionales (pendientes de tu
+> revisión)**: lo único firme en HD es **Sol+Tierra ≈ 70 %**, así que los
+> niveles (alto = Sol/Tierra, medio = Nodos, bajo = el resto) son una
+> ordenación razonable, no una tabla oficial — el «i»/tooltip lo aclaran. La
+> columna Peso va fijada con `min-width` para no descuadrar la tabla al
+> desplegar «Mostrar más». Contenido nuevo en `es.js` (`concept.activation`,
+> `activationCol`, `planet`, `promptLabels.planet`, `activationWeight`) +
+> `prompts.js`; helper `getActivationWeight`. Además: **footer traducido al
+> español** (estaba en inglés — bug) en home y carta. Y **6.F replanteada**:
+> en lugar de un disclaimer suelto, un enlace **«Acerca de»** en el footer
+> que abrirá una ventana con los disclaimers, el «Hecho con asistencia de IA»
+> y quizás autor / donar / reportar bugs (anotado en BACKLOG). Falta el
+> commit a main de este lote. 0.2.0.
+>
+> Previo (2026-06-18): **Drawers anidados + índice completo de
 > puertas/canales + enlaces en el texto (sobre 6.C/6.D); verificado en
 > escritorio y móvil; revisión de textos por el autor aún pendiente.**
 > (1) **Logo de Claude corregido** a la ráfaga real (antes era la «A» de
@@ -403,9 +425,11 @@ Subtareas completadas:
   items live in BACKLOG ("Possible improvements").
 - **Phase 6 — AI handoff + element info** (plan validated 2026-06-13,
   panel UX approved 2026-06-15 — mockup v3; full detail in BACKLOG). 6.A
-  done 2026-06-16, 6.B–6.D done 2026-06-17 (text + UX review by the author
-  still pending); next: 6.E (activations info — may stay a possible
-  improvement) then 6.F (legal disclaimer + docs close, bump to 0.2.0).
+  done 2026-06-16, 6.B–6.D done 2026-06-17 and 6.E done 2026-06-18 (text +
+  UX review by the author still pending across 6.B–6.E); next and last: 6.F
+  — now an **"Acerca de" footer modal** (disclaimers + "Hecho con asistencia
+  de IA" + maybe author/donate/report-bug), not a bare disclaimer; bumps to
+  0.2.0.
   Lightweight, no-API AI integration: from any element, build a
   ready-made, chart-personalised prompt the user takes to **their own** AI
   — the AI never runs inside the app. Plus a small core of original in-app
@@ -443,8 +467,11 @@ Subtareas completadas:
     colgantes" titles; built 2026-06-17, text/UX review pending; the "list
     ALL gates/channels" open problem **resolved 2026-06-18** via nested
     drawers + a clickable index in the concept panels + in-text links) →
-    6.E activations info (general + per
-    element; may stay a possible improvement) → 6.F docs close.
+    6.E ✅ activations info (concept + Personality/Design/Peso headers +
+    per-planet "i" + clickable activations + provisional per-planet weight
+    column; built 2026-06-18, text/UX review pending) → 6.F "Acerca de"
+    footer modal (disclaimers + AI-assistance note + maybe author/donate/
+    report-bug) → 0.2.0.
 - **Phase 7 — Composite chart.** Two saved charts rendered as a combined
   bodygraph (visual overlay distinguishing each person).
 - **Phase 8 — Transits.** View live transits over a saved chart.
