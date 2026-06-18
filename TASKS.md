@@ -21,14 +21,18 @@ Last updated: 2026-06-18.
 
 > Latest change (2026-06-18): **Fase 6.F construida (ventana «Acerca de») +
 > ajustes; para cerrar la fase solo queda tu revisión de textos.** (1)
-> **«Acerca de»**: el footer pasa a `v{version} · Acerca de`; el enlace abre
-> una **ventana modal** (`src/lib/components/About.svelte`, usada en home y
-> carta) con los disclaimers (proyecto independiente / no afiliado a Jovian
-> Archive, marcas usadas de forma descriptiva, contenido divulgativo que **no
-> sustituye asesoramiento profesional**), el **«Hecho con asistencia de IA»**
-> trasladado ahí, el autor (orangeman7557), la licencia, y un enlace
-> **«Reportar un fallo»** (issues del repo en GitHub). Donar queda para más
-> adelante. *Bug corregido al construirlo:* el `footer` tenía `opacity: 0.6`,
+> **«acerca de»**: el footer queda como `v{version} · source-available · free
+> for noncommercial use · acerca de` (discreto, mismo tamaño/color de antes,
+> «acerca de» en minúsculas y subrayado; los términos de licencia se quedan en
+> inglés como tecnicismos). El enlace abre una **ventana modal ligera**
+> (`src/lib/components/About.svelte`, home y carta), sin narrativa: *Creado por
+> orangeman7557*, *Hecho con asistencia de IA*, *Proyecto independiente ·
+> source-available (PolyForm Noncommercial 1.0.0)*, *Free for noncommercial
+> use*, y disclaimers mínimos (sin afiliación, marcas de sus titulares,
+> contenido divulgativo que **no sustituye asesoramiento profesional** — más
+> por el mercado de EE. UU.). **«Reportar un fallo» desactivado** y, junto con
+> **donar / invitar a un café**, queda pendiente en BACKLOG. *Bug corregido al
+> construirlo:* el `footer` tenía `opacity: 0.6`,
 > que creaba contexto de apilamiento y pintaba el modal semitransparente y
 > atrapado bajo la página → ahora el footer se atenúa por **color**, no por
 > opacity (en home y carta). (2) **Activaciones por defecto: 5 en vez de 3**,

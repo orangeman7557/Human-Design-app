@@ -572,17 +572,23 @@ chiefly in the IA section:
   mid = Nodes, low = the rest) are a defensible ordering, not an official
   table — the "i"/tooltip say so. The Peso column is pinned (`min-width`) so
   "medio" rows can't jitter the table on expand.
-- 6.F — **Built 2026-06-18: footer "Acerca de" modal** (`About.svelte`, used on
-  home + chart). The footer is now `v{version} · Acerca de`; the link opens a
-  centered modal with the **disclaimers** (independent / not affiliated with
-  Jovian Archive, trademarks used descriptively, content is informational and
-  not professional advice), the **"Hecho con asistencia de IA"** line moved
-  here, **author** (orangeman7557), **license**, and a **"Reportar un fallo"**
-  link to the repo issues. Donate deferred ("ya lo veremos" — no link yet).
-  Bug fixed while building: the `footer` had `opacity: 0.6`, which makes it a
-  stacking context and rendered the fixed modal **semi-transparent and trapped
-  below the page** — switched the footer to dim by **colour**, not opacity (both
-  pages). The English footer text was also a bug (fixed 2026-06-18, Spanish).
+- 6.F — **Built 2026-06-18: footer "acerca de" modal** (`About.svelte`, used on
+  home + chart). The footer reads `v{version} · source-available · free for
+  noncommercial use · acerca de` — kept discreet (small, dim by colour not
+  opacity; the licence terms stay in English as terms of art, only "acerca de"
+  is Spanish, lowercase, underlined). The link opens a **light** modal (a few
+  lines, no narrative, refined 2026-06-18 per the author): *Creado por
+  orangeman7557*, *Hecho con asistencia de IA*, *Proyecto independiente ·
+  source-available (PolyForm Noncommercial 1.0.0)*, *Free for noncommercial
+  use*, and minimal **disclaimers** (no affiliation, trademarks belong to their
+  owners, informational content that's not professional advice — kept mainly
+  for the stricter US market). Bug fixed while building: the `footer` had
+  `opacity: 0.6`, which makes it a stacking context and rendered the fixed modal
+  **semi-transparent and trapped below the page** — switched the footer to dim
+  by **colour**, not opacity (both pages).
+  - **Deferred (in the "acerca de" modal):** a working **"reportar un fallo"**
+    action (e.g. link to the repo issues) and a **"donar / invitar a un café"**
+    option. Disabled for now (no links shown); design and wire when ready.
   **Phase 6 is functionally complete**; only the author's text review (6.B–6.E)
   and an optional **bump to 0.2.0** remain (version still 0.1.1).
 

@@ -1,11 +1,9 @@
-<!-- AI-authored — "Acerca de" footer link + info modal (Phase 6.F). -->
-<!-- A subtle footer link opens a centered modal holding the disclaimers, the -->
-<!-- "made with AI assistance" note (moved here from the footer), author and -->
-<!-- license, and a report-a-bug link. Contents will grow (donate, etc.). -->
+<!-- AI-authored — "acerca de" footer link + light info modal (Phase 6.F). -->
+<!-- A discreet, underlined footer link opens a compact modal: a few credit / -->
+<!-- license lines plus minimal disclaimers (kept mainly for the US market). -->
+<!-- "Reportar un fallo" and "donar / invitar a un café" are deferred (BACKLOG). -->
 <script>
   import { fade, fly } from 'svelte/transition';
-
-  const REPO = 'https://github.com/orangeman7557/human-design-chart-app';
 
   let open = $state(false);
 
@@ -16,44 +14,33 @@
 
 <svelte:window {onkeydown} />
 
-<button class="link" type="button" onclick={() => (open = true)}>Acerca de</button>
+<button class="link" type="button" onclick={() => (open = true)}>acerca de</button>
 
 {#if open}
   <div class="scrim" onclick={() => (open = false)} role="presentation" transition:fade={{ duration: 120 }}></div>
   <div class="modal" role="dialog" aria-modal="true" aria-label="Acerca de" transition:fly={{ y: 12, duration: 180 }}>
     <header>
-      <h2>Acerca de</h2>
+      <h2>acerca de</h2>
       <button class="close" type="button" onclick={() => (open = false)} aria-label="Cerrar">✕</button>
     </header>
 
-    <div class="body">
-      <p>
-        Calculadora de cartas de <strong>Diseño Humano</strong>. Introduces tus
-        datos de nacimiento y la app calcula tu carta completa en tu propio
-        dispositivo: tus datos no se envían a ningún servidor.
-      </p>
-      <p>
-        Proyecto <strong>independiente</strong>, sin afiliación ni respaldo de
-        Jovian Archive ni de ninguna organización oficial de Diseño Humano.
-        «Human Design», «BodyGraph» y otros nombres son marcas de sus
-        respectivos titulares; aquí se usan de forma meramente descriptiva.
-      </p>
-      <p>
-        Su contenido es <strong>divulgativo y orientado al autoconocimiento</strong>;
-        no sustituye el asesoramiento de un profesional (médico, psicológico,
-        legal o financiero).
-      </p>
-      <div class="meta">
-        <span>Hecho con asistencia de IA.</span>
-        <span>Autor: orangeman7557.</span>
-        <span>Código disponible para uso no comercial (PolyForm Noncommercial 1.0.0).</span>
-      </div>
-      <a class="report" href={`${REPO}/issues`} target="_blank" rel="noopener">Reportar un fallo</a>
+    <div class="facts">
+      <p>Creado por <strong>orangeman7557</strong></p>
+      <p>Hecho con asistencia de IA</p>
+      <p>Proyecto independiente · source-available (PolyForm Noncommercial 1.0.0)</p>
+      <p>Free for noncommercial use</p>
     </div>
+
+    <p class="fine">
+      Sin afiliación a ninguna organización. Cualquier marca es propiedad de sus
+      respectivos titulares. Contenido divulgativo que no sustituye al
+      asesoramiento profesional.
+    </p>
   </div>
 {/if}
 
 <style>
+  /* The footer sets the size/colour; the link just adds a discreet underline. */
   .link {
     background: none;
     border: none;
@@ -63,12 +50,10 @@
     color: inherit;
     cursor: pointer;
     text-decoration: underline;
-    text-decoration-color: #555;
     text-underline-offset: 2px;
   }
   .link:hover {
-    color: var(--text);
-    text-decoration-color: var(--accent);
+    color: var(--text-muted);
   }
   .scrim {
     position: fixed;
@@ -82,14 +67,14 @@
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    width: min(440px, calc(100vw - 2rem));
+    width: min(420px, calc(100vw - 2rem));
     max-height: 85vh;
     overflow-y: auto;
     background: var(--surface);
     color: var(--text);
     border: 1px solid var(--border);
     border-radius: 14px;
-    padding: 1.1rem 1.3rem 1.4rem;
+    padding: 1rem 1.3rem 1.3rem;
     text-align: left;
   }
   header {
@@ -99,7 +84,7 @@
     gap: 0.5rem;
   }
   h2 {
-    font-size: 1.1rem;
+    font-size: 1rem;
     font-weight: 500;
     margin: 0;
   }
@@ -115,35 +100,25 @@
   .close:hover {
     color: var(--text);
   }
-  .body p {
-    font-size: 0.9rem;
-    line-height: 1.6;
-    color: #c4c4ca;
-    margin: 0.9rem 0 0;
+  .facts {
+    margin-top: 0.9rem;
   }
-  .body :global(strong) {
+  .facts p {
+    font-size: 0.88rem;
+    line-height: 1.5;
+    color: #c4c4ca;
+    margin: 0.35rem 0 0;
+  }
+  .facts :global(strong) {
     color: var(--text);
     font-weight: 600;
   }
-  .meta {
-    display: flex;
-    flex-direction: column;
-    gap: 0.2rem;
-    margin-top: 1.1rem;
-    padding-top: 0.9rem;
+  .fine {
+    margin: 1rem 0 0;
+    padding-top: 0.85rem;
     border-top: 1px solid var(--border);
-    font-size: 0.78rem;
-    line-height: 1.5;
+    font-size: 0.76rem;
+    line-height: 1.55;
     color: #82828a;
-  }
-  .report {
-    display: inline-block;
-    margin-top: 0.9rem;
-    font-size: 0.82rem;
-    color: var(--accent);
-    text-decoration: none;
-  }
-  .report:hover {
-    text-decoration: underline;
   }
 </style>

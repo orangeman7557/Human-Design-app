@@ -937,7 +937,7 @@
     </section>
 
     <footer>
-      <small>v{version} · </small><About />
+      v{version} · source-available · free for noncommercial use · <About />
     </footer>
   {/if}
 </main>
@@ -1263,10 +1263,11 @@
   footer {
     margin-top: 4rem;
     text-align: center;
+    font-size: 0.8rem;
     /* Dim via colour, not opacity: opacity<1 makes the footer a stacking
        context and would render the About modal (a descendant) semi-transparent
-       and trapped below the page. */
-    color: #6a6a70;
+       and trapped below the page. This colour matches the old muted-at-0.6 look. */
+    color: #64646a;
   }
   .cc {
     font-family: inherit;
