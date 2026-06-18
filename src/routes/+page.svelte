@@ -12,6 +12,7 @@
   // Injected by Vite's `define` from package.json (see vite.config.js).
   const version = __APP_VERSION__;
   import CityAutocomplete from '$lib/components/CityAutocomplete.svelte';
+  import About from '$lib/components/About.svelte';
   import {
     listCharts,
     renameChart,
@@ -545,7 +546,7 @@
   </section>
 
   <footer>
-    <small>v{version} · código disponible · gratis para uso no comercial · Hecho con asistencia de IA</small>
+    <small>v{version} · </small><About />
   </footer>
 </main>
 
@@ -1000,7 +1001,9 @@
   footer {
     margin-top: 4rem;
     text-align: center;
-    color: var(--text-muted);
-    opacity: 0.6;
+    /* Dim via colour, not opacity: opacity<1 makes the footer a stacking
+       context and would render the About modal (a descendant) semi-transparent
+       and trapped below the page. */
+    color: #6a6a70;
   }
 </style>

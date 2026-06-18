@@ -19,7 +19,30 @@ lives in [`BACKLOG.md`](./BACKLOG.md).
 
 Last updated: 2026-06-18.
 
-> Latest change (2026-06-18): **Fase 6.E construida y verificada (escritorio
+> Latest change (2026-06-18): **Fase 6.F construida (ventana «Acerca de») +
+> ajustes; para cerrar la fase solo queda tu revisión de textos.** (1)
+> **«Acerca de»**: el footer pasa a `v{version} · Acerca de`; el enlace abre
+> una **ventana modal** (`src/lib/components/About.svelte`, usada en home y
+> carta) con los disclaimers (proyecto independiente / no afiliado a Jovian
+> Archive, marcas usadas de forma descriptiva, contenido divulgativo que **no
+> sustituye asesoramiento profesional**), el **«Hecho con asistencia de IA»**
+> trasladado ahí, el autor (orangeman7557), la licencia, y un enlace
+> **«Reportar un fallo»** (issues del repo en GitHub). Donar queda para más
+> adelante. *Bug corregido al construirlo:* el `footer` tenía `opacity: 0.6`,
+> que creaba contexto de apilamiento y pintaba el modal semitransparente y
+> atrapado bajo la página → ahora el footer se atenúa por **color**, no por
+> opacity (en home y carta). (2) **Activaciones por defecto: 5 en vez de 3**,
+> para que se vean los **Nodos** sin desplegar. (3) **Pasada a los textos**:
+> suavizadas las referencias al **I Ching en puertas y canales** (el hexagrama
+> sigue apareciendo, pero como apunte —«le corresponde el hexagrama N»— y no
+> como «raíz / secuencia del rey Wen / dominio público / punto de partida»), y
+> reducido el relleno de la info generada; el resto del núcleo se revisó y
+> está correcto. **Pendiente del autor:** la revisión a fondo de todos los
+> textos (6.B–6.E) y, si procede, el **bump a 0.2.0** (la versión sigue en
+> 0.1.1; no la he subido porque marca «Fase 6 estable»). Falta el commit a
+> main de este lote.
+>
+> Previo (2026-06-18): **Fase 6.E construida y verificada (escritorio
 > + móvil); revisión de textos por el autor pendiente.** Info de la tabla
 > **Activaciones**, mismo patrón: «i» de concepto en el título; «i» en las
 > cabeceras **Personality / Design** y en la nueva cabecera **Peso**; «i» en
@@ -425,11 +448,10 @@ Subtareas completadas:
   items live in BACKLOG ("Possible improvements").
 - **Phase 6 — AI handoff + element info** (plan validated 2026-06-13,
   panel UX approved 2026-06-15 — mockup v3; full detail in BACKLOG). 6.A
-  done 2026-06-16, 6.B–6.D done 2026-06-17 and 6.E done 2026-06-18 (text +
-  UX review by the author still pending across 6.B–6.E); next and last: 6.F
-  — now an **"Acerca de" footer modal** (disclaimers + "Hecho con asistencia
-  de IA" + maybe author/donate/report-bug), not a bare disclaimer; bumps to
-  0.2.0.
+  done 2026-06-16, 6.B–6.E done 2026-06-17/18 and 6.F (the "Acerca de" footer
+  modal) built 2026-06-18. **Phase 6 is functionally complete**; only the
+  author's detailed **text review (6.B–6.E)** and an optional **version bump
+  to 0.2.0** remain before declaring it closed (version still 0.1.1).
   Lightweight, no-API AI integration: from any element, build a
   ready-made, chart-personalised prompt the user takes to **their own** AI
   — the AI never runs inside the app. Plus a small core of original in-app
@@ -469,9 +491,10 @@ Subtareas completadas:
     drawers + a clickable index in the concept panels + in-text links) →
     6.E ✅ activations info (concept + Personality/Design/Peso headers +
     per-planet "i" + clickable activations + provisional per-planet weight
-    column; built 2026-06-18, text/UX review pending) → 6.F "Acerca de"
-    footer modal (disclaimers + AI-assistance note + maybe author/donate/
-    report-bug) → 0.2.0.
+    column; built 2026-06-18, text/UX review pending) → 6.F ✅ "Acerca de"
+    footer modal (`About.svelte`: disclaimers + AI-assistance note + author +
+    license + report-a-bug; built 2026-06-18). Phase 6 functionally complete;
+    pending only the author's text review + an optional bump to 0.2.0.
 - **Phase 7 — Composite chart.** Two saved charts rendered as a combined
   bodygraph (visual overlay distinguishing each person).
 - **Phase 8 — Transits.** View live transits over a saved chart.

@@ -10,6 +10,7 @@
   import Bodygraph from '$lib/components/Bodygraph.svelte';
   import ElementInfo from '$lib/components/ElementInfo.svelte';
   import InfoDot from '$lib/components/InfoDot.svelte';
+  import About from '$lib/components/About.svelte';
   import { getElementInfo, getProfileInfo, getGateInfo, getChannelInfo, getConceptInfo, getActivationWeight } from '$lib/hd/content/index.js';
   import { buildPrompts } from '$lib/hd/prompts.js';
 
@@ -104,7 +105,8 @@
   /** @type {string | null} */
   let saveError = $state(null);
 
-  // Activations table shows Sun/Earth/Moon by default (first 3 of PLANETS).
+  // Activations table shows the first 5 bodies by default (Sun/Earth/Moon +
+  // both Nodes), so the nodes are visible without expanding.
   let showAllPlanets = $state(false);
 
   // Phase 6.A/6.B — element info panels. The info "i" appears on hover
@@ -905,7 +907,7 @@
             </tr>
           </thead>
           <tbody>
-            {#each (showAllPlanets ? PLANETS : PLANETS.slice(0, 3)) as p}
+            {#each (showAllPlanets ? PLANETS : PLANETS.slice(0, 5)) as p}
               {@const w = getActivationWeight(p)}
               <tr>
                 <td class="planet" data-inner-key={`planet:${p}`}>
@@ -935,7 +937,7 @@
     </section>
 
     <footer>
-      <small>v{version} · código disponible · gratis para uso no comercial · Hecho con asistencia de IA</small>
+      <small>v{version} · </small><About />
     </footer>
   {/if}
 </main>
@@ -1261,8 +1263,10 @@
   footer {
     margin-top: 4rem;
     text-align: center;
-    color: var(--text-muted);
-    opacity: 0.6;
+    /* Dim via colour, not opacity: opacity<1 makes the footer a stacking
+       context and would render the About modal (a descendant) semi-transparent
+       and trapped below the page. */
+    color: #6a6a70;
   }
   .cc {
     font-family: inherit;

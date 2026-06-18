@@ -117,11 +117,11 @@ export function getGateInfo(gate, lang = DEFAULT_LANG) {
   return {
     title: `Puerta ${g}`,
     paragraphs: [
-      `La puerta ${g} pertenece al **[centro ${labels[center] ?? center}](center:${center})**: su energía se expresa a través de la función de ese centro.`,
+      `La puerta ${g} se sitúa en el **[centro ${labels[center] ?? center}](center:${center})** y comparte su función dentro del bodygraph.`,
       name
-        ? `Su raíz está en el hexagrama ${g} del I Ching, **«${name}»** (secuencia del rey Wen), el punto de partida clásico de su significado.`
-        : `Su raíz está en el hexagrama ${g} del I Ching (secuencia del rey Wen).`,
-      'Para una lectura detallada de esta puerta, usa el prompt de abajo con tu IA.'
+        ? `Le corresponde el hexagrama ${g} del I Ching, «${name}», que da una primera idea de su tono.`
+        : `Le corresponde el hexagrama ${g} del I Ching.`,
+      'Para una lectura en profundidad, apóyate en el prompt de abajo con tu IA.'
     ]
   };
 }
@@ -143,9 +143,9 @@ export function getChannelInfo(pair, lang = DEFAULT_LANG) {
   return {
     title: `Canal ${a}-${b}`,
     paragraphs: [
-      `El canal ${a}-${b} conecta el **[centro ${labels[ca] ?? ca}](center:${ca})** ([puerta ${a}](gate:${a})) con el **[centro ${labels[cb] ?? cb}](center:${cb})** ([puerta ${b}](gate:${b})). Con sus dos puertas activas, el canal queda completo y define ambos centros.`,
-      `Une las puertas [${a}](gate:${a})${na ? ` —hexagrama «${na}»—` : ''} y [${b}](gate:${b})${nb ? ` —hexagrama «${nb}»—` : ''} del I Ching. Tenerlo completo aporta una corriente de energía constante y fiable entre esos dos centros.`,
-      'Para una lectura detallada de este canal, usa el prompt de abajo con tu IA.'
+      `El canal ${a}-${b} conecta el **[centro ${labels[ca] ?? ca}](center:${ca})** ([puerta ${a}](gate:${a})) con el **[centro ${labels[cb] ?? cb}](center:${cb})** ([puerta ${b}](gate:${b})). Con sus dos puertas activas queda completo, define ambos centros y crea una corriente de energía estable entre ellos.`,
+      `Reúne los temas de sus dos puertas${na && nb ? ` —en el I Ching, los hexagramas «${na}» y «${nb}»—` : ''}, que conviene leer juntos para captar su carácter.`,
+      'Para una lectura detallada, apóyate en el prompt de abajo con tu IA.'
     ]
   };
 }

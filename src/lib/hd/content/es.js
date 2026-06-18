@@ -80,7 +80,7 @@ export default {
       paragraphs: [
         'Las **puertas** son las 64 activaciones posibles del bodygraph, una por cada hexagrama del I Ching. Cada puerta vive en un centro concreto y aporta un matiz específico de energía o carácter; al nacer, tus planetas «encienden» un conjunto de ellas.',
         'Una puerta activa que no encuentra a su pareja —la del otro extremo de su canal— queda **colgante**: aporta su tema pero busca completarse, a menudo a través de otra persona que tenga la puerta complementaria. Cuando las dos puertas de un canal están activas, el canal se forma y define sus dos centros.',
-        'Cada puerta hunde su raíz en un hexagrama del I Ching clásico (secuencia del rey Wen), de dominio público. Ese hexagrama es el punto de partida de su significado; para profundizar en una puerta concreta, su panel ofrece un prompt listo para tu IA.'
+        'Para profundizar en una puerta concreta —su matiz, su hexagrama del I Ching y cómo se vive— su panel ofrece un prompt listo para tu IA.'
       ]
     },
     activation: {

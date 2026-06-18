@@ -572,15 +572,19 @@ chiefly in the IA section:
   mid = Nodes, low = the rest) are a defensible ordering, not an official
   table — the "i"/tooltip say so. The Peso column is pinned (`min-width`) so
   "medio" rows can't jitter the table on expand.
-- 6.F — **Reframed 2026-06-18 (author): footer "Acerca de" modal instead of a
-  bare disclaimer.** The footer shows an **"Acerca de"** link (active-language
-  label) that opens an info window holding: the **legal disclaimers**
-  (non-affiliation, not legal advice), the **"Hecho con asistencia de IA"**
-  line moved here, and likely **author**, a **donate** option, a **report a
-  bug** link, etc. (exact contents TBD — "ya lo veremos"). Could reuse the
-  `ElementInfo` drawer/scrim. Until then the footer just carries the version +
-  short license line (now in Spanish — the English footer was a bug, fixed
-  2026-06-18). Still the last sub-phase; bump to 0.2.0 when it lands.
+- 6.F — **Built 2026-06-18: footer "Acerca de" modal** (`About.svelte`, used on
+  home + chart). The footer is now `v{version} · Acerca de`; the link opens a
+  centered modal with the **disclaimers** (independent / not affiliated with
+  Jovian Archive, trademarks used descriptively, content is informational and
+  not professional advice), the **"Hecho con asistencia de IA"** line moved
+  here, **author** (orangeman7557), **license**, and a **"Reportar un fallo"**
+  link to the repo issues. Donate deferred ("ya lo veremos" — no link yet).
+  Bug fixed while building: the `footer` had `opacity: 0.6`, which makes it a
+  stacking context and rendered the fixed modal **semi-transparent and trapped
+  below the page** — switched the footer to dim by **colour**, not opacity (both
+  pages). The English footer text was also a bug (fixed 2026-06-18, Spanish).
+  **Phase 6 is functionally complete**; only the author's text review (6.B–6.E)
+  and an optional **bump to 0.2.0** remain (version still 0.1.1).
 
 Open question for 6.C: exact list of AIs offered as deep links. Confirmed
 order: Claude, ChatGPT, Perplexity (Gemini has no reliable URL prefill →
