@@ -937,7 +937,7 @@
     </section>
 
     <footer>
-      v{version} · source-available · gratis para uso no comercial · <About />
+      v{version} · source-available · gratis para uso no comercial · <About onElement={(kind, key) => openInfoFor(CATEGORY_BY_KIND[kind] ?? '', kind, key)} />
     </footer>
   {/if}
 </main>

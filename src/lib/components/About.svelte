@@ -5,7 +5,20 @@
 <script>
   import { fade, fly } from 'svelte/transition';
 
+  /**
+   * @type {{ onElement?: (kind: string, key: string) => void }}
+   * onElement (chart page only) opens an element's drawer — used by the
+   * "Manifestor" link. Where it's not provided (home page, no drawer system)
+   * the word renders as plain text.
+   */
+  let { onElement } = $props();
+
   let open = $state(false);
+
+  function openElement(kind, key) {
+    open = false;
+    onElement?.(kind, key);
+  }
 
   function onkeydown(e) {
     if (e.key === 'Escape' && open) open = false;
@@ -25,16 +38,20 @@
     </header>
 
     <div class="facts">
-      <p>Creado por <strong>orangeman7557</strong></p>
-      <p>Hecho con asistencia de IA</p>
-      <p>Proyecto independiente · source-available (PolyForm Noncommercial 1.0.0)</p>
-      <p>Gratis para uso no comercial</p>
+      <p>Proyecto source-available (PolyForm Noncommercial 1.0.0), gratis para uso no comercial</p>
+      <p>
+        Creado por orangeman7557 con asistencia de IA (mucha).<br />
+        Creado sin ánimo de lucro ni ánimo de nada, creado simplemente porque me
+        dio la gana, como buen {#if onElement}<button type="button" class="tlink" onclick={() => openElement('type', 'manifestor')}>Manifestor</button>{:else}Manifestor{/if} que soy :)
+      </p>
+      <p>Ojalá que te sea útil. ¡Que vivas bien y feliz!</p>
     </div>
 
     <p class="fine">
-      Sin afiliación a ninguna organización. Cualquier marca es propiedad de sus
-      respectivos titulares. Contenido divulgativo que no sustituye al
-      asesoramiento profesional.
+      Proyecto independiente sin afiliación a ninguna organización. Cualquier
+      marca es propiedad de sus respectivos titulares. Todo el contenido
+      presentado es de carácter divulgativo y no sustituye al asesoramiento
+      profesional.
     </p>
   </div>
 {/if}
@@ -109,9 +126,22 @@
     color: #c4c4ca;
     margin: 0.35rem 0 0;
   }
-  .facts :global(strong) {
+  /* "Manifestor" link → opens the type drawer (chart page only). Subtle
+     underline, like the in-text links elsewhere. */
+  .tlink {
+    background: none;
+    border: none;
+    padding: 0;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+    text-decoration: underline;
+    text-decoration-color: #6a6a72;
+    text-underline-offset: 2px;
+  }
+  .tlink:hover {
     color: var(--text);
-    font-weight: 600;
+    text-decoration-color: var(--accent);
   }
   .fine {
     margin: 1rem 0 0;
