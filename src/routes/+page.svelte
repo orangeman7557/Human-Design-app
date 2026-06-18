@@ -68,6 +68,24 @@
     };
   }
 
+  // From the About modal's "Manifestor" link (no drawer system on the home
+  // page): open the author's own chart — a Manifestor — titled orangeman7557,
+  // and ask the chart page to open the matching element drawer on arrival.
+  function openAuthorChartWithInfo(kind, key) {
+    const birth = {
+      name: 'orangeman7557',
+      date: '1984-03-13',
+      time: '09:30',
+      timezone: 'Europe/Madrid',
+      latitude: 40.4168,
+      longitude: -3.7038,
+      placeLabel: 'Madrid, Comunidad de Madrid, España'
+    };
+    sessionStorage.setItem('birthData', JSON.stringify(birth));
+    sessionStorage.setItem('hd:openInfo', `${kind}:${key}`);
+    goto('/chart');
+  }
+
   let submitting = $state(false);
   /** @type {string | null} */
   let error = $state(null);
@@ -546,7 +564,7 @@
   </section>
 
   <footer>
-    v{version} · source-available · gratis para uso no comercial · <About />
+    v{version} · source-available · gratis para uso no comercial · <About onElement={openAuthorChartWithInfo} />
   </footer>
 </main>
 

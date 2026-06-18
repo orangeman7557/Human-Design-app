@@ -38,11 +38,11 @@
     </header>
 
     <div class="facts">
-      <p>Proyecto source-available (PolyForm Noncommercial 1.0.0), gratis para uso no comercial</p>
+      <p>Proyecto source-available (PolyForm Noncommercial 1.0.0), gratis para uso no comercial.</p>
       <p>
-        Creado por orangeman7557 con asistencia de IA (mucha).<br />
-        Creado sin ánimo de lucro ni ánimo de nada, creado simplemente porque me
-        dio la gana, como buen {#if onElement}<button type="button" class="tlink" onclick={() => openElement('type', 'manifestor')}>Manifestor</button>{:else}Manifestor{/if} que soy :)
+        Creado por orangeman7557 con asistencia de IA (mucha). Creado sin ánimo
+        de lucro ni ánimo de nada, lo creé porque me dio la gana, como buen
+        {#if onElement}<button type="button" class="tlink" onclick={() => openElement('type', 'manifestor')}>Manifestor</button>{:else}Manifestor{/if} que soy :)
       </p>
       <p>Ojalá que te sea útil. ¡Que vivas bien y feliz!</p>
     </div>

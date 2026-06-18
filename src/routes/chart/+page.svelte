@@ -524,6 +524,17 @@
       const birth = JSON.parse(raw);
       birthData = birth;
       chart = await computeChart(birth);
+      // A link elsewhere (e.g. the "Manifestor" word in the About modal on the
+      // home page) can ask us to open an element drawer on arrival.
+      const openInfo = sessionStorage.getItem('hd:openInfo');
+      if (openInfo) {
+        sessionStorage.removeItem('hd:openInfo');
+        const i = openInfo.indexOf(':');
+        if (i > 0) {
+          const kind = openInfo.slice(0, i);
+          openInfoFor(CATEGORY_BY_KIND[kind] ?? '', kind, openInfo.slice(i + 1));
+        }
+      }
     } catch (e) {
       console.error(e);
       error = e instanceof Error ? e.message : String(e);
