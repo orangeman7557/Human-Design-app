@@ -20,7 +20,7 @@
   <div class="scrim" onclick={() => (open = false)} role="presentation" transition:fade={{ duration: 120 }}></div>
   <div class="modal" role="dialog" aria-modal="true" aria-label="Acerca de" transition:fly={{ y: 12, duration: 180 }}>
     <header>
-      <h2>acerca de</h2>
+      <h2>Acerca de</h2>
       <button class="close" type="button" onclick={() => (open = false)} aria-label="Cerrar">✕</button>
     </header>
 
@@ -28,7 +28,7 @@
       <p>Creado por <strong>orangeman7557</strong></p>
       <p>Hecho con asistencia de IA</p>
       <p>Proyecto independiente · source-available (PolyForm Noncommercial 1.0.0)</p>
-      <p>Free for noncommercial use</p>
+      <p>Gratis para uso no comercial</p>
     </div>
 
     <p class="fine">

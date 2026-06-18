@@ -546,7 +546,7 @@
   </section>
 
   <footer>
-    v{version} · source-available · free for noncommercial use · <About />
+    v{version} · source-available · gratis para uso no comercial · <About />
   </footer>
 </main>
 
