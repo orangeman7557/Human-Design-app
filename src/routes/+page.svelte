@@ -564,7 +564,7 @@
   </section>
 
   <footer>
-    v{version} · source-available · gratis para uso no comercial · <About onElement={openAuthorChartWithInfo} />
+    <About version={version} onElement={openAuthorChartWithInfo} />
   </footer>
 </main>
 

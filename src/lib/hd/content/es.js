@@ -88,6 +88,7 @@ export default {
       paragraphs: [
         'Las **activaciones** son las posiciones de los planetas en tu nacimiento, traducidas a puertas y líneas del Diseño Humano. Cada cuerpo «enciende» una puerta concreta (y su línea), y el conjunto de todas ellas es lo que construye tu carta: centros, canales, tipo, autoridad y perfil.',
         'Se calculan en **dos momentos**, de ahí las dos columnas: *Personality* usa la posición en el instante del nacimiento (lo consciente); *Design* usa la de unos 88 días antes —88° de arco solar— (lo inconsciente). Por eso tienes dos activaciones por planeta.',
+        'Cada activación se escribe como **puerta.línea**: la puerta (de la 1 a la 64) y, dentro de ella, la línea (de la 1 a la 6). Por ejemplo, un **30.3 en el Sol** quiere decir que el Sol activa la **puerta 30 en su línea 3** —el tema de la puerta 30 leído con el matiz que aporta la línea 3—. Es la unidad básica con la que se construye toda la carta.',
         'No todas pesan igual: el **Sol y la Tierra** concentran la mayor parte del significado y el resto matiza; la columna *Peso* resume esa influencia relativa. Toca una activación para abrir la puerta correspondiente.'
       ]
     }

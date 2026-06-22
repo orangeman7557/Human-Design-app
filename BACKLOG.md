@@ -263,6 +263,14 @@ corrected).
   commonly attributed relative weight of each activation (e.g. the Sun
   is said to weigh far more than any other body). Research the usual
   percentages before designing the UI.
+- **Gate & channel info text is too thin (Phase 6.D follow-up).** The
+  generated gate/channel info currently shows little beyond the centre it
+  belongs to and its I Ching hexagram *name* ("le corresponde el hexagrama
+  N"). Add more genuinely useful own-wording per gate/channel — the
+  theme/energy it carries, what its line evokes, and (for channels) how the
+  two gates combine — so the in-app text stands on its own and isn't just a
+  label + a hand-off to the AI. Keep it legally safe: own voice anchored in
+  mechanical facts + public-domain I Ching, never Jovian Archive wording.
 
 ## Astronomical precision (HD variables: color, tone, base)
 
@@ -611,17 +619,29 @@ Roadmap renumbered 2026-06-10: 3 visual polish → 4 unknown hour →
 5 PNG export (MVP closes) → 6 online sync → 7 composite → 8 transits.
 Reordered 2026-06-13: AI handoff + element info moves up to Phase 6;
 online sync moves down to Phase 9.
+Reordered 2026-06-22: a new **Phase 7 — initial report** (an HD primer for
+first-timers) is inserted as the next phase; composite → 8, transits → 9,
+online sync → 10.
 
 - **Phase 6 (planned):** AI handoff + element info. Full plan validated
   2026-06-13 — see "Phase 6 plan" above. No-API handoff (deep links +
   copy), one reusable info panel opened by a single "ⓘ Saber más", own
   text for the core only, depth delegated to the user's AI, multi-language
   ready. Target 0.2.0.
-- **Phase 7 (planned):** composite chart. **Advanced composite** beyond the
+- **Phase 7 (planned):** **initial report — an HD primer for first-timers.**
+  A simple, up-front report for someone seeing their chart with no prior
+  Human Design knowledge: a plain-language explanation of what HD is, plus a
+  general read of *their* chart derived from its type and strategy, with the
+  Phase 6 AI handoff to go deeper. Presented clearly and early — e.g. a
+  "report"/info button next to the chart title or beside the share/download
+  buttons — so the first encounter is legible to a complete newcomer. The own
+  text reuses the Phase 6 content module (`content/es.js`); the personalised
+  depth still goes via the AI prompt, so no new legal surface.
+- **Phase 8 (planned):** composite chart. **Advanced composite** beyond the
   combined visual: relationship dynamics (electromagnetic channels,
   dominance, compromise, companionship).
-- **Phase 8 (planned):** **transits** view over a saved bodygraph.
-- **Phase 9 (planned):** optional cloud sync (local-only stays the default).
+- **Phase 9 (planned):** **transits** view over a saved bodygraph.
+- **Phase 10 (planned):** optional cloud sync (local-only stays the default).
 - **Multi-language activation**: the architecture is already multi-language
   ready; English translation pending once there's traction.
 

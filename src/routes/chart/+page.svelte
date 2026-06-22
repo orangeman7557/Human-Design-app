@@ -223,11 +223,37 @@
   // Centre chips are <button>, so their tap is handled here (pin + reveal); the
   // "i" sits as a sibling and opens via the card's click handler.
   function onCenterChipClick(e, c) {
+    const h = { kind: 'center', center: c, gates: [] };
+    pin(e, h);
+    revealForPinned(h, `center:${c}`);
+  }
+
+  // Channel / hanging-gate chips: a tap pins the highlight AND, on touch,
+  // reveals the chip's own "i". They call pin() (which stopPropagation, so the
+  // window handler doesn't clear the reveal), so the reveal must be set here —
+  // not left to the info-zone's cardClick, which never runs for them.
+  function onChipClick(e, h, innerKey) {
+    pin(e, h);
+    revealForPinned(h, innerKey);
+  }
+
+  // Couple the specific "i" to the pinned state: on touch, show `innerKey` iff
+  // this element is now the selected one, so the "i" can never linger after the
+  // element is deselected (and switches cleanly when another is selected).
+  // Desktop reveals via cardOver instead, so this is a no-op there.
+  function revealForPinned(h, innerKey) {
+    if (!isTouch()) return;
+    innerReveal = sameHover(hover, h) ? innerKey : null;
+    cardReveal = null;
+  }
+
+  // Tapping a centre on the SVG pins it like the chip does, but a centre's "i"
+  // lives in the Centres list (not on the graph), so we don't surface one
+  // across the screen — we just clear any stale reveal so a previous chip's
+  // "i" can't linger over the newly pinned centre.
+  function onSvgCenterClick(e, c) {
     pin(e, { kind: 'center', center: c, gates: [] });
-    if (isTouch()) {
-      innerReveal = innerReveal === `center:${c}` ? null : `center:${c}`;
-      cardReveal = null;
-    }
+    if (isTouch()) { innerReveal = null; cardReveal = null; }
   }
 
   // Hanging gates: active gates that don't complete any channel.
@@ -619,7 +645,16 @@
           onmouseover={(e) => cardOver(e, 'type')}
           onmouseleave={clearReveal}
         >
-          <span class="label">Tipo</span>
+          <span class="label">
+            Tipo
+            <span class="dot-h2">
+              {#if cardReveal === 'type' || infoIsOpen('concept', 'type')}
+                <span class="dot-host" data-info-cat="Tipo" data-info-kind="concept" data-info-key="type">
+                  <InfoDot active={infoIsOpen('concept', 'type')} label="Qué es el tipo" />
+                </span>
+              {/if}
+            </span>
+          </span>
           <div class="type-list">
             {#each TYPES as t, i}
               <span class="tchip" class:on={chart.type === t.key} data-inner-key={`type:${t.key}`}>
@@ -636,11 +671,6 @@
               {/if}
             {/each}
           </div>
-          {#if cardReveal === 'type' || infoIsOpen('concept', 'type')}
-            <span class="dot-slot card-dot" data-info-cat="Tipo" data-info-kind="concept" data-info-key="type">
-              <InfoDot active={infoIsOpen('concept', 'type')} label="Qué es el tipo" />
-            </span>
-          {/if}
         </div>
         <div
           class="card"
@@ -649,17 +679,21 @@
           onmouseover={(e) => cardOver(e, 'strategy')}
           onmouseleave={clearReveal}
         >
-          <span class="label">Estrategia</span>
+          <span class="label">
+            Estrategia
+            <span class="dot-h2">
+              {#if cardReveal === 'strategy' || infoIsOpen('concept', 'strategy')}
+                <span class="dot-host" data-info-cat="Estrategia" data-info-kind="concept" data-info-key="strategy">
+                  <InfoDot active={infoIsOpen('concept', 'strategy')} label="Qué es la estrategia" />
+                </span>
+              {/if}
+            </span>
+          </span>
           <span class="value" data-inner-key="strategy:value"
             >{STRATEGY_LABELS[chart.strategy] ?? chart.strategy}{#if innerReveal === 'strategy:value' || infoIsOpen('strategy', chart.strategy)}<span
               class="dot-side"
               data-info-cat="Estrategia" data-info-kind="strategy" data-info-key={chart.strategy}
             ><InfoDot active={infoIsOpen('strategy', chart.strategy)} label="Más información sobre esta estrategia" /></span>{/if}</span>
-          {#if cardReveal === 'strategy' || infoIsOpen('concept', 'strategy')}
-            <span class="dot-slot card-dot" data-info-cat="Estrategia" data-info-kind="concept" data-info-key="strategy">
-              <InfoDot active={infoIsOpen('concept', 'strategy')} label="Qué es la estrategia" />
-            </span>
-          {/if}
         </div>
         <div
           class="card"
@@ -668,17 +702,21 @@
           onmouseover={(e) => cardOver(e, 'authority')}
           onmouseleave={clearReveal}
         >
-          <span class="label">Autoridad</span>
+          <span class="label">
+            Autoridad
+            <span class="dot-h2">
+              {#if cardReveal === 'authority' || infoIsOpen('concept', 'authority')}
+                <span class="dot-host" data-info-cat="Autoridad" data-info-kind="concept" data-info-key="authority">
+                  <InfoDot active={infoIsOpen('concept', 'authority')} label="Qué es la autoridad" />
+                </span>
+              {/if}
+            </span>
+          </span>
           <span class="value" data-inner-key="authority:value"
             >{AUTHORITY_LABELS[chart.authority] ?? chart.authority}{#if innerReveal === 'authority:value' || infoIsOpen('authority', chart.authority)}<span
               class="dot-side"
               data-info-cat="Autoridad" data-info-kind="authority" data-info-key={chart.authority}
             ><InfoDot active={infoIsOpen('authority', chart.authority)} label="Más información sobre esta autoridad" /></span>{/if}</span>
-          {#if cardReveal === 'authority' || infoIsOpen('concept', 'authority')}
-            <span class="dot-slot card-dot" data-info-cat="Autoridad" data-info-kind="concept" data-info-key="authority">
-              <InfoDot active={infoIsOpen('concept', 'authority')} label="Qué es la autoridad" />
-            </span>
-          {/if}
         </div>
         <div
           class="card"
@@ -687,17 +725,21 @@
           onmouseover={(e) => cardOver(e, 'profile')}
           onmouseleave={clearReveal}
         >
-          <span class="label">Perfil</span>
+          <span class="label">
+            Perfil
+            <span class="dot-h2">
+              {#if cardReveal === 'profile' || infoIsOpen('concept', 'profile')}
+                <span class="dot-host" data-info-cat="Perfil" data-info-kind="concept" data-info-key="profile">
+                  <InfoDot active={infoIsOpen('concept', 'profile')} label="Qué es el perfil" />
+                </span>
+              {/if}
+            </span>
+          </span>
           <span class="value" data-inner-key="profile:value"
             >{chart.profile}{#if innerReveal === 'profile:value' || infoIsOpen('profile', chart.profile)}<span
               class="dot-side"
               data-info-cat="Perfil" data-info-kind="profile" data-info-key={chart.profile}
             ><InfoDot active={infoIsOpen('profile', chart.profile)} label="Más información sobre este perfil" /></span>{/if}</span>
-          {#if cardReveal === 'profile' || infoIsOpen('concept', 'profile')}
-            <span class="dot-slot card-dot" data-info-cat="Perfil" data-info-kind="concept" data-info-key="profile">
-              <InfoDot active={infoIsOpen('concept', 'profile')} label="Qué es el perfil" />
-            </span>
-          {/if}
         </div>
         <div
           class="card pointer"
@@ -707,17 +749,21 @@
           onmouseover={(e) => cardOver(e, 'definition')}
           onclick={(e) => cardClick(e, 'definition', () => pin(e, { kind: 'definition', gates: [] }))}
         >
-          <span class="label">Definición</span>
+          <span class="label">
+            Definición
+            <span class="dot-h2">
+              {#if cardReveal === 'definition' || infoIsOpen('concept', 'definition')}
+                <span class="dot-host" data-info-cat="Definición" data-info-kind="concept" data-info-key="definition">
+                  <InfoDot active={infoIsOpen('concept', 'definition')} label="Qué es la definición" />
+                </span>
+              {/if}
+            </span>
+          </span>
           <span class="value" data-inner-key="definition:value"
             >{DEFINITION_LABELS[chart.definition] ?? chart.definition}{#if innerReveal === 'definition:value' || infoIsOpen('definition', chart.definition)}<span
               class="dot-side"
               data-info-cat="Definición" data-info-kind="definition" data-info-key={chart.definition}
             ><InfoDot active={infoIsOpen('definition', chart.definition)} label="Más información sobre esta definición" /></span>{/if}</span>
-          {#if cardReveal === 'definition' || infoIsOpen('concept', 'definition')}
-            <span class="dot-slot card-dot" data-info-cat="Definición" data-info-kind="concept" data-info-key="definition">
-              <InfoDot active={infoIsOpen('concept', 'definition')} label="Qué es la definición" />
-            </span>
-          {/if}
         </div>
       </div>
 
@@ -738,6 +784,13 @@
           <span class="label">
             Centros
             <span class="count" data-tip="Centros definidos">({chart.definedCenters.length})</span>
+            <span class="dot-h2">
+              {#if cardReveal === 'center' || infoIsOpen('concept', 'center')}
+                <span class="dot-host" data-info-cat="Centros" data-info-kind="concept" data-info-key="center">
+                  <InfoDot active={infoIsOpen('concept', 'center')} label="Qué son los centros" />
+                </span>
+              {/if}
+            </span>
           </span>
           <div class="center-list">
             {#each CENTERS as c}
@@ -761,11 +814,6 @@
               </span>
             {/each}
           </div>
-          {#if cardReveal === 'center' || infoIsOpen('concept', 'center')}
-            <span class="dot-slot card-dot" data-info-cat="Centros" data-info-kind="concept" data-info-key="center">
-              <InfoDot active={infoIsOpen('concept', 'center')} label="Qué son los centros" />
-            </span>
-          {/if}
         </div>
       </div>
 
@@ -773,7 +821,7 @@
         {chart}
         highlight={graphHighlight}
         onCenterHover={(c) => setHover(c ? { kind: 'center', center: c, gates: [] } : null)}
-        onCenterClick={(e, c) => pin(e, { kind: 'center', center: c, gates: [] })}
+        onCenterClick={(e, c) => onSvgCenterClick(e, c)}
       />
     </div>
 
@@ -811,7 +859,7 @@
                       dimsAgainstChipHover({ kind: 'channel', gates: [g1, g2] })}
                     onmouseenter={() => setHover({ kind: 'channel', gates: [g1, g2] })}
                     onmouseleave={() => setHover(null)}
-                    onclick={(e) => pin(e, { kind: 'channel', gates: [g1, g2] })}
+                    onclick={(e) => onChipClick(e, { kind: 'channel', gates: [g1, g2] }, `channel:${g1}-${g2}`)}
                   >
                     {g1}-{g2}
                   </span>
@@ -867,7 +915,7 @@
                       dimsAgainstChipHover({ kind: 'gate', gates: [g] })}
                     onmouseenter={() => setHover({ kind: 'gate', gates: [g] })}
                     onmouseleave={() => setHover(null)}
-                    onclick={(e) => pin(e, { kind: 'gate', gates: [g] })}
+                    onclick={(e) => onChipClick(e, { kind: 'gate', gates: [g] }, `gate:${g}`)}
                   >
                     {g}
                   </span>
@@ -948,7 +996,7 @@
     </section>
 
     <footer>
-      v{version} · source-available · gratis para uso no comercial · <About onElement={(kind, key) => openInfoFor(CATEGORY_BY_KIND[kind] ?? '', kind, key)} />
+      <About version={version} onElement={(kind, key) => openInfoFor(CATEGORY_BY_KIND[kind] ?? '', kind, key)} />
     </footer>
   {/if}
 </main>
@@ -1078,13 +1126,6 @@
   .type-card {
     position: relative;
   }
-  /* On the card itself the "i" tucks hard into the top-right corner. The top
-     inset is a touch smaller than the right so the rounded corner doesn't make
-     the top gap look larger than the right one. */
-  .card-dot {
-    top: 2px;
-    right: 4px;
-  }
   /* Centre chips are <button>, so their "i" can't nest inside; it sits as a
      positioned sibling over the chip's corner, anchored by this wrapper. */
   .cc-wrap {
@@ -1098,7 +1139,12 @@
      never pushes the value onto an extra line. */
   .dot-side {
     display: inline-flex;
+    align-items: center;
     vertical-align: middle;
+    /* Zero height so revealing the 17px "i" never grows the line box: the dot
+       overflows (centred on the text line) instead of pushing the line taller,
+       which otherwise nudged the value text and the activation header/rows. */
+    height: 0;
     margin-left: 0.3rem;
     margin-right: -1.4rem;
   }
@@ -1172,7 +1218,6 @@
     display: flex;
     flex-direction: column;
     gap: 0.15rem;
-    /* Anchor for the card's concept "i" (.card-dot, absolute top-right). */
     position: relative;
   }
   .label {

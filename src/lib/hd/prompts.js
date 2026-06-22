@@ -1,290 +1,186 @@
-// Prompt builder — Phase 6.A (pilot) + 6.B (core kinds).
+// Prompt builder — Phase 6 (prompts cleaned up 2026-06-22).
 //
-// Turns an element + the user's chart into ready-made prompts the user takes
-// to their own AI. The app never calls an AI; it only composes the text. Each
-// element offers two angles:
+// Turns an element + the user's chart into a ready-made, *clean* prompt the
+// user takes to their own AI. The app never calls an AI; it only composes the
+// text. Each element offers up to two angles:
 //   - general: the concept in the abstract (always available).
-//   - chart:   the element read alongside the rest of the chart.
+//   - chart:   the element read together with the rest of this chart.
 //
-// Prompts are impersonal ("Para un Generador con autoridad…") on purpose: the
-// chart on screen may belong to someone else (saved charts), so we never
-// phrase them in the first person.
+// House style (kept deliberately short so the AI isn't boxed in):
+//   general → "En el marco de Human Design, ¿me explicas en detalle <X>?"
+//   chart   → "En el marco de Human Design, para <quién>, ¿me explicas en
+//              detalle <X>?"
+// where <quién> = "un Generador, perfil 3/5, autoridad Sacral, centros
+// definidos …". Prompts stay impersonal (no first person): the chart on screen
+// may belong to someone else (a saved chart).
 //
-// `chart` is null when the angle doesn't apply (most concept prompts: the
-// concept is abstract, so there's nothing chart-specific to ask — the
-// exception is the centres concept, which reads the chart's defined/undefined
-// mix).
+// `chart` is null when the angle doesn't apply (most concepts are abstract; a
+// gate/channel angle only applies when that element is active in the chart).
 
-import { getPromptLabels, getIchingName, DEFAULT_LANG } from './content/index.js';
-import { CENTER_BY_GATE } from './constants.js';
+import { getPromptLabels, DEFAULT_LANG } from './content/index.js';
 
-const NO_ASSUME = 'No asumas conocimiento previo del sistema.';
+const FRAME = 'En el marco de Human Design';
 
-/** Impersonal descriptor of the chart, e.g. "un Generador con autoridad Sacral y perfil 3/5". */
+/** General angle: "En el marco de Human Design, ¿me explicas en detalle <subject>?" */
+const ask = (subject) => `${FRAME}, ¿me explicas en detalle ${subject}?`;
+
+/** Impersonal descriptor of the chart, e.g. "un Generador, perfil 3/5, autoridad Sacral, centros definidos …". */
 function who(L, chart) {
   const type = L.type[chart.type] ?? chart.type;
   const authority = L.authority[chart.authority] ?? chart.authority;
-  return `un ${type} con autoridad ${authority} y perfil ${chart.profile}`;
+  const centers = (chart.definedCenters ?? [])
+    .map((c) => L.center[c] ?? c)
+    .join(', ');
+  return (
+    `un ${type}, perfil ${chart.profile}, autoridad ${authority}, ` +
+    `centros definidos ${centers || 'ninguno'}`
+  );
 }
 
+/** Chart angle: same as `ask` but prefixed with the chart descriptor. */
+const askChart = (L, chart, subject) =>
+  `${FRAME}, para ${who(L, chart)}, ¿me explicas en detalle ${subject}?`;
+
 /**
- * @param {string} kind   'concept' | 'type' | 'strategy' | 'authority' | 'profile' | 'definition' | 'center'
+ * @param {string} kind   'concept' | 'type' | 'strategy' | 'authority' | 'profile' | 'definition' | 'center' | 'gate' | 'channel' | 'activationCol' | 'planet'
  * @param {string} key    element key (for 'concept', the category name; for 'profile', the "3/5" string)
- * @param {any} chart      computed chart (type, authority, strategy, profile, definedCenters…)
+ * @param {any} chart      computed chart (type, authority, strategy, profile, definedCenters, personality, design…)
  * @param {string} [lang]
  * @returns {{ general: string, chart: string | null }}
  */
 export function buildPrompts(kind, key, chart, lang = DEFAULT_LANG) {
   const L = getPromptLabels(lang);
 
-  if (kind === 'concept') {
-    return conceptPrompts(L, key, chart);
-  }
+  if (kind === 'concept') return conceptPrompts(L, key, chart);
 
   if (kind === 'type') {
     const type = L.type[key] ?? key;
     const isOwn = key === chart.type;
-    const strategy = isOwn ? L.strategy[chart.strategy] ?? chart.strategy : null;
-    const authority = L.authority[chart.authority] ?? chart.authority;
+    // The chart angle only makes sense for the chart's own type.
     return {
-      general:
-        `Explícame de forma sencilla y práctica qué es el tipo ${type} en ` +
-        `Diseño Humano: cómo funciona su energía, su estrategia` +
-        (strategy ? ` (${strategy})` : '') +
-        ` y qué señales indican que va por buen camino. ${NO_ASSUME}`,
-      // The "Sobre esta carta" angle only makes sense for the chart's own
-      // type; for the other type chips there's nothing chart-specific to read.
-      chart: isOwn
-        ? `Para un ${type} con autoridad ${authority} y perfil ${chart.profile}, ` +
-          `explícame cómo se combinan estos rasgos y cómo se viven en el día a ` +
-          `día. ${NO_ASSUME}`
-        : null
+      general: ask(`el tipo ${type}`),
+      chart: isOwn ? askChart(L, chart, `el tipo ${type}`) : null
     };
   }
 
   if (kind === 'strategy') {
     const s = L.strategy[key] ?? key;
     return {
-      general:
-        `Explícame de forma sencilla y práctica en qué consiste la estrategia ` +
-        `de «${s}» en Diseño Humano: cómo se aplica en el día a día y qué ` +
-        `señales indican que se está siguiendo bien. ${NO_ASSUME}`,
-      chart:
-        `Para ${who(L, chart)}, cuya estrategia es «${s}», explícame cómo ` +
-        `llevarla a la práctica en las decisiones cotidianas. ${NO_ASSUME}`
+      general: ask(`la estrategia de «${s}»`),
+      chart: askChart(L, chart, `la estrategia de «${s}»`)
     };
   }
 
   if (kind === 'authority') {
     const a = L.authority[key] ?? key;
     return {
-      general:
-        `Explícame de forma sencilla y práctica qué es la autoridad ${a} en ` +
-        `Diseño Humano y cómo se usa para tomar decisiones fiables. ${NO_ASSUME}`,
-      chart:
-        `Para ${who(L, chart)}, explícame cómo tomar decisiones usando su ` +
-        `autoridad ${a} en el día a día. ${NO_ASSUME}`
+      general: ask(`la autoridad ${a}`),
+      chart: askChart(L, chart, `la autoridad ${a}`)
     };
   }
 
   if (kind === 'profile') {
     // key is the "3/5" string.
-    const [a, b] = String(key).split('/');
     return {
-      general:
-        `Explícame de forma sencilla y práctica qué significa el perfil ${key} ` +
-        `en Diseño Humano (líneas ${a} y ${b}): cómo se manifiesta y qué tener ` +
-        `en cuenta. ${NO_ASSUME}`,
-      chart:
-        `Para ${who(L, chart)}, explícame cómo se combina su perfil ${key} con ` +
-        `su tipo y su autoridad en el día a día. ${NO_ASSUME}`
+      general: ask(`el perfil ${key}`),
+      chart: askChart(L, chart, `el perfil ${key}`)
     };
   }
 
   if (kind === 'definition') {
     const d = L.definition[key] ?? key;
-    return {
-      general:
-        `Explícame de forma sencilla y práctica qué es una ${d} en Diseño ` +
-        `Humano y qué implica para la energía y las relaciones de una ` +
-        `persona. ${NO_ASSUME}`,
-      chart:
-        `Para ${who(L, chart)} con ${d}, explícame qué significa en la ` +
-        `práctica para cómo conecta su energía y qué entornos o compañías le ` +
-        `complementan. ${NO_ASSUME}`
-    };
+    // "sin definición" doesn't read as "la sin definición"; phrase it apart.
+    const subject =
+      key === 'no-definition'
+        ? 'qué significa no tener definición (una carta sin definición)'
+        : `la ${d}`;
+    return { general: ask(subject), chart: askChart(L, chart, subject) };
   }
 
   if (kind === 'center') {
     const c = L.center[key] ?? key;
-    const defined = chart.definedCenters?.includes(key);
     return {
-      general:
-        `Explícame de forma sencilla y práctica qué es el centro «${c}» en ` +
-        `Diseño Humano: qué función tiene y qué diferencia hay entre tenerlo ` +
-        `definido o indefinido. ${NO_ASSUME}`,
-      chart:
-        `En esta carta, el centro «${c}» está ${defined ? 'definido' : 'indefinido (abierto)'}. ` +
-        `Explícame de forma práctica qué implica eso para la gestión de la ` +
-        `energía y la toma de decisiones. ${NO_ASSUME}`
+      general: ask(`el centro «${c}»`),
+      chart: askChart(L, chart, `el centro «${c}»`)
     };
   }
 
   if (kind === 'gate') {
     const g = Number(key);
-    const center = L.center[CENTER_BY_GATE[g]] ?? '';
-    const name = getIchingName(g, lang);
-    const root = name ? `, cuya raíz es el hexagrama ${g} «${name}» del I Ching` : '';
-    // The "Sobre esta carta" angle only applies when the gate is actually
-    // active — gates reached through the full index may not be.
+    // The chart angle only applies when the gate is active in the chart
+    // (gates reached through the full index may not be).
     const active = chart?.activeGates?.includes(g);
     return {
-      general:
-        `Explícame de forma sencilla y práctica qué significa la puerta ${g} en ` +
-        `Diseño Humano${center ? ` (en el centro ${center})` : ''}${root}: qué tema ` +
-        `o energía representa y cómo se manifiesta. ${NO_ASSUME}`,
-      chart: active
-        ? `En esta carta, la puerta ${g} está activa. Para ${who(L, chart)}, ` +
-          `explícame qué aporta esta puerta y cómo se vive en el día a día. ${NO_ASSUME}`
-        : null
-    };
-  }
-
-  if (kind === 'activationCol') {
-    const what = {
-      personality: 'la parte consciente (Personality), calculada en el momento del nacimiento',
-      design: 'la parte inconsciente (Design), calculada unos 88 días antes del nacimiento',
-      weight: 'el peso o influencia relativa de cada activación planetaria (el Sol y la Tierra pesan más)'
-    };
-    return {
-      general:
-        `Explícame de forma sencilla y práctica qué es ${what[key] ?? key} en Diseño ` +
-        `Humano y por qué importa al leer una carta. ${NO_ASSUME}`,
-      chart: null
-    };
-  }
-
-  if (kind === 'planet') {
-    const name = L.planet?.[key] ?? key;
-    return {
-      general:
-        `Explícame de forma sencilla y práctica qué representa ${name} en Diseño ` +
-        `Humano: qué área de la vida o de la energía matiza y cómo se interpreta su ` +
-        `activación (su puerta y línea). ${NO_ASSUME}`,
-      chart: null
+      general: ask(`la puerta ${g}`),
+      chart: active ? askChart(L, chart, `la puerta ${g}`) : null
     };
   }
 
   if (kind === 'channel') {
     const [a, b] = String(key).split('-').map(Number);
-    const ca = L.center[CENTER_BY_GATE[a]] ?? '';
-    const cb = L.center[CENTER_BY_GATE[b]] ?? '';
-    // Likewise: only offer the chart angle when this channel is complete in
-    // the chart (reachable-but-inactive channels come via the full index).
     const active = chart?.activeChannels?.some(
       ([x, y]) => (x === a && y === b) || (x === b && y === a)
     );
     return {
-      general:
-        `Explícame de forma sencilla y práctica qué significa el canal ${a}-${b} en ` +
-        `Diseño Humano, que une los centros ${ca} y ${cb} (puertas ${a} y ${b}): qué ` +
-        `energía aporta y cómo se manifiesta. ${NO_ASSUME}`,
-      chart: active
-        ? `En esta carta, el canal ${a}-${b} está completo y define los centros ${ca} y ` +
-          `${cb}. Para ${who(L, chart)}, explícame qué aporta este canal y cómo se vive ` +
-          `en el día a día. ${NO_ASSUME}`
-        : null
+      general: ask(`el canal ${a}-${b}`),
+      chart: active ? askChart(L, chart, `el canal ${a}-${b}`) : null
+    };
+  }
+
+  if (kind === 'activationCol') {
+    const subject = {
+      personality:
+        'la parte consciente (Personality) de una carta, calculada en el momento del nacimiento',
+      design:
+        'la parte inconsciente (Design) de una carta, calculada unos 88 días antes del nacimiento',
+      weight: 'el peso o influencia relativa de cada activación planetaria'
+    };
+    return { general: ask(subject[key] ?? key), chart: null };
+  }
+
+  if (kind === 'planet') {
+    const name = L.planet?.[key] ?? key;
+    const p = chart?.personality?.[key];
+    const d = chart?.design?.[key];
+    // The chart angle names this planet's two activations in the chart.
+    return {
+      general: ask(`qué representa ${name}`),
+      chart:
+        p && d
+          ? `${FRAME}, para ${who(L, chart)}, ¿me explicas en detalle qué ` +
+            `representa ${name} y qué aportan sus dos activaciones en esta ` +
+            `carta: ${p.gate}.${p.line} (consciente, Personality) y ` +
+            `${d.gate}.${d.line} (inconsciente, Design)?`
+          : null
     };
   }
 
   return { general: '', chart: null };
 }
 
-/** Concept-level prompts (the card "i"). Only `center` has a chart angle. */
+/** Concept-level prompts (the card / section-title "i"). Only `center` has a chart angle. */
 function conceptPrompts(L, key, chart) {
-  switch (key) {
-    case 'type':
-      return {
-        general:
-          `Explícame de forma sencilla y práctica qué son los tipos en Diseño ` +
-          `Humano (Generador, Generador Manifestante, Proyector, Manifestador y ` +
-          `Reflector), en qué se diferencian y por qué el tipo es la base de cómo ` +
-          `cada persona gestiona su energía y toma decisiones. ${NO_ASSUME}`,
-        chart: null
-      };
-    case 'strategy':
-      return {
-        general:
-          `Explícame de forma sencilla y práctica qué es la estrategia en Diseño ` +
-          `Humano, por qué cada tipo tiene la suya y cuáles son las cinco. ` +
-          `${NO_ASSUME}`,
-        chart: null
-      };
-    case 'authority':
-      return {
-        general:
-          `Explícame de forma sencilla y práctica qué es la autoridad en Diseño ` +
-          `Humano, qué papel cumple frente a la mente al tomar decisiones, y ` +
-          `cuáles son las distintas autoridades. ${NO_ASSUME}`,
-        chart: null
-      };
-    case 'profile':
-      return {
-        general:
-          `Explícame de forma sencilla y práctica qué es el perfil en Diseño ` +
-          `Humano, cómo se forma a partir de dos líneas (de la 1 a la 6) y qué ` +
-          `aporta cada línea. ${NO_ASSUME}`,
-        chart: null
-      };
-    case 'definition':
-      return {
-        general:
-          `Explícame de forma sencilla y práctica qué es la definición en Diseño ` +
-          `Humano (sin definición, única, split, triple y cuádruple split) y qué ` +
-          `dice sobre cómo se conecta la energía de una persona. ${NO_ASSUME}`,
-        chart: null
-      };
-    case 'channel':
-      return {
-        general:
-          `Explícame de forma sencilla y práctica qué son los canales en Diseño ` +
-          `Humano, cómo se forman al activarse sus dos puertas, qué significa que un ` +
-          `canal esté completo y cómo definen los centros. ${NO_ASSUME}`,
-        chart: null
-      };
-    case 'gate':
-      return {
-        general:
-          `Explícame de forma sencilla y práctica qué son las puertas en Diseño ` +
-          `Humano, su relación con los 64 hexagramas del I Ching, y la diferencia ` +
-          `entre una puerta que completa un canal y una puerta «colgante». ${NO_ASSUME}`,
-        chart: null
-      };
-    case 'activation':
-      return {
-        general:
-          `Explícame de forma sencilla y práctica qué son las activaciones planetarias ` +
-          `en Diseño Humano, qué diferencia hay entre Personality (consciente) y Design ` +
-          `(inconsciente), y por qué el Sol y la Tierra son las más importantes. ${NO_ASSUME}`,
-        chart: null
-      };
-    case 'center': {
-      const defined = (chart?.definedCenters ?? [])
-        .map((c) => L.center[c] ?? c)
-        .join(', ');
-      return {
-        general:
-          `Explícame de forma sencilla y práctica qué son los nueve centros en ` +
-          `Diseño Humano y la diferencia entre un centro definido y uno ` +
-          `indefinido (abierto). ${NO_ASSUME}`,
-        chart:
-          `En esta carta están definidos estos centros: ${defined || 'ninguno'}; ` +
-          `el resto están abiertos. Explícame de forma práctica qué implica esta ` +
-          `combinación de centros definidos e indefinidos para la gestión de la ` +
-          `energía y la toma de decisiones. ${NO_ASSUME}`
-      };
-    }
-    default:
-      return { general: '', chart: null };
+  if (key === 'center') {
+    return {
+      general: ask(
+        'qué son los nueve centros y qué diferencia hay entre tenerlos definidos o indefinidos'
+      ),
+      chart: askChart(
+        L,
+        chart,
+        'qué implica la combinación de centros definidos e indefinidos de esta carta'
+      )
+    };
   }
+  const subject = {
+    type: 'qué son los tipos',
+    strategy: 'qué es la estrategia',
+    authority: 'qué es la autoridad',
+    profile: 'qué es el perfil',
+    definition: 'qué es la definición',
+    channel: 'qué son los canales',
+    gate: 'qué son las puertas',
+    activation: 'qué son las activaciones planetarias'
+  }[key];
+  return { general: subject ? ask(subject) : '', chart: null };
 }

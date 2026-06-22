@@ -6,12 +6,15 @@
   import { fade, fly } from 'svelte/transition';
 
   /**
-   * @type {{ onElement?: (kind: string, key: string) => void }}
+   * @type {{
+   *   version?: string,
+   *   onElement?: (kind: string, key: string) => void
+   * }}
    * onElement (chart page only) opens an element's drawer — used by the
    * "Manifestor" link. Where it's not provided (home page, no drawer system)
    * the word renders as plain text.
    */
-  let { onElement } = $props();
+  let { onElement, version = '' } = $props();
 
   let open = $state(false);
 
@@ -38,9 +41,9 @@
     </header>
 
     <div class="facts">
-      <p>Proyecto source-available (PolyForm Noncommercial 1.0.0), gratis para uso no comercial.</p>
+      <p>Proyecto source-available, gratis para uso no comercial. (PolyForm Noncommercial 1.0.0)</p>
       <p>
-        Creado por orangeman7557 con asistencia de IA (mucha). Creado sin ánimo
+        Creado por orangeman7557 con asistencia de IA. Creado sin ánimo
         de lucro ni ánimo de nada, lo creé porque me dio la gana, como buen
         {#if onElement}<button type="button" class="tlink" onclick={() => openElement('type', 'manifestor')}>Manifestor</button>{:else}Manifestor{/if} que soy :)
       </p>
@@ -53,6 +56,8 @@
       presentado es de carácter divulgativo y no sustituye al asesoramiento
       profesional.
     </p>
+
+    {#if version}<p class="fine ver">v{version}</p>{/if}
   </div>
 {/if}
 
@@ -66,8 +71,6 @@
     font: inherit;
     color: inherit;
     cursor: pointer;
-    text-decoration: underline;
-    text-underline-offset: 2px;
   }
   .link:hover {
     color: var(--text-muted);
@@ -150,5 +153,12 @@
     font-size: 0.76rem;
     line-height: 1.55;
     color: #82828a;
+  }
+  /* Version line: same muted disclaimer text, closing the modal — no second
+     divider, just a small gap under the disclaimer. */
+  .ver {
+    margin-top: 0.6rem;
+    padding-top: 0;
+    border-top: none;
   }
 </style>

@@ -17,9 +17,30 @@ Statuses:
 The deeper context (technical trade-offs, future ideas, deferred decisions)
 lives in [`BACKLOG.md`](./BACKLOG.md).
 
-Last updated: 2026-06-18.
+Last updated: 2026-06-22.
 
-> Latest change (2026-06-18): **Fase 6.F construida (ventana «Acerca de») +
+> Latest change (2026-06-22): **Pulido de Fase 6 (validado) + roadmap.**
+> (1) **Bug de la «i» arreglado**: en móvil la «i» se quedaba colgada al
+> cambiar de elemento (centro→canal/puerta) y la de canal/puerta no salía al
+> tocarla; raíz en que los chips de canal/puerta solo hacían `pin()` sin tocar
+> el reveal y en que el reveal del centro se toggleaba aparte de la selección.
+> Ahora el reveal va **acoplado a la selección** (`revealForPinned`) y
+> canal/puerta pasan por `onChipClick`; el toque de centro en el SVG también
+> limpia reveals. (2) **«i» de concepto** movida de la esquina del cajetín a
+> junto al título (como en canales/puertas/activaciones); corregido además el
+> **line-shift** al revelar la «i» inline (`.dot-side` a altura 0, el punto
+> desborda sin empujar la línea). (3) **Prompts reescritos** a un formato
+> limpio y uniforme («En el marco de Human Design, ¿me explicas en detalle…?» /
+> «…para un Generador, perfil 3/5, autoridad…, ¿…?»); **planetas** ganan ángulo
+> «sobre esta carta» con sus dos activaciones. (4) **Ejemplo de activación**
+> (30.3 en el Sol) añadido al texto explicativo. (5) **Footer** reducido a solo
+> «acerca de» (sin subrayar); la versión y los términos de licencia pasan al
+> **modal «Acerca de»** (retoques de copia). (6) **Roadmap**: nueva
+> **Fase 7 — Informe inicial**; composite/tránsitos/sync → 8/9/10. Anotado en
+> BACKLOG: **mejorar los textos de puertas/canales** (hoy demasiado escuetos).
+> Commit a main de este lote. 0.2.0.
+>
+> Previo (2026-06-18): **Fase 6.F construida (ventana «Acerca de») +
 > ajustes; para cerrar la fase solo queda tu revisión de textos.** (1)
 > **«acerca de»**: el footer queda como `v{version} · source-available · free
 > for noncommercial use · acerca de` (discreto, mismo tamaño/color de antes,
@@ -499,10 +520,18 @@ Subtareas completadas:
     footer modal (`About.svelte`: disclaimers + AI-assistance note + author +
     license + report-a-bug; built 2026-06-18). Phase 6 functionally complete;
     pending only the author's text review + an optional bump to 0.2.0.
-- **Phase 7 — Composite chart.** Two saved charts rendered as a combined
+- **Phase 7 — Initial report (HD primer for first-timers).** A simple,
+  up-front report for someone who has never heard of Human Design and is
+  seeing their chart for the first time: a plain-language explanation of what
+  Human Design is, plus a general read of *their* chart built from its type
+  and strategy, with the Phase 6 AI handoff to go deeper. Surfaced clearly and
+  early — e.g. a "report"/info button next to the chart title or beside the
+  share/download buttons — so it's the natural first thing a newcomer opens.
+  (Added 2026-06-22; pushed the former composite/transits/sync down to 8/9/10.)
+- **Phase 8 — Composite chart.** Two saved charts rendered as a combined
   bodygraph (visual overlay distinguishing each person).
-- **Phase 8 — Transits.** View live transits over a saved chart.
-- **Phase 9 — Online sync.** Optional cloud persistence of saved charts
+- **Phase 9 — Transits.** View live transits over a saved chart.
+- **Phase 10 — Online sync.** Optional cloud persistence of saved charts
   (local-only stays the default).
 
 ---
