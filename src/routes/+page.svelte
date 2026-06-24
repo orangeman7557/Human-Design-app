@@ -14,6 +14,7 @@
   import CityAutocomplete from '$lib/components/CityAutocomplete.svelte';
   import About from '$lib/components/About.svelte';
   import { dialog } from '$lib/components/dialog.svelte.js';
+  import { cityCountry } from '$lib/geo/place.js';
   import {
     listCharts,
     renameChart,
@@ -531,7 +532,7 @@
                   <span class="chart-type">{TYPE_LABELS[c.type] ?? c.type}</span>
                 {/if}
               </span>
-              <span class="chart-meta">{formatDate(c)} · {c.birth?.placeLabel ?? ''}</span>
+              <span class="chart-meta">{formatDate(c)} · {cityCountry(c.birth?.placeLabel)}</span>
             </button>
             <button class="icon" onclick={() => renameSaved(c)} aria-label="Renombrar">✎</button>
             <button class="icon" onclick={() => deleteSaved(c)} aria-label="Borrar">✕</button>

@@ -17,9 +17,36 @@ Statuses:
 The deeper context (technical trade-offs, future ideas, deferred decisions)
 lives in [`BACKLOG.md`](./BACKLOG.md).
 
-Last updated: 2026-06-22.
+Last updated: 2026-06-24.
 
-> Latest change (2026-06-22): **Pulido de Fase 6 (validado) + roadmap.**
+> Latest change (2026-06-24): **Estabilización post-MVP: tests del núcleo,
+> diálogos propios, autocompletado por prefijo, flecha y «ciudad, país».**
+> (1) **Tests del núcleo de cálculo** — primera suite automatizada con
+> `vitest` (instalado en el checkout principal; `npm test`). Congela las dos
+> cartas de referencia: **Reflector** (1984-01-30 01:00 Madrid) y la **del
+> autor** (1984-03-13 09:30 Madrid) —
+> tipo/estrategia/autoridad/perfil/definición, centros y las 26 activaciones
+> (gate.line)— más un **guard del bug del nodo lunar** (el nodo Sur de diseño
+> del Reflector debe quedar en puerta 5, no 26) y límites de `longitudeToGate`
+> y `cityCountry`. 16 tests, 2 ficheros. (2) **Diálogos nativos → propios**:
+> `dialog.svelte.js` (controlador basado en promesas) + `Dialog.svelte` (host
+> único en el layout) con fallback nativo; cableado en guardar (carta) y
+> renombrar/borrar/importar (home). (3) **Autocompletado**: de Nominatim a
+> **Photon** para typeahead real por prefijo («madr»→Madrid, «stuttg»→
+> Stuttgart) y solo asentamientos (fuera regiones/condados y labels
+> duplicados). El revert previo de Photon fue por enviar `lang=es`→**HTTP
+> 400**; ahora se omite (CORS `*` verificado). El fichero sigue llamándose
+> `nominatim.js` (renombrar a `geocoder.js` en una limpieza futura). (4)
+> **Flecha de volver**: el glifo «←» descentrado pasa a **SVG centrado por
+> flexbox** (a juego con compartir/descargar; dx=dy=0 en móvil). (5) **Retry
+> ~8× del efecto de cálculo**: ya estaba resuelto (el cálculo se movió de un
+> `$effect` a `onMount`); sin cambios. (6) **«Ciudad, país»**: helper
+> compartido `cityCountry` en `src/lib/geo/place.js` — el subtítulo de la
+> carta ya recortaba a ciudad+país, pero la **lista de cartas guardadas**
+> mostraba el label completo con la región; ahora ambos muestran **ciudad +
+> país** (sin región/condado). Commits a `main`. Versión sigue 0.1.1.
+>
+> Previo (2026-06-22): **Pulido de Fase 6 (validado) + roadmap.**
 > (1) **Bug de la «i» arreglado**: en móvil la «i» se quedaba colgada al
 > cambiar de elemento (centro→canal/puerta) y la de canal/puerta no salía al
 > tocarla; raíz en que los chips de canal/puerta solo hacían `pin()` sin tocar
@@ -468,9 +495,13 @@ Subtareas completadas:
 
 ## ⬜ Pending
 
-- **Stabilisation pass (post-MVP).** Hands-on testing against real
-  charts, bug-fixing, optional TWA packaging for Google Play. Minor UX
-  items live in BACKLOG ("Possible improvements").
+- **Stabilisation pass (post-MVP).** 🟡 Ongoing. Landed 2026-06-24: an
+  automated `vitest` safety net for the calculation core, themed in-app
+  dialogs (replacing native prompt/confirm/alert), prefix autocomplete via
+  Photon (drops regions/counties too), the centred back-arrow, and the
+  "city, country" place label everywhere. Still open: hands-on testing
+  against real charts, optional TWA packaging for Google Play, and the
+  remaining BACKLOG "Possible improvements".
 - **Phase 6 — AI handoff + element info** (plan validated 2026-06-13,
   panel UX approved 2026-06-15 — mockup v3; full detail in BACKLOG). 6.A
   done 2026-06-16, 6.B–6.E done 2026-06-17/18 and 6.F (the "Acerca de" footer

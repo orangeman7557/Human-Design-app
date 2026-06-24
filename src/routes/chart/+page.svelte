@@ -12,6 +12,7 @@
   import InfoDot from '$lib/components/InfoDot.svelte';
   import About from '$lib/components/About.svelte';
   import { dialog } from '$lib/components/dialog.svelte.js';
+  import { cityCountry } from '$lib/geo/place.js';
   import { getElementInfo, getProfileInfo, getGateInfo, getChannelInfo, getConceptInfo, getActivationWeight } from '$lib/hd/content/index.js';
   import { buildPrompts } from '$lib/hd/prompts.js';
 
@@ -409,9 +410,7 @@
   function formatBirth(b) {
     const [y, m, d] = (b.date ?? '').split('-');
     const date = d ? `${d}/${m}/${y}` : b.date;
-    const parts = (b.placeLabel ?? '').split(',').map((s) => s.trim());
-    const place =
-      parts.length > 1 ? `${parts[0]}, ${parts[parts.length - 1]}` : parts[0];
+    const place = cityCountry(b.placeLabel);
     return [`${date}, ${b.time}`, place].filter(Boolean).join(' · ');
   }
 

@@ -48,14 +48,16 @@ without competing against a clone of the same code.
 **Files touched in this change:**
 `LICENSE`, `NOTICE` (new), `README.md`, `package.json`, `BACKLOG.md`.
 
-## Known bugs & pre-MVP tasks (updated 2026-06-13)
+## Known bugs & pre-MVP tasks (updated 2026-06-24)
 
-Open:
+Open: none.
 
-- **Compute effect retries ~8× on error.** When `computeChart` throws,
-  the effect in `src/routes/chart/+page.svelte` re-runs and re-throws
-  the same error about eight times (console noise only; the user-facing
-  error message shows fine). Found in the 2026-06-13 QA pass.
+Fixed in the 2026-06-24 batch:
+
+- ✅ **Compute effect retried ~8× on error** — found already resolved: the
+  chart computation had since moved from a reactive `$effect` into `onMount`
+  (a single run), so the retry loop no longer existed. Verified, no change
+  needed.
 
 Fixed in the 2026-06-13 batch:
 
@@ -139,7 +141,11 @@ corrected).
 
 ### To evaluate — higher value
 
-- **Automated tests for the calculation core.** None exist today. The whole
+- ✅ **Automated tests for the calculation core — DONE 2026-06-24** (a
+  `vitest` suite, `npm test`: the two reference charts frozen — Reflector +
+  author — plus `longitudeToGate` and `cityCountry`, and a dedicated guard
+  for the mean-vs-true lunar-node regression). Original rationale kept below.
+  None existed before. The whole
   value of the app is calculation correctness, and the core
   ([gates.js](./src/lib/hd/gates.js), [ephemeris.js](./src/lib/hd/ephemeris.js),
   [chart.js](./src/lib/hd/chart.js)) is pure functions with known
@@ -196,14 +202,13 @@ corrected).
   `<span>` / `<div role="presentation">` with click/hover handlers and no
   keyboard path (the centres list already uses `<button>`, good). The place
   autocomplete isn't an ARIA combobox.
-- **Replace native `prompt` / `confirm` / `alert` with in-app dialogs that
-  match the app's look** (author request, 2026-06-18). Used today for the
-  **save-chart name**, plus rename / delete / import. The native browser
-  dialogs clash with the otherwise polished dark UI. Build a small reusable
-  themed dialog (text input + confirm/cancel), reusing the `ElementInfo`
-  drawer/scrim machinery if convenient. Only do it if it stays robust across
-  devices — keep a graceful fallback so no platform is left unable to
-  rename/save (the native dialogs work everywhere today).
+- ✅ **Replace native `prompt` / `confirm` / `alert` with in-app dialogs —
+  DONE 2026-06-24.** A promise-based controller (`dialog.svelte.js`) + one
+  themed host (`Dialog.svelte`) mounted in `+layout.svelte`, with a native
+  fallback if no host is present. Wired to the save-chart name (chart page)
+  and rename / delete / import (home). Supports prompt / confirm / alert
+  modes; the delete confirm uses the danger style. (Author request,
+  2026-06-18.)
 - The dev shortcut (author pre-fill on the tagline period) ships in the
   production bundle.
 
@@ -226,12 +231,11 @@ corrected).
 
 ## Possible improvements (not scheduled, not part of Phase 5)
 
-- **Place search should match partial names.** Not about prefixes per se:
-  the finder must work when the user hasn't typed the full city name —
-  "mad" should surface Madrid, "barce" Barcelona, "dusse" Düsseldorf.
-  Today the full name is needed. Related groundwork in "Known tech debt"
-  (Nominatim `/search` is geared toward full-form geocoding; a Photon
-  attempt was reverted).
+- ~~**Place search should match partial names.**~~ — done 2026-06-24.
+  Switched the geocoder from Nominatim to **Photon** (a typeahead index): a
+  prefix like "madr" now surfaces Madrid, "stuttg" Stuttgart. The earlier
+  Photon revert was caused by sending `lang=es` (HTTP 400); that param is now
+  omitted.
 - **Mobile date field: allow typing the numbers.** Besides the calendar
   picker, some users find typing the digits more comfortable than
   scrolling years in the calendar.
@@ -241,22 +245,21 @@ corrected).
 - ~~Unknown-hour slider should respect the current time~~ — done
   2026-06-13 (checking seeds the slider from the entered hour, rounded
   to the nearest half-hour; unchecking keeps the slider's hour).
-- **Saved-chart list should show only "city, country".** The place label
-  on each saved-chart chip currently includes the intermediate regions
-  (province, autonomous community…); shorten it to city + country. The
-  chart page header already does this trim — reuse it.
-- **City autocomplete surfaces regions and counties as cities.**
-  "Valencia" returns "Comunidad Valenciana, Comunidad Valenciana,
-  España" (duplicated label) and "Valencia County, Nuevo México" among
-  the suggestions. Filter or down-rank non-city entries and dedup
-  labels.
+- ~~**Saved-chart list should show only "city, country".**~~ — done
+  2026-06-24. Extracted the trim into a shared `cityCountry` helper
+  (`src/lib/geo/place.js`) and applied it to both the saved-chart list (was
+  showing the full label with the region) and the chart subtitle.
+- ~~**City autocomplete surfaces regions and counties as cities.**~~ — done
+  2026-06-24. Photon's `osm_tag=place:city/town/village/hamlet/municipality`
+  filter keeps only settlements server-side, so regions, counties and the
+  duplicated-label admin boundaries no longer appear.
 - **Invalid-data error message mixes languages.** A chart with broken
   stored data shows "Fecha/hora inválida:" followed by Luxon's raw
   English message ("the zone … is not supported"). Nearly unreachable
   for real users; low priority.
-- **Back arrow on the chart page (mobile).** The ← glyph looks small and
-  off-centre inside its circle on the mobile version; fix the
-  sizing/centring there.
+- ~~**Back arrow on the chart page (mobile).**~~ — done 2026-06-24. Replaced
+  the off-centre "←" text glyph with a flex-centred 18px SVG arrow (matching
+  the share/download buttons); verified dx=dy=0 at 375px.
 - ~~Small, subtle clear-form button on the home screen~~ — done
   2026-06-12 (quiet "Borrar formulario" link under the CTA).
 - **Estimated weight/influence per planetary activation.** Surface the
@@ -667,12 +670,14 @@ subir de versión.
   consistent, but not yet contrasted with a reference chart.
 - A handful of older source files still carry Spanish code comments from
   Phase 0/1.1. They get translated to English as they're touched.
-- The Nominatim integration uses the public endpoint without an explicit
-  User-Agent. For low traffic this is fine; if the app grows, we should
-  switch to a self-identifying header or a self-hosted Nominatim mirror.
-- City autocomplete uses Nominatim's `/search`, which is geared toward
-  full-form geocoding rather than prefix autocomplete. Short prefixes
-  ("cuen", "barc") don't always surface the obvious match. A first attempt
-  at switching to Photon (komoot) failed in deployment and was reverted.
-  Future work: investigate the Photon failure (possible CORS or response
-  shape mismatch) or try a different autocomplete-friendly geocoder.
+- (Obsolete 2026-06-24 — the geocoder is now Photon, not Nominatim.) Photon's
+  public instance has its own fair-use policy; the existing debounce + abort
+  in `CityAutocomplete` keeps us well within it. Consider a self-hosted Photon
+  mirror only if traffic grows.
+- ✅ **City autocomplete now uses Photon (resolved 2026-06-24).** The switch
+  from Nominatim's `/search` (full-form geocoding, weak on prefixes) to
+  Photon's typeahead index is done. The earlier Photon attempt's "failure in
+  deployment" was simply `lang=es` → HTTP 400 (Photon accepts only
+  de/en/fr/it/default); the param is now omitted and CORS (`*`) was verified.
+  Remaining nit: the file is still named `nominatim.js` (rename to
+  `geocoder.js` in a future cleanup).
