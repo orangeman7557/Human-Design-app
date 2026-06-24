@@ -13,6 +13,7 @@
   const version = __APP_VERSION__;
   import CityAutocomplete from '$lib/components/CityAutocomplete.svelte';
   import About from '$lib/components/About.svelte';
+  import { dialog } from '$lib/components/dialog.svelte.js';
   import {
     listCharts,
     renameChart,
@@ -322,14 +323,25 @@
   }
 
   async function renameSaved(c) {
-    const name = window.prompt('Nuevo nombre:', c.name);
+    const name = await dialog.prompt({
+      title: 'Renombrar carta',
+      defaultValue: c.name,
+      placeholder: 'Nombre de la carta',
+      confirmLabel: 'Guardar'
+    });
     if (name === null || !name.trim()) return;
     await renameChart(c.id, name.trim());
     await refreshList();
   }
 
   async function deleteSaved(c) {
-    if (!window.confirm(`¿Borrar la carta "${c.name}"?`)) return;
+    const ok = await dialog.confirm({
+      title: 'Borrar carta',
+      message: `¿Borrar la carta "${c.name}"? Esta acción no se puede deshacer.`,
+      confirmLabel: 'Borrar',
+      danger: true
+    });
+    if (!ok) return;
     await deleteChart(c.id);
     await refreshList();
   }
@@ -352,7 +364,7 @@
     try {
       const count = await importCharts(await file.text());
       await refreshList();
-      window.alert(`${count} carta(s) importada(s).`);
+      await dialog.alert({ message: `${count} carta(s) importada(s).` });
     } catch (err) {
       listError = err instanceof Error ? err.message : String(err);
     } finally {

@@ -1,28 +1,33 @@
-// Wrapper around the public Nominatim (OpenStreetMap) geocoder.
+// Place-of-birth autocomplete, backed by Photon (https://photon.komoot.io/).
 //
-// Nominatim's usage policy asks consumers to:
-//   1. Stay below 1 request per second.
-//   2. Identify themselves via Referer or User-Agent.
+// We started on Nominatim's `/search`, but it is built for full-form
+// geocoding, not autocomplete: short prefixes ("madr", "stuttg") rank by
+// completeness/importance, not prefix affinity, so "madr" surfaces a hamlet
+// in Yemen instead of Madrid. Photon indexes the same OSM data in an
+// Elasticsearch index tuned for typeahead, so prefixes resolve correctly.
 //
-// We handle (1) by debouncing keystrokes in CityAutocomplete.svelte and
-// aborting in-flight requests on every new keystroke. For (2), the browser
-// automatically sends a Referer header pointing at our own deployment, which
-// satisfies Nominatim's requirement without us having to forge a User-Agent
-// (browsers won't let us set that anyway).
+// History / gotcha: an earlier switch to Photon was reverted because it sent
+// `lang=es`, which Photon rejects with HTTP 400 (it only accepts de/en/fr/it
+// or the default). DO NOT pass `lang=es` here. Without `lang`, Photon returns
+// names in their local language, which reads fine for our labels.
 //
-// Known limitation: Nominatim is not really an autocomplete engine — short
-// prefixes ("cuen", "barc") often don't surface the obvious match. We've
-// tried switching to Photon and it broke; we'll revisit later. Logged in
-// BACKLOG.md.
+// Tech debt: the file is still named `nominatim.js` for historical reasons
+// (kept to avoid churn in importers); rename to `geocoder.js` in a cleanup pass.
 
-const ENDPOINT = 'https://nominatim.openstreetmap.org/search';
+const ENDPOINT = 'https://photon.komoot.io/api/';
 
 // Locale-biased result ordering. The audience is currently Spanish, so when
 // two cities share a name (classic: "Cuenca" exists in both Spain and
-// Ecuador) we surface the Spanish one first. We do NOT filter — the user
-// can still pick the Ecuadorian one if it's the right match. Replace this
-// constant with something user-configurable when the app grows beyond ES.
+// Ecuador) we surface the Spanish one first. We do NOT filter by country —
+// the user can still pick the Ecuadorian one. Replace with something
+// user-configurable when the app grows beyond ES.
 const PREFERRED_COUNTRY_CODE = 'es';
+
+// OSM `place` values we accept as birth-places. Restricting to settlements
+// (server-side, via `osm_tag`) is what keeps regions, counties and POIs out
+// of the suggestions — the old Nominatim path leaked "Valencia County" and
+// duplicated-label admin boundaries into the list.
+const PLACE_TAGS = ['city', 'town', 'village', 'hamlet', 'municipality'];
 
 /**
  * @typedef {Object} Place
@@ -32,86 +37,76 @@ const PREFERRED_COUNTRY_CODE = 'es';
  */
 
 /**
- * Search Nominatim for places matching a free-text query.
+ * Autocomplete-style search for places matching a free-text prefix or
+ * partial query.
  *
- * @param {string} query - Free-text input (e.g. "Madrid", "Cuenca, Spain").
+ * @param {string} query - Free-text input (e.g. "madr", "Madrid", "Berlin").
  * @param {AbortSignal} [signal] - Used by the caller to cancel stale requests.
  * @returns {Promise<Place[]>}
  */
 export async function searchPlaces(query, signal) {
   const params = new URLSearchParams({
     q: query,
-    format: 'json',
-    // We over-fetch (more than we display) so client-side dedup and re-rank
-    // have material to work with. Nominatim's own `dedupe=1` doesn't catch
-    // every case because it can't distinguish a "city" from the homonymous
-    // "boundary".
-    limit: '10',
-    addressdetails: '1',
-    // Localized place names. Spanish users see Spanish-language place names.
-    'accept-language': 'es'
+    // Over-fetch (more than we show) so client-side dedup and re-rank have
+    // material to work with.
+    limit: '15'
   });
+  // Multiple `osm_tag` values are OR-combined, so this keeps only settlements.
+  for (const tag of PLACE_TAGS) params.append('osm_tag', `place:${tag}`);
 
   const res = await fetch(`${ENDPOINT}?${params}`, { signal });
-  if (!res.ok) throw new Error(`Nominatim returned HTTP ${res.status}`);
+  if (!res.ok) throw new Error(`Photon returned HTTP ${res.status}`);
 
-  const raw = await res.json();
-  return dedupeAndRank(raw.map(toPlace)).slice(0, 6);
+  /** @type {{ features?: any[] }} */
+  const json = await res.json();
+  const places = (json.features ?? []).map(toPlace).filter((p) => p.label);
+  return dedupeAndRank(places).slice(0, 6);
 }
 
 /**
- * Compose a human-friendly label from Nominatim's verbose address parts.
- * Falls back through the place hierarchy because not every locality has a
- * `city` field (small villages, hamlets, etc.).
- *
- * Keeps `class` and `countryCode` around as hidden ranking signals for the
- * dedup pass; they are stripped before returning to callers.
+ * Photon returns a GeoJSON FeatureCollection; each feature carries its
+ * address parts on `properties` and coordinates on `geometry`. We normalize
+ * to our internal shape and keep `_value`/`_countryCode` as hidden ranking
+ * signals (stripped before returning to callers).
  */
-function toPlace(item) {
-  const addr = item.address ?? {};
-  const place =
-    addr.city ||
-    addr.town ||
-    addr.village ||
-    addr.hamlet ||
-    addr.municipality ||
-    addr.county ||
-    item.name;
-  const region = addr.state || addr.region;
-  const country = addr.country;
-  const label = [place, region, country].filter(Boolean).join(', ');
+function toPlace(feature) {
+  const props = feature.properties ?? {};
+  const [lon, lat] = feature.geometry?.coordinates ?? [NaN, NaN];
+
+  // `name` is the most specific label; `city` may differ (e.g. a town that's
+  // part of a larger municipality).
+  const placeName = props.name || props.city || props.county;
+  const region = props.state || props.county;
+  const country = props.country;
+  const label = [placeName, region, country].filter(Boolean).join(', ');
 
   return {
     label,
-    latitude: parseFloat(item.lat),
-    longitude: parseFloat(item.lon),
-    _class: item.class,
-    _countryCode: (addr.country_code ?? '').toLowerCase()
+    latitude: lat,
+    longitude: lon,
+    _value: props.osm_value || props.type,
+    _countryCode: (props.countrycode ?? props.country_code ?? '').toLowerCase()
   };
 }
 
 /**
  * Re-rank and de-duplicate.
  *
- * Ranking signals (lower score wins; stable sort preserves Nominatim's
- * original "importance" order within ties):
- *   - **Preferred country dominates.** Nominatim sometimes returns the
- *     city in the preferred country as a `class=boundary` (admin record)
- *     while returning a homonymous city in another country as a proper
- *     `class=place`. Ranking class above country would surface the wrong
- *     hit. Country comes first.
- *   - **Settlement type as tie-breaker.** Within the same country tier,
- *     prefer `class=place` (real city/village) over `class=boundary`
- *     (administrative boundary).
+ * Ranking signals (lower score wins; stable sort preserves Photon's
+ * relevance order within ties):
+ *   - Settlements before anything else (a guard — the server filter should
+ *     already have excluded non-settlements).
+ *   - Preferred-country entries before the rest, so a homonym in Spain wins
+ *     a tie against one abroad without hiding the foreign option.
  *
- * Dedup is by exact label after ranking, so the highest-ranked entry for
- * a given label survives.
+ * Dedup is by exact label after ranking, so the highest-ranked entry for a
+ * given label survives.
  */
 function dedupeAndRank(places) {
   const score = (p) => {
     let s = 0;
-    if (p._countryCode !== PREFERRED_COUNTRY_CODE) s += 10;
-    if (p._class !== 'place') s += 5;
+    if (!PLACE_TAGS.includes(p._value)) s += 10;
+    if (p._countryCode !== PREFERRED_COUNTRY_CODE) s += 5;
     return s;
   };
   const sorted = [...places].sort((a, b) => score(a) - score(b));

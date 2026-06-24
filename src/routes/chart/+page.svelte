@@ -11,6 +11,7 @@
   import ElementInfo from '$lib/components/ElementInfo.svelte';
   import InfoDot from '$lib/components/InfoDot.svelte';
   import About from '$lib/components/About.svelte';
+  import { dialog } from '$lib/components/dialog.svelte.js';
   import { getElementInfo, getProfileInfo, getGateInfo, getChannelInfo, getConceptInfo, getActivationWeight } from '$lib/hd/content/index.js';
   import { buildPrompts } from '$lib/hd/prompts.js';
 
@@ -526,7 +527,12 @@
     if (!birthData || saved) return;
     saveError = null;
     const suggested = birthData.name || birthData.placeLabel || 'Sin nombre';
-    const name = window.prompt('Nombre para esta carta:', suggested);
+    const name = await dialog.prompt({
+      title: 'Guardar carta',
+      defaultValue: suggested,
+      placeholder: 'Nombre de la carta',
+      confirmLabel: 'Guardar'
+    });
     if (name === null) return;
     try {
       // $state.snapshot strips the Svelte reactivity proxy; IndexedDB
@@ -607,7 +613,12 @@
      title and birth line) that the PNG clone picks up. -->
 <main bind:this={captureEl} class:capturing={sharing}>
   <header>
-    <button class="back" onclick={back} aria-label="Volver">←</button>
+    <button class="back" onclick={back} aria-label="Volver">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12" />
+        <polyline points="12 19 5 12 12 5" />
+      </svg>
+    </button>
     <h1>{birthData?.name?.trim() || 'Tu carta'}</h1>
     {#if chart}
       <div class="actions">
@@ -1028,13 +1039,17 @@
     margin-bottom: 0.4rem;
   }
   .back {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    padding: 0;
     background: var(--surface);
     border: 1px solid var(--border);
     color: var(--text);
     width: 2.25rem;
     height: 2.25rem;
     border-radius: 50%;
-    font-size: 1.2rem;
     cursor: pointer;
   }
   .save {
