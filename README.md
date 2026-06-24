@@ -13,10 +13,11 @@ planetary activations table. It also supports saving charts locally
 (IndexedDB), JSON export/import, an "unknown birth time" mode, and sharing the
 chart as a PNG.
 
-Development continues beyond the MVP — the next milestone is an AI handoff
-feature plus per-element explanatory text (Phase 6). [`TASKS.md`](./TASKS.md)
-is the canonical, up-to-date project state; [`BACKLOG.md`](./BACKLOG.md) holds
-deferred decisions and known debt.
+Development continues beyond the MVP: the AI handoff with per-element
+explanatory text (Phase 6) is built and in review, with a plain-language
+first-timer report (Phase 7) next. [`TASKS.md`](./TASKS.md) is the canonical,
+up-to-date project state; [`BACKLOG.md`](./BACKLOG.md) holds deferred
+decisions and known debt.
 
 The app ships a web manifest. Making it **installable** (add-to-home-screen,
 and eventually a Play Store build via TWA) is a planned goal — it still needs
@@ -42,8 +43,8 @@ AI-authored work is not flagged file-by-file.
 - **[Luxon](https://moment.github.io/luxon/)** +
   **[tz-lookup](https://github.com/darkskyapp/tz-lookup)** — historical
   timezone-aware date handling.
-- **[Nominatim](https://nominatim.openstreetmap.org/)** — free OpenStreetMap
-  geocoder for birth-place autocomplete.
+- **[Photon](https://photon.komoot.io/)** — OpenStreetMap-based geocoder
+  (typeahead) for birth-place autocomplete.
 - **SVG** — bodygraph rendering (Phase 1.3).
 - **[Dexie.js](https://dexie.org/)** over IndexedDB — local persistence
   (Phase 2).
@@ -68,7 +69,8 @@ If you want to run it locally anyway:
 
 ```bash
 npm install
-npm run dev
+npm run dev    # dev server
+npm test       # calculation-core test suite (vitest)
 ```
 
 Then open [http://localhost:5173](http://localhost:5173).
@@ -109,10 +111,13 @@ merits.
 4. **Phase 3** — Visual polish (classic-faithful style).
 5. **Phase 4** — "Unknown birth time" handling.
 6. **Phase 5** — Share chart as a PNG. *(MVP closes here.)*
-7. **Phase 6 (next)** — AI handoff + per-element explanatory text.
-8. **Phase 7 (planned)** — Composite chart.
-9. **Phase 8 (planned)** — Transits.
-10. **Phase 9 (planned)** — Optional online sync.
+7. **Phase 6** — AI handoff + per-element explanatory text *(built; pending
+   the author's text review)*.
+8. **Phase 7 (next)** — Initial report: a plain-language HD primer for
+   first-timers.
+9. **Phase 8 (planned)** — Composite chart.
+10. **Phase 9 (planned)** — Transits.
+11. **Phase 10 (planned)** — Optional online sync.
 
 Live status in [`TASKS.md`](./TASKS.md); deferred decisions and known debt in
 [`BACKLOG.md`](./BACKLOG.md).

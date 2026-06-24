@@ -679,5 +679,5 @@ subir de versión.
   Photon's typeahead index is done. The earlier Photon attempt's "failure in
   deployment" was simply `lang=es` → HTTP 400 (Photon accepts only
   de/en/fr/it/default); the param is now omitted and CORS (`*`) was verified.
-  Remaining nit: the file is still named `nominatim.js` (rename to
-  `geocoder.js` in a future cleanup).
+  The file was renamed from `nominatim.js` to `geocoder.js` (2026-06-24),
+  with importers, comments and docs updated.

@@ -10,9 +10,6 @@
 // `lang=es`, which Photon rejects with HTTP 400 (it only accepts de/en/fr/it
 // or the default). DO NOT pass `lang=es` here. Without `lang`, Photon returns
 // names in their local language, which reads fine for our labels.
-//
-// Tech debt: the file is still named `nominatim.js` for historical reasons
-// (kept to avoid churn in importers); rename to `geocoder.js` in a cleanup pass.
 
 const ENDPOINT = 'https://photon.komoot.io/api/';
 

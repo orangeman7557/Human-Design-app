@@ -35,8 +35,8 @@ Last updated: 2026-06-24.
 > **Photon** para typeahead real por prefijo («madr»→Madrid, «stuttg»→
 > Stuttgart) y solo asentamientos (fuera regiones/condados y labels
 > duplicados). El revert previo de Photon fue por enviar `lang=es`→**HTTP
-> 400**; ahora se omite (CORS `*` verificado). El fichero sigue llamándose
-> `nominatim.js` (renombrar a `geocoder.js` en una limpieza futura). (4)
+> 400**; ahora se omite (CORS `*` verificado). El fichero `nominatim.js` se
+> renombró a **`geocoder.js`** (imports/comentarios/docs al día). (4)
 > **Flecha de volver**: el glifo «←» descentrado pasa a **SVG centrado por
 > flexbox** (a juego con compartir/descargar; dx=dy=0 en móvil). (5) **Retry
 > ~8× del efecto de cálculo**: ya estaba resuelto (el cálculo se movió de un
@@ -44,7 +44,11 @@ Last updated: 2026-06-24.
 > compartido `cityCountry` en `src/lib/geo/place.js` — el subtítulo de la
 > carta ya recortaba a ciudad+país, pero la **lista de cartas guardadas**
 > mostraba el label completo con la región; ahora ambos muestran **ciudad +
-> país** (sin región/condado). Commits a `main`. Versión sigue 0.1.1.
+> país** (sin región/condado). (7) **Docs sincronizados** con todo lo
+> anterior: `CLAUDE.md`, `README.md`, `TASKS.md` y `BACKLOG.md` (geocoder →
+> Photon, tests automatizados, diálogos propios, roadmap renumerado a
+> Fase 7 informe inicial / 8 composite / 9 tránsitos / 10 sync). Commits a
+> `main`. Versión sigue 0.1.1.
 >
 > Previo (2026-06-22): **Pulido de Fase 6 (validado) + roadmap.**
 > (1) **Bug de la «i» arreglado**: en móvil la «i» se quedaba colgada al

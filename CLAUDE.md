@@ -29,7 +29,7 @@ El usuario introduce su fecha, hora y lugar de nacimiento → la app calcula su 
 | Deploy | **Cloudflare Workers** vía `@sveltejs/adapter-cloudflare` + Wrangler 4 |
 | Astronomía | `astronomy-engine` (MIT) — precisión ±1 arcmin, suficiente para puertas y líneas HD |
 | Fechas/zonas horarias | `luxon` (datetime timezone-aware) + `tz-lookup` (coords → IANA timezone, sin API) |
-| Geocodificación | **Nominatim** (OpenStreetMap) — endpoint público, sin autenticación |
+| Geocodificación | **Photon** (komoot, sobre OpenStreetMap) — typeahead por prefijo, endpoint público sin autenticación |
 | Runtime | Node ≥ 22 (`.nvmrc` + `engines.node` en `package.json`) |
 | Lenguaje | JavaScript (sin TypeScript; JSDoc para tipos internos) |
 
@@ -51,6 +51,7 @@ El usuario introduce su fecha, hora y lugar de nacimiento → la app calcula su 
 ├── package.json
 ├── svelte.config.js
 ├── vite.config.js
+├── vitest.config.js     ← configuración de tests (vitest)
 ├── wrangler.jsonc       ← configuración de Cloudflare Workers
 ├── static/
 │   └── manifest.webmanifest
@@ -72,11 +73,13 @@ El usuario introduce su fecha, hora y lugar de nacimiento → la app calcula su 
         │   ├── chart.js               ← orquestador principal: birth data → objeto chart completo
         │   └── bodygraph-geometry.js  ← coordenadas SVG: centros, formas, posiciones de las 64 puertas
         ├── geo/
-        │   ├── nominatim.js  ← llamadas a la API de Nominatim (debounce, abort, dedup)
+        │   ├── geocoder.js   ← geocodificación vía Photon (typeahead, debounce, abort, dedup)
+        │   ├── place.js      ← helper de etiqueta "ciudad, país"
         │   └── timezone.js   ← resolución de timezone por coordenadas
         └── components/
-            ├── CityAutocomplete.svelte  ← campo de ciudad con sugerencias de Nominatim
-            └── Bodygraph.svelte         ← SVG del bodygraph (centros, canales, marcadores)
+            ├── CityAutocomplete.svelte  ← campo de ciudad con sugerencias de Photon
+            ├── Bodygraph.svelte         ← SVG del bodygraph (centros, canales, marcadores)
+            └── Dialog.svelte            ← diálogos propios prompt/confirm/alert (vía dialog.svelte.js)
 ```
 
 **Flujo de datos:** formulario → `sessionStorage` → `computeChart()` → SVG + texto. Sin backend, todo client-side.
@@ -93,7 +96,7 @@ El usuario introduce su fecha, hora y lugar de nacimiento → la app calcula su 
 - **Comentarios de cabecera en archivos de geometría/cálculo** documentan las fases que los modificaron (registro de cambios arquitectónico).
 - **Idioma de los comentarios:** inglés en el código. El usuario se comunica en español; la UI también está en español (pendiente de internacionalización formal en fases futuras).
 - **Caso de prueba de validación:** atajo oculto — pinchar el punto final del subtítulo de la home ("…datos de nacimiento.") rellena el formulario con los datos de orangeman7557 (1984-03-13, 09:30, Madrid) como smoke test rápido.
-- **No hay tests automatizados.** Validación manual contra la carta conocida del autor.
+- **Tests del núcleo de cálculo con vitest** (`npm test`; ver `src/lib/hd/chart.test.js`): dos cartas de referencia congeladas + límites de `longitudeToGate`/`cityCountry`. El resto se valida manualmente contra la carta conocida del autor.
 - **Nunca ejecutar `npm install` dentro de un worktree.** Las sesiones de IA trabajan en worktrees bajo `.claude/worktrees/` sin `node_modules` propio: Node resuelve las dependencias subiendo hasta el `node_modules` del checkout principal, y `vite.config.js` permite servirlas desde ahí. Si una tarea añade una dependencia nueva, instalarla en la carpeta principal del proyecto (`npm install <paquete>` en `/Users/i7up/Documents/Claude/Projects/human-design-app`).
 
 ---
@@ -153,26 +156,27 @@ Colores de centros definidos: Head/G amarillo `#e5cf3d`, Ajna verde `#6cb46c`, T
 
 - **Fase 0 — Infraestructura:** repo + Cloudflare Workers auto-deploy + PWA manifest + dark theme base.
 - **Fase 1.1 — Cálculo astronómico:** 13 cuerpos (Personality + Design), gate/line mapping, tipo/estrategia/autoridad/perfil/definición. Validado contra dos cartas reales.
-- **Fase 1.2 — Autocomplete de ciudad + timezone automática:** Nominatim con debounce/abort, `tz-lookup` para timezone, dedup y ranking de resultados.
+- **Fase 1.2 — Autocomplete de ciudad + timezone automática:** geocoder con debounce/abort, `tz-lookup` para timezone, dedup y ranking de resultados (Nominatim en su día; migrado a **Photon** en jun 2026 para typeahead por prefijo).
 - **Fase 1.3 — Bodygraph SVG funcional:** 9 centros en formas correctas, 36 canales gate-to-gate, color coding básico.
 - **Fase 1.4 — Precisión visual del bodygraph:** centros y puertas con coordenadas del referencial (viewBox 1058×1630), circuito de integración como polilíneas calculadas, colores refinados, split-circle para puertas Both.
-- **Fase 2 — Persistencia local:** IndexedDB vía Dexie.js (`src/lib/db/charts.js`). Guardar/listar/renombrar/borrar cartas (diálogos nativos por ahora). Exportar/importar JSON. Se guarda el dato de nacimiento y la carta se recalcula al abrir.
+- **Fase 2 — Persistencia local:** IndexedDB vía Dexie.js (`src/lib/db/charts.js`). Guardar/listar/renombrar/borrar cartas (diálogos propios temáticos). Exportar/importar JSON. Se guarda el dato de nacimiento y la carta se recalcula al abrir.
 - **Fase 3 — Pulido visual:** resumen y centros como overlays a los lados del bodygraph, tipo como chips con % de población, columnas de canales/colgantes con interacciones hover/tap hacia centros y activaciones (con chip seleccionada destacada y resto atenuado), canales Both rayados 70/30, cartas guardadas con tipo y reordenado drag & drop (Dexie schema v2). Detalle en TASKS.md.
 - **Fase 4 — Modo hora desconocida:** formulario en orden fecha-lugar-hora; checkbox "Hora desconocida" que deshabilita el campo y muestra un slider 0-24h (pasos de 30 min) con banda de tipos del día y preview del tipo resultante; la hora del slider es la que usa "Calcular carta".
 - **Fase 5 — Compartir imagen (cierra el MVP, validada 2026-06-12):** botones compartir/descargar en la página de carta que capturan toda la vista a PNG vía `html-to-image` (título y subtítulo centrados solo en la exportación); share sheet nativo en táctil, descarga en escritorio; fichero `nombre carta YYYY-MM-DD-HHMM-ciudad.png`. Durante el cierre se corrigió además el **bug grave de cálculo** (nodo lunar medio → nodo verdadero osculante en `ephemeris.js`).
 
 ### Pendiente
 
-- **Estabilización post-MVP:** pruebas con cartas reales, bug-fixing, opcional TWA para Google Play. Mejoras menores de UX en BACKLOG ("Possible improvements").
-- **Fase 6 — Integración IA (handoff) + info de elementos:** generar desde cualquier elemento de la app un prompt listo para llevar a la IA del propio usuario (la IA no corre dentro de la app), más información textual básica de cada elemento (tipo, autoridad, perfil, centros, canales) — solo si es legalmente viable: redacción propia o fuentes libres, nunca copiado de Jovian Archive. Fase 6.A construida (jun 2026: andamiaje + piloto con el Tipo Generator — panel reutilizable con info y selector de prompt para IA); pendiente la Fase 6.B (resto del contenido del núcleo). Detalle en TASKS/BACKLOG.
-- **Fase 7 — Carta compuesta:** overlay visual de dos cartas guardadas.
-- **Fase 8 — Tránsitos:** vista de tránsitos en tiempo real sobre una carta guardada.
-- **Fase 9 — Guardado en línea:** sincronización opcional en la nube (local-only sigue siendo el default).
+- **Estabilización post-MVP:** en curso. Aterrizado (jun 2026): tests del núcleo con vitest, diálogos propios, autocompletado por prefijo (Photon), flecha de volver y etiqueta "ciudad, país". Pendiente: pruebas con cartas reales, opcional TWA para Google Play, y las mejoras menores de BACKLOG ("Possible improvements").
+- **Fase 6 — Integración IA (handoff) + info de elementos:** generar desde cualquier elemento de la app un prompt listo para llevar a la IA del propio usuario (la IA no corre dentro de la app), más información textual básica de cada elemento (tipo, autoridad, perfil, centros, canales) — solo si es legalmente viable: redacción propia o fuentes libres, nunca copiado de Jovian Archive. **Funcionalmente completa** (6.A–6.F construidas y verificadas, jun 2026); pendiente solo la revisión de textos por el autor y el bump opcional a 0.2.0. Detalle en TASKS/BACKLOG.
+- **Fase 7 — Informe inicial:** primer de HD en lenguaje llano para quien ve su carta sin saber nada del sistema (qué es HD + lectura general desde su tipo/estrategia, con el handoff de Fase 6 para profundizar).
+- **Fase 8 — Carta compuesta:** overlay visual de dos cartas guardadas.
+- **Fase 9 — Tránsitos:** vista de tránsitos en tiempo real sobre una carta guardada.
+- **Fase 10 — Guardado en línea:** sincronización opcional en la nube (local-only sigue siendo el default).
 
 ### Deuda técnica conocida
 
 - Canal **30-41** (caso edge de medio canal) pendiente de verificar en B2.
-- Nominatim usa el endpoint público sin `User-Agent` explícito — válido para bajo tráfico; a revisar si crece.
+- El geocoder usa la instancia pública de **Photon** (komoot); válido para bajo tráfico, a revisar (mirror propio) si crece.
 - Algunos comentarios de código aún en español (legado de fases 0/1.1) — se migran al inglés cuando se toca el archivo.
 
 ---

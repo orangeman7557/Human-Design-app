@@ -6,7 +6,7 @@
   // timezone derived from its coordinates. The parent form treats a `null`
   // value as a validation error on submit.
 
-  import { searchPlaces } from '$lib/geo/nominatim.js';
+  import { searchPlaces } from '$lib/geo/geocoder.js';
   import { timezoneFor } from '$lib/geo/timezone.js';
 
   /**
@@ -64,7 +64,7 @@
         results = await searchPlaces(trimmed, inflight.signal);
       } catch (err) {
         if (err && err.name !== 'AbortError') {
-          console.error('Nominatim search failed', err);
+          console.error('Place search failed', err);
           results = [];
         }
       } finally {
