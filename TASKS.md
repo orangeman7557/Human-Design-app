@@ -17,9 +17,41 @@ Statuses:
 The deeper context (technical trade-offs, future ideas, deferred decisions)
 lives in [`BACKLOG.md`](./BACKLOG.md).
 
-Last updated: 2026-06-24.
+Last updated: 2026-06-30.
 
-> Latest change (2026-06-24): **Estabilización post-MVP: tests del núcleo,
+> Latest change (2026-06-30): **Fase 7 — Informe inicial construido y
+> verificado (pendiente la revisión de textos del autor) + enriquecimiento de
+> puertas/canales (Fase 6.D follow-up).** (1) **Puertas/canales con contenido
+> propio**: las 64 puertas estrenan una "esencia" de 2-3 frases (tema del
+> hexagrama de dominio público + función del centro + don/sombra), en voz
+> neutra, en `content/es.js` (`gate`, con `theme` para componer canales).
+> `getGateInfo`/`getChannelInfo` añaden una **coda personalizada de 3 estados**
+> según la carta: puerta *completa* (en canal), *colgante* (activa sin su otra
+> mitad → se completa de forma puntual con personas o tránsitos) o *inactiva*;
+> el canal, *completo* / *medio canal* / *ninguno*. Cierra la deuda de BACKLOG
+> "Gate & channel info text is too thin". (2) **Informe inicial (Fase 7)**:
+> overlay `InitialReport.svelte` abierto por un botón **«Informe»** junto al
+> nombre de la carta; capa de ensamblaje `src/lib/hd/report.js` (`buildReport`)
+> que arma ~13 secciones desde el chart — Parte A general (qué es HD + analogía
+> de las hormigas + bodygraph/centros + condicionamiento + desacondicionamiento),
+> Parte B personalizada (tipo + lugar en el colectivo, estrategia,
+> autoridad=decisiones, energía/trampa/señales por tipo, perfil, definición,
+> recorrido de los 9 centros con su estado real) y Parte C (handoff de carta
+> completa: «Abrir IA» / «Copiar prompt»). Reutiliza la biblioteca de Fase 6 +
+> bloques nuevos `report`/`typeReport` en `es.js`; los enlaces internos abren
+> los drawers de elemento. Arquitectura **híbrida** (estático determinista +
+> handoff). (3) **Split de centros**: cada centro en `es.js` pasa de
+> `paragraphs` a `{ fn, defined, open }` para que el informe muestre solo el
+> estado de la carta; `getElementInfo` recompone función+ambos estados para el
+> chip "i" (sin regresión). (4) `renderInline` extraído a `src/lib/markup.js`
+> (compartido por `ElementInfo` y el informe). Verificado: 16/16 tests y en
+> navegador (chip de centro, informe completo, enlaces internos, handoff) sin
+> errores de consola. Spec en `docs/informe-inicial.md`. Pendiente solo la
+> **revisión de textos del autor** (64 esencias + bloques del informe) y,
+> opcional, el bump a 0.2.0. Versión sigue 0.1.1. Falta el commit a main de
+> este lote.
+>
+> Previo (2026-06-24): **Estabilización post-MVP: tests del núcleo,
 > diálogos propios, autocompletado por prefijo, flecha y «ciudad, país».**
 > (1) **Tests del núcleo de cálculo** — primera suite automatizada con
 > `vitest` (instalado en el checkout principal; `npm test`). Congela las dos
@@ -555,14 +587,25 @@ Subtareas completadas:
     footer modal (`About.svelte`: disclaimers + AI-assistance note + author +
     license + report-a-bug; built 2026-06-18). Phase 6 functionally complete;
     pending only the author's text review + an optional bump to 0.2.0.
-- **Phase 7 — Initial report (HD primer for first-timers).** A simple,
-  up-front report for someone who has never heard of Human Design and is
-  seeing their chart for the first time: a plain-language explanation of what
-  Human Design is, plus a general read of *their* chart built from its type
-  and strategy, with the Phase 6 AI handoff to go deeper. Surfaced clearly and
-  early — e.g. a "report"/info button next to the chart title or beside the
-  share/download buttons — so it's the natural first thing a newcomer opens.
-  (Added 2026-06-22; pushed the former composite/transits/sync down to 8/9/10.)
+- **Phase 7 — Initial report (HD primer for first-timers).** 🟡 **Built and
+  verified 2026-06-30; pending the author's text review.** An "Informe" button
+  next to the chart name opens a full-screen overlay (`InitialReport.svelte`)
+  whose sections are assembled by `report.js` (`buildReport`) from the chart:
+  Part A (what HD is + the ant analogy + the bodygraph/centres + conditioning +
+  de-conditioning), Part B personalised (type + place in the collective,
+  strategy, authority = decision-making, per-type energy/trap/signposts,
+  profile, definition, a walk through the nine centres in their actual state)
+  and Part C (a whole-chart AI handoff: "Abrir IA" / "Copiar prompt"). Hybrid
+  by design: a deterministic static report + the Phase 6 handoff for depth.
+  Reuses the Phase 6 content library + new `report`/`typeReport` blocks in
+  `es.js`; centres were split into `{ fn, defined, open }` so the report shows
+  only the chart's state (the chip "i" still shows both); `renderInline`
+  extracted to `src/lib/markup.js`; in-text links open the element drawers.
+  Verified: 16/16 tests + browser (centre chip, full report, links, handoff),
+  no console errors. Done alongside (Phase 6.D follow-up): the **64 gate
+  essences + 3-state codas** for gates/channels. Full spec in
+  `docs/informe-inicial.md`. (Added 2026-06-22; built 2026-06-30 — composite/
+  transits/sync stay at 8/9/10.)
 - **Phase 8 — Composite chart.** Two saved charts rendered as a combined
   bodygraph (visual overlay distinguishing each person).
 - **Phase 9 — Transits.** View live transits over a saved chart.

@@ -23,7 +23,14 @@ function pack(lang) {
  * @returns {{ title: string, paragraphs: string[] } | null}
  */
 export function getElementInfo(kind, key, lang = DEFAULT_LANG) {
-  return pack(lang)[kind]?.[key] ?? null;
+  const entry = pack(lang)[kind]?.[key];
+  if (!entry) return null;
+  // Centres are stored split (fn/defined/open) — Phase 7. The chip "i" shows the
+  // function plus both states; the report uses getCenterReport for just one.
+  if (kind === 'center') {
+    return { title: entry.title, paragraphs: [entry.fn, entry.defined, entry.open] };
+  }
+  return entry;
 }
 
 /** Whether an element has explanatory content (drives the info "i"). */
@@ -94,6 +101,35 @@ export function getActivationWeight(planet, lang = DEFAULT_LANG) {
   return pack(lang).activationWeight?.[planet] ?? null;
 }
 
+// ── Initial report (Phase 7). Content accessors used by buildReport (report.js). ──
+
+/** A general report section ({ title, paragraphs }) by id, or null. */
+export function getReportSection(id, lang = DEFAULT_LANG) {
+  return pack(lang).report?.[id] ?? null;
+}
+
+/** Short connective lead-in string for a personalised report section, or null. */
+export function getReportLeadIn(id, lang = DEFAULT_LANG) {
+  return pack(lang).report?.leadIn?.[id] ?? null;
+}
+
+/** The per-type practical block ({ energia, trampa, senales }) or null. */
+export function getTypeReport(type, lang = DEFAULT_LANG) {
+  return pack(lang).typeReport?.[type] ?? null;
+}
+
+/**
+ * A centre for the report: its function + only the relevant state.
+ * @param {string} key   centre key
+ * @param {boolean} isDefined
+ * @param {string} [lang]
+ */
+export function getCenterReport(key, isDefined, lang = DEFAULT_LANG) {
+  const entry = pack(lang).center?.[key];
+  if (!entry) return null;
+  return { title: entry.title, paragraphs: [entry.fn, isDefined ? entry.defined : entry.open] };
+}
+
 // Gates and channels (Phase 6.D) carry only minimal own info — the mechanical
 // facts (centre membership, channel endpoints) plus the public-domain I Ching
 // root — and delegate the depth to the user's AI via the panel's prompt. So
@@ -102,50 +138,103 @@ export function getActivationWeight(planet, lang = DEFAULT_LANG) {
 // (rendered as a subtle underline by ElementInfo) so a gate links its centre, a
 // channel links its centres and gates, etc. — clicking opens a nested drawer.
 
-/**
- * Info for a single gate.
- * @param {number|string} gate
- * @param {string} [lang]
- * @returns {{ title: string, paragraphs: string[] } | null}
- */
-export function getGateInfo(gate, lang = DEFAULT_LANG) {
+/** Short theme phrase for a gate (used to compose channels), or null. */
+function gateTheme(gate, lang = DEFAULT_LANG) {
+  return pack(lang).gate?.[Number(gate)]?.theme ?? null;
+}
+
+/** A gate's state in a chart: 'complete' | 'hanging' | 'inactive', or null if no chart. */
+function gateState(gate, chart) {
+  if (!chart?.activeGates) return null;
   const g = Number(gate);
-  const center = CENTER_BY_GATE[g];
-  if (!center) return null;
-  const labels = pack(lang).promptLabels.center;
-  const name = getIchingName(g, lang);
-  return {
-    title: `Puerta ${g}`,
-    paragraphs: [
-      `La puerta ${g} se sitúa en el **[centro ${labels[center] ?? center}](center:${center})** y comparte su función dentro del bodygraph.`,
-      name
-        ? `Le corresponde el hexagrama ${g} del I Ching, «${name}», que da una primera idea de su tono.`
-        : `Le corresponde el hexagrama ${g} del I Ching.`,
-      'Para una lectura en profundidad, apóyate en el prompt de abajo con tu IA.'
-    ]
-  };
+  if (!chart.activeGates.includes(g)) return 'inactive';
+  const inChannel = (chart.activeChannels ?? []).some(([a, b]) => a === g || b === g);
+  return inChannel ? 'complete' : 'hanging';
+}
+
+/** Personalised one-line coda for a gate given its state, or null. */
+function gateCoda(state) {
+  switch (state) {
+    case 'complete':
+      return 'En tu carta forma parte de un canal completo: es una energía que aportas de forma estable e integrada.';
+    case 'hanging':
+      return 'En tu carta está activa pero colgante: aportas su tema, y su otra mitad solo se completa de forma puntual, con ciertas personas o en ciertos tránsitos.';
+    case 'inactive':
+      return 'No está activa en tu carta: es una energía que reconoces y recibes de los demás y del entorno, más que una constante tuya.';
+    default:
+      return null;
+  }
 }
 
 /**
- * Info for a channel given as a "g1-g2" string or [g1, g2] pair.
- * @param {string|number[]} pair
+ * Info for a single gate. With `chart`, appends a personalised state coda
+ * (complete / hanging / inactive) — Phase 7.
+ * @param {number|string} gate
+ * @param {any} [chart]
  * @param {string} [lang]
  * @returns {{ title: string, paragraphs: string[] } | null}
  */
-export function getChannelInfo(pair, lang = DEFAULT_LANG) {
+export function getGateInfo(gate, chart = null, lang = DEFAULT_LANG) {
+  const g = Number(gate);
+  const center = CENTER_BY_GATE[g];
+  if (!center) return null;
+  const p = pack(lang);
+  const entry = p.gate?.[g];
+  const labels = p.promptLabels.center;
+  const name = getIchingName(g, lang);
+  const paragraphs = [
+    entry?.text ??
+      `La puerta ${g} se sitúa en el **[centro ${labels[center] ?? center}](center:${center})**.`,
+    name
+      ? `Su raíz es el hexagrama ${g} del I Ching, «${name}».`
+      : `Le corresponde el hexagrama ${g} del I Ching.`
+  ];
+  const coda = gateCoda(gateState(g, chart));
+  if (coda) paragraphs.push(coda);
+  paragraphs.push('Para una lectura más a fondo, apóyate en el prompt de abajo con tu IA.');
+  return { title: `Puerta ${g}`, paragraphs };
+}
+
+/** Personalised coda for a channel given the chart, or null. */
+function channelCoda(a, b, chart) {
+  if (!chart?.activeGates) return null;
+  const aOn = chart.activeGates.includes(a);
+  const bOn = chart.activeGates.includes(b);
+  if (aOn && bOn) {
+    return 'Tienes este canal completo en tu carta: define sus dos centros y mantiene esa corriente estable entre ellos.';
+  }
+  if (aOn || bOn) {
+    const on = aOn ? a : b;
+    const off = aOn ? b : a;
+    return `En tu carta tienes una de sus dos puertas (la [puerta ${on}](gate:${on})) pero no la otra (la [puerta ${off}](gate:${off})): es un medio canal que se completa de forma puntual, con quien tenga la puerta que falta o en ciertos tránsitos.`;
+  }
+  return 'Ninguna de sus dos puertas está activa en tu carta: es una corriente que encuentras sobre todo en los demás.';
+}
+
+/**
+ * Info for a channel given as a "g1-g2" string or [g1, g2] pair. With `chart`,
+ * appends a personalised state coda (complete / half / none) — Phase 7.
+ * @param {string|number[]} pair
+ * @param {any} [chart]
+ * @param {string} [lang]
+ * @returns {{ title: string, paragraphs: string[] } | null}
+ */
+export function getChannelInfo(pair, chart = null, lang = DEFAULT_LANG) {
   const [a, b] = Array.isArray(pair) ? pair.map(Number) : String(pair).split('-').map(Number);
   const ca = CENTER_BY_GATE[a];
   const cb = CENTER_BY_GATE[b];
   if (!ca || !cb) return null;
   const labels = pack(lang).promptLabels.center;
-  const na = getIchingName(a, lang);
-  const nb = getIchingName(b, lang);
-  return {
-    title: `Canal ${a}-${b}`,
-    paragraphs: [
-      `El canal ${a}-${b} conecta el **[centro ${labels[ca] ?? ca}](center:${ca})** ([puerta ${a}](gate:${a})) con el **[centro ${labels[cb] ?? cb}](center:${cb})** ([puerta ${b}](gate:${b})). Con sus dos puertas activas queda completo, define ambos centros y crea una corriente de energía estable entre ellos.`,
-      `Reúne los temas de sus dos puertas${na && nb ? ` —en el I Ching, los hexagramas «${na}» y «${nb}»—` : ''}, que conviene leer juntos para captar su carácter.`,
-      'Para una lectura detallada, apóyate en el prompt de abajo con tu IA.'
-    ]
-  };
+  const ta = gateTheme(a, lang);
+  const tb = gateTheme(b, lang);
+  const paragraphs = [
+    `El canal ${a}-${b} conecta el **[centro ${labels[ca] ?? ca}](center:${ca})** ([puerta ${a}](gate:${a})) con el **[centro ${labels[cb] ?? cb}](center:${cb})** ([puerta ${b}](gate:${b})). Con sus dos puertas activas queda completo, define ambos centros y crea una corriente de energía estable entre ellos.`
+  ];
+  if (ta && tb) {
+    paragraphs.push(`Reúne ${ta} ([puerta ${a}](gate:${a})) y ${tb} ([puerta ${b}](gate:${b})), que conviene leer juntas para captar su carácter.`);
+  }
+  const coda = channelCoda(a, b, chart);
+  if (coda) paragraphs.push(coda);
+  paragraphs.push('Para una lectura más a fondo, apóyate en el prompt de abajo con tu IA.');
+  return { title: `Canal ${a}-${b}`, paragraphs };
 }

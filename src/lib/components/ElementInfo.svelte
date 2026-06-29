@@ -21,6 +21,7 @@
     getPreferredAngle,
     setPreferredAngle
   } from '$lib/ai/handoff.js';
+  import { renderInline } from '$lib/markup.js';
 
   /**
    * @type {{
@@ -192,23 +193,8 @@
     if (e.key === 'Enter' || e.key === ' ') navFromEvent(e);
   }
 
-  // The content uses Markdown-style emphasis: **bold** and *italic*, plus the
-  // link markup `[label](kind:key)`. Render it safely — the text is all ours,
-  // but we still escape HTML first and only then turn the markers into
-  // <strong>/<em>/<span class="ilink">.
-  function renderInline(text) {
-    const esc = String(text)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;');
-    return esc
-      .replace(
-        /\[([^\]]+)\]\(([a-z]+:[^)]+)\)/g,
-        '<span class="ilink" role="link" tabindex="0" data-link="$2">$1</span>'
-      )
-      .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
-      .replace(/\*([^*]+)\*/g, '<em>$1</em>');
-  }
+  // Inline markup (**bold**, *italic*, [label](kind:key)) → HTML lives in
+  // $lib/markup.js, shared with the report so both render identically.
 </script>
 
 <svelte:window {onkeydown} />

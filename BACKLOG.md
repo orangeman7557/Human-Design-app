@@ -266,14 +266,18 @@ corrected).
   commonly attributed relative weight of each activation (e.g. the Sun
   is said to weigh far more than any other body). Research the usual
   percentages before designing the UI.
-- **Gate & channel info text is too thin (Phase 6.D follow-up).** The
-  generated gate/channel info currently shows little beyond the centre it
-  belongs to and its I Ching hexagram *name* ("le corresponde el hexagrama
-  N"). Add more genuinely useful own-wording per gate/channel — the
-  theme/energy it carries, what its line evokes, and (for channels) how the
-  two gates combine — so the in-app text stands on its own and isn't just a
-  label + a hand-off to the AI. Keep it legally safe: own voice anchored in
-  mechanical facts + public-domain I Ching, never Jovian Archive wording.
+- ✅ **Gate & channel info text is too thin (Phase 6.D follow-up) — DONE
+  2026-06-30.** Each of the 64 gates now carries an own-wording **essence**
+  (2-3 sentences: the public-domain I Ching hexagram theme + the gate's centre
+  function + a gift/shadow polarity), written neutrally so it reads right
+  whether or not the gate is active; stored as `gate` (with a short `theme`) in
+  `content/es.js`. `getGateInfo` / `getChannelInfo` append a **3-state coda**
+  from the chart (gate: complete / hanging / inactive — a hanging gate completes
+  only temporarily, via another person or a transit, **not** places; channel:
+  complete / half / none), and channels compose a synthesis line from their two
+  gate themes. Legally safe: own voice on mechanical facts + public-domain I
+  Ching, never Jovian Archive wording. Pending the author's review of the 64
+  texts.
 
 ## Astronomical precision (HD variables: color, tone, base)
 
@@ -615,6 +619,37 @@ with their type, authority, etc.). Current plan: the panel text holds the
 general info and the AI prompt carries the personalised reading. Fine for
 now — worth exploring later whether to surface or highlight chart-specific
 info directly in the app (not just via the prompt).
+
+## Phase 7 — initial report (built 2026-06-30)
+
+Built and verified (browser + 16/16 tests); pending the author's text review.
+Hybrid architecture, as the roadmap anticipated: a deterministic static report
+assembled in-app + the Phase 6 AI handoff for personalised depth. Full spec in
+[`docs/informe-inicial.md`](./docs/informe-inicial.md).
+
+- **Entry point**: an "Informe" pill button next to the chart name (`report-btn`
+  in `chart/+page.svelte`, added to the PNG-capture filter so it doesn't leak
+  into the shared image). Opens `InitialReport.svelte`, a full-screen overlay
+  with a short table of contents + scrolling sections.
+- **Assembly**: `src/lib/hd/report.js` — `buildReport(chart)` returns the
+  ordered `{ id, title, paragraphs }[]`; `buildReportPrompt(chart)` composes the
+  whole-chart handoff prompt. Pure data, no calculation; the personalised
+  substance is reused from the content library.
+- **Sections** (~13): Part A general (qué es HD + ant analogy + bodygraph &
+  centres + conditioning + de-conditioning); Part B personalised (type + place
+  in the collective, strategy, authority = decision-making, per-type
+  energy/trap/signposts, profile, definition, a walk through the nine centres in
+  their real state); Part C handoff ("Abrir IA" / "Copiar prompt").
+- **Content**: new `report` (general sections + lead-ins) and `typeReport`
+  (energy/trap/signposts × 5 types) blocks in `es.js`; the author's "qué es HD"
+  intro + ant analogy reused verbatim. Centres were **split** from `paragraphs`
+  to `{ fn, defined, open }` so the report shows only the chart's state, while
+  `getElementInfo` recomposes function + both states for the chip "i" (no
+  regression). `renderInline` was extracted to `src/lib/markup.js`, shared by
+  `ElementInfo` and the report; in-text `[label](kind:key)` links open the
+  element drawers (z-stacked over the report).
+- **Pending**: the author's review of the new texts; an optional bump to 0.2.0;
+  the commit to main.
 
 ## Features already identified for future phases
 

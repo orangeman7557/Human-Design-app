@@ -316,69 +316,63 @@ export default {
   },
 
   // ── Centre (the chip "i"): each of the nine centres. ──
+  // Split into function (`fn`) + the two states (`defined` / `open`) so the
+  // report can show only the state the chart has, while the chip "i" shows the
+  // function plus both states (getElementInfo reassembles them) — Phase 7.
   center: {
     head: {
       title: 'Centro de la Cabeza',
-      paragraphs: [
-        'Es un centro de **presión mental**: la fuerza que nos empuja a pensar, preguntar e inspirarnos. Genera las preguntas y la curiosidad, pero no las responde —eso es tarea del [Ajna](center:ajna)—.',
-        '**Definido**, aporta una forma constante de inspirarse y de sentir la presión por entender. **Indefinido**, amplifica las preguntas y la inquietud mental de los demás: aquí conviene no dejarse arrastrar a resolver dudas que en realidad no son tuyas ni importan para tu vida.'
-      ]
+      fn: 'Es un centro de **presión mental**: la fuerza que nos empuja a pensar, preguntar e inspirarnos. Genera las preguntas y la curiosidad, pero no las responde —eso es tarea del [Ajna](center:ajna)—.',
+      defined: '**Definido**, aporta una forma constante de inspirarse y de sentir la presión por entender.',
+      open: '**Indefinido**, amplifica las preguntas y la inquietud mental de los demás: aquí conviene no dejarse arrastrar a resolver dudas que en realidad no son tuyas ni importan para tu vida.'
     },
     ajna: {
       title: 'Centro Ajna',
-      paragraphs: [
-        'Es el centro de la **mente y la conceptualización**: procesa la información, forma ideas y da estructura a lo que pensamos, trabajando con la presión que le llega de la [Cabeza](center:head).',
-        '**Definido**, da una manera fija y fiable de pensar, con opiniones y certezas estables. **Indefinido**, ofrece una mente **flexible y abierta**, capaz de ver muchas perspectivas; su trampa es la presión por aparentar seguridad o aferrarse a una certeza prestada. Su don es no necesitar tener siempre una respuesta fija.'
-      ]
+      fn: 'Es el centro de la **mente y la conceptualización**: procesa la información, forma ideas y da estructura a lo que pensamos, trabajando con la presión que le llega de la [Cabeza](center:head).',
+      defined: '**Definido**, da una manera fija y fiable de pensar, con opiniones y certezas estables.',
+      open: '**Indefinido**, ofrece una mente **flexible y abierta**, capaz de ver muchas perspectivas; su trampa es la presión por aparentar seguridad o aferrarse a una certeza prestada. Su don es no necesitar tener siempre una respuesta fija.'
     },
     throat: {
       title: 'Centro de la Garganta',
-      paragraphs: [
-        'Es el centro de la **comunicación y la manifestación**: donde la energía se convierte en voz y en acción. Todo lo que se expresa o se materializa pasa por aquí.',
-        '**Definido**, da una voz y una forma de expresarse consistentes. **Indefinido**, adapta su manera de comunicar según la compañía y puede sentir la **presión por hablar para llamar la atención**; su aprendizaje es esperar el momento adecuado en lugar de forzar la palabra.'
-      ]
+      fn: 'Es el centro de la **comunicación y la manifestación**: donde la energía se convierte en voz y en acción. Todo lo que se expresa o se materializa pasa por aquí.',
+      defined: '**Definido**, da una voz y una forma de expresarse consistentes.',
+      open: '**Indefinido**, adapta su manera de comunicar según la compañía y puede sentir la **presión por hablar para llamar la atención**; su aprendizaje es esperar el momento adecuado en lugar de forzar la palabra.'
     },
     g: {
       title: 'Centro G',
-      paragraphs: [
-        'Es el centro de la **identidad, el amor y la dirección**: el sentido de quién eres y hacia dónde va tu vida. Está ligado también a la sensación de estar en el lugar correcto.',
-        '**Definido**, aporta un sentido estable de identidad y rumbo. **Indefinido**, vive una identidad más **fluida y cambiante**, que encuentra su dirección a través de los entornos y las personas adecuadas; la clave aquí es el **lugar**: estar en el sitio correcto orienta todo lo demás.'
-      ]
+      fn: 'Es el centro de la **identidad, el amor y la dirección**: el sentido de quién eres y hacia dónde va tu vida. Está ligado también a la sensación de estar en el lugar correcto.',
+      defined: '**Definido**, aporta un sentido estable de identidad y rumbo.',
+      open: '**Indefinido**, vive una identidad más **fluida y cambiante**, que encuentra su dirección a través de los entornos y las personas adecuadas; la clave aquí es el **lugar**: estar en el sitio correcto orienta todo lo demás.'
     },
     heart: {
       title: 'Centro del Corazón (Ego)',
-      paragraphs: [
-        'Es el centro de la **voluntad, el ego y la autoestima**, ligado al mundo material y a la capacidad de comprometerse y cumplir promesas. Es un motor que funciona a pulsos de fuerza de voluntad, no de forma continua.',
-        '**Definido**, da una voluntad consistente y la capacidad de sostener lo que se promete. **Indefinido** —la mayoría—, **no necesita demostrar su valía** ni medir su fuerza de voluntad; su trampa es prometer de más para probarse. Aquí se aprende que el valor propio no depende de los logros.'
-      ]
+      fn: 'Es el centro de la **voluntad, el ego y la autoestima**, ligado al mundo material y a la capacidad de comprometerse y cumplir promesas. Es un motor que funciona a pulsos de fuerza de voluntad, no de forma continua.',
+      defined: '**Definido**, da una voluntad consistente y la capacidad de sostener lo que se promete.',
+      open: '**Indefinido** —la mayoría—, **no necesita demostrar su valía** ni medir su fuerza de voluntad; su trampa es prometer de más para probarse. Aquí se aprende que el valor propio no depende de los logros.'
     },
     sacral: {
       title: 'Centro Sacral',
-      paragraphs: [
-        'Es el gran **motor de energía vital, trabajo y sexualidad**: la fuente generativa del sistema. Define a Generadores y Generadores Manifestantes, y es la clave de su forma de gestionar la energía.',
-        '**Definido**, ofrece una energía de trabajo **sostenible y renovable**, pensada para emplearse en lo correcto y agotarse sanamente cada día. **Indefinido**, no dispone de esa energía constante: aquí es vital **reconocer cuándo es suficiente** y no dejarse arrastrar por el ritmo de los demás hasta el agotamiento.'
-      ]
+      fn: 'Es el gran **motor de energía vital, trabajo y sexualidad**: la fuente generativa del sistema. Define a Generadores y Generadores Manifestantes, y es la clave de su forma de gestionar la energía.',
+      defined: '**Definido**, ofrece una energía de trabajo **sostenible y renovable**, pensada para emplearse en lo correcto y agotarse sanamente cada día.',
+      open: '**Indefinido**, no dispone de esa energía constante: aquí es vital **reconocer cuándo es suficiente** y no dejarse arrastrar por el ritmo de los demás hasta el agotamiento.'
     },
     spleen: {
       title: 'Centro del Bazo',
-      paragraphs: [
-        'Es el centro del **instinto, la intuición y la supervivencia**, ligado al sistema inmune, la salud y la sensación de bienestar en el presente. Habla bajo, en el ahora y una sola vez.',
-        '**Definido**, da una intuición y una sensación de salud constantes. **Indefinido**, **amplifica los miedos** ajenos y tiende a aferrarse a lo que no le conviene —relaciones, hábitos, situaciones— por temor a soltar; su aprendizaje es no decidir desde el miedo y descubrir qué le sienta bien al cuerpo.'
-      ]
+      fn: 'Es el centro del **instinto, la intuición y la supervivencia**, ligado al sistema inmune, la salud y la sensación de bienestar en el presente. Habla bajo, en el ahora y una sola vez.',
+      defined: '**Definido**, da una intuición y una sensación de salud constantes.',
+      open: '**Indefinido**, **amplifica los miedos** ajenos y tiende a aferrarse a lo que no le conviene —relaciones, hábitos, situaciones— por temor a soltar; su aprendizaje es no decidir desde el miedo y descubrir qué le sienta bien al cuerpo.'
     },
     solarPlexus: {
       title: 'Centro del Plexo Solar',
-      paragraphs: [
-        'Es el centro de las **emociones, los sentimientos y los estados de ánimo**, que funciona en **ondas** que suben y bajan con el tiempo. Cuando está definido, marca una autoridad emocional: **no hay verdad en el momento**.',
-        '**Definido**, vive sus propias olas emocionales y necesita tiempo para tener claridad. **Indefinido**, **absorbe y amplifica las emociones del entorno** —capta el ambiente de una sala— y tiende a evitar la confrontación; su reto es no apropiarse de estados de ánimo que en realidad ha recogido de fuera.'
-      ]
+      fn: 'Es el centro de las **emociones, los sentimientos y los estados de ánimo**, que funciona en **ondas** que suben y bajan con el tiempo. Cuando está definido, marca una autoridad emocional: **no hay verdad en el momento**.',
+      defined: '**Definido**, vive sus propias olas emocionales y necesita tiempo para tener claridad.',
+      open: '**Indefinido**, **absorbe y amplifica las emociones del entorno** —capta el ambiente de una sala— y tiende a evitar la confrontación; su reto es no apropiarse de estados de ánimo que en realidad ha recogido de fuera.'
     },
     root: {
       title: 'Centro Raíz',
-      paragraphs: [
-        'Es un centro de **presión y adrenalina**: el empuje que nos pone en marcha y el estrés que nos urge a actuar para liberarnos de esa presión. Da el pulso para arrancar las cosas.',
-        '**Definido**, aporta una forma constante de manejar la presión y el estrés. **Indefinido**, **amplifica la prisa** y la sensación de tener que quitarse cuanto antes lo pendiente de encima; su aprendizaje es no dejarse empujar a decisiones apresuradas solo para aliviar una presión que, en buena parte, es prestada.'
-      ]
+      fn: 'Es un centro de **presión y adrenalina**: el empuje que nos pone en marcha y el estrés que nos urge a actuar para liberarnos de esa presión. Da el pulso para arrancar las cosas.',
+      defined: '**Definido**, aporta una forma constante de manejar la presión y el estrés.',
+      open: '**Indefinido**, **amplifica la prisa** y la sensación de tener que quitarse cuanto antes lo pendiente de encima; su aprendizaje es no dejarse empujar a decisiones apresuradas solo para aliviar una presión que, en buena parte, es prestada.'
     }
   },
 
@@ -521,6 +515,169 @@ export default {
     uranus: { tier: 'low', label: 'bajo' },
     neptune: { tier: 'low', label: 'bajo' },
     pluto: { tier: 'low', label: 'bajo' }
+  },
+
+  // Gate essences (Phase 7). Own wording from the public-domain I Ching
+  // hexagram theme + the gate's centre function, with a gift/shadow polarity.
+  // Written neutrally (about the energy, not "you"), so it reads right whether
+  // the gate is active or not; getGateInfo appends a personalised state coda.
+  // `theme` is a short noun phrase used to compose channel descriptions.
+  gate: {
+    1: { theme: 'la expresión creativa', text: 'En el [centro G](center:g), la puerta 1 es la energía de **crear desde la propia identidad**: una expresión original que no imita a nadie. En su mejor versión inspira a los demás; en su sombra, se repliega en la melancolía cuando no encuentra cómo salir al mundo.' },
+    2: { theme: 'la dirección receptiva', text: 'En el [centro G](center:g), la puerta 2 es la **dirección receptiva**: saber hacia dónde ir sin forzarlo, dejando que el rumbo emerja en vez de imponerlo. Su don es una orientación natural que da sentido al movimiento; su sombra, sentirse perdido cuando intenta dirigir desde la pura voluntad.' },
+    3: { theme: 'el orden en lo nuevo', text: 'En el [centro Sacral](center:sacral), la puerta 3 es la energía de **poner orden en lo nuevo**: arrancar algo desde el caos del comienzo, cuando aún no hay forma. Su don es saber iniciar y estructurar lo que empieza; su sombra, la frustración y el bloqueo cuando se quiere ir más rápido de lo que el proceso permite.' },
+    4: { theme: 'las respuestas mentales', text: 'En el [centro Ajna](center:ajna), la puerta 4 es la mente que **busca respuestas y fórmulas** ante las preguntas abiertas. Su don es conceptualizar soluciones lógicas; su sombra, la presión por tener ya una respuesta, confundiendo una hipótesis con una certeza.' },
+    5: { theme: 'los ritmos fijos', text: 'En el [centro Sacral](center:sacral), la puerta 5 son los **ritmos y los hábitos fijos**: la energía que sostiene rutinas constantes y un compás propio. Su don es la fiabilidad de un ritmo natural que ancla el día; su sombra, la ansiedad cuando ese ritmo se rompe.' },
+    6: { theme: 'la intimidad y la fricción', text: 'En el [centro del Plexo Solar](center:solarPlexus), la puerta 6 regula la **intimidad y la fricción emocional**: cuándo abrirse y cuándo cerrarse, la frontera de lo íntimo. Su don es una emocionalidad que crea cercanía profunda; su sombra, el conflicto y la reactividad cuando esa frontera se gestiona desde la emoción del momento.' },
+    7: { theme: 'el liderazgo y la dirección', text: 'En el [centro G](center:g), la puerta 7 es el **papel de guía hacia el futuro**: la capacidad de dar dirección y liderar, a menudo desde un segundo plano. Su don es una autoridad natural que otros quieren seguir; su sombra, la necesidad de controlar el rumbo o de imponerse.' },
+    8: { theme: 'la contribución', text: 'En el [centro de la Garganta](center:throat), la puerta 8 es la **contribución**: aportar algo propio que marque una diferencia y dar voz a lo que importa. Su don es una expresión auténtica que invita a otros a sumarse; su sombra, contribuir buscando reconocimiento y quedarse en lo vacío.' },
+    9: { theme: 'el foco en el detalle', text: 'En el [centro Sacral](center:sacral), la puerta 9 es la energía del **foco y la concentración** en los detalles que hacen falta para llevar algo a término. Su don es una atención sostenida que completa; su sombra, perderse en lo pequeño o dispersarse.' },
+    10: { theme: 'el amor propio', text: 'En el [centro G](center:g), la puerta 10 es el **amor propio y la fidelidad a uno mismo**: comportarse de acuerdo con lo que se es. Su don es una autenticidad que no se traiciona; su sombra, la autocrítica o contorsionarse para encajar.' },
+    11: { theme: 'las ideas', text: 'En el [centro Ajna](center:ajna), la puerta 11 es la mente **llena de ideas** para compartir y dar sentido a la experiencia. Su don es una riqueza conceptual estimulante; su sombra, la presión por llevar cada idea a la acción, cuando las ideas están para compartirse más que para ejecutarse.' },
+    12: { theme: 'la expresión cauta', text: 'En el [centro de la Garganta](center:throat), la puerta 12 es la **expresión cauta**: hablar cuando el ánimo y el momento son los adecuados. Su don es una palabra que emociona y conmueve en su instante justo; su sombra, hablar fuera de tono o callar por reparo.' },
+    13: { theme: 'la escucha', text: 'En el [centro G](center:g), la puerta 13 es la **escucha y la memoria**: recoger las historias y los secretos de los demás y darles sentido. Su don es un oído que invita a confiar y orienta; su sombra, cargar con lo que otros depositan.' },
+    14: { theme: 'el poder para los recursos', text: 'En el [centro Sacral](center:sacral), la puerta 14 es la **energía para generar y dirigir recursos**: el empuje que da poder al trabajo propio. Su don es una fuerza generadora que prospera; su sombra, trabajar sin un porqué o sin valores que la guíen.' },
+    15: { theme: 'el amor a la diversidad', text: 'En el [centro G](center:g), la puerta 15 es el **amor a la humanidad y a sus extremos**: una atracción por la diversidad de ritmos y formas de vivir. Su don es acoger lo distinto y encontrar el flujo adecuado; su sombra, un ritmo errático o juzgar el ritmo ajeno.' },
+    16: { theme: 'el entusiasmo y la destreza', text: 'En el [centro de la Garganta](center:throat), la puerta 16 es el **entusiasmo y la destreza**: el talento que se expresa y se afina con la práctica. Su don es un entusiasmo contagioso y la maestría; su sombra, el entusiasmo vacío sin fondo ni preparación.' },
+    17: { theme: 'las opiniones', text: 'En el [centro Ajna](center:ajna), la puerta 17 es la mente que **forma opiniones** y se anticipa para organizar. Su don son opiniones útiles que estructuran; su sombra, presentar como hechos lo que son solo pareceres.' },
+    18: { theme: 'la corrección', text: 'En el [Bazo](center:spleen), la puerta 18 es el instinto de **corregir y mejorar** lo que se ha torcido. Su don es una mirada aguda que perfecciona y protege; su sombra, la crítica incesante y el perfeccionismo.' },
+    19: { theme: 'la sensibilidad a las necesidades', text: 'En el [centro Raíz](center:root), la puerta 19 es la **sensibilidad a las necesidades**: captar lo que la gente y la comunidad necesitan, también lo material y afectivo. Su don es una fina sintonía con lo que hace falta; su sombra, la necesidad excesiva o la hipersensibilidad.' },
+    20: { theme: 'el ahora', text: 'En el [centro de la Garganta](center:throat), la puerta 20 es el **ahora**: la conciencia y la expresión del momento presente. Su don es una acción espontánea y certera en el instante; su sombra, el ajetreo o el hablar sin presencia.' },
+    21: { theme: 'el control', text: 'En el [centro del Corazón](center:heart), la puerta 21 es la **voluntad de controlar** los propios recursos y el propio territorio. Su don es una autoridad legítima sobre lo que es suyo; su sombra, querer controlarlo todo o sentirse controlado.' },
+    22: { theme: 'la gracia', text: 'En el [centro del Plexo Solar](center:solarPlexus), la puerta 22 es la **gracia y la apertura emocional**: el encanto social que sabe escuchar y abrirse. Su don es una emocionalidad que atrae y conecta; su sombra, el retraimiento cuando el ánimo no acompaña.' },
+    23: { theme: 'la asimilación', text: 'En el [centro de la Garganta](center:throat), la puerta 23 es la **asimilación**: traducir un saber individual a algo simple y comprensible. Su don es hacer claro lo complejo, esos "clics" que otros entienden; su sombra, hablar a destiempo y no ser comprendido.' },
+    24: { theme: 'la racionalización', text: 'En el [centro Ajna](center:ajna), la puerta 24 es la mente que **vuelve una y otra vez sobre un pensamiento** hasta darle sentido. Su don es la revelación que nace de revisar; su sombra, el bucle obsesivo del que no se sale.' },
+    25: { theme: 'el amor universal', text: 'En el [centro G](center:g), la puerta 25 es la **inocencia y el amor universal**: un querer puro que no espera nada a cambio. Su don es una entrega limpia y desinteresada; su sombra, perder esa inocencia por herida o por ego.' },
+    26: { theme: 'la transmisión persuasiva', text: 'En el [centro del Corazón](center:heart), la puerta 26 es la **transmisión persuasiva**: la voluntad de comunicar y poner en valor, de "vender" una idea. Su don es un poder de convicción que mueve; su sombra, la manipulación y las medias verdades.' },
+    27: { theme: 'el cuidado', text: 'En el [centro Sacral](center:sacral), la puerta 27 es el **cuidado y la nutrición**: la energía de hacerse cargo y sostener a otros. Su don es un cuidado que nutre de verdad; su sombra, sobreproteger o darse hasta agotarse.' },
+    28: { theme: 'la búsqueda de sentido', text: 'En el [Bazo](center:spleen), la puerta 28 es la **búsqueda de sentido**: el juego de arriesgarse por algo que merezca la pena. Su don es encontrar un propósito por el que valga la pena luchar; su sombra, la lucha por la lucha y el miedo a una vida sin sentido.' },
+    29: { theme: 'el compromiso', text: 'En el [centro Sacral](center:sacral), la puerta 29 es el **compromiso**: la energía de decir sí y perseverar hasta el final. Su don es una entrega que cumple lo que empieza; su sombra, comprometerse en exceso o decir sí donde no tocaba.' },
+    30: { theme: 'el deseo', text: 'En el [centro del Plexo Solar](center:solarPlexus), la puerta 30 es el **deseo y el anhelo**: el fuego de las expectativas que impulsa a vivir experiencias. Su don es una pasión que da combustible a la vida; su sombra, dejarse consumir por ansias que no se sacian.' },
+    31: { theme: 'el liderazgo por la voz', text: 'En el [centro de la Garganta](center:throat), la puerta 31 es el **liderazgo por la voz**: la influencia de quien habla por un grupo y lo representa. Su don es un liderazgo que otros eligen seguir; su sombra, liderar sin mandato real o por mera ambición.' },
+    32: { theme: 'la continuidad', text: 'En el [Bazo](center:spleen), la puerta 32 es el instinto de **continuidad**: olfatear qué perdura y qué hay que adaptar para que dure. Su don es un instinto para el valor duradero; su sombra, el miedo al fracaso y al cambio que paraliza.' },
+    33: { theme: 'el retiro y el relato', text: 'En el [centro de la Garganta](center:throat), la puerta 33 es el **retiro y el relato**: apartarse para luego contar lo vivido. Su don es una sabiduría que se comparte tras la reflexión; su sombra, no honrar la necesidad de retirarse, o contar de más o de menos.' },
+    34: { theme: 'el poder', text: 'En el [centro Sacral](center:sacral), la puerta 34 es el **poder puro**: la fuerza independiente y ocupada de hacer. Su don es una potencia productiva enorme; su sombra, el ajetreo por el ajetreo, ponerse en marcha sin haber respondido.' },
+    35: { theme: 'el ansia de experiencia', text: 'En el [centro de la Garganta](center:throat), la puerta 35 es el **ansia de experiencia y de progreso**: el impulso de probarlo todo y avanzar. Su don es un hambre de vivir que empuja hacia adelante; su sombra, la inquietud de nunca quedar satisfecho.' },
+    36: { theme: 'la crisis y lo nuevo', text: 'En el [centro del Plexo Solar](center:solarPlexus), la puerta 36 es la **crisis emocional y lo nuevo**: el vaivén que lleva a experiencias inéditas. Su don es crecer a través de la intensidad emocional; su sombra, lanzarse al drama o a la crisis sin estar preparado.' },
+    37: { theme: 'la amistad y los pactos', text: 'En el [centro del Plexo Solar](center:solarPlexus), la puerta 37 es la **amistad y la comunidad**: la calidez que une a través de pactos y acuerdos. Su don es un afecto que crea familia y pertenencia; su sombra, la dependencia o los pactos rotos.' },
+    38: { theme: 'la lucha con sentido', text: 'En el [centro Raíz](center:root), la puerta 38 es la **lucha por lo que vale la pena**: la tenacidad de plantar cara por una causa. Su don es una perseverancia con propósito; su sombra, pelear por pelear o la cabezonería.' },
+    39: { theme: 'la provocación', text: 'En el [centro Raíz](center:root), la puerta 39 es la **provocación**: remover la emoción ajena para sacar a la luz lo que de verdad importa. Su don es provocar para revelar el espíritu; su sombra, la provocación gratuita o el malhumor.' },
+    40: { theme: 'la entrega y el descanso', text: 'En el [centro del Corazón](center:heart), la puerta 40 es la **entrega y la soledad**: trabajar y proveer para luego retirarse a reponerse. Su don es una generosidad que sabe también descansar; su sombra, el exceso de trabajo sin pausa, o negarse a dar.' },
+    41: { theme: 'la imaginación que inicia el deseo', text: 'En el [centro Raíz](center:root), la puerta 41 es la **imaginación que inicia el deseo**: el comienzo de toda nueva experiencia, soñada antes de vivirse. Su don es una fantasía que abre experiencias nuevas; su sombra, una imaginación desconectada de la realidad o la presión de un anhelo no saciado.' },
+    42: { theme: 'la culminación', text: 'En el [centro Sacral](center:sacral), la puerta 42 es la **culminación**: la energía de cerrar ciclos y llevar las cosas hasta el final. Su don es la capacidad de completar lo empezado; su sombra, empezar sin terminar o el miedo a los finales.' },
+    43: { theme: 'la intuición mental', text: 'En el [centro Ajna](center:ajna), la puerta 43 es la **intuición mental**: un saber individual que llega como un fogonazo, adelantado a los demás. Su don es una idea original y reveladora; su sombra, empeñarse en decirla a destiempo y que no la entiendan.' },
+    44: { theme: 'el instinto del pasado', text: 'En el [Bazo](center:spleen), la puerta 44 es el **instinto que lee el pasado**: una alerta para reconocer patrones, personas y oportunidades. Su don es un olfato para la gente y el momento; su sombra, el miedo a que el pasado se repita.' },
+    45: { theme: 'la voz de los recursos', text: 'En el [centro de la Garganta](center:throat), la puerta 45 es la **voz que reúne y reparte los recursos**: el "yo tengo" de quien administra lo común. Su don es una administración generosa que cuida del grupo; su sombra, el acaparamiento o el sentirse con derecho a todo.' },
+    46: { theme: 'el amor al cuerpo', text: 'En el [centro G](center:g), la puerta 46 es el **amor al cuerpo y el buen estar**: la determinación de habitar el cuerpo y de estar en el lugar correcto. Su don es una serendipia que pone en el sitio justo en el momento justo; su sombra, descuidar o forzar el cuerpo.' },
+    47: { theme: 'la realización mental', text: 'En el [centro Ajna](center:ajna), la puerta 47 es la **realización**: la presión mental por dar sentido a la confusión hasta que llega el "ajá". Su don es resolver lo confuso en una comprensión clara; su sombra, quedarse atrapado en la sensación de opresión o sinsentido.' },
+    48: { theme: 'la profundidad', text: 'En el [Bazo](center:spleen), la puerta 48 es la **profundidad**: un pozo de talento y sabiduría del que sacar soluciones. Su don es una hondura que aporta lo que falta; su sombra, el miedo a no ser suficiente o a no estar listo.' },
+    49: { theme: 'los principios', text: 'En el [centro del Plexo Solar](center:solarPlexus), la puerta 49 son los **principios y la revolución**: aceptar o rechazar según valores profundos. Su don es transformar los vínculos desde principios claros; su sombra, el rechazo rígido o la revolución sin sensibilidad.' },
+    50: { theme: 'los valores', text: 'En el [Bazo](center:spleen), la puerta 50 son los **valores y la responsabilidad**: el cuidado de las normas que protegen el bienestar del grupo. Su don es una guarda de valores que sostiene a los demás; su sombra, la sobre-responsabilidad y el miedo a fallar al grupo.' },
+    51: { theme: 'el impulso y el choque', text: 'En el [centro del Corazón](center:heart), la puerta 51 es el **impulso de ser el primero**: la iniciativa que sacude y despierta. Su don es un coraje que espabila a otros; su sombra, la competitividad o la temeridad.' },
+    52: { theme: 'la quietud y el foco', text: 'En el [centro Raíz](center:root), la puerta 52 es la **quietud y la concentración**: la presión de parar para enfocar y ver el conjunto. Su don es una calma que permite concentrarse; su sombra, la inercia o la inquietud de no saber estarse quieto.' },
+    53: { theme: 'los comienzos', text: 'En el [centro Raíz](center:root), la puerta 53 son los **comienzos**: la presión y la energía para iniciar nuevos ciclos. Su don es el empuje para arrancar lo nuevo; su sombra, empezar sin descanso sin llegar a completar.' },
+    54: { theme: 'la ambición', text: 'En el [centro Raíz](center:root), la puerta 54 es la **ambición**: el impulso de ascender, en lo material y en lo espiritual. Su don es una ambición que eleva; su sombra, perseguir el ascenso por la aprobación ajena o pasarse de la raya.' },
+    55: { theme: 'la abundancia del ánimo', text: 'En el [centro del Plexo Solar](center:solarPlexus), la puerta 55 es el **espíritu y la abundancia emocional**: la riqueza de los estados de ánimo y la fe. Su don es una hondura emocional y una fe que sostienen; su sombra, dejar que la melancolía o el vaivén del ánimo decidan.' },
+    56: { theme: 'el relato estimulante', text: 'En el [centro de la Garganta](center:throat), la puerta 56 es el **relato que estimula**: contar ideas y experiencias que enganchan. Su don es una narración cautivadora que abre horizontes; su sombra, adornar de más o la atención que divaga.' },
+    57: { theme: 'la intuición en el ahora', text: 'En el [Bazo](center:spleen), la puerta 57 es la **intuición aguda en el ahora**: una claridad instintiva que penetra el presente. Su don es un saber sutil y certero en el instante; su sombra, el miedo al futuro que paraliza.' },
+    58: { theme: 'la vitalidad y la mejora', text: 'En el [centro Raíz](center:root), la puerta 58 es la **vitalidad y la alegría de vivir**: la energía que empuja a mejorar las cosas. Su don es un gozo vital que impulsa la corrección; su sombra, la inquietud o la crítica sin alegría.' },
+    59: { theme: 'la intimidad', text: 'En el [centro Sacral](center:sacral), la puerta 59 es la **intimidad**: la energía para romper barreras y crear vínculo, también sexual. Su don es el poder de generar cercanía y unión; su sombra, levantar muros o invadir en la intimidad.' },
+    60: { theme: 'la aceptación del límite', text: 'En el [centro Raíz](center:root), la puerta 60 es la **aceptación del límite**: convertir la restricción en semilla de lo nuevo. Su don es transformar los límites en posibilidad; su sombra, quedarse atascado en la limitación y la melancolía.' },
+    61: { theme: 'la verdad interior', text: 'En el [centro de la Cabeza](center:head), la puerta 61 es la **verdad interior y el misterio**: la presión por conocer lo que no se puede saber del todo. Su don es una inspiración que busca el fondo de las cosas; su sombra, la presión mental de querer saberlo todo.' },
+    62: { theme: 'el detalle y el orden', text: 'En el [centro de la Garganta](center:throat), la puerta 62 es el **detalle y la organización**: poner nombre y orden a las cosas para expresarlas con precisión. Su don es una expresión clara y ordenada; su sombra, perderse en el detalle o explicarse de más.' },
+    63: { theme: 'la duda', text: 'En el [centro de la Cabeza](center:head), la puerta 63 es la **duda**: la presión que empuja a cuestionar y verificar. Su don es una duda sana que pone a prueba; su sombra, la sospecha que corroe y la ansiedad.' },
+    64: { theme: 'la confusión fértil', text: 'En el [centro de la Cabeza](center:head), la puerta 64 es la **confusión que busca sentido**: una presión de imágenes sin procesar que pugnan por ordenarse. Su don es una riqueza de imágenes que acaba en comprensión; su sombra, el agobio de querer resolver la confusión antes de tiempo.' }
+  },
+
+  // Initial report (Phase 7). General-frame sections (Parte A) + the shared
+  // collective comparison + short connective lead-ins for the personalised
+  // sections. The per-element substance (type, strategy, authority, profile,
+  // definition, centres) is reused from the blocks above; buildReport (report.js)
+  // assembles everything in order.
+  report: {
+    intro: {
+      title: 'Qué es Human Design',
+      paragraphs: [
+        'Human Design es un sistema de autoconocimiento que combina astrología, el I Ching, el árbol de la vida cabalístico, los chakras y algo de lenguaje físico-cuántico. A partir de tu fecha, hora y lugar de nacimiento genera una «carta» (el gráfico o *bodygraph*) que describe cómo está diseñada tu energía: cómo tomas decisiones bien, cómo gastas y recuperas energía, y cómo interactúas mejor con el mundo. No se considera ciencia —conviene decirlo claro— sino un marco simbólico; su valor está en si te resulta útil como espejo, no en que sea demostrable.'
+      ]
+    },
+    ants: {
+      title: 'La analogía de las hormigas',
+      paragraphs: [
+        'En un hormiguero no hay una «hormiga genérica». Hay exploradoras que salen a rastrear, soldados construidas para defender, obreras que mantienen el nido, y la reina, cuya función es otra por completo. Ninguna es mejor; cada una está construida para una manera de operar distinta, y un hormiguero funciona precisamente porque no son todas iguales. Pedirle a una exploradora que haga el trabajo de una soldado es agotarla en algo para lo que no está diseñada.',
+        'El error humano es suponer que sí somos todos la misma hormiga: que la productividad, el ritmo o la forma de decidir e iniciar deberían ser iguales para todos. Human Design propone justo lo contrario, que hay **tipos energéticos con mecánicas distintas**; en humanos, claro, esto es mucho más complejo y matizado que en un hormiguero: no es casta fija ni función única, sino patrones de cómo te relacionas con tu propia energía. Lo valioso del marco es esa mirada: **deja de medirte con la vara de otro diseño**.'
+      ]
+    },
+    chart: {
+      title: 'La carta: el bodygraph y los nueve centros',
+      paragraphs: [
+        'Tu carta se dibuja en un esquema llamado **bodygraph**: las nueve formas geométricas son los **centros** y las líneas que las unen son los canales que pueden conectarlos. Cada centro gobierna una función concreta —pensar, comunicar, sentir, querer, actuar, intuir— y, juntos, forman un mapa de cómo circula tu energía.',
+        'Lo que hace única a tu carta no son los centros en sí, sino **cuáles están definidos y cuáles no**. En el gráfico, los centros coloreados son los que tienes definidos; los que se ven vacíos están abiertos. Esa combinación es la base de todo lo demás: tu tipo, tu autoridad y tu manera de funcionar salen de ahí.'
+      ]
+    },
+    conditioning: {
+      title: 'Definido, indefinido y el condicionamiento',
+      paragraphs: [
+        'Un centro **definido** funciona de forma fija y fiable: es una energía tuya, constante, que aportas siempre y que no depende de quién tengas al lado. Un centro **indefinido** (abierto) no es un defecto ni una carencia: es una zona donde no tienes esa energía fija y, en cambio, **absorbes y amplificas la de los demás** y la del entorno.',
+        'A todo aquello que nos aparta de vivir según nuestro propio diseño el Diseño Humano lo llama **condicionamiento**: las capas que vamos acumulando —por educación, por cultura, por miedos, por lo que se espera de nosotros— y que nos llevan a actuar y decidir como en realidad no somos. Tus centros abiertos son su vía de entrada más directa, porque ahí absorbes con fuerza la energía ajena y es fácil confundirla con la tuya; pero el condicionamiento también llega de fuera de la carta: de lo aprendido, de lo heredado y de la idea de quién «deberías» ser.'
+      ]
+    },
+    experiment: {
+      title: 'Un experimento de desacondicionamiento',
+      paragraphs: [
+        'Si en tus centros abiertos llevas años absorbiendo lo ajeno, acabas tomando muchas decisiones que no nacen de ti: de lo que se espera, de lo que hacen los demás, de la prisa del momento. El Diseño Humano no se presenta como una verdad para creer, sino como un **experimento para probar**: vivir según tu **estrategia** y tu **autoridad** —las dos herramientas que verás a continuación— para ir distinguiendo lo que es tuyo de lo que solo habías copiado.',
+        'A ese proceso se le llama **desacondicionamiento**: soltar poco a poco las capas prestadas hasta operar desde tu propio diseño. Suele llevar años, no semanas, y no se hace razonando ni de golpe, sino que va ocurriendo a medida que tomas decisiones a tu manera y notas la diferencia respecto a cuando las tomabas a la de otro. No hace falta que te creas nada de lo que sigue; basta con **probarlo en tu propia vida** y observar qué cambia.'
+      ]
+    },
+    collective: {
+      title: 'Tu lugar en el colectivo',
+      paragraphs: [
+        'Los tipos no son categorías de personalidad, sino **maneras distintas de estar diseñado para usar la energía**. Verlos juntos ayuda a situarte: ninguno es mejor, y el conjunto funciona precisamente porque no todos somos iguales.',
+        '**Generadores (~37%) y Generadores Manifestantes (~33%)**: cerca del **70%** de la población. Son los **constructores**, con energía vital sostenida cuando hacen lo que de verdad les enciende. El motor que mueve el mundo.',
+        '**Proyectores (~20%)**: no tienen esa energía constante; su don es **ver, guiar y orientar** a los demás. Brillan cuando se les reconoce e invita, no forzándose al ritmo de un Generador.',
+        '**Manifestadores (~9%)**: los **iniciadores**, capaces de arrancar cosas de la nada e impactar sin esperar a nadie. Su clave es informar a quienes su acción salpica.',
+        '**Reflectores (~1%)**: los más infrecuentes, un **espejo del entorno** que muestrea la salud del grupo y del lugar en que vive.',
+        'El error más común es medirse con el diseño de otro: que un Proyector se exija la resistencia de un Generador, o que un Generador se frustre por no iniciar como un Manifestador. Tu tipo te dice **con qué vara medirte**.'
+      ]
+    },
+    // Short connective lead-ins prepended to the reused content of each
+    // personalised section.
+    leadIn: {
+      strategy: 'Tu estrategia es tu forma natural de entrar en acción y comprometerte con las cosas sin forzarlas.',
+      authority: 'Si tu **estrategia** te dice *cuándo* entrar en acción, tu **autoridad** te dice *cómo decidir* cada sí y cada no concretos. En Diseño Humano la mente es buenísima para informarte y para aconsejar a otros, pero **no es de fiar para decidir sobre tu propia vida**; tu autoridad apunta a una fuente más corporal y estable.',
+      definition: 'La definición describe cómo se agrupan entre sí tus centros definidos: si forman un solo bloque o varios grupos separados.',
+      centers: 'Este es el recorrido por tus nueve centros. Los **definidos** son la energía que aportas de forma estable; los **indefinidos (abiertos)** son donde recibes y amplificas la de los demás, y donde más aprendes si no te dejas condicionar.'
+    }
+  },
+
+  // Per-type practical block for the report (Phase 7): energy management, the
+  // type's classic trap (its not-self), and the signpost feelings.
+  typeReport: {
+    generator: {
+      energia: '**Gestión de tu energía** — Tienes el [centro Sacral](center:sacral) definido: una energía de trabajo **sostenible y renovable**, hecha para emplearse a fondo cada día en lo correcto y vaciarse sanamente al llegar la noche. La clave no es ahorrarla, sino **gastarla en aquello a lo que tu cuerpo responde de verdad**: entonces el cansancio es satisfactorio y al día siguiente la carga vuelve. Forzarte en lo que no te enciende agota sin saciar.',
+      trampa: '**La trampa de tu tipo** — Tu mayor desgaste viene de **iniciar desde la mente** en vez de esperar a tener algo a lo que responder: decir que sí por obligación, por lógica o por miedo a perder la oportunidad. Cuando te metes en algo que tu energía no respaldaba, aparece la **frustración** —la señal clásica del Generador que vive contra su diseño— y la sensación de estar atascado en cosas que no terminan de llenar.',
+      senales: '**Señales de que vas por buen camino** — Tu brújula es la **satisfacción frente a la frustración**. Si al final del día sientes un cansancio a gusto y la sensación de haber empleado bien tu energía, vas bien encaminado. Si lo que predomina es la frustración y el hartazgo, suele ser señal de que te has comprometido con cosas a las que tu cuerpo no había dicho que sí.'
+    },
+    'manifesting-generator': {
+      energia: '**Gestión de tu energía** — Como Generador, tienes el [Sacral](center:sacral) definido: energía de trabajo **sostenible y renovable**. Pero está conectada con la [garganta](center:throat), lo que te hace **rápido, polifacético y no lineal**: saltas pasos, haces varias cosas a la vez y avanzas a gran velocidad cuando algo te enciende de verdad. Rinde al máximo si primero esperas la **respuesta del cuerpo** y luego **informas** a quienes te rodean antes de lanzarte.',
+      trampa: '**La trampa de tu tipo** — Dispersarte: comprometerte con demasiadas cosas a las que tu cuerpo no había dicho que sí, o saltarte el aviso a los demás y chocar con su resistencia. Cuando inicias por mente en vez de responder, acumulas **frustración** —y a menudo algo de enfado— y proyectos a medio terminar.',
+      senales: '**Señales de que vas por buen camino** — La **satisfacción**, y una cierta paz alrededor, frente a la frustración y el enfado. Si avanzas rápido en lo que te enciende y dejas las cosas rematadas, vas bien; si te notas disperso y rodeado de fricción, suele ser que dijiste que sí donde el cuerpo no acompañaba, o que no informaste.'
+    },
+    projector: {
+      energia: '**Gestión de tu energía** — No tienes el [Sacral](center:sacral) definido —y, a diferencia del Manifestador, tampoco un motor conectado a la [garganta](center:throat)—, así que **no estás diseñado para un trabajo constante** ni para sostener el ritmo de un Generador: tu energía es irregular y se agota antes. Tu don no está en la resistencia, sino en **ver, guiar y orientar**. Gestionarte bien pasa por **descansar y dosificarte** —dormir y soltar antes de quedar agotado— y por reservar tu atención para quien de verdad la valora.',
+      trampa: '**La trampa de tu tipo** — Forzarte al ritmo de los demás y ofrecer tu visión sin que nadie te la pida. Trabajar hasta el agotamiento para demostrar tu valía, o insistir sin ser invitado, trae resistencia y **amargura** —la señal del Proyector que vive contra su diseño—.',
+      senales: '**Señales de que vas por buen camino** — El **reconocimiento y el éxito** frente a la amargura. Cuando se te ve, se te invita y tu visión es bien recibida, vas por buen camino; cuando te sientes invisible, agotado y resentido, suele ser señal de que te ofreces donde no te han llamado o de que te exiges una energía que no tienes.'
+    },
+    manifestor: {
+      energia: '**Gestión de tu energía** — Tienes un motor conectado a la [garganta](center:throat) pero el [Sacral](center:sacral) sin definir: tu energía **no es constante, llega a impulsos** para iniciar y poner cosas en marcha, y luego necesita reposo. Estás hecho para **arrancar e impactar**, no para ejecutar de forma sostenida. Gestionarte bien es respetar esos ciclos de empuje y descanso, y proteger tu autonomía sin aislarte.',
+      trampa: '**La trampa de tu tipo** — Actuar por sorpresa sin **informar** a quienes tu impacto va a alcanzar: eso provoca resistencia, oposición y **enfado** alrededor, que acaba poniéndote las cosas más difíciles. La otra trampa es exigirte una constancia que no es tuya, hasta quemarte.',
+      senales: '**Señales de que vas por buen camino** — La **paz** frente al enfado. Cuando informas y te mueves con libertad, encuentras calma a tu alrededor; cuando todo se llena de resistencia y conflicto, suele ser señal de que actuaste sin avisar o de que estás forzando un ritmo continuo que no te corresponde.'
+    },
+    reflector: {
+      energia: '**Gestión de tu energía** — No tienes **ningún centro definido**: muestreas constantemente la energía de la gente y los lugares, así que **el entorno te afecta muchísimo** y tu energía varía mucho de un día a otro. Lo más importante para ti es **elegir bien dónde estás y con quién**, y no exigirte una constancia que no es propia de tu diseño. Para las decisiones importantes, date un **ciclo lunar** —unos 28 días— antes de cerrarlas.',
+      trampa: '**La trampa de tu tipo** — Decidir con prisa, quedarte en entornos que no te sientan bien e **identificarte con lo que solo estás reflejando**: tomar por tuyos estados de ánimo o presiones que en realidad son del grupo. Forzarte a ser siempre igual va contra tu naturaleza cambiante.',
+      senales: '**Señales de que vas por buen camino** — La **sorpresa y el deleite** frente a la decepción. Cuando los entornos y las compañías son los correctos, la vida te sorprende gratamente; cuando predomina la decepción, suele ser señal de que estás en el lugar o con la gente equivocados, o de que has decidido demasiado rápido.'
+    }
   },
 
   // Public-domain root of each gate: its King Wen hexagram name (gate N ↔

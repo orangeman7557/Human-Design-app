@@ -71,15 +71,26 @@ El usuario introduce su fecha, hora y lugar de nacimiento → la app calcula su 
         │   ├── ephemeris.js           ← cálculo astronómico (Julian Day, longitudes planetarias)
         │   ├── gates.js               ← longitud eclíptica → puerta HD + línea (1-6)
         │   ├── chart.js               ← orquestador principal: birth data → objeto chart completo
-        │   └── bodygraph-geometry.js  ← coordenadas SVG: centros, formas, posiciones de las 64 puertas
+        │   ├── bodygraph-geometry.js  ← coordenadas SVG: centros, formas, posiciones de las 64 puertas
+        │   ├── prompts.js             ← genera los prompts para la IA del usuario (handoff, Fase 6)
+        │   ├── report.js              ← ensambla el informe inicial desde el chart (Fase 7)
+        │   └── content/               ← textos propios (es.js) + accesores (index.js): conceptos, tipos, centros, 64 puertas, informe
         ├── geo/
         │   ├── geocoder.js   ← geocodificación vía Photon (typeahead, debounce, abort, dedup)
         │   ├── place.js      ← helper de etiqueta "ciudad, país"
         │   └── timezone.js   ← resolución de timezone por coordenadas
+        ├── db/
+        │   └── charts.js     ← persistencia local (IndexedDB vía Dexie)
+        ├── ai/
+        │   └── handoff.js    ← deep-links a IAs + preferencia (sin API)
+        ├── markup.js         ← renderInline: **negrita**/*cursiva*/[enlaces] → HTML (compartido)
         └── components/
             ├── CityAutocomplete.svelte  ← campo de ciudad con sugerencias de Photon
             ├── Bodygraph.svelte         ← SVG del bodygraph (centros, canales, marcadores)
-            └── Dialog.svelte            ← diálogos propios prompt/confirm/alert (vía dialog.svelte.js)
+            ├── Dialog.svelte            ← diálogos propios prompt/confirm/alert (vía dialog.svelte.js)
+            ├── ElementInfo.svelte       ← panel "i" reutilizable (info + handoff IA)
+            ├── InitialReport.svelte     ← overlay del informe inicial (Fase 7)
+            └── InfoDot.svelte           ← la "i" de información
 ```
 
 **Flujo de datos:** formulario → `sessionStorage` → `computeChart()` → SVG + texto. Sin backend, todo client-side.
@@ -167,8 +178,8 @@ Colores de centros definidos: Head/G amarillo `#e5cf3d`, Ajna verde `#6cb46c`, T
 ### Pendiente
 
 - **Estabilización post-MVP:** en curso. Aterrizado (jun 2026): tests del núcleo con vitest, diálogos propios, autocompletado por prefijo (Photon), flecha de volver y etiqueta "ciudad, país". Pendiente: pruebas con cartas reales, opcional TWA para Google Play, y las mejoras menores de BACKLOG ("Possible improvements").
-- **Fase 6 — Integración IA (handoff) + info de elementos:** generar desde cualquier elemento de la app un prompt listo para llevar a la IA del propio usuario (la IA no corre dentro de la app), más información textual básica de cada elemento (tipo, autoridad, perfil, centros, canales) — solo si es legalmente viable: redacción propia o fuentes libres, nunca copiado de Jovian Archive. **Funcionalmente completa** (6.A–6.F construidas y verificadas, jun 2026); pendiente solo la revisión de textos por el autor y el bump opcional a 0.2.0. Detalle en TASKS/BACKLOG.
-- **Fase 7 — Informe inicial:** primer de HD en lenguaje llano para quien ve su carta sin saber nada del sistema (qué es HD + lectura general desde su tipo/estrategia, con el handoff de Fase 6 para profundizar).
+- **Fase 6 — Integración IA (handoff) + info de elementos:** generar desde cualquier elemento de la app un prompt listo para llevar a la IA del propio usuario (la IA no corre dentro de la app), más información textual básica de cada elemento (tipo, autoridad, perfil, centros, canales) — solo si es legalmente viable: redacción propia o fuentes libres, nunca copiado de Jovian Archive. **Funcionalmente completa** (6.A–6.F construidas y verificadas, jun 2026); pendiente solo la revisión de textos por el autor y el bump opcional a 0.2.0. Las **64 puertas** estrenan esencia propia (2-3 frases desde el hexagrama de dominio público + el centro + don/sombra) con **coda de 3 estados** según la carta (completa/colgante/inactiva); los canales heredan la misma lógica (jun 2026). Detalle en TASKS/BACKLOG.
+- **Fase 7 — Informe inicial:** primer de HD en lenguaje llano para quien ve su carta sin saber nada del sistema. **Construida y verificada (jun 2026; pendiente la revisión de textos del autor).** Overlay `InitialReport.svelte` abierto por un botón "Informe" junto al nombre de la carta; `report.js` (`buildReport`) ensambla ~13 secciones desde el chart — Parte A (qué es HD + analogía de las hormigas + bodygraph/centros + condicionamiento + desacondicionamiento), Parte B personalizada (tipo y lugar en el colectivo, estrategia, autoridad/decisiones, energía·trampa·señales por tipo, perfil, definición, recorrido de centros con su estado real) y Parte C (handoff de carta completa) — reutilizando la biblioteca de Fase 6 + bloques `report`/`typeReport`; arquitectura **híbrida** (estático determinista + handoff para profundizar). Spec en `docs/informe-inicial.md`.
 - **Fase 8 — Carta compuesta:** overlay visual de dos cartas guardadas.
 - **Fase 9 — Tránsitos:** vista de tránsitos en tiempo real sobre una carta guardada.
 - **Fase 10 — Guardado en línea:** sincronización opcional en la nube (local-only sigue siendo el default).

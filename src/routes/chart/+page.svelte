@@ -9,6 +9,7 @@
   import { saveChart } from '$lib/db/charts.js';
   import Bodygraph from '$lib/components/Bodygraph.svelte';
   import ElementInfo from '$lib/components/ElementInfo.svelte';
+  import InitialReport from '$lib/components/InitialReport.svelte';
   import InfoDot from '$lib/components/InfoDot.svelte';
   import About from '$lib/components/About.svelte';
   import { dialog } from '$lib/components/dialog.svelte.js';
@@ -98,6 +99,7 @@
 
   /** @type {any} */
   let chart = $state(null);
+  let reportOpen = $state(false);
   /** @type {string | null} */
   let error = $state(null);
   let loading = $state(true);
@@ -143,8 +145,8 @@
   function resolveInfo(kind, key) {
     return kind === 'concept' ? getConceptInfo(key)
       : kind === 'profile' ? getProfileInfo(key)
-      : kind === 'gate' ? getGateInfo(key)
-      : kind === 'channel' ? getChannelInfo(key)
+      : kind === 'gate' ? getGateInfo(key, chart)
+      : kind === 'channel' ? getChannelInfo(key, chart)
       : getElementInfo(kind, key);
   }
 
@@ -471,6 +473,7 @@
       filter: (node) =>
         !(
           node.classList?.contains('back') ||
+          node.classList?.contains('report-btn') ||
           node.classList?.contains('actions') ||
           node.classList?.contains('img-actions') ||
           node.tagName === 'FOOTER'
@@ -620,6 +623,15 @@
     </button>
     <h1>{birthData?.name?.trim() || 'Tu carta'}</h1>
     {#if chart}
+      <button class="report-btn" type="button" onclick={() => (reportOpen = true)} title="Informe inicial">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+          <polyline points="14 2 14 8 20 8" />
+          <line x1="8" y1="13" x2="16" y2="13" />
+          <line x1="8" y1="17" x2="16" y2="17" />
+        </svg>
+        <span class="lbl">Informe</span>
+      </button>
       <div class="actions">
         <!-- Desktop spot; on mobile the buttons render over the graph
              corner instead (.graph-actions). -->
@@ -1023,6 +1035,13 @@
   onclose={closeInfo}
 />
 
+<InitialReport
+  open={reportOpen}
+  {chart}
+  onnavigate={(kind, key) => openInfoFor(CATEGORY_BY_KIND[kind] ?? '', kind, key)}
+  onclose={() => (reportOpen = false)}
+/>
+
 <svelte:window onclick={(e) => { hover = null; cardReveal = null; innerReveal = null; tipTap(e); }} />
 
 <style>
@@ -1050,6 +1069,34 @@
     height: 2.25rem;
     border-radius: 50%;
     cursor: pointer;
+  }
+  .report-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    flex: none;
+    padding: 0.4rem 0.7rem;
+    background: var(--accent-soft);
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    border-radius: 999px;
+    font-family: inherit;
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  .report-btn svg {
+    width: 15px;
+    height: 15px;
+  }
+  .report-btn:hover {
+    background: var(--accent);
+    color: #1a1408;
+  }
+  @media (max-width: 480px) {
+    .report-btn .lbl {
+      display: none;
+    }
   }
   .save {
     background: var(--accent);
