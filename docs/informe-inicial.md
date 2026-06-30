@@ -6,6 +6,12 @@
 > «Informe» en la página de carta). Verificado: 16/16 tests + navegador, sin
 > errores. **Pendiente:** la revisión de los textos por el autor (64 esencias +
 > bloques del informe) y, opcional, el bump a 0.2.0. No toca el motor de cálculo.
+>
+> **Nota (2026-06-30):** tras una pasada de revisión, la estructura de secciones
+> (orden, títulos, hormigas integradas en «Qué es Human Design», centros como
+> tarjetas, cierre «Saber más» tipo drawer) se ajustó respecto a la propuesta de
+> abajo; **`report.js` + `InitialReport.svelte` son la fuente canónica** del
+> resultado final. La estructura A/B/C de más abajo refleja la definición inicial.
 
 Son dos workstreams **independientes** (no se bloquean entre sí).
 

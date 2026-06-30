@@ -19,8 +19,21 @@ import {
 } from './content/index.js';
 
 /**
- * @typedef {{ id: string, title: string, paragraphs: string[] }} ReportSection
+ * @typedef {{ id: string, title: string, paragraphs: string[], items?: any[] }} ReportSection
  */
+
+/** "Tu definición: split" (or just "Tu definición" for a Reflector). */
+function definitionTitle(key, fullTitle) {
+  if (key === 'no-definition') return 'Tu definición';
+  return `Tu definición: ${String(fullTitle).replace(/^Definición\s+/i, '')}`;
+}
+
+/** Drop the redundant "**Definido**,"/"**Indefinido**," lead (the chip shows it)
+ *  and capitalise what's left, keeping any leading bold marker. */
+function stripState(s) {
+  const t = String(s).replace(/^\*\*(?:Definido|Indefinido)\*\*\s*(?:—[^—]*—\s*)?,?\s*/, '');
+  return t.replace(/^(\*\*)?([a-záéíóúñ])/, (_, b, c) => (b || '') + c.toUpperCase());
+}
 
 /**
  * Build the ordered report sections for a chart.
@@ -34,27 +47,51 @@ export function buildReport(chart, lang = DEFAULT_LANG) {
   /** @type {ReportSection[]} */
   const sections = [];
 
-  const add = (id, title, paragraphs) => {
+  const add = (id, title, paragraphs, extra = {}) => {
     const ps = (paragraphs ?? []).filter(Boolean);
-    if (title && ps.length) sections.push({ id, title, paragraphs: ps });
-  };
-  const block = (id) => {
-    const s = getReportSection(id, lang);
-    if (s) add(id, s.title, s.paragraphs);
+    if (title && (ps.length || extra.items)) sections.push({ id, title, paragraphs: ps, ...extra });
   };
 
   // ── Parte A — el marco (general, igual para todas las cartas). ──
-  block('intro');
-  block('ants');
-  block('chart');
-  block('conditioning');
-  block('experiment');
+  // "Qué es Human Design" = intro + the ant analogy folded in, no own heading.
+  const intro = getReportSection('intro', lang);
+  const ants = getReportSection('ants', lang);
+  if (intro) add('intro', intro.title, [...intro.paragraphs, ...(ants?.paragraphs ?? [])]);
+
+  const exp = getReportSection('experiment', lang);
+  if (exp) add('experiment', exp.title, exp.paragraphs);
+
+  const bg = getReportSection('chart', lang);
+  if (bg) add('chart', bg.title, bg.paragraphs);
 
   // ── Parte B — tu carta (personalizado). ──
+  // Tipos = the collective comparison + this chart's type.
   const type = getElementInfo('type', chart.type, lang);
-  if (type) add('type', `Tu tipo: ${L.type?.[chart.type] ?? type.title}`, type.paragraphs);
+  const coll = getReportSection('collective', lang);
+  if (type) {
+    add('type', `Tu tipo: ${L.type?.[chart.type] ?? type.title}`, [
+      ...(coll?.paragraphs ?? []),
+      ...type.paragraphs
+    ]);
+  }
 
-  block('collective');
+  // Centros = conditioning + a one-by-one walk through the nine centres.
+  const cond = getReportSection('conditioning', lang);
+  const defined = CENTERS.filter((c) => chart.definedCenters?.includes(c));
+  const open = CENTERS.filter((c) => !chart.definedCenters?.includes(c));
+  const items = [...defined, ...open]
+    .map((c) => {
+      const isDef = chart.definedCenters?.includes(c);
+      const ci = getCenterReport(c, isDef, lang);
+      return ci && { key: c, title: ci.title, defined: isDef, fn: ci.paragraphs[0], state: stripState(ci.paragraphs[1]) };
+    })
+    .filter(Boolean);
+  add(
+    'centers',
+    'Tus centros y tus condicionamientos',
+    [...(cond?.paragraphs ?? []), getReportLeadIn('centers', lang)],
+    { items }
+  );
 
   const strat = getElementInfo('strategy', chart.strategy, lang);
   if (strat) add('strategy', `Tu estrategia: ${strat.title}`, [getReportLeadIn('strategy', lang), ...strat.paragraphs]);
@@ -62,35 +99,22 @@ export function buildReport(chart, lang = DEFAULT_LANG) {
   const auth = getElementInfo('authority', chart.authority, lang);
   if (auth) add('authority', `Tu autoridad: ${L.authority?.[chart.authority] ?? auth.title}`, [getReportLeadIn('authority', lang), ...auth.paragraphs]);
 
-  const tr = getTypeReport(chart.type, lang);
-  if (tr) add('practice', 'Vivir según tu diseño', [tr.energia, tr.trampa, tr.senales]);
-
   const prof = getProfileInfo(chart.profile, lang);
   if (prof) add('profile', `Tu perfil ${chart.profile}`, prof.paragraphs);
 
   const def = getElementInfo('definition', chart.definition, lang);
-  if (def) add('definition', 'Tu definición', [getReportLeadIn('definition', lang), ...def.paragraphs]);
+  if (def) add('definition', definitionTitle(chart.definition, def.title), [getReportLeadIn('definition', lang), ...def.paragraphs]);
 
-  // Centres: defined first, then open; each as a heading paragraph + its detail.
-  const defined = CENTERS.filter((c) => chart.definedCenters?.includes(c));
-  const open = CENTERS.filter((c) => !chart.definedCenters?.includes(c));
-  const centerParas = [getReportLeadIn('centers', lang)];
-  for (const c of [...defined, ...open]) {
-    const isDef = chart.definedCenters?.includes(c);
-    const ci = getCenterReport(c, isDef, lang);
-    if (ci) {
-      centerParas.push(`**${ci.title}** · ${isDef ? 'definido' : 'indefinido (abierto)'}`);
-      centerParas.push(...ci.paragraphs);
-    }
-  }
-  add('centers', 'Tus centros, uno a uno', centerParas);
+  const tr = getTypeReport(chart.type, lang);
+  if (tr) add('practice', 'Vivir tu diseño', [getReportLeadIn('practice', lang), tr.energia, tr.trampa, tr.senales]);
 
   return sections;
 }
 
 /**
- * A ready-to-paste prompt for a personalised initial reading of the whole chart
- * (Parte C — handoff). Impersonal, since the chart may belong to someone else.
+ * A ready-to-paste prompt for the closing "Saber más" handoff. First person and
+ * deliberately open-ended (the report covers many topics, so the user completes
+ * what they want to go deeper on).
  * @param {any} chart
  * @param {string} [lang]
  * @returns {string}
@@ -103,11 +127,8 @@ export function buildReportPrompt(chart, lang = DEFAULT_LANG) {
   const definition = L.definition?.[chart.definition] ?? chart.definition;
   const centers = (chart.definedCenters ?? []).map((c) => L.center?.[c] ?? c).join(', ');
   return (
-    'En el marco de Human Design, ¿me haces una lectura inicial y sencilla de esta ' +
-    'carta, pensada para alguien que acaba de descubrir su diseño? Se trata de ' +
-    `un ${type}, estrategia «${strategy}», autoridad ${authority}, perfil ` +
-    `${chart.profile}, ${definition}, con los centros definidos: ${centers || 'ninguno'}. ` +
-    'Explícame en lenguaje llano qué significa en conjunto, cómo le conviene tomar ' +
-    'decisiones y gestionar su energía, y los errores más típicos de su tipo.'
+    `Según el Diseño Humano soy un ${type}, con perfil ${chart.profile}, ` +
+    `autoridad ${authority}, estrategia «${strategy}» y ${definition}; tengo ` +
+    `definidos los centros: ${centers || 'ninguno'}. Me gustaría saber más sobre `
   );
 }

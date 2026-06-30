@@ -648,6 +648,20 @@ assembled in-app + the Phase 6 AI handoff for personalised depth. Full spec in
   regression). `renderInline` was extracted to `src/lib/markup.js`, shared by
   `ElementInfo` and the report; in-text `[label](kind:key)` links open the
   element drawers (z-stacked over the report).
+- **Polish (2026-06-30)**: report restructured after a review pass — the ant
+  analogy folded into "Qué es Human Design" (no own heading); new order/titles
+  (Un experimento vital → El bodygraph → Tu tipo: X → Tus centros y tus
+  condicionamientos → Estrategia → Autoridad → Perfil → Tu definición: split →
+  Vivir tu diseño → Saber más); **gold section headings** + less bold (1-2 per
+  section) to break the wall-of-text; centres rendered as **cards with a
+  name chip + state tag**; the definition title shows the variant; the authority
+  lead-in opens with "your correct way to make decisions". The closing **"Saber
+  más"** now mirrors the drawers' "Saber más usando IA" (single "Sobre esta
+  carta" angle) with the **prompt visible by default**, pre-filled with the
+  chart's essentials in the first person and left **open-ended** ("…Me gustaría
+  saber más sobre "). Also: the report button is icon-only; the chart-name
+  header truncates with "…" instead of pushing the buttons; centre drawer titles
+  shortened ("Garganta", not "Centro de la Garganta").
 - **Pending**: the author's review of the new texts; an optional bump to 0.2.0;
   the commit to main.
 

@@ -19,7 +19,31 @@ lives in [`BACKLOG.md`](./BACKLOG.md).
 
 Last updated: 2026-06-30.
 
-> Latest change (2026-06-30): **Fase 7 — Informe inicial construido y
+> Latest change (2026-06-30, pulido del informe): **ajustes de UX y contenido
+> tras revisar el informe.** (1) **Bug de cabecera**: el nombre largo de la carta
+> se trunca con «…» (h1 `flex`+ellipsis) sin desplazar ni pisar los botones de la
+> derecha; en la exportación PNG el título se centra como antes. (2) **Drawers de
+> centro**: título en forma corta («Garganta», no «Centro de la Garganta»; el
+> eyebrow ya pone «Centro»). (3) **Informe**: botón icono-solo; título principal
+> **«Conoce tu diseño»**; títulos de sección en **dorado** (mejor jerarquía,
+> menos «ladrillo»); menos negrita (1-2 por sección en el texto propio).
+> Reestructura del índice/secciones: las hormigas se integran como párrafo de
+> «Qué es Human Design» (con presentación y referencia a los tipos); «Un
+> experimento vital» (título «Human Design como experimento vital») va el
+> segundo, sin entrar aún en centros; «La carta»→«Bodygraph» (menciona también
+> las puertas); colectivo+tipo → **«Tu tipo: X»**; condicionamiento+centros →
+> **«Tus centros y tus condicionamientos»** (enlace al desacondicionamiento + los
+> nueve centros como **tarjetas con chip** y estado real); «Tu definición: split»
+> muestra la variante; «En la práctica»→**«Vivir tu diseño»** arranca con un
+> claim sobre estrategia+autoridad; la autoridad arranca con «tu manera correcta
+> de tomar decisiones». (4) **«Saber más»** (antes «Tu IA»): handoff igual que en
+> los drawers, solo ángulo «Sobre esta carta», con el **prompt visible por
+> defecto** (editable/ocultable) y prefijado con lo esencial de la carta en
+> primera persona y abierto («…Me gustaría saber más sobre »). Verificado: 16/16
+> tests + navegador (truncado, drawer corto, informe completo, tarjetas, enlaces,
+> handoff) sin errores. Commit a main.
+>
+> Previo (2026-06-30): **Fase 7 — Informe inicial construido y
 > verificado (pendiente la revisión de textos del autor) + enriquecimiento de
 > puertas/canales (Fase 6.D follow-up).** (1) **Puertas/canales con contenido
 > propio**: las 64 puertas estrenan una "esencia" de 2-3 frases (tema del

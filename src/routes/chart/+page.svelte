@@ -630,7 +630,6 @@
           <line x1="8" y1="13" x2="16" y2="13" />
           <line x1="8" y1="17" x2="16" y2="17" />
         </svg>
-        <span class="lbl">Informe</span>
       </button>
       <div class="actions">
         <!-- Desktop spot; on mobile the buttons render over the graph
@@ -1073,30 +1072,24 @@
   .report-btn {
     display: inline-flex;
     align-items: center;
-    gap: 0.35rem;
+    justify-content: center;
     flex: none;
-    padding: 0.4rem 0.7rem;
+    width: 2.25rem;
+    height: 2.25rem;
+    padding: 0;
     background: var(--accent-soft);
     border: 1px solid var(--accent);
     color: var(--accent);
-    border-radius: 999px;
-    font-family: inherit;
-    font-size: 0.8rem;
-    font-weight: 500;
+    border-radius: 50%;
     cursor: pointer;
   }
   .report-btn svg {
-    width: 15px;
-    height: 15px;
+    width: 17px;
+    height: 17px;
   }
   .report-btn:hover {
     background: var(--accent);
     color: #1a1408;
-  }
-  @media (max-width: 480px) {
-    .report-btn .lbl {
-      display: none;
-    }
   }
   .save {
     background: var(--accent);
@@ -1118,6 +1111,12 @@
     font-size: 1.5rem;
     font-weight: 500;
     margin: 0;
+    /* Truncate a long name with … instead of pushing the right-side buttons. */
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   h2 {
     font-size: 1rem;
@@ -1152,6 +1151,13 @@
      line are centred to keep the image header balanced. */
   main.capturing header {
     justify-content: center;
+  }
+  /* In the PNG the buttons are filtered out, so let the title size to its text
+     and centre (don't stretch/truncate it). */
+  main.capturing h1 {
+    flex: none;
+    overflow: visible;
+    white-space: normal;
   }
   main.capturing .birth {
     margin-left: 0;

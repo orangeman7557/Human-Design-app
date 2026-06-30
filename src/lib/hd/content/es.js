@@ -321,55 +321,55 @@ export default {
   // function plus both states (getElementInfo reassembles them) — Phase 7.
   center: {
     head: {
-      title: 'Centro de la Cabeza',
+      title: 'Cabeza',
       fn: 'Es un centro de **presión mental**: la fuerza que nos empuja a pensar, preguntar e inspirarnos. Genera las preguntas y la curiosidad, pero no las responde —eso es tarea del [Ajna](center:ajna)—.',
       defined: '**Definido**, aporta una forma constante de inspirarse y de sentir la presión por entender.',
       open: '**Indefinido**, amplifica las preguntas y la inquietud mental de los demás: aquí conviene no dejarse arrastrar a resolver dudas que en realidad no son tuyas ni importan para tu vida.'
     },
     ajna: {
-      title: 'Centro Ajna',
+      title: 'Ajna',
       fn: 'Es el centro de la **mente y la conceptualización**: procesa la información, forma ideas y da estructura a lo que pensamos, trabajando con la presión que le llega de la [Cabeza](center:head).',
       defined: '**Definido**, da una manera fija y fiable de pensar, con opiniones y certezas estables.',
       open: '**Indefinido**, ofrece una mente **flexible y abierta**, capaz de ver muchas perspectivas; su trampa es la presión por aparentar seguridad o aferrarse a una certeza prestada. Su don es no necesitar tener siempre una respuesta fija.'
     },
     throat: {
-      title: 'Centro de la Garganta',
+      title: 'Garganta',
       fn: 'Es el centro de la **comunicación y la manifestación**: donde la energía se convierte en voz y en acción. Todo lo que se expresa o se materializa pasa por aquí.',
       defined: '**Definido**, da una voz y una forma de expresarse consistentes.',
       open: '**Indefinido**, adapta su manera de comunicar según la compañía y puede sentir la **presión por hablar para llamar la atención**; su aprendizaje es esperar el momento adecuado en lugar de forzar la palabra.'
     },
     g: {
-      title: 'Centro G',
+      title: 'G',
       fn: 'Es el centro de la **identidad, el amor y la dirección**: el sentido de quién eres y hacia dónde va tu vida. Está ligado también a la sensación de estar en el lugar correcto.',
       defined: '**Definido**, aporta un sentido estable de identidad y rumbo.',
       open: '**Indefinido**, vive una identidad más **fluida y cambiante**, que encuentra su dirección a través de los entornos y las personas adecuadas; la clave aquí es el **lugar**: estar en el sitio correcto orienta todo lo demás.'
     },
     heart: {
-      title: 'Centro del Corazón (Ego)',
+      title: 'Corazón (Ego)',
       fn: 'Es el centro de la **voluntad, el ego y la autoestima**, ligado al mundo material y a la capacidad de comprometerse y cumplir promesas. Es un motor que funciona a pulsos de fuerza de voluntad, no de forma continua.',
       defined: '**Definido**, da una voluntad consistente y la capacidad de sostener lo que se promete.',
       open: '**Indefinido** —la mayoría—, **no necesita demostrar su valía** ni medir su fuerza de voluntad; su trampa es prometer de más para probarse. Aquí se aprende que el valor propio no depende de los logros.'
     },
     sacral: {
-      title: 'Centro Sacral',
+      title: 'Sacral',
       fn: 'Es el gran **motor de energía vital, trabajo y sexualidad**: la fuente generativa del sistema. Define a Generadores y Generadores Manifestantes, y es la clave de su forma de gestionar la energía.',
       defined: '**Definido**, ofrece una energía de trabajo **sostenible y renovable**, pensada para emplearse en lo correcto y agotarse sanamente cada día.',
       open: '**Indefinido**, no dispone de esa energía constante: aquí es vital **reconocer cuándo es suficiente** y no dejarse arrastrar por el ritmo de los demás hasta el agotamiento.'
     },
     spleen: {
-      title: 'Centro del Bazo',
+      title: 'Bazo',
       fn: 'Es el centro del **instinto, la intuición y la supervivencia**, ligado al sistema inmune, la salud y la sensación de bienestar en el presente. Habla bajo, en el ahora y una sola vez.',
       defined: '**Definido**, da una intuición y una sensación de salud constantes.',
       open: '**Indefinido**, **amplifica los miedos** ajenos y tiende a aferrarse a lo que no le conviene —relaciones, hábitos, situaciones— por temor a soltar; su aprendizaje es no decidir desde el miedo y descubrir qué le sienta bien al cuerpo.'
     },
     solarPlexus: {
-      title: 'Centro del Plexo Solar',
+      title: 'Plexo Solar',
       fn: 'Es el centro de las **emociones, los sentimientos y los estados de ánimo**, que funciona en **ondas** que suben y bajan con el tiempo. Cuando está definido, marca una autoridad emocional: **no hay verdad en el momento**.',
       defined: '**Definido**, vive sus propias olas emocionales y necesita tiempo para tener claridad.',
       open: '**Indefinido**, **absorbe y amplifica las emociones del entorno** —capta el ambiente de una sala— y tiende a evitar la confrontación; su reto es no apropiarse de estados de ánimo que en realidad ha recogido de fuera.'
     },
     root: {
-      title: 'Centro Raíz',
+      title: 'Raíz',
       fn: 'Es un centro de **presión y adrenalina**: el empuje que nos pone en marcha y el estrés que nos urge a actuar para liberarnos de esa presión. Da el pulso para arrancar las cosas.',
       defined: '**Definido**, aporta una forma constante de manejar la presión y el estrés.',
       open: '**Indefinido**, **amplifica la prisa** y la sensación de tener que quitarse cuanto antes lo pendiente de encima; su aprendizaje es no dejarse empujar a decisiones apresuradas solo para aliviar una presión que, en buena parte, es prestada.'
@@ -604,49 +604,50 @@ export default {
     ants: {
       title: 'La analogía de las hormigas',
       paragraphs: [
-        'En un hormiguero no hay una «hormiga genérica». Hay exploradoras que salen a rastrear, soldados construidas para defender, obreras que mantienen el nido, y la reina, cuya función es otra por completo. Ninguna es mejor; cada una está construida para una manera de operar distinta, y un hormiguero funciona precisamente porque no son todas iguales. Pedirle a una exploradora que haga el trabajo de una soldado es agotarla en algo para lo que no está diseñada.',
-        'El error humano es suponer que sí somos todos la misma hormiga: que la productividad, el ritmo o la forma de decidir e iniciar deberían ser iguales para todos. Human Design propone justo lo contrario, que hay **tipos energéticos con mecánicas distintas**; en humanos, claro, esto es mucho más complejo y matizado que en un hormiguero: no es casta fija ni función única, sino patrones de cómo te relacionas con tu propia energía. Lo valioso del marco es esa mirada: **deja de medirte con la vara de otro diseño**.'
+        'Se podría decir que los humanos nos parecemos a las hormigas. En un hormiguero no hay una «hormiga genérica»: hay exploradoras que salen a rastrear, soldados construidas para defender, obreras que mantienen el nido y una reina cuya función es otra por completo. Ninguna es mejor; cada una está hecha para una forma de operar distinta, y el hormiguero funciona precisamente porque no son todas iguales. Pedirle a una exploradora que haga el trabajo de una soldado es agotarla en algo para lo que no está diseñada.',
+        'Con las personas pasa algo parecido, aunque de forma mucho más matizada: no somos castas fijas, pero sí tenemos maneras distintas de relacionarnos con nuestra propia energía. El error habitual es suponer que todos deberíamos rendir, decidir o arrancar igual. El Diseño Humano propone lo contrario, y a esas maneras las llama tipos, que más adelante verás reflejados en tu carta. Lo valioso del marco es esa mirada: **deja de medirte con la vara de otro diseño**.'
       ]
     },
     chart: {
-      title: 'La carta: el bodygraph y los nueve centros',
+      title: 'El bodygraph',
       paragraphs: [
-        'Tu carta se dibuja en un esquema llamado **bodygraph**: las nueve formas geométricas son los **centros** y las líneas que las unen son los canales que pueden conectarlos. Cada centro gobierna una función concreta —pensar, comunicar, sentir, querer, actuar, intuir— y, juntos, forman un mapa de cómo circula tu energía.',
-        'Lo que hace única a tu carta no son los centros en sí, sino **cuáles están definidos y cuáles no**. En el gráfico, los centros coloreados son los que tienes definidos; los que se ven vacíos están abiertos. Esa combinación es la base de todo lo demás: tu tipo, tu autoridad y tu manera de funcionar salen de ahí.'
+        'Tu carta se dibuja en un esquema llamado **bodygraph**: las nueve formas geométricas son los centros y las líneas que los conectan son los canales, formados a su vez por puertas. Cada centro gobierna una función concreta —pensar, comunicar, sentir, querer, actuar, intuir— y, en conjunto, dibujan cómo circula tu energía.',
+        'Lo que hace única a tu carta es cuáles de esos centros, canales y puertas están activos: los centros coloreados están definidos y los que se ven vacíos, abiertos. De esa combinación salen tu tipo, tu autoridad y tu forma de funcionar, y es lo que iremos desgranando en las páginas siguientes.'
       ]
     },
     conditioning: {
       title: 'Definido, indefinido y el condicionamiento',
       paragraphs: [
-        'Un centro **definido** funciona de forma fija y fiable: es una energía tuya, constante, que aportas siempre y que no depende de quién tengas al lado. Un centro **indefinido** (abierto) no es un defecto ni una carencia: es una zona donde no tienes esa energía fija y, en cambio, **absorbes y amplificas la de los demás** y la del entorno.',
-        'A todo aquello que nos aparta de vivir según nuestro propio diseño el Diseño Humano lo llama **condicionamiento**: las capas que vamos acumulando —por educación, por cultura, por miedos, por lo que se espera de nosotros— y que nos llevan a actuar y decidir como en realidad no somos. Tus centros abiertos son su vía de entrada más directa, porque ahí absorbes con fuerza la energía ajena y es fácil confundirla con la tuya; pero el condicionamiento también llega de fuera de la carta: de lo aprendido, de lo heredado y de la idea de quién «deberías» ser.'
+        'Un centro definido funciona de forma fija y fiable: es una energía tuya, constante, que aportas siempre y no depende de quién tengas al lado. Un centro indefinido (abierto) no es un defecto: es una zona donde no tienes esa energía fija y, en cambio, absorbes y amplificas la de los demás y la del entorno.',
+        'A todo lo que nos aparta de vivir según nuestro diseño el Diseño Humano lo llama **condicionamiento**: las capas que acumulamos —por educación, cultura, miedos o lo que se espera de nosotros— y que nos llevan a actuar como en realidad no somos. Tus centros abiertos son su vía de entrada principal. Reconocerlo es el primer paso del desacondicionamiento del que hablábamos antes: ir soltando lo prestado para volver a ti.'
       ]
     },
     experiment: {
-      title: 'Un experimento de desacondicionamiento',
+      title: 'Human Design como experimento vital',
       paragraphs: [
-        'Si en tus centros abiertos llevas años absorbiendo lo ajeno, acabas tomando muchas decisiones que no nacen de ti: de lo que se espera, de lo que hacen los demás, de la prisa del momento. El Diseño Humano no se presenta como una verdad para creer, sino como un **experimento para probar**: vivir según tu **estrategia** y tu **autoridad** —las dos herramientas que verás a continuación— para ir distinguiendo lo que es tuyo de lo que solo habías copiado.',
-        'A ese proceso se le llama **desacondicionamiento**: soltar poco a poco las capas prestadas hasta operar desde tu propio diseño. Suele llevar años, no semanas, y no se hace razonando ni de golpe, sino que va ocurriendo a medida que tomas decisiones a tu manera y notas la diferencia respecto a cuando las tomabas a la de otro. No hace falta que te creas nada de lo que sigue; basta con **probarlo en tu propia vida** y observar qué cambia.'
+        'El Diseño Humano no se presenta necesariamente como una verdad para creer, sino como un **experimento para probar**: en lugar de adoptarlo como dogma, propone que vivas según tu diseño y observes, en tu propia vida, si las cosas fluyen mejor.',
+        'El experimento es fácil de enunciar (aunque lleve su tiempo): tomar tus decisiones según tu estrategia y tu autoridad —las dos herramientas que verás más adelante— en vez de dejarte llevar por lo que se espera de ti, por la prisa o por la cabeza. Poco a poco, eso te devuelve a tu manera natural de funcionar; a ese proceso se le llama **desacondicionamiento**, y es, en el fondo, de lo que va todo lo demás.'
       ]
     },
     collective: {
       title: 'Tu lugar en el colectivo',
       paragraphs: [
-        'Los tipos no son categorías de personalidad, sino **maneras distintas de estar diseñado para usar la energía**. Verlos juntos ayuda a situarte: ninguno es mejor, y el conjunto funciona precisamente porque no todos somos iguales.',
-        '**Generadores (~37%) y Generadores Manifestantes (~33%)**: cerca del **70%** de la población. Son los **constructores**, con energía vital sostenida cuando hacen lo que de verdad les enciende. El motor que mueve el mundo.',
-        '**Proyectores (~20%)**: no tienen esa energía constante; su don es **ver, guiar y orientar** a los demás. Brillan cuando se les reconoce e invita, no forzándose al ritmo de un Generador.',
-        '**Manifestadores (~9%)**: los **iniciadores**, capaces de arrancar cosas de la nada e impactar sin esperar a nadie. Su clave es informar a quienes su acción salpica.',
-        '**Reflectores (~1%)**: los más infrecuentes, un **espejo del entorno** que muestrea la salud del grupo y del lugar en que vive.',
-        'El error más común es medirse con el diseño de otro: que un Proyector se exija la resistencia de un Generador, o que un Generador se frustre por no iniciar como un Manifestador. Tu tipo te dice **con qué vara medirte**.'
+        'Como las hormigas del principio, los tipos describen **maneras distintas de estar diseñado para usar la energía**. Verlos juntos ayuda a situarte: ninguno es mejor, y el conjunto funciona precisamente porque no todos somos iguales.',
+        '**Generadores (~37%) y Generadores Manifestantes (~33%)**: cerca del 70% de la población. Son los constructores, con energía vital sostenida cuando hacen lo que de verdad les enciende. El motor que mueve el mundo.',
+        '**Proyectores (~20%)**: no tienen esa energía constante; su don es ver, guiar y orientar a los demás. Brillan cuando se les reconoce e invita, no forzándose al ritmo de un Generador.',
+        '**Manifestadores (~9%)**: los iniciadores, capaces de arrancar cosas de la nada e impactar sin esperar a nadie. Su clave es informar a quienes su acción salpica.',
+        '**Reflectores (~1%)**: los más infrecuentes, un espejo del entorno que muestrea la salud del grupo y del lugar en que vive.',
+        'El error más común es medirse con el diseño de otro: que un Proyector se exija la resistencia de un Generador, o que un Generador se frustre por no iniciar como un Manifestador.'
       ]
     },
     // Short connective lead-ins prepended to the reused content of each
     // personalised section.
     leadIn: {
       strategy: 'Tu estrategia es tu forma natural de entrar en acción y comprometerte con las cosas sin forzarlas.',
-      authority: 'Si tu **estrategia** te dice *cuándo* entrar en acción, tu **autoridad** te dice *cómo decidir* cada sí y cada no concretos. En Diseño Humano la mente es buenísima para informarte y para aconsejar a otros, pero **no es de fiar para decidir sobre tu propia vida**; tu autoridad apunta a una fuente más corporal y estable.',
+      authority: 'Tu autoridad es tu manera correcta de tomar decisiones en la vida, de acuerdo con tu diseño y no contra él. Si la estrategia te dice *cuándo* actuar, la autoridad te dice *cómo decidir* cada sí y cada no. La mente sirve para informarte y aconsejar a otros, pero **no es de fiar para decidir sobre tu propia vida**: tu autoridad apunta a una fuente más corporal y estable.',
       definition: 'La definición describe cómo se agrupan entre sí tus centros definidos: si forman un solo bloque o varios grupos separados.',
-      centers: 'Este es el recorrido por tus nueve centros. Los **definidos** son la energía que aportas de forma estable; los **indefinidos (abiertos)** son donde recibes y amplificas la de los demás, y donde más aprendes si no te dejas condicionar.'
+      practice: 'Si te quedas con una sola cosa de todo esto, que sea esta: **vivir tu diseño es, sobre todo, entrar en acción según tu estrategia y decidir desde tu autoridad**. Lo demás matiza; esto es lo que de verdad cambia el día a día.',
+      centers: 'Veamos cómo queda cada uno de tus nueve centros en tu carta:'
     }
   },
 
