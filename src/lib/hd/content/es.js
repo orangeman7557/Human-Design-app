@@ -605,7 +605,7 @@ export default {
       title: 'La analogía de las hormigas',
       paragraphs: [
         'Se podría decir que los humanos nos parecemos a las hormigas. En un hormiguero no hay una «hormiga genérica»: hay exploradoras que salen a rastrear, soldados construidas para defender, obreras que mantienen el nido y una reina cuya función es otra por completo. Ninguna es mejor; cada una está hecha para una forma de operar distinta, y el hormiguero funciona precisamente porque no son todas iguales. Pedirle a una exploradora que haga el trabajo de una soldado es agotarla en algo para lo que no está diseñada.',
-        'Con las personas pasa algo parecido, aunque de forma mucho más matizada: no somos castas fijas, pero sí tenemos maneras distintas de relacionarnos con nuestra propia energía. El error habitual es suponer que todos deberíamos rendir, decidir o arrancar igual. El Diseño Humano propone lo contrario, y a esas maneras las llama tipos, que más adelante verás reflejados en tu carta. Lo valioso del marco es esa mirada: **deja de medirte con la vara de otro diseño**.'
+        'Con las personas pasa algo parecido, aunque de forma mucho más matizada: no somos castas fijas, pero sí tenemos maneras distintas de relacionarnos con nuestra propia energía. El error habitual es suponer que todos deberíamos rendir, decidir o arrancar igual. El Diseño Humano propone lo contrario, y a esas maneras las llama [tipos](section:type), que más adelante verás reflejados en tu carta. Lo valioso del marco es esa mirada: **deja de medirte con la vara de otro diseño**.'
       ]
     },
     chart: {
@@ -619,20 +619,20 @@ export default {
       title: 'Definido, indefinido y el condicionamiento',
       paragraphs: [
         'Un centro definido funciona de forma fija y fiable: es una energía tuya, constante, que aportas siempre y no depende de quién tengas al lado. Un centro indefinido (abierto) no es un defecto: es una zona donde no tienes esa energía fija y, en cambio, absorbes y amplificas la de los demás y la del entorno.',
-        'A todo lo que nos aparta de vivir según nuestro diseño el Diseño Humano lo llama **condicionamiento**: las capas que acumulamos —por educación, cultura, miedos o lo que se espera de nosotros— y que nos llevan a actuar como en realidad no somos. Tus centros abiertos son su vía de entrada principal. Reconocerlo es el primer paso del desacondicionamiento del que hablábamos antes: ir soltando lo prestado para volver a ti.'
+        'A todo lo que nos aparta de vivir según nuestro diseño el Diseño Humano lo llama **condicionamiento**: las capas que acumulamos —por educación, cultura, miedos o lo que se espera de nosotros— y que nos llevan a actuar como en realidad no somos. Tus centros abiertos son su vía de entrada principal. Reconocerlo es el primer paso del [desacondicionamiento](section:experiment) del que hablábamos antes: ir soltando lo prestado para volver a ti.'
       ]
     },
     experiment: {
       title: 'Human Design como experimento vital',
       paragraphs: [
         'El Diseño Humano no se presenta necesariamente como una verdad para creer, sino como un **experimento para probar**: en lugar de adoptarlo como dogma, propone que vivas según tu diseño y observes, en tu propia vida, si las cosas fluyen mejor.',
-        'El experimento es fácil de enunciar (aunque lleve su tiempo): tomar tus decisiones según tu estrategia y tu autoridad —las dos herramientas que verás más adelante— en vez de dejarte llevar por lo que se espera de ti, por la prisa o por la cabeza. Poco a poco, eso te devuelve a tu manera natural de funcionar; a ese proceso se le llama **desacondicionamiento**, y es, en el fondo, de lo que va todo lo demás.'
+        'El experimento es fácil de enunciar (aunque lleve su tiempo): tomar tus decisiones según [tu estrategia](section:strategy) y [tu autoridad](section:authority) —las dos herramientas que verás más adelante— en vez de dejarte llevar por lo que se espera de ti, por la prisa o por la cabeza. Poco a poco, eso te devuelve a tu manera natural de funcionar; a ese proceso se le llama **desacondicionamiento**, y es, en el fondo, de lo que va todo lo demás.'
       ]
     },
     collective: {
       title: 'Tu lugar en el colectivo',
       paragraphs: [
-        'Como las hormigas del principio, los tipos describen **maneras distintas de estar diseñado para usar la energía**. Verlos juntos ayuda a situarte: ninguno es mejor, y el conjunto funciona precisamente porque no todos somos iguales.',
+        'Como [las hormigas del principio](section:intro), los tipos describen **maneras distintas de estar diseñado para usar la energía**. Verlos juntos ayuda a situarte: ninguno es mejor, y el conjunto funciona precisamente porque no todos somos iguales.',
         '**Generadores (~37%) y Generadores Manifestantes (~33%)**: cerca del 70% de la población. Son los constructores, con energía vital sostenida cuando hacen lo que de verdad les enciende. El motor que mueve el mundo.',
         '**Proyectores (~20%)**: no tienen esa energía constante; su don es ver, guiar y orientar a los demás. Brillan cuando se les reconoce e invita, no forzándose al ritmo de un Generador.',
         '**Manifestadores (~9%)**: los iniciadores, capaces de arrancar cosas de la nada e impactar sin esperar a nadie. Su clave es informar a quienes su acción salpica.',
@@ -646,7 +646,7 @@ export default {
       strategy: 'Tu estrategia es tu forma natural de entrar en acción y comprometerte con las cosas sin forzarlas.',
       authority: 'Tu autoridad es tu manera correcta de tomar decisiones en la vida, de acuerdo con tu diseño y no contra él. Si la estrategia te dice *cuándo* actuar, la autoridad te dice *cómo decidir* cada sí y cada no. La mente sirve para informarte y aconsejar a otros, pero **no es de fiar para decidir sobre tu propia vida**: tu autoridad apunta a una fuente más corporal y estable.',
       definition: 'La definición describe cómo se agrupan entre sí tus centros definidos: si forman un solo bloque o varios grupos separados.',
-      practice: 'Si te quedas con una sola cosa de todo esto, que sea esta: **vivir tu diseño es, sobre todo, entrar en acción según tu estrategia y decidir desde tu autoridad**. Lo demás matiza; esto es lo que de verdad cambia el día a día.',
+      practice: 'Si te quedas con una sola cosa de todo esto, que sea esta: **vivir tu diseño es, sobre todo, entrar en acción según [tu estrategia](section:strategy) y decidir desde [tu autoridad](section:authority)**. Lo demás matiza; esto es lo que de verdad cambia el día a día.',
       centers: 'Veamos cómo queda cada uno de tus nueve centros en tu carta:'
     }
   },

@@ -83,7 +83,12 @@
     e.preventDefault();
     const raw = link.dataset.link;
     const i = raw.indexOf(':');
-    onnavigate?.(raw.slice(0, i), raw.slice(i + 1));
+    const kind = raw.slice(0, i);
+    const key = raw.slice(i + 1);
+    // `section:` links scroll within the report; everything else opens the
+    // matching element drawer (owned by the parent).
+    if (kind === 'section') scrollTo(key);
+    else onnavigate?.(kind, key);
   }
   function onContentKeydown(e) {
     if (e.key === 'Enter' || e.key === ' ') navFromEvent(e);
@@ -155,7 +160,11 @@
         <section id={`report-${s.id}`}>
           <h3>{s.title}</h3>
           {#each s.paragraphs as p}
-            <p>{@html renderInline(p)}</p>
+            {#if typeof p === 'string'}
+              <p>{@html renderInline(p)}</p>
+            {:else if p.subhead}
+              <h4 class="subhead">{p.subhead}</h4>
+            {/if}
           {/each}
           {#if s.items}
             <div class="centres">
@@ -362,6 +371,13 @@
     color: var(--accent);
     letter-spacing: 0.01em;
     margin: 0 0 0.8rem;
+  }
+  /* Small sub-heading inside a section (e.g. "Tú eres un Manifestador"). */
+  .subhead {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text);
+    margin: 1.6rem 0 0.1rem;
   }
   p {
     font-size: 0.92rem;
@@ -618,6 +634,7 @@
   .pbox {
     width: 100%;
     box-sizing: border-box;
+    min-height: 5rem;
     background: var(--surface-2);
     border: 1px solid var(--border);
     border-radius: 9px;

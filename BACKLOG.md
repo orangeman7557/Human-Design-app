@@ -231,6 +231,14 @@ corrected).
 
 ## Possible improvements (not scheduled, not part of Phase 5)
 
+- **Full-app text review (pending — requested 2026-06-30).** A pass over **all**
+  user-facing copy in the app, with special attention to the new **initial
+  report** (Parte A/B, the "Tú eres un X" sub-headings, the centre cards, the
+  «Saber más» prompt) and the **64 gate essences + channel codas**. The author
+  wants to refine style details throughout. Treat the current report/gate texts
+  as a working draft until this pass is done (it supersedes the per-phase
+  "author's text review" notes for 6 and 7).
+
 - ~~**Place search should match partial names.**~~ — done 2026-06-24.
   Switched the geocoder from Nominatim to **Photon** (a typeahead index): a
   prefix like "madr" now surfaces Madrid, "stuttg" Stuttgart. The earlier

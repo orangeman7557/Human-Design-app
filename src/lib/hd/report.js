@@ -69,23 +69,24 @@ export function buildReport(chart, lang = DEFAULT_LANG) {
   const type = getElementInfo('type', chart.type, lang);
   const coll = getReportSection('collective', lang);
   if (type) {
-    add('type', `Tu tipo: ${L.type?.[chart.type] ?? type.title}`, [
+    const typeLabel = L.type?.[chart.type] ?? type.title;
+    // A small sub-heading marks the jump from the general comparison to this
+    // chart's own type, so the transition reads clearly.
+    add('type', `Tu tipo: ${typeLabel}`, [
       ...(coll?.paragraphs ?? []),
+      { subhead: `Tú eres un ${typeLabel}` },
       ...type.paragraphs
     ]);
   }
 
-  // Centros = conditioning + a one-by-one walk through the nine centres.
+  // Centros = conditioning + a one-by-one walk through the nine centres, in the
+  // canonical bodygraph order (head/ajna … sacral/root), not defined-first.
   const cond = getReportSection('conditioning', lang);
-  const defined = CENTERS.filter((c) => chart.definedCenters?.includes(c));
-  const open = CENTERS.filter((c) => !chart.definedCenters?.includes(c));
-  const items = [...defined, ...open]
-    .map((c) => {
-      const isDef = chart.definedCenters?.includes(c);
-      const ci = getCenterReport(c, isDef, lang);
-      return ci && { key: c, title: ci.title, defined: isDef, fn: ci.paragraphs[0], state: stripState(ci.paragraphs[1]) };
-    })
-    .filter(Boolean);
+  const items = CENTERS.map((c) => {
+    const isDef = chart.definedCenters?.includes(c);
+    const ci = getCenterReport(c, isDef, lang);
+    return ci && { key: c, title: ci.title, defined: isDef, fn: ci.paragraphs[0], state: stripState(ci.paragraphs[1]) };
+  }).filter(Boolean);
   add(
     'centers',
     'Tus centros y tus condicionamientos',
@@ -129,6 +130,6 @@ export function buildReportPrompt(chart, lang = DEFAULT_LANG) {
   return (
     `Según el Diseño Humano soy un ${type}, con perfil ${chart.profile}, ` +
     `autoridad ${authority}, estrategia «${strategy}» y ${definition}; tengo ` +
-    `definidos los centros: ${centers || 'ninguno'}. Me gustaría saber más sobre `
+    `definidos los centros: ${centers || 'ninguno'}. Me gustaría saber más sobre...`
   );
 }

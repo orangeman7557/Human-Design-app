@@ -19,7 +19,27 @@ lives in [`BACKLOG.md`](./BACKLOG.md).
 
 Last updated: 2026-06-30.
 
-> Latest change (2026-06-30, pulido del informe): **ajustes de UX y contenido
+> Latest change (2026-06-30, ajustes 2): **más pulido del informe + fix de
+> overflow.** (1) **Tipos**: un subtítulo «Tú eres un X» marca el salto del
+> colectivo a tu tipo concreto (la transición se entendía mal). (2) **Centros**:
+> recorrido en el **orden canónico** del bodygraph (cabeza, ajna … sacral, raíz),
+> no definidos-primero; se mantiene el diseño en pastillas. (3) **Enlaces entre
+> secciones**: nuevo tipo de enlace `section:` que hace scroll dentro del informe
+> (en «Vivir tu diseño», estrategia/autoridad enlazan a sus secciones; además
+> enlazadas las menciones cruzadas en hormigas→tipos, condicionamiento→
+> experimento, colectivo→intro, experimento→estrategia/autoridad). (4) **Prompt
+> final**: cajetín más alto por defecto (`min-height: 5rem`) y el prompt abierto
+> acaba en «…sobre...». (5) **Botón de informe**: tooltip `data-tip="Informe"`
+> (como descargar/exportar). (6) **Bug de scroll horizontal en móvil**: lo
+> causaba la **tabla de Activaciones** (intrínsecamente más ancha que 375px por
+> la columna Peso, preexistente), no la cabecera ni el informe; se envuelve en un
+> contenedor con scroll horizontal propio (`.acts-scroll`) para que no empuje el
+> ancho de la página (en escritorio no se nota). Anotada en BACKLOG la **revisión
+> de textos de toda la app** pendiente. Verificado: 16/16 tests + navegador
+> (overflow 0, subtítulo, orden de centros, scroll de enlaces, prompt) sin
+> errores. Commit a main.
+>
+> Previo (2026-06-30, pulido del informe): **ajustes de UX y contenido
 > tras revisar el informe.** (1) **Bug de cabecera**: el nombre largo de la carta
 > se trunca con «…» (h1 `flex`+ellipsis) sin desplazar ni pisar los botones de la
 > derecha; en la exportación PNG el título se centra como antes. (2) **Drawers de

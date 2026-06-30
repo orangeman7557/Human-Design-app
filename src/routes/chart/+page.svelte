@@ -624,7 +624,7 @@
     <div class="title-wrap">
       <h1>{birthData?.name?.trim() || 'Tu carta'}</h1>
       {#if chart}
-        <button class="report-btn" type="button" onclick={() => (reportOpen = true)} title="Informe inicial" aria-label="Informe inicial">
+        <button class="report-btn" type="button" onclick={() => (reportOpen = true)} data-tip="Informe" aria-label="Informe inicial">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
             <polyline points="14 2 14 8 20 8" />
@@ -980,6 +980,7 @@
             {/if}
           </span>
         </h2>
+        <div class="acts-scroll">
         <table>
           <thead>
             <tr>
@@ -1019,6 +1020,7 @@
             {/each}
           </tbody>
         </table>
+        </div>
         <button class="show-more" onclick={(e) => { e.stopPropagation(); showAllPlanets = !showAllPlanets; }}>
           {showAllPlanets ? 'Mostrar menos ▴' : 'Mostrar más ▾'}
         </button>
@@ -1686,6 +1688,14 @@
     font-size: 0.8rem;
   }
 
+  /* The activations table (with the weight column) is intrinsically wider than a
+     phone screen; give it its own horizontal scroll so it never pushes the page
+     width. On desktop the table fits, so no scrollbar shows. */
+  .acts-scroll {
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
   table {
     width: 100%;
     border-collapse: collapse;
