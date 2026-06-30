@@ -39,9 +39,14 @@ Last updated: 2026-06-30.
 > de tomar decisiones». (4) **«Saber más»** (antes «Tu IA»): handoff igual que en
 > los drawers, solo ángulo «Sobre esta carta», con el **prompt visible por
 > defecto** (editable/ocultable) y prefijado con lo esencial de la carta en
-> primera persona y abierto («…Me gustaría saber más sobre »). Verificado: 16/16
-> tests + navegador (truncado, drawer corto, informe completo, tarjetas, enlaces,
-> handoff) sin errores. Commit a main.
+> primera persona y abierto («…Me gustaría saber más sobre »). (5) **Botones de
+> cabecera**: el botón de informe pasa a forma **cuadrada-redondeada dorada**
+> (igual que descargar/exportar, menos tipos de botón) y se coloca **junto al
+> nombre** (no a la derecha; nombre + botón en un `.title-wrap`, truncado «…»
+> intacto en escritorio y móvil); **«Guardar carta» pasa a icono en móvil** para
+> ocupar menos. Verificado: 16/16 tests + navegador (truncado, drawer corto,
+> informe completo, tarjetas, enlaces, handoff, cabecera en escritorio/móvil) sin
+> errores. Commit a main.
 >
 > Previo (2026-06-30): **Fase 7 — Informe inicial construido y
 > verificado (pendiente la revisión de textos del autor) + enriquecimiento de

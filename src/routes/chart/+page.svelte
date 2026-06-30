@@ -621,24 +621,33 @@
         <polyline points="12 19 5 12 12 5" />
       </svg>
     </button>
-    <h1>{birthData?.name?.trim() || 'Tu carta'}</h1>
+    <div class="title-wrap">
+      <h1>{birthData?.name?.trim() || 'Tu carta'}</h1>
+      {#if chart}
+        <button class="report-btn" type="button" onclick={() => (reportOpen = true)} title="Informe inicial" aria-label="Informe inicial">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+            <polyline points="14 2 14 8 20 8" />
+            <line x1="8" y1="13" x2="16" y2="13" />
+            <line x1="8" y1="17" x2="16" y2="17" />
+          </svg>
+        </button>
+      {/if}
+    </div>
     {#if chart}
-      <button class="report-btn" type="button" onclick={() => (reportOpen = true)} title="Informe inicial">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-          <polyline points="14 2 14 8 20 8" />
-          <line x1="8" y1="13" x2="16" y2="13" />
-          <line x1="8" y1="17" x2="16" y2="17" />
-        </svg>
-      </button>
       <div class="actions">
         <!-- Desktop spot; on mobile the buttons render over the graph
              corner instead (.graph-actions). -->
         <div class="img-actions">
           {@render imgButtons()}
         </div>
-        <button class="save" onclick={save} disabled={saved}>
-          {saved ? 'Guardada ✓' : 'Guardar carta'}
+        <button class="save" onclick={save} disabled={saved} aria-label={saved ? 'Carta guardada' : 'Guardar carta'}>
+          {#if saved}
+            <svg class="save-ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>
+          {:else}
+            <svg class="save-ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" /><polyline points="17 21 17 13 7 13 7 21" /><polyline points="7 3 7 8 15 8" /></svg>
+          {/if}
+          <span class="save-lbl">{saved ? 'Guardada ✓' : 'Guardar carta'}</span>
         </button>
       </div>
     {/if}
@@ -1069,29 +1078,35 @@
     border-radius: 50%;
     cursor: pointer;
   }
+  /* Same square-rounded shape and size as the share/download buttons, in gold —
+     so the header doesn't mix too many button styles. */
   .report-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     flex: none;
-    width: 2.25rem;
-    height: 2.25rem;
+    width: 2rem;
+    height: 2rem;
     padding: 0;
     background: var(--accent-soft);
     border: 1px solid var(--accent);
     color: var(--accent);
-    border-radius: 50%;
+    border-radius: var(--radius);
     cursor: pointer;
   }
   .report-btn svg {
-    width: 17px;
-    height: 17px;
+    width: 16px;
+    height: 16px;
   }
   .report-btn:hover {
     background: var(--accent);
     color: #1a1408;
   }
   .save {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
     background: var(--accent);
     color: #1a1408;
     border: none;
@@ -1107,12 +1122,26 @@
     color: var(--text-muted);
     cursor: default;
   }
+  /* The save icon shows only on mobile, where the label is hidden. */
+  .save-ic {
+    display: none;
+  }
+  /* Holds the name + the report button so the report button sits right next to
+     the name; this wrap takes the space up to the right-side actions. */
+  .title-wrap {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex: 1;
+    min-width: 0;
+  }
   h1 {
     font-size: 1.5rem;
     font-weight: 500;
     margin: 0;
-    /* Truncate a long name with … instead of pushing the right-side buttons. */
-    flex: 1;
+    /* Shrink + truncate a long name with … instead of pushing the report
+       button or the right-side actions. */
+    flex: 0 1 auto;
     min-width: 0;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -1158,6 +1187,9 @@
     flex: none;
     overflow: visible;
     white-space: normal;
+  }
+  main.capturing .title-wrap {
+    flex: none;
   }
   main.capturing .birth {
     margin-left: 0;
@@ -1516,9 +1548,17 @@
       margin: 0.45rem 0 calc(-2rem - 0.45rem);
       z-index: 1;
     }
+    /* Compact icon-only save on mobile (square, like the image buttons). */
     .save {
-      padding: 0.4rem 0.65rem;
-      font-size: 0.78rem;
+      width: 2rem;
+      height: 2rem;
+      padding: 0;
+    }
+    .save-lbl {
+      display: none;
+    }
+    .save-ic {
+      display: block;
     }
   }
 
