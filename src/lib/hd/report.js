@@ -9,9 +9,10 @@
 import { CENTERS } from './constants.js';
 import {
   getElementInfo,
-  getProfileInfo,
   getReportSection,
   getReportLeadIn,
+  getReportBody,
+  getReportProfile,
   getTypeReport,
   getCenterReport,
   getPromptLabels,
@@ -26,13 +27,6 @@ import {
 function definitionTitle(key, fullTitle) {
   if (key === 'no-definition') return 'Tu definición';
   return `Tu definición: ${String(fullTitle).replace(/^Definición\s+/i, '')}`;
-}
-
-/** Drop the redundant "**Definido**,"/"**Indefinido**," lead (the chip shows it)
- *  and capitalise what's left, keeping any leading bold marker. */
-function stripState(s) {
-  const t = String(s).replace(/^\*\*(?:Definido|Indefinido)\*\*\s*(?:—[^—]*—\s*)?,?\s*/, '');
-  return t.replace(/^(\*\*)?([a-záéíóúñ])/, (_, b, c) => (b || '') + c.toUpperCase());
 }
 
 /**
@@ -66,16 +60,16 @@ export function buildReport(chart, lang = DEFAULT_LANG) {
 
   // ── Parte B — tu carta (personalizado). ──
   // Tipos = the collective comparison + this chart's type.
-  const type = getElementInfo('type', chart.type, lang);
+  const typeBody = getReportBody('type', chart.type, lang);
   const coll = getReportSection('collective', lang);
-  if (type) {
-    const typeLabel = L.type?.[chart.type] ?? type.title;
+  if (typeBody) {
+    const typeLabel = L.type?.[chart.type] ?? chart.type;
     // A small sub-heading marks the jump from the general comparison to this
     // chart's own type, so the transition reads clearly.
     add('type', `Tu tipo: ${typeLabel}`, [
       ...(coll?.paragraphs ?? []),
       { subhead: `Tú eres un ${typeLabel}` },
-      ...type.paragraphs
+      ...typeBody
     ]);
   }
 
@@ -85,7 +79,7 @@ export function buildReport(chart, lang = DEFAULT_LANG) {
   const items = CENTERS.map((c) => {
     const isDef = chart.definedCenters?.includes(c);
     const ci = getCenterReport(c, isDef, lang);
-    return ci && { key: c, title: ci.title, defined: isDef, fn: ci.paragraphs[0], state: stripState(ci.paragraphs[1]) };
+    return ci && { key: c, title: ci.title, defined: isDef, fn: ci.paragraphs[0], state: ci.paragraphs[1] };
   }).filter(Boolean);
   add(
     'centers',
@@ -95,16 +89,19 @@ export function buildReport(chart, lang = DEFAULT_LANG) {
   );
 
   const strat = getElementInfo('strategy', chart.strategy, lang);
-  if (strat) add('strategy', `Tu estrategia: ${strat.title}`, [getReportLeadIn('strategy', lang), ...strat.paragraphs]);
+  const stratBody = getReportBody('strategy', chart.strategy, lang);
+  if (strat && stratBody) add('strategy', `Tu estrategia: ${strat.title}`, [getReportLeadIn('strategy', lang), ...stratBody]);
 
   const auth = getElementInfo('authority', chart.authority, lang);
-  if (auth) add('authority', `Tu autoridad: ${L.authority?.[chart.authority] ?? auth.title}`, [getReportLeadIn('authority', lang), ...auth.paragraphs]);
+  const authBody = getReportBody('authority', chart.authority, lang);
+  if (auth && authBody) add('authority', `Tu autoridad: ${L.authority?.[chart.authority] ?? auth.title}`, [getReportLeadIn('authority', lang), ...authBody]);
 
-  const prof = getProfileInfo(chart.profile, lang);
+  const prof = getReportProfile(chart.profile, lang);
   if (prof) add('profile', `Tu perfil ${chart.profile}`, prof.paragraphs);
 
   const def = getElementInfo('definition', chart.definition, lang);
-  if (def) add('definition', definitionTitle(chart.definition, def.title), [getReportLeadIn('definition', lang), ...def.paragraphs]);
+  const defBody = getReportBody('definition', chart.definition, lang);
+  if (def && defBody) add('definition', definitionTitle(chart.definition, def.title), [getReportLeadIn('definition', lang), ...defBody]);
 
   const tr = getTypeReport(chart.type, lang);
   if (tr) add('practice', 'Vivir tu diseño', [getReportLeadIn('practice', lang), tr.energia, tr.trampa, tr.senales]);

@@ -17,9 +17,27 @@ Statuses:
 The deeper context (technical trade-offs, future ideas, deferred decisions)
 lives in [`BACKLOG.md`](./BACKLOG.md).
 
-Last updated: 2026-06-30.
+Last updated: 2026-07-01.
 
-> Latest change (2026-06-30, informe en PDF): **botón para descargar el informe
+> Latest change (2026-07-01, informe en 2ª persona): **reescritura del informe
+> a segunda persona tras la lectura del autor.** Las secciones personalizadas
+> (Tu tipo, Tu estrategia, Tu autoridad, Tu perfil, Tu definición y el estado de
+> los centros) reutilizaban los textos generales que alimentan los drawers de la
+> «i» —escritos en 3ª persona impersonal a propósito (la carta puede ser de otra
+> persona)—, lo que producía un choque de voz tras los *lead-in* en 2ª persona
+> («Tu estrategia es…» → «**La estrategia del Manifestador.** Como **su** energía…»)
+> y dejaba el estado de cada centro sin contexto. Solución: el informe estrena
+> **cuerpos propios en 2ª persona** (conversión fiel, mismo significado) en un
+> espacio nuevo `report.{type,strategy,authority,profile,definition,center}` de
+> `es.js`; los bloques compartidos y los drawers **siguen impersonales** (sin
+> regresión). `report.js` los consume vía `getReportBody`/`getReportProfile`;
+> `getCenterReport` devuelve el estado en 2ª persona con contexto («Es uno de tus
+> centros **definidos/abiertos**: …»). El `fn` del centro (qué *es* el centro)
+> sigue siendo general. Verificado: 16/16 tests + navegador (informe en 2ª persona
+> y coherente; drawers intactos). Backlog: añadida la mejora de **etiquetas de
+> centros sobre el bodygraph** (o línea que una chip↔figura).
+>
+> Previo (2026-06-30, informe en PDF): **botón para descargar el informe
 > en PDF.** Nuevo botón «PDF» (píldora dorada) en la cabecera del informe, arriba
 > a la derecha junto a la ✕. Genera un PDF (oscuro, con los tokens de la app) con
 > una **portada** —cabecera con nombre + fecha·lugar **centrados**, las tarjetas

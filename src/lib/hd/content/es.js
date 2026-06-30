@@ -648,6 +648,183 @@ export default {
       definition: 'La definición describe cómo se agrupan entre sí tus centros definidos: si forman un solo bloque o varios grupos separados.',
       practice: 'Si te quedas con una sola cosa de todo esto, que sea esta: **vivir tu diseño es, sobre todo, entrar en acción según [tu estrategia](section:strategy) y decidir desde [tu autoridad](section:authority)**. Lo demás matiza; esto es lo que de verdad cambia el día a día.',
       centers: 'Veamos cómo queda cada uno de tus nueve centros en tu carta:'
+    },
+
+    // ── Second-person bodies for the personalised report sections (text pass,
+    // 2026-06-30). The report reads in "tú"; the drawer "i" keeps the general,
+    // impersonal voice (the chart may be someone else's — Phase 6), so these
+    // live here, separate from the shared type/strategy/authority/profile/
+    // definition/center blocks. Faithful conversions of those: same meaning,
+    // second person, without the "La estrategia del X." style openers (the
+    // section title + lead-in already set the frame). ──
+    type: {
+      generator: [
+        'Eres el tipo mayoritario, alrededor del **37 % de la población**. Tu rasgo definitorio es el [centro Sacral](center:sacral) definido: la fuente de energía vital del sistema, generativa y de carácter renovable.',
+        'Operas por respuesta: **reaccionas a lo que la vida te presenta** en lugar de iniciar desde la mente. Cuando comprometes tu energía con lo correcto, aparece la satisfacción; cuando la fuerzas donde no toca, la frustración.',
+        'En la práctica, tu Sacral responde antes que tu mente: ante algo concreto —una propuesta, una pregunta, una situación— surge una reacción visceral de atracción o rechazo. **Seguir esa señal del cuerpo**, en vez de razonar la decisión, es lo que mantiene tu energía bien empleada.'
+      ],
+      'manifesting-generator': [
+        'Eres una variante del [Generador](type:generator) —entre ambos tipos, cerca del **70 % de la población**—: también tienes el [Sacral](center:sacral) definido, pero conectado, directa o indirectamente, con la [garganta](center:throat). Eso te da la energía generadora del Generador y, además, capacidad de manifestar y materializar con rapidez.',
+        'Tu estrategia es **responder y luego informar**: primero esperas la respuesta sacral —el sí o el no del cuerpo— y, una vez la tienes, avisas a quienes se verán afectados antes de lanzarte. Tiendes a ser **polifacético, veloz y no lineal**: saltas pasos, haces varias cosas a la vez y a veces vuelves atrás a rematar lo que te saltaste.',
+        'La clave para gestionar tu energía es no dispersarte iniciando sin respuesta: cuando te comprometes con lo que de verdad te enciende, avanzas muy rápido; cuando fuerzas por mente, acumulas frustración y trabajo a medias.'
+      ],
+      projector: [
+        'Eres cerca del **20 % de la población**. No tienes el [Sacral](center:sacral) definido, así que **no estás diseñado para un trabajo constante** ni para sostener la misma energía que un [Generador](type:generator). Tu don es otro: ver a los demás con enorme profundidad y saber guiar y orientar la energía ajena.',
+        'Tu estrategia es **esperar la invitación** para lo importante —el trabajo, el amor, el lugar donde vivir—. Necesitas ser reconocido e invitado para que tu sabiduría sea bien recibida; cuando te ofreces sin que te lo pidan, sueles encontrar resistencia. El reconocimiento y el éxito, frente a la amargura, te marcan si vas por buen camino.',
+        'En la gestión de tu energía, tu tarea es **descansar y dosificarte**: no compites en resistencia física, sino en penetración y maestría. Dormir y soltar antes de quedar agotado, y elegir bien a quién entregas tu atención, es lo que sostiene tu bienestar.'
+      ],
+      manifestor: [
+        'Eres el tipo más independiente, alrededor del **9 % de la población**. Tienes un centro motor conectado a la [garganta](center:throat), pero **el [Sacral](center:sacral) sin definir**, así que tu energía no es constante: llega a impulsos, para iniciar y poner cosas en marcha, y luego necesita reposo.',
+        'Tu estrategia es **informar antes de actuar**. No se trata de pedir permiso, sino de avisar a quienes tu impacto va a alcanzar: al hacerlo, reduces la resistencia y el rechazo que de otro modo encuentras a tu alrededor. Hacerlo bien te trae paz; no hacerlo, enfado y oposición.',
+        'Estás aquí para **iniciar e impactar**, no para ejecutar de forma sostenida. Gestionar tu energía pasa por respetar tus ciclos de empuje y descanso, y por proteger tu autonomía sin aislarte de quienes te rodean.'
+      ],
+      reflector: [
+        'Eres el tipo más raro: apenas el **1 % de la población**. No tienes **ningún centro definido**: todo tu bodygraph está abierto. Eso te convierte en un espejo extraordinariamente sensible de la gente y los lugares que te rodean, capaz de percibir la salud de una comunidad.',
+        'Como muestreas constantemente la energía ajena, **el entorno y las compañías te afectan muchísimo**: con quién y dónde estás cambia profundamente tu experiencia. Tu estrategia es **esperar un ciclo lunar** —unos 28 días— antes de las decisiones importantes, dejando que el asunto se vea desde muchos ángulos antes de cerrarlo.',
+        'Tu mayor cuidado en la gestión de la energía es elegir bien los entornos y no identificarte con lo que solo estás reflejando. La sorpresa y el deleite, frente a la decepción, son las señales de que vives en el lugar y con la gente adecuados.'
+      ]
+    },
+    strategy: {
+      respond: [
+        'En lugar de salir a iniciar desde la cabeza, tu diseño te pide **esperar a tener algo a lo que responder**: una propuesta, una pregunta, una oportunidad que aparece. La vida presenta el material; tu cuerpo responde.',
+        'La respuesta surge en tu [centro Sacral](center:sacral) como una **reacción visceral**, anterior al razonamiento: un impulso de acercarte o de apartarte. Confiar en ese sí o no del cuerpo, en vez de convencerte mentalmente, es lo que te lleva a la satisfacción; forzar la acción donde no hay respuesta te conduce a la frustración.'
+      ],
+      'respond-then-inform': [
+        'Combina las dos primeras estrategias. Ante todo, como cualquier Generador, **esperas la respuesta sacral** —el sí o el no del cuerpo ante algo concreto—; no inicias por mente.',
+        'Una vez tienes esa respuesta y vas a actuar, **informas a quienes se verán afectados** antes de lanzarte. Por tu capacidad de manifestar con rapidez, avisar reduce la fricción con el entorno y evita que tu velocidad genere resistencia. Saltarte cualquiera de los dos pasos —responder e informar— es la fuente habitual de tu desgaste.'
+      ],
+      'inform-before-acting': [
+        'Como tu energía inicia e impacta sin avisar, tu diseño te pide **informar a las personas a las que vas a afectar antes de ponerte en marcha**. No es pedir permiso ni justificarte: es comunicar lo que vas a hacer.',
+        'El efecto es muy práctico: **informar disuelve gran parte de la resistencia** que encuentras cuando actúas por sorpresa. Hacerlo te trae paz alrededor; omitirlo provoca el enfado y la oposición que, sin darte cuenta, acaban dificultando tu propio movimiento.'
+      ],
+      'wait-for-invitation': [
+        'Para las cosas importantes —un trabajo, una relación, un compromiso grande— tu diseño te pide **esperar a ser reconocido e invitado** en lugar de ofrecerte sin que nadie lo pida.',
+        'No es pasividad: sigues viviendo y preparándote, pero reservas tu sabiduría para quien la valora y la solicita. **La invitación correcta abre la puerta** a que tu don sea bien recibido; insistir sin ella suele traerte resistencia y amargura. El reconocimiento y el éxito son la señal de que la espera ha valido la pena.'
+      ],
+      'wait-lunar-cycle': [
+        'Antes de una decisión importante, tu diseño te pide **dejar pasar un ciclo lunar completo** —unos 28 días— en lugar de resolver de golpe.',
+        'Durante ese tiempo, **conversas, muestreas distintos entornos y observas cómo cambia tu percepción** del asunto día a día. Como tu carta está completamente abierta, necesitas ese recorrido para distinguir lo que es tuyo de lo que solo estás reflejando. La claridad te llega por acumulación, no por impulso.'
+      ]
+    },
+    authority: {
+      emotional: [
+        'Tienes el **[Plexo Solar](center:solarPlexus) definido**, que funciona en ondas: tu ánimo sube y baja con el tiempo, no por los hechos del momento. Tu regla de oro es clara: **no hay verdad en el ahora**.',
+        'Para decidir bien, tu diseño te pide **esperar a recorrer la onda emocional** —dormir sobre ello, dejar pasar el tiempo, volver al asunto en distintos ánimos— antes de comprometerte. Tu claridad no es un destello instantáneo, sino lo que queda cuando la emoción se ha asentado. La prisa es tu principal enemiga.'
+      ],
+      sacral: [
+        'Tu autoridad reside en el **[centro Sacral](center:sacral)**, que responde **en el momento** con un sonido o un impulso visceral —una especie de «ajá» de atracción o un «mmm-mmm» de rechazo— ante algo concreto.',
+        'Es una autoridad **inmediata y corporal**: no razona, reacciona. Funciona mejor con preguntas de sí/no y se nubla cuando tu mente intenta argumentar la decisión. Aprender a captar y confiar en esa respuesta instantánea del vientre es tu práctica central.'
+      ],
+      splenic: [
+        'Tu autoridad reside en el **[Bazo](center:spleen)**, el centro más antiguo de la conciencia, ligado a la supervivencia, la salud y el instinto. Habla **en el presente y una sola vez**: un saber súbito, callado y espontáneo, sin repetición ni discurso.',
+        'Es la autoridad más **sutil y fugaz**: no insiste ni argumenta, así que es fácil pasarla por alto o racionalizarla después. Tu práctica es **fiarte de ese primer impulso instintivo** —ese «sí» o «no» tranquilo del cuerpo— en el instante en que aparece, porque no suele volver a hablar.'
+      ],
+      ego: [
+        'Tu autoridad reside en el **[centro del Corazón (Ego)](center:heart)**, el motor de la voluntad y el deseo. Aquí reconoces la decisión correcta con una pregunta sincera: **¿lo quiero de verdad?, ¿qué hay en esto para mí?** No es egoísmo, es honrar tu propio querer.',
+        'Es una autoridad de **voluntad e impulso**, no de reflexión prolongada. Funciona cuando escuchas lo que de verdad deseas y eres capaz de comprometerte con ello; se pierde cuando aceptas cosas por deber o presión que tu corazón no respalda.'
+      ],
+      'self-projected': [
+        'Tu verdad llega a través de la **voz**: al hablar del asunto en voz alta, **te oyes a ti mismo** y reconoces qué es coherente con tu identidad y tu dirección.',
+        'Lo decisivo no es la opinión de quien escucha, sino el acto de **expresar y escucharte**. Por eso te conviene rodearte de personas de confianza que te dejen hablar sin influir, y prestar atención al tono y a las palabras que te salen: ahí, más que en el razonamiento, está tu guía.'
+      ],
+      mental: [
+        'Llamada también autoridad ambiental o «caja de resonancia». **No tienes una autoridad corporal interna fija**: tu claridad no surge de dentro de golpe, sino del diálogo.',
+        'Tu práctica consiste en **hablar el asunto con personas de confianza y en el entorno adecuado**, no para que decidan por ti, sino para escucharte pensar en voz alta. El lugar y la compañía correctos son aquí parte del método: la decisión se va decantando con el tiempo y la conversación.'
+      ],
+      lunar: [
+        'Como Reflector, no tienes ningún centro definido, así que no hay en ti una fuente interna fija: tu guía es el **tiempo**, un ciclo lunar completo —unos 28 días— antes de las decisiones importantes.',
+        'Durante ese ciclo, **muestreas distintos estados, entornos y conversaciones**, y observas cómo evoluciona tu percepción del asunto. Tu claridad llega por **maduración**, no por impulso: lo que sigue resonando tras recorrer el ciclo entero es lo fiable.'
+      ]
+    },
+    // Second-person line bodies; the report composes the profile from two of
+    // these (the line titles are reused from the shared `profile` block).
+    profile: {
+      '1': [
+        'Buscas **seguridad a través del conocimiento**. Necesitas investigar, comprender los fundamentos y saber que el suelo que pisas es firme antes de actuar; sin esa base, te sientes inquieto.',
+        'Es una energía **introspectiva y de estudio**: profundizas hasta sentirte experto, y esa solidez tranquiliza a los demás. Tu reto es no quedarte esperando indefinidamente a saberlo «todo» antes de dar el paso.'
+      ],
+      '2': [
+        'Tienes **dones naturales** que ejerces casi sin esfuerzo, a menudo sin ser plenamente consciente de ellos. Necesitas **tiempo a solas** para que ese talento madure a tu ritmo.',
+        'Tu dinámica es la de ser **llamado desde fuera**: los demás ven en ti algo que tú no terminas de nombrar, y te invitan a sacarlo. Tu equilibrio está entre respetar tu necesidad de retiro y responder a esas llamadas cuando son las correctas.'
+      ],
+      '3': [
+        'Aprendes **probando**: por contacto directo con la vida, a base de intentos, descubrimientos y también tropiezos. Cada «error» es información, no fracaso.',
+        'Es una energía **experimental y resiliente**: descubres lo que funciona descartando lo que no. Tu sabiduría es muy práctica, siempre que no leas tus traspiés como defectos personales, sino como el método mismo por el que estás diseñado para aprender.'
+      ],
+      '4': [
+        'Funcionas a través de los **vínculos y la comunidad**. Las oportunidades —trabajo, amor, cambios— suelen llegarte por personas que ya conoces, no por desconocidos ni por salir a buscar en frío.',
+        'Es una energía **cálida y relacional**, que necesita solidez en sus afectos. Tu consejo práctico clásico es no soltar una base —un empleo, una situación— hasta tener la siguiente asegurada a través de tu red: las transiciones te funcionan mejor de mano en mano.'
+      ],
+      '5': [
+        'Vives bajo un **campo de proyección**: los demás depositan en ti expectativas, esperando soluciones prácticas. Te ven como alguien capaz de resolver, casi a la manera de un salvador.',
+        'Eso te da influencia y un papel natural de **liderazgo útil**, pero también te expone: si no cumples lo proyectado, la misma fuerza puede volverse en tu contra. Tu reto es gestionar bien tu **reputación** y prometer solo lo que de verdad puedes entregar.'
+      ],
+      '6': [
+        'Recorres **tres fases vitales**. Hasta cerca de los 30 vives como una tercera línea, probando y tropezando; luego te retiras a observar —«sobre el tejado»— durante una segunda etapa; y a partir de los 50, aproximadamente, emerges como **ejemplo y referente**.',
+        'Tu orientación de fondo es la **objetividad y la madurez**: aspiras a vivir según lo que consideras correcto y a convertirte en modelo para otros. Entender en qué fase estás te ayuda a no juzgarte: la observación de la etapa media no es desconexión, sino preparación.'
+      ]
+    },
+    definition: {
+      'no-definition': [
+        '**Ningún centro está definido**, todo tu bodygraph permanece abierto. No tienes una energía fija propia; en su lugar, tomas, amplificas y reflejas la energía de quienes te rodean.',
+        'Esto te hace **extraordinariamente sensible al entorno**: con quién y dónde estás cambia por completo tu experiencia. Tu sabiduría nace precisamente de esa apertura total, siempre que aprendas a no confundir lo que solo reflejas con lo que es tuyo.'
+      ],
+      single: [
+        'Todos tus centros definidos están **conectados en un solo bloque**. Tu energía fluye internamente sin interrupciones, lo que te da una sensación de **autosuficiencia**: accedes a tu propia consistencia sin depender de otros para «completarte».',
+        'Tu reto suele ser el opuesto al de las definiciones divididas: como funcionas bien por ti mismo, puedes **ensimismarte o costarte abrirte** a la influencia ajena. Reconocer cuándo te conviene salir de tu propia burbuja es parte de tu aprendizaje.'
+      ],
+      split: [
+        'Tus centros definidos forman **dos grupos separados**, sin un canal que los una por dentro. Por eso sueles experimentar una **búsqueda de conexión**: algo que tienda el puente entre tus dos partes.',
+        'Ese puente te llega a menudo a través de **otras personas** —cuya energía completa el canal que te falta— o de tránsitos que activan la puerta intermedia. No es una carencia: entender qué une tus dos grupos te ayuda a elegir mejor las compañías y entornos que te hacen sentir integrado.'
+      ],
+      'triple-split': [
+        'Tus centros definidos se reparten en **tres grupos** separados. Tu cableado interno es más complejo y, con frecuencia, necesitas **más variedad de estímulos y de gente** para sentir que tus partes se conectan.',
+        'Sueles funcionar bien en entornos diversos y con cierto movimiento; la quietud excesiva puede dejarte la sensación de que algo no termina de juntarse. Conocer esta estructura te ayuda a no interpretar esa necesidad de variedad como dispersión.'
+      ],
+      'quad-split': [
+        'La más infrecuente: tus centros definidos forman **cuatro grupos** separados. Es un cableado muy fragmentado que, paradójicamente, suele pedir **más estructura, espacio y calma** para integrarse.',
+        'Lejos de ser un problema, describe una manera muy particular de procesar la vida. Te beneficias de **darte tiempo** y de no presionarte para resolverlo todo de golpe: tus muchas partes se ordenan a su propio ritmo.'
+      ]
+    },
+    // Second-person state lines for the centre walk-through (the report shows the
+    // shared `fn` plus one of these). Framed so it's clear it's *your* chart.
+    center: {
+      head: {
+        defined: 'Es uno de tus centros **definidos**: tienes una forma constante de inspirarte y de sentir la presión por entender.',
+        open: 'Es uno de tus centros **abiertos**: amplificas las preguntas y la inquietud mental de los demás, y te conviene no dejarte arrastrar a resolver dudas que en realidad no son tuyas ni importan para tu vida.'
+      },
+      ajna: {
+        defined: 'Es uno de tus centros **definidos**: tienes una manera fija y fiable de pensar, con opiniones y certezas estables.',
+        open: 'Es uno de tus centros **abiertos**: tu mente es flexible, capaz de ver muchas perspectivas; tu trampa es la presión por aparentar seguridad o aferrarte a una certeza prestada, y tu don, no necesitar tener siempre una respuesta fija.'
+      },
+      throat: {
+        defined: 'Es uno de tus centros **definidos**: tienes una voz y una forma de expresarte consistentes.',
+        open: 'Es uno de tus centros **abiertos**: adaptas tu manera de comunicar según la compañía y puedes sentir la presión por hablar para llamar la atención; tu aprendizaje es esperar el momento adecuado en lugar de forzar la palabra.'
+      },
+      g: {
+        defined: 'Es uno de tus centros **definidos**: tienes un sentido estable de identidad y rumbo.',
+        open: 'Es uno de tus centros **abiertos**: tu identidad es más fluida y cambiante, y encuentra su dirección a través de los entornos y las personas adecuadas; tu clave es el **lugar**: estar en el sitio correcto orienta todo lo demás.'
+      },
+      heart: {
+        defined: 'Es uno de tus centros **definidos**: tienes una voluntad consistente y la capacidad de sostener lo que prometes.',
+        open: 'Es uno de tus centros **abiertos** (como en la mayoría de la gente): no necesitas demostrar tu valía ni medir tu fuerza de voluntad, y tu trampa es prometer de más para probarte. Aquí aprendes que tu valor no depende de tus logros.'
+      },
+      sacral: {
+        defined: 'Es uno de tus centros **definidos**: tienes una energía de trabajo sostenible y renovable, pensada para emplearse a fondo en lo correcto y agotarse sanamente cada día.',
+        open: 'Es uno de tus centros **abiertos**: no dispones de esa energía constante, así que para ti es vital reconocer cuándo es suficiente y no dejarte arrastrar por el ritmo de los demás hasta el agotamiento.'
+      },
+      spleen: {
+        defined: 'Es uno de tus centros **definidos**: tienes una intuición y una sensación de salud constantes.',
+        open: 'Es uno de tus centros **abiertos**: amplificas los miedos ajenos y tiendes a aferrarte a lo que no te conviene —relaciones, hábitos, situaciones— por temor a soltar; tu aprendizaje es no decidir desde el miedo y descubrir qué le sienta bien a tu cuerpo.'
+      },
+      solarPlexus: {
+        defined: 'Es uno de tus centros **definidos**: vives tus propias olas emocionales y necesitas tiempo para tener claridad.',
+        open: 'Es uno de tus centros **abiertos**: absorbes y amplificas las emociones del entorno —captas el ambiente de una sala— y tiendes a evitar la confrontación; tu reto es no apropiarte de estados de ánimo que en realidad has recogido de fuera.'
+      },
+      root: {
+        defined: 'Es uno de tus centros **definidos**: tienes una forma constante de manejar la presión y el estrés.',
+        open: 'Es uno de tus centros **abiertos**: amplificas la prisa y la sensación de tener que quitarte cuanto antes lo pendiente de encima; tu aprendizaje es no dejarte empujar a decisiones apresuradas solo para aliviar una presión que, en buena parte, es prestada.'
+      }
     }
   },
 

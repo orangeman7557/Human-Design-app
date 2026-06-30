@@ -231,6 +231,14 @@ corrected).
 
 ## Possible improvements (not scheduled, not part of Phase 5)
 
+- **Centre labels on the bodygraph (requested 2026-07-01).** Make the link between
+  the **Centros** chips and the graph explicit: either render each centre's name
+  **on/over its shape** in the bodygraph, or draw an **elegant connector line** from
+  each centre chip to its figure. Today the chip↔shape relation only shows as the
+  temporary amber pointer on hover/tap. Watch for clutter — the shapes are small and
+  already carry their gate numbers, so labels likely want to sit just outside each
+  shape (or appear on hover) rather than inside.
+
 - **Full-app text review (pending — requested 2026-06-30).** A pass over **all**
   user-facing copy in the app, with special attention to the new **initial
   report** (Parte A/B, the "Tú eres un X" sub-headings, the centre cards, the
@@ -703,6 +711,29 @@ only — a printed prompt reads oddly).
   worktree rule). Verified: 16/16 tests + browser — the cover is centred and
   pixel-identical at mobile (375px) and desktop widths, the report is 6 pages with
   no "Saber más", ~360 KB with the cover.
+
+### Second-person text pass (2026-07-01)
+
+After the author read the report, the personalised sections were rewritten in the
+**second person** ("tú"). Root cause they were generic: the report reused the same
+text blocks that feed the drawer "i" panels, which are written impersonally on
+purpose (the chart may be someone else's). Two consequences fixed: the sections
+read in third person ("La estrategia del Manifestador. Como su energía…") right
+after a second-person lead-in, and the centre state lines were planted without
+context.
+
+- The report now has its **own second-person bodies** for type / strategy /
+  authority / profile / definition, plus second-person centre state lines, stored
+  under a new `report.{type,strategy,authority,profile,definition,center}` namespace
+  in `es.js` (faithful conversions of the shared texts — same meaning, second
+  person, without the "La X del…" openers). The shared `type`/`strategy`/… blocks
+  (and the drawer "i") **stay impersonal** — verified unchanged.
+- `report.js` consumes them via new accessors `getReportBody` / `getReportProfile`
+  in `content/index.js`; `getCenterReport` now returns the second-person state
+  (falling back to the shared one). The centre `fn` (a general description of what
+  the centre *is*) stays shared. The old `stripState` helper is gone.
+- The centre cards now read "Es uno de tus centros **definidos/abiertos**: …" so it's
+  clear it's *your* chart.
 
 ## Features already identified for future phases
 

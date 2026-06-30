@@ -113,6 +113,42 @@ export function getReportLeadIn(id, lang = DEFAULT_LANG) {
   return pack(lang).report?.leadIn?.[id] ?? null;
 }
 
+/**
+ * The report's own second-person body (paragraph array) for a personalised
+ * section — kept separate from the shared, impersonal drawer text. Sections:
+ * 'type' | 'strategy' | 'authority' | 'definition' (and 'profile' per line).
+ * @returns {string[] | null}
+ */
+export function getReportBody(section, key, lang = DEFAULT_LANG) {
+  return pack(lang).report?.[section]?.[key] ?? null;
+}
+
+/**
+ * A profile for the report, composed in second person from its two lines: the
+ * line *titles* come from the shared `profile` block, the *bodies* from the
+ * report's own second-person `report.profile` lines.
+ * @param {string} profile e.g. "1/3"
+ * @returns {{ title: string, paragraphs: string[] } | null}
+ */
+export function getReportProfile(profile, lang = DEFAULT_LANG) {
+  const [a, b] = String(profile).split('/');
+  const la = getElementInfo('profile', a, lang);
+  const lb = getElementInfo('profile', b, lang);
+  const ba = getReportBody('profile', a, lang);
+  const bb = getReportBody('profile', b, lang);
+  if (!la || !lb || !ba || !bb) return null;
+  return {
+    title: `Perfil ${profile}`,
+    paragraphs: [
+      `Tu perfil ${profile} combina dos líneas: la ${a}, consciente (de tu personalidad), y la ${b}, inconsciente (de tu diseño). Cada una aporta su matiz, y juntas describen tu forma de aprender, relacionarte y desplegar tu propósito.`,
+      `**${la.title}.** ${ba[0]}`,
+      ...ba.slice(1),
+      `**${lb.title}.** ${bb[0]}`,
+      ...bb.slice(1)
+    ]
+  };
+}
+
 /** The per-type practical block ({ energia, trampa, senales }) or null. */
 export function getTypeReport(type, lang = DEFAULT_LANG) {
   return pack(lang).typeReport?.[type] ?? null;
@@ -127,7 +163,12 @@ export function getTypeReport(type, lang = DEFAULT_LANG) {
 export function getCenterReport(key, isDefined, lang = DEFAULT_LANG) {
   const entry = pack(lang).center?.[key];
   if (!entry) return null;
-  return { title: entry.title, paragraphs: [entry.fn, isDefined ? entry.defined : entry.open] };
+  // The report uses the shared `fn` (a general description of what the centre
+  // is) plus the report's own second-person state line (framed as *your* chart);
+  // it falls back to the shared, impersonal state if no report text exists.
+  const rep = pack(lang).report?.center?.[key];
+  const state = rep ? (isDefined ? rep.defined : rep.open) : isDefined ? entry.defined : entry.open;
+  return { title: entry.title, paragraphs: [entry.fn, state] };
 }
 
 // Gates and channels (Phase 6.D) carry only minimal own info — the mechanical
