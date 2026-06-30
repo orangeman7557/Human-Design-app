@@ -239,6 +239,25 @@ corrected).
   already carry their gate numbers, so labels likely want to sit just outside each
   shape (or appear on hover) rather than inside.
 
+- **Gate drawer: bring back the "Sobre esta carta" angle, with a state-aware prompt
+  (requested 2026-07-01).** Reverses the Phase 6.D decision (see "Correctness" under
+  § 6.D) that a gate's chart angle only shows when the gate is active. Today the gate
+  drawer's "Saber más usando IA" offers **only "Info general"** unless the gate is
+  active in the chart — the chart angle is gated on `activeGates` in `prompts.js`
+  (kind `gate`: `chart: active ? askChart(…) : null`) — and even when it does show,
+  the prompt is generic ("…para un Generador, perfil…, ¿me explicas la puerta N?")
+  and never says *how* that gate sits in this chart. Change it to:
+  - Offer **"Sobre esta carta" for any gate**, active or not (so an inactive gate
+    gets a useful reading too).
+  - Build its prompt with **(a)** the chart descriptor (already via `who()`),
+    **(b)** the gate's **state in this chart** — activa en un canal completo /
+    colgante / inactiva — reusing the same 3-state logic the drawer text already
+    computes (`gateState` / `gateCoda` in `content/index.js`), and **(c)** a question
+    about that specific gate. E.g. "…para un Generador…; la puerta N está *colgante*
+    en esta carta (activa sin su otra mitad); ¿qué significa y cómo se expresa?".
+  - The **channel** drawer shares the exact same pattern (complete / half / none via
+    `activeChannels` + `channelCoda`); worth doing in the same pass.
+
 - **Full-app text review (pending — requested 2026-06-30).** A pass over **all**
   user-facing copy in the app, with special attention to the new **initial
   report** (Parte A/B, the "Tú eres un X" sub-headings, the centre cards, the
