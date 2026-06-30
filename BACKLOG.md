@@ -673,6 +673,37 @@ assembled in-app + the Phase 6 AI handoff for personalised depth. Full spec in
 - **Pending**: the author's review of the new texts; an optional bump to 0.2.0;
   the commit to main.
 
+### PDF export (added 2026-06-30)
+
+A **«PDF»** button (gold pill, top-right of the overlay header, next to the ✕)
+downloads the initial report as a PDF. Shape: a **cover page** — the chart header
+with the name + date·place **centred**, the summary cards (type, strategy,
+authority, profile, definition, centres) and the **bodygraph** — followed by the
+**report as real, selectable text** (gold headings, bold/italic, the centre
+walk-through as cards with a defined/open tag). The closing "Saber más"/AI handoff
+is **deliberately omitted** from the document (it stays in the on-screen overlay
+only — a printed prompt reads oddly).
+
+- New `src/lib/hd/report-pdf.js` lays the PDF out with **jsPDF** —
+  **dynamic-imported** so it never weighs on first paint, and built with
+  `compress: true` (jsPDF leaves streams uncompressed by default; the cover image
+  + word-by-word text would otherwise bloat the file ~8×). Dark theme (the app
+  tokens) so the dark cover image sits seamlessly. `parseRuns` turns the in-text
+  `**bold**`/`*italic*`/`[label](kind:key)` markup into styled runs (links render
+  as plain labels — they point at in-app drawers).
+- The cover reuses the chart page's `html-to-image` capture via a new
+  **`summaryOnly`** mode that crops at the bodygraph's bottom and drops
+  `.cols`/`.activations` (those go in as text, not as one long screenshot), plus a
+  **`pdf-shot`** capture-only class that **forces the desktop layout even on a
+  phone** (a PDF is a document, so it should carry the wide arrangement, not the
+  stacked mobile one). `pdf-shot` undoes the `@media (max-width: 679px)` block on
+  specificity and is applied together with `.capturing` (which centres the title +
+  birth line); **keep the two in sync** if the responsive layout changes.
+- `jspdf` added to `dependencies` (installed in the main checkout per the
+  worktree rule). Verified: 16/16 tests + browser — the cover is centred and
+  pixel-identical at mobile (375px) and desktop widths, the report is 6 pages with
+  no "Saber más", ~360 KB with the cover.
+
 ## Features already identified for future phases
 
 Roadmap renumbered 2026-06-10: 3 visual polish → 4 unknown hour →

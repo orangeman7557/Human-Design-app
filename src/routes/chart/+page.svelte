@@ -420,7 +420,11 @@
   // the native share sheet when available, downloading as fallback.
   /** @type {HTMLElement | undefined} */
   let captureEl = $state();
+  /** @type {HTMLElement | undefined} The bodygraph block; the PDF cover crops here. */
+  let graphEl = $state();
   let sharing = $state(false);
+  // Forces the desktop layout while capturing the PDF cover (see downloadReportPdf).
+  let pdfShot = $state(false);
 
   // "nombre carta YYYY-MM-DD-HHMM-ciudad.png" — city = placeLabel up to
   // the first comma.
@@ -432,7 +436,7 @@
     return [name, tail].filter(Boolean).join(' ') + '.png';
   }
 
-  async function captureBlob() {
+  async function captureBlob({ summaryOnly = false } = {}) {
     // Wait for the .capturing class (set via `sharing`) to reach the DOM
     // before cloning, so the export-only centring is picked up.
     await tick();
@@ -444,20 +448,32 @@
     // left shift that pushed everything off-canvas) and <main>'s own
     // padding (4rem bottom) plus the removed footer left a huge empty
     // band at the bottom.
+    //
+    // `summaryOnly` (the PDF cover) stops at the bodygraph: the channels,
+    // hanging gates and activations table are dropped from the clone (they go
+    // into the PDF as text instead) and the height is cropped to the graph's
+    // bottom so no empty band trails below.
     const pad = 12;
     const cs = getComputedStyle(captureEl);
     const contentW =
       captureEl.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
-    const footer = captureEl.querySelector('footer');
-    const fcs = footer ? getComputedStyle(footer) : null;
-    const footerH = footer
-      ? footer.offsetHeight + parseFloat(fcs.marginTop) + parseFloat(fcs.marginBottom)
-      : 0;
-    const contentH =
-      captureEl.clientHeight -
-      parseFloat(cs.paddingTop) -
-      parseFloat(cs.paddingBottom) -
-      footerH;
+    let contentH;
+    if (summaryOnly) {
+      const mainTop = captureEl.getBoundingClientRect().top;
+      const graphBottom = graphEl.getBoundingClientRect().bottom;
+      contentH = graphBottom - mainTop - parseFloat(cs.paddingTop);
+    } else {
+      const footer = captureEl.querySelector('footer');
+      const fcs = footer ? getComputedStyle(footer) : null;
+      const footerH = footer
+        ? footer.offsetHeight + parseFloat(fcs.marginTop) + parseFloat(fcs.marginBottom)
+        : 0;
+      contentH =
+        captureEl.clientHeight -
+        parseFloat(cs.paddingTop) -
+        parseFloat(cs.paddingBottom) -
+        footerH;
+    }
     const blob = await toBlob(captureEl, {
       backgroundColor: '#0b0b0d',
       pixelRatio: 2,
@@ -470,24 +486,29 @@
         width: `${contentW + pad * 2}px`,
         height: `${contentH + pad * 2}px`
       },
-      filter: (node) =>
-        !(
+      filter: (node) => {
+        if (
           node.classList?.contains('back') ||
           node.classList?.contains('report-btn') ||
           node.classList?.contains('actions') ||
           node.classList?.contains('img-actions') ||
           node.tagName === 'FOOTER'
         )
+          return false;
+        if (summaryOnly && (node.classList?.contains('cols') || node.classList?.contains('activations')))
+          return false;
+        return true;
+      }
     });
     if (!blob) throw new Error('No se pudo generar la imagen.');
     return blob;
   }
 
-  function downloadBlob(blob) {
+  function downloadBlob(blob, name = imageFileName()) {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = imageFileName();
+    a.download = name;
     a.click();
     URL.revokeObjectURL(url);
   }
@@ -522,6 +543,49 @@
       saveError = e instanceof Error ? e.message : String(e);
     } finally {
       sharing = false;
+    }
+  }
+
+  // Blob → { dataUrl, width, height } for jsPDF's addImage (it needs the
+  // natural pixel size to keep the aspect ratio).
+  function blobToImage(blob) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const dataUrl = /** @type {string} */ (reader.result);
+        const img = new Image();
+        img.onload = () => resolve({ dataUrl, width: img.naturalWidth, height: img.naturalHeight });
+        img.onerror = reject;
+        img.src = dataUrl;
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    });
+  }
+
+  // Build & download the initial report as a PDF: a cover image (the chart
+  // header + summary cards + bodygraph) followed by the report as selectable
+  // text. The overlay owns buildReport and hands us the assembled sections;
+  // we own the chart capture and the lazily-loaded jsPDF layer.
+  //
+  // `pdfShot` forces the desktop layout for the cover even on a phone: a PDF is
+  // a document, so it should always carry the wide desktop arrangement rather
+  // than the stacked mobile one. The report overlay covers <main> while this
+  // runs, so the brief re-layout behind it is never seen.
+  async function downloadReportPdf({ sections }) {
+    if (!captureEl || sharing) return;
+    sharing = true;
+    pdfShot = true;
+    try {
+      const cover = await blobToImage(await captureBlob({ summaryOnly: true }));
+      const { buildReportPdf } = await import('$lib/hd/report-pdf.js');
+      const pdf = await buildReportPdf({ image: cover, sections });
+      downloadBlob(pdf, imageFileName().replace(/\.png$/i, '.pdf'));
+    } catch (e) {
+      saveError = e instanceof Error ? e.message : String(e);
+    } finally {
+      sharing = false;
+      pdfShot = false;
     }
   }
 
@@ -613,7 +677,7 @@
 
 <!-- While sharing, .capturing applies the export-only layout (centred
      title and birth line) that the PNG clone picks up. -->
-<main bind:this={captureEl} class:capturing={sharing}>
+<main bind:this={captureEl} class:capturing={sharing} class:pdf-shot={pdfShot}>
   <header>
     <button class="back" onclick={back} aria-label="Volver">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -666,7 +730,7 @@
       <p class="birth">{formatBirth(birthData)}</p>
     {/if}
 
-    <div class="graph">
+    <div class="graph" bind:this={graphEl}>
       <div class="overlay left">
         <div
           class="card type-card"
@@ -962,7 +1026,7 @@
       </section>
     </div>
 
-    <section>
+    <section class="activations">
       <div
         class="info-zone"
         role="presentation"
@@ -1049,6 +1113,7 @@
   open={reportOpen}
   {chart}
   onnavigate={(kind, key) => openInfoFor(CATEGORY_BY_KIND[kind] ?? '', kind, key)}
+  ondownloadpdf={downloadReportPdf}
   onclose={() => (reportOpen = false)}
 />
 
@@ -1562,6 +1627,52 @@
     .save-ic {
       display: block;
     }
+  }
+
+  /* Capture-only: while building the PDF cover (.pdf-shot, set by
+     downloadReportPdf), force the desktop arrangement even on a phone — a PDF
+     is a document and should carry the wide desktop layout, not the stacked
+     mobile one. These rules undo the @media (max-width: 679px) block above and
+     win on specificity; keep them in sync with it. Used together with
+     .capturing, which centres the title and birth line. */
+  main.pdf-shot {
+    width: 720px;
+    max-width: 720px;
+  }
+  main.pdf-shot .graph {
+    display: block;
+  }
+  main.pdf-shot .overlay.left {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 192px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    margin-bottom: 0;
+  }
+  main.pdf-shot .overlay.left .card:first-child {
+    grid-column: auto;
+  }
+  main.pdf-shot .overlay.right {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 158px;
+    margin-top: 0;
+  }
+  main.pdf-shot .graph > :global(.bodygraph-wrap) {
+    order: 0;
+    transform: translateX(46px);
+  }
+  main.pdf-shot .type-list,
+  main.pdf-shot .center-list {
+    flex-direction: column;
+    flex-wrap: nowrap;
+  }
+  main.pdf-shot .type-list .row-break {
+    display: none;
   }
 
   .none {

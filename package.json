@@ -29,6 +29,7 @@
     "astronomy-engine": "^2.1.19",
     "dexie": "^4.4.3",
     "html-to-image": "^1.11.13",
+    "jspdf": "^4.2.1",
     "luxon": "^3.5.0",
     "tz-lookup": "^6.1.25"
   }

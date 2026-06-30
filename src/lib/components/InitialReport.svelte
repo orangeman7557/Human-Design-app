@@ -16,10 +16,11 @@
    *   open?: boolean,
    *   chart?: any,
    *   onclose: () => void,
-   *   onnavigate?: (kind: string, key: string) => void
+   *   onnavigate?: (kind: string, key: string) => void,
+   *   ondownloadpdf?: (data: { sections: any[] }) => Promise<void> | void
    * }}
    */
-  let { open = false, chart = null, onclose, onnavigate } = $props();
+  let { open = false, chart = null, onclose, onnavigate, ondownloadpdf } = $props();
 
   const sections = $derived(open && chart ? buildReport(chart) : []);
   const prompt = $derived(open && chart ? buildReportPrompt(chart) : '');
@@ -38,6 +39,7 @@
   let aiOpen = $state(false);
   let showPrompt = $state(true); // visible by default here
   let copied = $state(false);
+  let pdfBusy = $state(false);
   /** @type {{ id: string, label: string, icon: string } | null} */
   let preferred = $state(null);
   let editedPrompt = $state('');
@@ -53,6 +55,7 @@
       aiOpen = false;
       showPrompt = true;
       copied = false;
+      pdfBusy = false;
       preferred = getPreferredAI();
     });
     // Re-seed the editable prompt whenever the chart's prompt changes.
@@ -123,6 +126,18 @@
       // Give up silently — the prompt is visible to copy by hand.
     }
   }
+  async function downloadPdf() {
+    if (pdfBusy) return;
+    pdfBusy = true;
+    try {
+      // The parent owns the chart capture (the cover image) and the jsPDF call;
+      // we hand it the assembled report sections so it doesn't re-derive them.
+      // (The on-screen "Saber más" prompt below is intentionally not in the PDF.)
+      await ondownloadpdf?.({ sections });
+    } finally {
+      pdfBusy = false;
+    }
+  }
   function aiButtonClick() {
     if (preferred) openAI(preferred, editedPrompt);
     else aiOpen = !aiOpen;
@@ -145,7 +160,28 @@
         <div class="eyebrow">Informe inicial</div>
         <h2>Conoce tu diseño</h2>
       </div>
-      <button class="close" type="button" onclick={onclose} aria-label="Cerrar">✕</button>
+      <div class="head-actions">
+        <button
+          class="pdf-btn"
+          type="button"
+          onclick={downloadPdf}
+          disabled={pdfBusy}
+          title={pdfBusy ? 'Generando PDF…' : 'Descargar el informe en PDF'}
+          aria-label="Descargar el informe en PDF"
+        >
+          {#if pdfBusy}
+            <svg class="ic spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+              <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+            </svg>
+          {:else}
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 3v12" /><path d="m8 11 4 4 4-4" /><path d="M4 21h16" />
+            </svg>
+          {/if}
+          <span class="pdf-lbl">PDF</span>
+        </button>
+        <button class="close" type="button" onclick={onclose} aria-label="Cerrar">✕</button>
+      </div>
     </header>
 
     <nav class="toc" aria-label="Secciones del informe">
@@ -311,6 +347,49 @@
     font-size: 1.25rem;
     font-weight: 500;
     margin: 0.2rem 0 0;
+  }
+  .head-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex: none;
+  }
+  /* Primary action in the header: a gold pill, matching the chart page's
+     report button and the overlay's gold accents. */
+  .pdf-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    background: var(--accent-soft);
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    border-radius: 999px;
+    padding: 0.32rem 0.7rem;
+    font-family: inherit;
+    font-size: 0.78rem;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  .pdf-btn:hover:not(:disabled) {
+    background: var(--accent);
+    color: #1a1408;
+  }
+  .pdf-btn:disabled {
+    cursor: progress;
+    opacity: 0.7;
+  }
+  .pdf-btn .ic {
+    width: 15px;
+    height: 15px;
+    flex: none;
+  }
+  .spin {
+    animation: report-spin 0.8s linear infinite;
+  }
+  @keyframes report-spin {
+    to {
+      transform: rotate(360deg);
+    }
   }
   .close {
     background: none;

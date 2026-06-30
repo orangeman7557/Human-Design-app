@@ -19,7 +19,26 @@ lives in [`BACKLOG.md`](./BACKLOG.md).
 
 Last updated: 2026-06-30.
 
-> Latest change (2026-06-30, ajustes 2): **más pulido del informe + fix de
+> Latest change (2026-06-30, informe en PDF): **botón para descargar el informe
+> en PDF.** Nuevo botón «PDF» (píldora dorada) en la cabecera del informe, arriba
+> a la derecha junto a la ✕. Genera un PDF (oscuro, con los tokens de la app) con
+> una **portada** —cabecera con nombre + fecha·lugar **centrados**, las tarjetas
+> de datos (tipo, estrategia, autoridad, perfil, definición, centros) y el
+> **bodygraph**— seguida del **informe como texto** seleccionable (títulos en oro,
+> negrita/cursiva, subtítulos «Tú eres un…», tarjetas de centros con etiqueta
+> definido/abierto). **Sin** la sección «Saber más»/handoff (queda solo en el
+> overlay, no en el documento). Implementación: nuevo `src/lib/hd/report-pdf.js`
+> que maqueta con **jsPDF** (importado de forma diferida para no pesar en el
+> arranque; `compress: true`); la portada reutiliza la captura `html-to-image` con
+> un modo **`summaryOnly`** que recorta hasta el bodygraph (descarta
+> canales/puertas/activaciones, que van como texto) y una clase **`pdf-shot`** que
+> fuerza el **layout de escritorio también en móvil** (un PDF es un documento, no
+> la pantalla del móvil). `jspdf` añadido a `dependencies` (instalado en el
+> checkout principal). Verificado: 16/16 tests + navegador (portada centrada e
+> idéntica en móvil y escritorio, informe de 6 páginas sin «Saber más», ~360 KB
+> con portada).
+>
+> Previo (2026-06-30, ajustes 2): **más pulido del informe + fix de
 > overflow.** (1) **Tipos**: un subtítulo «Tú eres un X» marca el salto del
 > colectivo a tu tipo concreto (la transición se entendía mal). (2) **Centros**:
 > recorrido en el **orden canónico** del bodygraph (cabeza, ajna … sacral, raíz),
