@@ -604,6 +604,7 @@
 
 <style>
   main {
+    position: relative;
     max-width: 460px;
     margin: 0 auto;
     padding: 3rem 1.25rem 4rem;
@@ -1050,10 +1051,15 @@
     gap: 0.4rem;
   }
 
-  /* "instalar como app" — discreet top link, same size/colour as the footer. */
+  /* "instalar como app" — discreet link pinned near the top edge ("view in
+     browser" style), out of the vertically-centred flow. Same size/colour as
+     the footer. */
   .install-bar {
+    position: absolute;
+    top: 0.75rem;
+    left: 0;
+    right: 0;
     text-align: center;
-    margin-bottom: 3rem;
   }
   .install-link {
     background: none;
