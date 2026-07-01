@@ -42,6 +42,14 @@
   /** @type {ReturnType<typeof setTimeout> | null} */
   let debounce = null;
 
+  // Easter egg tied to the "Nuevayol" placeholder joke: typing it exactly offers
+  // the two homes of the word — San Juan (where the Caribbean slang for New York
+  // comes from) and New York itself. Timezone is resolved on pick, like any result.
+  const EGG_PLACES = [
+    { label: 'San Juan, Puerto Rico', latitude: 18.4663, longitude: -66.1057 },
+    { label: 'Nueva York, Estados Unidos', latitude: 40.7128, longitude: -74.006 }
+  ];
+
   function onInput() {
     // Typing invalidates the previous confirmed place.
     value = null;
@@ -49,6 +57,14 @@
     if (debounce) clearTimeout(debounce);
 
     const trimmed = query.trim();
+
+    if (trimmed.toLowerCase() === 'nuevayol') {
+      if (inflight) inflight.abort();
+      loading = false;
+      results = EGG_PLACES;
+      return;
+    }
+
     if (trimmed.length < 3) {
       results = [];
       loading = false;
