@@ -20,7 +20,7 @@
   let {
     /** @type {ResolvedPlace | null} */
     value = $bindable(null),
-    placeholder = 'Madrid, Cuenca, Bogotá…'
+    placeholder = 'Madrid, Bogotá, Berlín, Nuevayol…'
   } = $props();
 
   // Free-text input. Independent from `value`: typing erases the previous
