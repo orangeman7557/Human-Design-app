@@ -126,7 +126,7 @@ export function buildReportPrompt(chart, lang = DEFAULT_LANG) {
   const centers = (chart.definedCenters ?? []).map((c) => L.center?.[c] ?? c).join(', ');
   return (
     `Según el Diseño Humano soy un ${type}, con perfil ${chart.profile}, ` +
-    `autoridad ${authority}, estrategia «${strategy}» y ${definition}; tengo ` +
+    `autoridad ${authority}, estrategia "${strategy}" y ${definition}; tengo ` +
     `definidos los centros: ${centers || 'ninguno'}. Me gustaría saber más sobre...`
   );
 }

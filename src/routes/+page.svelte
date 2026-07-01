@@ -99,7 +99,7 @@
       await dialog.alert({
         title: 'Instalar como app',
         message:
-          'Abre el menú Compartir de Safari y elige «Añadir a pantalla de inicio».'
+          'Abre el menú Compartir de Safari y elige "Añadir a pantalla de inicio".'
       });
     }
   }

@@ -227,12 +227,12 @@ export function getGateInfo(gate, chart = null, lang = DEFAULT_LANG) {
     entry?.text ??
       `La puerta ${g} se sitúa en el **[centro ${labels[center] ?? center}](center:${center})**.`,
     name
-      ? `Su raíz es el hexagrama ${g} del I Ching, «${name}».`
+      ? `Su raíz es el hexagrama ${g} del I Ching, "${name}".`
       : `Le corresponde el hexagrama ${g} del I Ching.`
   ];
   const coda = gateCoda(gateState(g, chart));
   if (coda) paragraphs.push(coda);
-  paragraphs.push('Para una lectura más a fondo, puedes utilizar la opción de «saber más usando IA».');
+  paragraphs.push('Para una lectura más a fondo, puedes utilizar la opción de "saber más usando IA".');
   return { title: `Puerta ${g}`, paragraphs };
 }
 
@@ -286,6 +286,6 @@ export function getChannelInfo(pair, chart = null, lang = DEFAULT_LANG) {
   }
   const coda = channelCoda(a, b, chart);
   if (coda) paragraphs.push(coda);
-  paragraphs.push('Para una lectura más a fondo, puedes utilizar la opción de «saber más usando IA».');
+  paragraphs.push('Para una lectura más a fondo, puedes utilizar la opción de "saber más usando IA".');
   return { title: `Canal ${a}-${b}`, paragraphs };
 }

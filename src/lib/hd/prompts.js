@@ -88,8 +88,8 @@ export function buildPrompts(kind, key, chart, lang = DEFAULT_LANG) {
   if (kind === 'strategy') {
     const s = L.strategy[key] ?? key;
     return {
-      general: ask(`la estrategia de «${s}»`),
-      chart: askChart(L, chart, `la estrategia de «${s}»`)
+      general: ask(`la estrategia de "${s}"`),
+      chart: askChart(L, chart, `la estrategia de "${s}"`)
     };
   }
 
@@ -122,8 +122,8 @@ export function buildPrompts(kind, key, chart, lang = DEFAULT_LANG) {
   if (kind === 'center') {
     const c = L.center[key] ?? key;
     return {
-      general: ask(`el centro «${c}»`),
-      chart: askChart(L, chart, `el centro «${c}»`)
+      general: ask(`el centro "${c}"`),
+      chart: askChart(L, chart, `el centro "${c}"`)
     };
   }
 

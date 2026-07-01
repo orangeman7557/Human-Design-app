@@ -46,7 +46,7 @@ export default {
     profile: {
       title: 'El perfil',
       paragraphs: [
-        'El **perfil** describe el «cómo» de tu camino: el estilo con el que aprendes, te relacionas y cumples tu propósito. Se compone de dos números (por ejemplo 3/5), tomados de las líneas 1 a 6 del I Ching: la primera viene de tu Sol/Tierra de *personalidad* y la segunda, de tu Sol/Tierra de *diseño*.',
+        'El **perfil** describe el "cómo" de tu camino: el estilo con el que aprendes, te relacionas y cumples tu propósito. Se compone de dos números (por ejemplo 3/5), tomados de las líneas 1 a 6 del I Ching: la primera viene de tu Sol/Tierra de *personalidad* y la segunda, de tu Sol/Tierra de *diseño*.',
         'Cada línea aporta un matiz: 1- cimiento e investigación, 2- talento natural, 3- ensayo y error, 4- vínculos y red, 5- proyección y liderazgo práctico, 6- ejemplo y madurez. La combinación de las **dos líneas** describe una manera reconocible de moverse por la vida —más interna o más relacional, más experimental o más sólida.',
         'Mientras el tipo y la autoridad responden a *cómo decidir*, el perfil responde a *cómo se despliega tu experiencia*. Es una de las capas más reveladoras para el autoconocimiento, porque suele describir patrones que ya reconoces en tu historia. De los dos números/líneas, el primero se vive de manera más consciente, y el segundo, más inconsciente. La línea inconsciente resulta, en general, más visible para los demás que para uno mismo.'
       ]
@@ -54,7 +54,7 @@ export default {
     definition: {
       title: 'La definición',
       paragraphs: [
-        'La **definición** describe cómo están conectados entre sí tus centros definidos: si forman un único bloque de energía o varios grupos separados. Habla de la consistencia interna —qué partes de ti están siempre «encendidas» y enlazadas— y de cómo se integra esa energía.',
+        'La **definición** describe cómo están conectados entre sí tus centros definidos: si forman un único bloque de energía o varios grupos separados. Habla de la consistencia interna —qué partes de ti están siempre "encendidas" y enlazadas— y de cómo se integra esa energía.',
         'Las variantes son: sin definición ([Reflector](type:reflector), ningún centro definido), única (todo conectado en un grupo), split (dos grupos), triple split (tres) y cuádruple split (cuatro). Una definición única tiende a sentirse **autosuficiente**; las divididas suelen experimentar una **búsqueda de conexión**, a menudo a través de otras personas o de puertas concretas que tienden el puente entre los grupos.',
         'En la práctica, la definición ayuda a entender qué tipo de compañía o entornos te completan. No es mejor ni peor tener más o menos divisiones: cada una describe una forma distinta de funcionar y de relacionarte.'
       ]
@@ -72,21 +72,21 @@ export default {
       paragraphs: [
         'Los **canales** son las 36 conexiones del bodygraph: cada uno une dos puertas situadas en centros distintos. Un canal **completo** —con sus dos puertas activas— enlaza esos dos centros, los define y crea una corriente de energía estable y fiable entre ellos.',
         'Los canales son los que, en conjunto, determinan tu **tipo, tu definición y qué centros están definidos**. Por eso son la columna vertebral mecánica de la carta: no describen un rasgo aislado, sino una forma constante en que dos áreas de tu energía trabajan juntas.',
-        'Cada canal combina los temas de sus dos puertas (y de sus hexagramas del I Ching). Para una lectura detallada de un canal concreto, puedes utilizar la opción de «saber más usando IA».'
+        'Cada canal combina los temas de sus dos puertas (y de sus hexagramas del I Ching). Para una lectura detallada de un canal concreto, puedes utilizar la opción de "saber más usando IA".'
       ]
     },
     gate: {
       title: 'Las puertas',
       paragraphs: [
-        'Las **puertas** son las 64 activaciones posibles del bodygraph, una por cada hexagrama del I Ching. Cada puerta vive en un centro concreto y aporta un matiz específico de energía o carácter; al nacer, tus planetas «encienden» un conjunto de ellas.',
+        'Las **puertas** son las 64 activaciones posibles del bodygraph, una por cada hexagrama del I Ching. Cada puerta vive en un centro concreto y aporta un matiz específico de energía o carácter; al nacer, tus planetas "encienden" un conjunto de ellas.',
         'Una puerta activa que no encuentra a su pareja —la del otro extremo de su canal— queda **colgante**: aporta su tema pero busca completarse, a menudo a través de otra persona que tenga la puerta complementaria. Cuando las dos puertas de un canal están activas, el canal se forma y define sus dos centros.',
-        'Para profundizar en una puerta concreta —su matiz, su hexagrama del I Ching y cómo se vive— puedes utilizar la opción de «saber más usando IA».'
+        'Para profundizar en una puerta concreta —su matiz, su hexagrama del I Ching y cómo se vive— puedes utilizar la opción de "saber más usando IA".'
       ]
     },
     activation: {
       title: 'Las activaciones',
       paragraphs: [
-        'Las **activaciones** son las posiciones de los planetas en tu nacimiento, traducidas a puertas y líneas del Diseño Humano. Cada cuerpo «enciende» una puerta concreta (y su línea), y el conjunto de todas ellas es lo que construye tu carta: centros, canales, tipo, autoridad y perfil.',
+        'Las **activaciones** son las posiciones de los planetas en tu nacimiento, traducidas a puertas y líneas del Diseño Humano. Cada cuerpo "enciende" una puerta concreta (y su línea), y el conjunto de todas ellas es lo que construye tu carta: centros, canales, tipo, autoridad y perfil.',
         'Se calculan en **dos momentos**, de ahí las dos columnas: *Personality* usa la posición en el instante del nacimiento (lo consciente); *Design* usa la de unos 88 días antes —88° de arco solar— (lo inconsciente). Por eso tienes dos activaciones por planeta.',
         'Cada activación se escribe como **puerta.línea**: la puerta (de la 1 a la 64) y, dentro de ella, la línea (de la 1 a la 6). Por ejemplo, un **30.3 en el Sol** quiere decir que el Sol activa la **puerta 30 en su línea 3** —el tema de la puerta 30 leído con el matiz que aporta la línea 3—. Es la unidad básica con la que se construye toda la carta.',
         'No todas pesan igual: el **Sol y la Tierra** concentran la mayor parte del significado y el resto matiza; la columna *Peso* resume esa influencia relativa. Toca una activación para abrir la puerta correspondiente. Y para ver las líneas, consulta las posibles líneas en el [perfil](concept:profile).'
@@ -189,7 +189,7 @@ export default {
     sacral: {
       title: 'Autoridad sacral',
       paragraphs: [
-        'La autoridad de la mayoría de Generadores. Reside en el **[centro Sacral](center:sacral)**, que responde **en el momento** con un sonido o un impulso visceral —una especie de «ajá» de atracción o un «mmm-mmm» de rechazo— ante algo concreto.',
+        'La autoridad de la mayoría de Generadores. Reside en el **[centro Sacral](center:sacral)**, que responde **en el momento** con un sonido o un impulso visceral —una especie de "ajá" de atracción o un "mmm-mmm" de rechazo— ante algo concreto.',
         'Es una autoridad **inmediata y corporal**: no razona, reacciona. Funciona mejor con preguntas de sí/no y se nubla cuando la mente intenta argumentar la decisión. Aprender a captar y confiar en esa respuesta instantánea del vientre es la práctica central de quien la tiene.'
       ]
     },
@@ -197,7 +197,7 @@ export default {
       title: 'Autoridad esplénica',
       paragraphs: [
         'Reside en el **[Bazo](center:spleen)**, el centro más antiguo de la conciencia, ligado a la supervivencia, la salud y el instinto. Habla **en el presente y una sola vez**: un saber súbito, callado y espontáneo, sin repetición ni discurso.',
-        'Es la autoridad más **sutil y fugaz**: no insiste ni argumenta, por lo que es fácil pasarla por alto o racionalizarla después. Quien la tiene aprende a **fiarse de ese primer impulso instintivo** —ese «sí» o «no» tranquilo del cuerpo— en el instante en que aparece, porque no suele volver a hablar.'
+        'Es la autoridad más **sutil y fugaz**: no insiste ni argumenta, por lo que es fácil pasarla por alto o racionalizarla después. Quien la tiene aprende a **fiarse de ese primer impulso instintivo** —ese "sí" o "no" tranquilo del cuerpo— en el instante en que aparece, porque no suele volver a hablar.'
       ]
     },
     ego: {
@@ -217,7 +217,7 @@ export default {
     mental: {
       title: 'Autoridad mental',
       paragraphs: [
-        'También llamada autoridad ambiental o «caja de resonancia», propia de algunos Proyectores sin centros internos definidos para decidir. **No hay una autoridad corporal interna**: la claridad no surge de dentro de golpe, sino del diálogo.',
+        'También llamada autoridad ambiental o "caja de resonancia", propia de algunos Proyectores sin centros internos definidos para decidir. **No hay una autoridad corporal interna**: la claridad no surge de dentro de golpe, sino del diálogo.',
         'La práctica consiste en **hablar el asunto con personas de confianza y en el entorno adecuado**, no para que decidan por ti, sino para escucharte pensar en voz alta. El lugar y la compañía correctos son aquí parte del método: la decisión se va decantando con el tiempo y la conversación.'
       ]
     },
@@ -236,7 +236,7 @@ export default {
       title: 'Línea 1 — el cimiento',
       paragraphs: [
         'La primera línea busca **seguridad a través del conocimiento**. Necesita investigar, comprender los fundamentos y saber que el suelo que pisa es firme antes de actuar; sin esa base, siente inquietud.',
-        'Es una energía **introspectiva y de estudio**: profundiza hasta sentirse experta, y esa solidez tranquiliza a los demás. Su reto es no quedarse esperando indefinidamente a saberlo «todo» antes de dar el paso.'
+        'Es una energía **introspectiva y de estudio**: profundiza hasta sentirse experta, y esa solidez tranquiliza a los demás. Su reto es no quedarse esperando indefinidamente a saberlo "todo" antes de dar el paso.'
       ]
     },
     '2': {
@@ -249,7 +249,7 @@ export default {
     '3': {
       title: 'Línea 3 — el ensayo y error',
       paragraphs: [
-        'La tercera línea aprende **probando**: por contacto directo con la vida, a base de intentos, descubrimientos y también tropiezos. Cada «error» es información, no fracaso.',
+        'La tercera línea aprende **probando**: por contacto directo con la vida, a base de intentos, descubrimientos y también tropiezos. Cada "error" es información, no fracaso.',
         'Es una energía **experimental y resiliente**: descubre lo que funciona descartando lo que no. Su sabiduría es muy práctica, siempre que no lea sus traspiés como defectos personales, sino como el método mismo por el que está diseñada para aprender.'
       ]
     },
@@ -270,7 +270,7 @@ export default {
     '6': {
       title: 'Línea 6 — el modelo',
       paragraphs: [
-        'La sexta línea recorre **tres fases vitales**. Hasta cerca de los 30 vive como una tercera línea, probando y tropezando; luego se retira a observar —»sobre el tejado»— durante una segunda etapa; y a partir de los 50, aproximadamente, emerge como **ejemplo y referente**.',
+        'La sexta línea recorre **tres fases vitales**. Hasta cerca de los 30 vive como una tercera línea, probando y tropezando; luego se retira a observar —"sobre el tejado"— durante una segunda etapa; y a partir de los 50, aproximadamente, emerge como **ejemplo y referente**.',
         'Su orientación de fondo es la **objetividad y la madurez**: aspira a vivir según lo que considera correcto y a convertirse en modelo para otros. Entender en qué fase está ayuda a no juzgarse: la observación de la etapa media no es desconexión, sino preparación.'
       ]
     }
@@ -288,7 +288,7 @@ export default {
     single: {
       title: 'Definición única',
       paragraphs: [
-        'Todos los centros definidos están **conectados en un solo bloque**. La energía fluye internamente sin interrupciones, lo que da una sensación de **autosuficiencia**: la persona accede a su propia consistencia sin depender de otros para «completarse».',
+        'Todos los centros definidos están **conectados en un solo bloque**. La energía fluye internamente sin interrupciones, lo que da una sensación de **autosuficiencia**: la persona accede a su propia consistencia sin depender de otros para "completarse".',
         'Su reto suele ser el opuesto al de las definiciones divididas: como funciona bien por sí sola, puede **ensimismarse o costarle abrirse** a la influencia ajena. Reconocer cuándo conviene salir de la propia burbuja es parte de su aprendizaje.'
       ]
     },
@@ -381,7 +381,7 @@ export default {
     personality: {
       title: 'Personality (consciente)',
       paragraphs: [
-        'La columna **Personality** (personalidad) representa lo **consciente**: lo que reconoces como «tú», tu mente y tu personalidad. Se calcula con la posición de los planetas en el **instante exacto del nacimiento**.',
+        'La columna **Personality** (personalidad) representa lo **consciente**: lo que reconoces como "tú", tu mente y tu personalidad. Se calcula con la posición de los planetas en el **instante exacto del nacimiento**.',
         'Es la parte de la carta con la que te identificas y de la que sueles ser consciente. En el bodygraph se pinta en blanco.'
       ]
     },
@@ -436,7 +436,7 @@ export default {
       title: 'Nodo Sur',
       paragraphs: [
         'El **Nodo Sur** describe el **entorno** de la primera parte de la vida: el escenario del que partes. Con el Nodo Norte forma el eje de tu trayectoria.',
-        'Habla del «de dónde vienes» en términos de ambiente y dirección, más que de personalidad.'
+        'Habla del "de dónde vienes" en términos de ambiente y dirección, más que de personalidad.'
       ]
     },
     mercury: {
@@ -470,7 +470,7 @@ export default {
     saturn: {
       title: 'Saturno',
       paragraphs: [
-        'Saturno es la **disciplina y el límite**: el «juez» que exige rigor, corrige y marca lo que aprendes a base de constancia.',
+        'Saturno es la **disciplina y el límite**: el "juez" que exige rigor, corrige y marca lo que aprendes a base de constancia.',
         'Señala dónde la madurez llega a través del esfuerzo y la responsabilidad.'
       ]
     },
@@ -598,13 +598,13 @@ export default {
     intro: {
       title: 'Qué es Human Design',
       paragraphs: [
-        'Human Design es un sistema de autoconocimiento que combina astrología, el *I Ching*, el árbol de la vida cabalístico, los chakras y algo de lenguaje físico-cuántico. A partir de tu fecha, hora y lugar de nacimiento genera una «carta» (el gráfico o [*bodygraph*](section:chart)) que describe cómo está diseñada tu energía: cómo tomas decisiones bien, cómo gastas y recuperas energía, y cómo interactúas mejor con el mundo. No se considera ciencia —conviene decirlo claro— sino un marco simbólico; su valor está en si te resulta útil como espejo, no en que sea demostrable.'
+        'Human Design es un sistema de autoconocimiento que combina astrología, el *I Ching*, el árbol de la vida cabalístico, los chakras y algo de lenguaje físico-cuántico. A partir de tu fecha, hora y lugar de nacimiento genera una "carta" (el gráfico o [*bodygraph*](section:chart)) que describe cómo está diseñada tu energía: cómo tomas decisiones bien, cómo gastas y recuperas energía, y cómo interactúas mejor con el mundo. No se considera ciencia —conviene decirlo claro— sino un marco simbólico; su valor está en si te resulta útil como espejo, no en que sea demostrable.'
       ]
     },
     ants: {
       title: 'La analogía de las hormigas',
       paragraphs: [
-        'Se podría decir que los humanos nos parecemos a las hormigas. En un hormiguero no hay una «hormiga genérica»: hay exploradoras que salen a rastrear, soldados construidas para defender, obreras que mantienen el nido y una reina cuya función es otra por completo. Ninguna es mejor; cada una está hecha para una forma de operar distinta, y el hormiguero funciona precisamente porque no son todas iguales. Pedirle a una exploradora que haga el trabajo de una soldado es agotarla en algo para lo que no está diseñada.',
+        'Se podría decir que los humanos nos parecemos a las hormigas. En un hormiguero no hay una "hormiga genérica": hay exploradoras que salen a rastrear, soldados construidas para defender, obreras que mantienen el nido y una reina cuya función es otra por completo. Ninguna es mejor; cada una está hecha para una forma de operar distinta, y el hormiguero funciona precisamente porque no son todas iguales. Pedirle a una exploradora que haga el trabajo de una soldado es agotarla en algo para lo que no está diseñada.',
         'Con las personas pasa algo parecido: tenemos maneras distintas de actuar y de relacionarnos en función de nuestra propia energía y diseño. El error habitual es suponer que todos deberíamos rendir, decidir o arrancar igual. El Diseño Humano propone lo contrario, y a esas diferentes maneras las llama [tipos](section:type). Lo valioso del marco es esa mirada: **deja de medirte con la vara de otro diseño**.'
       ]
     },
@@ -712,12 +712,12 @@ export default {
         'Para decidir bien, tu diseño te pide **esperar a recorrer la onda emocional** —dormir sobre ello, dejar pasar el tiempo, volver al asunto en distintos ánimos— antes de comprometerte. Tu claridad no es un destello instantáneo, sino lo que queda cuando la emoción se ha asentado. La prisa es tu principal enemiga.'
       ],
       sacral: [
-        'Tu autoridad reside en el **[centro Sacral](center:sacral)**, que responde **en el momento** con un sonido o un impulso visceral —una especie de «ajá» de atracción o un «mmm-mmm» de rechazo— ante algo concreto: el cuerpo *dice* sí o no.',
+        'Tu autoridad reside en el **[centro Sacral](center:sacral)**, que responde **en el momento** con un sonido o un impulso visceral —una especie de "ajá" de atracción o un "mmm-mmm" de rechazo— ante algo concreto: el cuerpo *dice* sí o no.',
         'Es una autoridad **inmediata y corporal**: no razona, reacciona. Funciona mejor con preguntas de sí/no y se nubla cuando tu mente intenta argumentar la decisión. Aprender a captar y confiar en esa respuesta instantánea del vientre es tu práctica central.'
       ],
       splenic: [
         'Tu autoridad reside en el **[Bazo](center:spleen)**, el centro más antiguo de la conciencia, ligado a la supervivencia, la salud y el instinto. Habla **en el presente y una sola vez**: un saber súbito, callado y espontáneo, sin repetición ni discurso.',
-        'Es la autoridad más **sutil y fugaz**: no insiste ni argumenta, así que es fácil pasarla por alto o racionalizarla después. Tu práctica es **fiarte de ese primer impulso instintivo** —ese «sí» o «no» tranquilo del cuerpo— en el instante en que aparece, porque no suele volver a hablar.'
+        'Es la autoridad más **sutil y fugaz**: no insiste ni argumenta, así que es fácil pasarla por alto o racionalizarla después. Tu práctica es **fiarte de ese primer impulso instintivo** —ese "sí" o "no" tranquilo del cuerpo— en el instante en que aparece, porque no suele volver a hablar.'
       ],
       ego: [
         'Tu autoridad reside en el **[centro del Corazón (Ego)](center:heart)**, el motor de la voluntad y el deseo. Aquí reconoces la decisión correcta con una pregunta sincera: **¿lo quiero de verdad?, ¿qué hay en esto para mí?** No es egoísmo, es honrar tu propio querer.',
@@ -728,7 +728,7 @@ export default {
         'Lo decisivo no es la opinión de quien escucha, sino el acto de **expresar y escucharte**. Por eso te conviene rodearte de personas de confianza que te dejen hablar sin influir, y prestar atención al tono y a las palabras que te salen: ahí, más que en el razonamiento, está tu guía.'
       ],
       mental: [
-        'Llamada también autoridad ambiental o «caja de resonancia». No tienes una autoridad corporal interna fija: tu claridad no surge de dentro de golpe, **tu claridad surge del diálogo**.',
+        'Llamada también autoridad ambiental o "caja de resonancia". No tienes una autoridad corporal interna fija: tu claridad no surge de dentro de golpe, **tu claridad surge del diálogo**.',
         'Tu práctica consiste en **hablar el asunto con personas de confianza y en el entorno adecuado**, no para que decidan por ti, sino para escucharte pensar en voz alta. El lugar y la compañía correctos son aquí parte del método: la decisión se va decantando con el tiempo y la conversación.'
       ],
       lunar: [
@@ -741,14 +741,14 @@ export default {
     profile: {
       '1': [
         'Buscas **seguridad a través del conocimiento**. Necesitas investigar, comprender los fundamentos y saber que el suelo que pisas es firme antes de actuar; sin esa base, te sientes inquieto.',
-        'Es una energía **introspectiva y de estudio**: profundizas hasta sentirte experto, y esa solidez tranquiliza a los demás. Tu reto es no quedarte esperando indefinidamente a saberlo «todo» antes de dar el paso.'
+        'Es una energía **introspectiva y de estudio**: profundizas hasta sentirte experto, y esa solidez tranquiliza a los demás. Tu reto es no quedarte esperando indefinidamente a saberlo "todo" antes de dar el paso.'
       ],
       '2': [
         'Tienes **dones naturales** que ejerces casi sin esfuerzo, a menudo sin ser plenamente consciente de ellos. Necesitas **tiempo a solas** para que ese talento madure a tu ritmo.',
         'Tu dinámica es la de ser **llamado desde fuera**: los demás ven en ti algo que tú no terminas de nombrar, y te invitan a sacarlo. Tu equilibrio está entre respetar tu necesidad de retiro y responder a esas llamadas cuando son las correctas.'
       ],
       '3': [
-        'Aprendes **probando**: por contacto directo con la vida, a base de intentos, descubrimientos y también tropiezos. Cada «error» es información, no fracaso.',
+        'Aprendes **probando**: por contacto directo con la vida, a base de intentos, descubrimientos y también tropiezos. Cada "error" es información, no fracaso.',
         'Es una energía **experimental y resiliente**: descubres lo que funciona descartando lo que no. Tu sabiduría es muy práctica, y resulta esencial que no leas tus traspiés como defectos personales, sino como el método mismo por el que estás diseñado para aprender.'
       ],
       '4': [
@@ -760,7 +760,7 @@ export default {
         'Eso te da influencia y un papel natural de **liderazgo útil**, pero también te expone y exige: si no cumples lo proyectado, la misma fuerza puede volverse en tu contra. Tu reto es gestionar bien tu **reputación** y aclarar en lo posible las expectativas de los demás, poniendo cuidado en prometer solo lo que de verdad puedes entregar.'
       ],
       '6': [
-        'Recorres **tres fases vitales**: (1) hasta cerca de los 30 años, vives como la línea 3, probando, tropezando y hasta colapsando; luego (2) vives una segunda etapa donde te retiras energéticamente a observar y procesar —etapa «sobre el tejado»—; y a partir de los 50, aproximadamente, emerges como **ejemplo y referente**.',
+        'Recorres **tres fases vitales**: (1) hasta cerca de los 30 años, vives como la línea 3, probando, tropezando y hasta colapsando; luego (2) vives una segunda etapa donde te retiras energéticamente a observar y procesar —etapa "sobre el tejado"—; y a partir de los 50, aproximadamente, emerges como **ejemplo y referente**.',
         'Tu orientación de fondo es la **objetividad y la madurez**: aspiras a vivir según lo que consideras correcto y verdadero, y a convertirte en modelo para otros. Entender en qué fase estás te ayuda a no juzgarte: la observación de la etapa media no es desconexión, sino preparación.'
       ]
     },
@@ -770,7 +770,7 @@ export default {
         'Esto te hace **extraordinariamente sensible al entorno**: con quién y dónde estás cambia por completo tu experiencia. Tu sabiduría nace precisamente de esa apertura total, siempre que aprendas a no confundir lo que solo reflejas con lo que es tuyo.'
       ],
       single: [
-        'Todos tus centros definidos están **conectados en un solo bloque**. Tu energía fluye internamente sin interrupciones, lo que te da una sensación de **autosuficiencia**: accedes a tu propia consistencia sin depender de otros para «completarte».',
+        'Todos tus centros definidos están **conectados en un solo bloque**. Tu energía fluye internamente sin interrupciones, lo que te da una sensación de **autosuficiencia**: accedes a tu propia consistencia sin depender de otros para "completarte".',
         'Tu reto suele ser el opuesto al de las definiciones divididas: como funcionas bien por ti mismo, puedes ensimismarte o costarte abrirte a la influencia ajena. Reconocer cuándo te conviene salir de tu propia burbuja es parte de tu aprendizaje.'
       ],
       split: [

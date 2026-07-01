@@ -19,7 +19,19 @@ lives in [`BACKLOG.md`](./BACKLOG.md).
 
 Last updated: 2026-07-02.
 
-> Latest change (2026-07-02, primera pasada de revisión de textos del autor):
+> Latest change (2026-07-02, comillas «» → "" en todos los textos): **por
+> preferencia del autor, todas las comillas angulares «» pasan a comillas rectas
+> "".** Reemplazo global de 80 ocurrencias en 7 ficheros: el contenido de
+> `content/es.js` (58), las plantillas compuestas de `content/index.js` (6),
+> `report.js` (2) y los prompts de `prompts.js` (8), más las notas de UI
+> "Copiar prompt" en `InitialReport.svelte`/`ElementInfo.svelte` (2+2) y
+> "Añadir a pantalla de inicio" en la home (2). **Revierte la decisión (a) de la
+> pasada anterior** (que devolvía a «» las comillas curvas de Word): ahora la
+> convención del repo es la comilla recta ", que además ya usaban un par de
+> puertas ("clics", "yo tengo"). Verificado: build de producción OK + 16/16
+> tests + parse de los módulos de contenido. Commit a main.
+>
+> Previo (2026-07-02, primera pasada de revisión de textos del autor):
 > **aplicada al código la primera tanda de ediciones del autor sobre los textos**
 > (entregadas en el Word de dos columnas `revision-textos/`). De 598 filas, 108
 > tocadas → **72 cambios sustantivos en `es.js`**, 4 en `content/index.js`

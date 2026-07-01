@@ -271,7 +271,7 @@
                 </button>
               </li>
             {/each}
-            <li class="note">Para otras IA, usa «Copiar prompt» y pégalo donde quieras.</li>
+            <li class="note">Para otras IA, usa "Copiar prompt" y pégalo donde quieras.</li>
           </ul>
         {/if}
 
