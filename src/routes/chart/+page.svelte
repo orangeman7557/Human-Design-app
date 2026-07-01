@@ -26,7 +26,7 @@
     heart: 'Corazón',
     sacral: 'Sacral',
     spleen: 'Bazo',
-    solarPlexus: 'Plexo Solar',
+    solarPlexus: 'Plexo solar',
     root: 'Raíz'
   };
 
@@ -80,7 +80,7 @@
   };
 
   const AUTHORITY_LABELS = {
-    emotional: 'Plexo Solar (emocional)',
+    emotional: 'Plexo solar (emocional)',
     sacral: 'Sacral',
     splenic: 'Bazo (intuición)',
     ego: 'Ego (corazón)',

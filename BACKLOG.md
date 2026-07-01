@@ -253,13 +253,29 @@ corrected).
   (`gateChartSubject` / `channelChartSubject`). Verified in the browser for the
   complete / hanging / inactive gate cases and complete / half / none channel cases.
 
-- **Full-app text review (pending — requested 2026-06-30).** A pass over **all**
-  user-facing copy in the app, with special attention to the new **initial
-  report** (Parte A/B, the "Tú eres un X" sub-headings, the centre cards, the
-  «Saber más» prompt) and the **64 gate essences + channel codas**. The author
-  wants to refine style details throughout. Treat the current report/gate texts
-  as a working draft until this pass is done (it supersedes the per-phase
-  "author's text review" notes for 6 and 7).
+- **Full-app text review (in progress — first pass applied 2026-07-02).** A pass
+  over **all** user-facing copy in the app, with special attention to the
+  **initial report** (Parte A/B, the "Tú eres un X" sub-headings, the centre
+  cards, the «Saber más» prompt) and the **64 gate essences + channel codas**.
+  Workflow: the copy is exported to a two-column Word (Original | Editada) via a
+  `docx` generator; the author edits the right column offline and hands it back;
+  the edits are diffed against a saved manifest and re-applied to `es.js` /
+  `index.js`. The working files live outside the repo in `revision-textos/`
+  (`Revision-de-textos-HD.docx` + `revision-textos.manifest.json`) — regenerate
+  the manifest deterministically if it's ever lost.
+  - **First pass (2026-07-02):** 108/598 rows edited → 72 substantive `es.js`
+    edits + 4 in `index.js` + 2 in `chart/+page.svelte`. Decisions taken when
+    re-applying: (a) Word's **curly quotes “”** (autoformat) reverted to the
+    repo's **«»**; quote-only rows left untouched. (b) Global rename **"Plexo
+    Solar" → "Plexo solar"** (author changed even the centre title/labels) and
+    **`[garganta]` → `[Garganta]`** (8 link labels), applied app-wide for
+    consistency. (c) Two bracketed instructions resolved as links: *bodygraph* →
+    `section:chart` (report intro), "perfil" → `concept:profile` (activations
+    concept — first in-text use of the `concept:` link kind, which the resolver
+    already supports). The handoff closing line was standardised to «…puedes
+    utilizar la opción de «saber más usando IA».».
+  - Still a working draft: more rounds may follow. Supersedes the per-phase
+    "author's text review" notes for 6 and 7.
 
 - ~~**Place search should match partial names.**~~ — done 2026-06-24.
   Switched the geocoder from Nominatim to **Photon** (a typeahead index): a

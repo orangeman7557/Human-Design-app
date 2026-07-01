@@ -17,9 +17,30 @@ Statuses:
 The deeper context (technical trade-offs, future ideas, deferred decisions)
 lives in [`BACKLOG.md`](./BACKLOG.md).
 
-Last updated: 2026-07-01.
+Last updated: 2026-07-02.
 
-> Latest change (2026-07-01, Fase L · instalabilidad construida): **iconos PWA,
+> Latest change (2026-07-02, primera pasada de revisión de textos del autor):
+> **aplicada al código la primera tanda de ediciones del autor sobre los textos**
+> (entregadas en el Word de dos columnas `revision-textos/`). De 598 filas, 108
+> tocadas → **72 cambios sustantivos en `es.js`**, 4 en `content/index.js`
+> (intros de perfil sin el «(de la personalidad)/(del diseño)»; frase de cierre
+> del handoff de puerta/canal → «…puedes utilizar la opción de «saber más usando
+> IA».») y 2 en `chart/+page.svelte`. **Tres decisiones al reincorporar:**
+> (1) las **comillas curvas** que introdujo Word por autoformato se revierten
+> a **«»** (convención del repo); las filas cuyo único cambio eran las comillas se
+> dejaron intactas. (2) Renombrado global **«Plexo Solar» → «Plexo solar»** (el
+> autor lo cambió hasta en el título del centro y las etiquetas) en toda la app
+> —`es.js` (15) y `chart/+page.svelte` (2)— y **`[garganta]` → `[Garganta]`** en
+> los 8 enlaces de etiqueta, para dejar el nombre del centro consistente. (3) Dos
+> **instrucciones entre corchetes** resueltas como enlaces: *bodygraph* →
+> `section:chart` en la intro del informe, y «perfil» → `concept:profile` en el
+> concepto de activaciones (el resolvedor ya soporta la clave `concept:`).
+> Verificado: 16/16 tests + navegador (informe renderiza con las ediciones, el
+> enlace `section:chart` hace scroll a «El bodygraph», «Plexo solar» en el
+> bodygraph, sin errores de consola). **Es una primera pasada**: la revisión de
+> textos del autor sigue abierta (puede haber más tandas). Commit a main.
+>
+> Previo (2026-07-01, Fase L · instalabilidad construida): **iconos PWA,
 > service worker, manifest e «instalar como app».** (1) **Marca/iconos**: icono propio
 > (columna del bodygraph en oro sobre negro — triángulo equilátero, cuadrado y rombo con
 > esquinas redondeadas, geometría iterada con el autor) en `static/favicon.svg` (maestro)

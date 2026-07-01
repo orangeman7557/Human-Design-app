@@ -74,7 +74,7 @@ export function getProfileInfo(profile, lang = DEFAULT_LANG) {
   return {
     title: `Perfil ${profile}`,
     paragraphs: [
-      `El perfil ${profile} combina dos líneas: la ${a}, consciente (de la personalidad), y la ${b}, inconsciente (del diseño). Cada una aporta su matiz, y juntas describen tu forma de aprender, relacionarte y desplegar tu propósito.`,
+      `El perfil ${profile} combina dos líneas: la ${a}, consciente, y la ${b}, inconsciente. Cada una aporta su matiz, y juntas describen tu forma de aprender, relacionarte y desplegar tu propósito.`,
       `**${la.title}.** ${la.paragraphs[0]}`,
       ...la.paragraphs.slice(1),
       `**${lb.title}.** ${lb.paragraphs[0]}`,
@@ -140,7 +140,7 @@ export function getReportProfile(profile, lang = DEFAULT_LANG) {
   return {
     title: `Perfil ${profile}`,
     paragraphs: [
-      `Tu perfil ${profile} combina dos líneas: la ${a}, consciente (de tu personalidad), y la ${b}, inconsciente (de tu diseño). Cada una aporta su matiz, y juntas describen tu forma de aprender, relacionarte y desplegar tu propósito.`,
+      `Tu perfil ${profile} combina dos líneas: la ${a}, consciente, y la ${b}, inconsciente. Cada una aporta su matiz, y juntas describen tu forma de aprender, relacionarte y desplegar tu propósito.`,
       `**${la.title}.** ${ba[0]}`,
       ...ba.slice(1),
       `**${lb.title}.** ${bb[0]}`,
@@ -232,7 +232,7 @@ export function getGateInfo(gate, chart = null, lang = DEFAULT_LANG) {
   ];
   const coda = gateCoda(gateState(g, chart));
   if (coda) paragraphs.push(coda);
-  paragraphs.push('Para una lectura más a fondo, apóyate en el prompt de abajo con tu IA.');
+  paragraphs.push('Para una lectura más a fondo, puedes utilizar la opción de «saber más usando IA».');
   return { title: `Puerta ${g}`, paragraphs };
 }
 
@@ -286,6 +286,6 @@ export function getChannelInfo(pair, chart = null, lang = DEFAULT_LANG) {
   }
   const coda = channelCoda(a, b, chart);
   if (coda) paragraphs.push(coda);
-  paragraphs.push('Para una lectura más a fondo, apóyate en el prompt de abajo con tu IA.');
+  paragraphs.push('Para una lectura más a fondo, puedes utilizar la opción de «saber más usando IA».');
   return { title: `Canal ${a}-${b}`, paragraphs };
 }
