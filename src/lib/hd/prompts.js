@@ -14,10 +14,12 @@
 // definidos …". Prompts stay impersonal (no first person): the chart on screen
 // may belong to someone else (a saved chart).
 //
-// `chart` is null when the angle doesn't apply (most concepts are abstract; a
-// gate/channel angle only applies when that element is active in the chart).
+// `chart` is null when the angle doesn't apply (most concepts are abstract). A
+// gate/channel chart angle always applies when there's a chart, and its prompt
+// names how that element sits in it (a gate: complete / hanging / inactive; a
+// channel: complete / half / none).
 
-import { getPromptLabels, DEFAULT_LANG } from './content/index.js';
+import { getPromptLabels, gateState, channelState, DEFAULT_LANG } from './content/index.js';
 
 const FRAME = 'En el marco de Human Design';
 
@@ -40,6 +42,26 @@ function who(L, chart) {
 /** Chart angle: same as `ask` but prefixed with the chart descriptor. */
 const askChart = (L, chart, subject) =>
   `${FRAME}, para ${who(L, chart)}, ¿me explicas en detalle ${subject}?`;
+
+/** Gate chart-angle subject, naming the gate's state in the chart. */
+function gateChartSubject(g, state) {
+  const tail = {
+    complete: ', que en esta carta forma parte de un canal completo',
+    hanging: ', que en esta carta está colgante (activa, pero sin la otra mitad de su canal)',
+    inactive: ', que en esta carta no está activa'
+  }[state] ?? '';
+  return `la puerta ${g}${tail}`;
+}
+
+/** Channel chart-angle subject, naming the channel's state in the chart. */
+function channelChartSubject(a, b, state) {
+  const tail = {
+    complete: ', que en esta carta está completo (define sus dos centros)',
+    half: ', del que en esta carta solo está activa una de sus dos puertas (medio canal)',
+    none: ', que en esta carta no está activo'
+  }[state] ?? '';
+  return `el canal ${a}-${b}${tail}`;
+}
 
 /**
  * @param {string} kind   'concept' | 'type' | 'strategy' | 'authority' | 'profile' | 'definition' | 'center' | 'gate' | 'channel' | 'activationCol' | 'planet'
@@ -107,23 +129,22 @@ export function buildPrompts(kind, key, chart, lang = DEFAULT_LANG) {
 
   if (kind === 'gate') {
     const g = Number(key);
-    // The chart angle only applies when the gate is active in the chart
-    // (gates reached through the full index may not be).
-    const active = chart?.activeGates?.includes(g);
+    // The chart angle applies to any gate (even one reached through the full
+    // index that isn't active) and names its state: complete / hanging / inactive.
+    const state = gateState(g, chart);
     return {
       general: ask(`la puerta ${g}`),
-      chart: active ? askChart(L, chart, `la puerta ${g}`) : null
+      chart: state ? askChart(L, chart, gateChartSubject(g, state)) : null
     };
   }
 
   if (kind === 'channel') {
     const [a, b] = String(key).split('-').map(Number);
-    const active = chart?.activeChannels?.some(
-      ([x, y]) => (x === a && y === b) || (x === b && y === a)
-    );
+    // Same for channels, naming the state: complete / half / none.
+    const state = channelState(a, b, chart);
     return {
       general: ask(`el canal ${a}-${b}`),
-      chart: active ? askChart(L, chart, `el canal ${a}-${b}`) : null
+      chart: state ? askChart(L, chart, channelChartSubject(a, b, state)) : null
     };
   }
 

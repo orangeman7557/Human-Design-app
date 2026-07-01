@@ -185,7 +185,7 @@ function gateTheme(gate, lang = DEFAULT_LANG) {
 }
 
 /** A gate's state in a chart: 'complete' | 'hanging' | 'inactive', or null if no chart. */
-function gateState(gate, chart) {
+export function gateState(gate, chart) {
   if (!chart?.activeGates) return null;
   const g = Number(gate);
   if (!chart.activeGates.includes(g)) return 'inactive';
@@ -234,6 +234,16 @@ export function getGateInfo(gate, chart = null, lang = DEFAULT_LANG) {
   if (coda) paragraphs.push(coda);
   paragraphs.push('Para una lectura más a fondo, apóyate en el prompt de abajo con tu IA.');
   return { title: `Puerta ${g}`, paragraphs };
+}
+
+/** A channel's state in a chart: 'complete' | 'half' | 'none', or null if no chart. */
+export function channelState(a, b, chart) {
+  if (!chart?.activeGates) return null;
+  const aOn = chart.activeGates.includes(Number(a));
+  const bOn = chart.activeGates.includes(Number(b));
+  if (aOn && bOn) return 'complete';
+  if (aOn || bOn) return 'half';
+  return 'none';
 }
 
 /** Personalised coda for a channel given the chart, or null. */

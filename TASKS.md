@@ -19,7 +19,21 @@ lives in [`BACKLOG.md`](./BACKLOG.md).
 
 Last updated: 2026-07-01.
 
-> Latest change (2026-07-01, informe en 2ª persona): **reescritura del informe
+> Latest change (2026-07-01, «Sobre esta carta» en puertas/canales): **vuelve el
+> ángulo «Sobre esta carta» a los drawers de puertas y canales, con prompt según el
+> estado.** Antes (decisión de Fase 6.D) solo aparecía «Info general» salvo que el
+> elemento estuviera activo. Ahora la sección «Saber más usando IA» ofrece **ambos
+> ángulos para cualquier puerta y canal**, y el prompt de «Sobre esta carta» dice
+> **cómo está el elemento en la carta**: una puerta como *forma parte de un canal
+> completo* / *colgante* / *inactiva*; un canal como *completo* / *medio canal* /
+> *inactivo*. Implementado exportando `gateState` y añadiendo `channelState` en
+> `content/index.js`, y reconstruyendo los prompts `gate`/`channel` en `prompts.js`
+> (`gateChartSubject`/`channelChartSubject`). De paso, confirmado que el **nombre
+> del PDF ya coincidía con el del PNG** (misma base, extensión `.pdf`): no requería
+> cambio. Verificado: 16/16 tests + navegador (casos completo/colgante/inactiva y
+> completo/medio/ninguno).
+>
+> Previo (2026-07-01, informe en 2ª persona): **reescritura del informe
 > a segunda persona tras la lectura del autor.** Las secciones personalizadas
 > (Tu tipo, Tu estrategia, Tu autoridad, Tu perfil, Tu definición y el estado de
 > los centros) reutilizaban los textos generales que alimentan los drawers de la
