@@ -411,11 +411,6 @@
 <svelte:window onclick={tipTap} />
 
 <main>
-  {#if install.mode}
-    <div class="install-bar">
-      <button class="install-link" type="button" onclick={onInstallClick}>instalar como app</button>
-    </div>
-  {/if}
   <header>
     <h1>Human Design Chart</h1>
     <!-- The final period is the hidden smoke-test shortcut. -->
@@ -598,6 +593,10 @@
   </section>
 
   <footer>
+    {#if install.mode}
+      <button class="install-link" type="button" onclick={onInstallClick}>instalar como app</button>
+      <span aria-hidden="true">·</span>
+    {/if}
     <About version={version} onElement={openAuthorChartWithInfo} />
   </footer>
 </main>
@@ -1051,25 +1050,16 @@
     gap: 0.4rem;
   }
 
-  /* "instalar como app" — discreet link pinned near the top edge ("view in
-     browser" style), out of the vertically-centred flow. Same size/colour as
-     the footer. */
-  .install-bar {
-    position: absolute;
-    top: 0.75rem;
-    left: 0;
-    right: 0;
-    text-align: center;
-  }
+  /* Footer links ("instalar como app" · "acerca de"): the footer sets the
+     size/colour; this just matches About's link. */
   .install-link {
     background: none;
     border: none;
     padding: 0;
+    margin: 0;
     font: inherit;
-    font-size: 0.8rem;
-    color: #64646a;
+    color: inherit;
     cursor: pointer;
-    text-decoration: none;
   }
   .install-link:hover {
     color: var(--text-muted);
