@@ -76,7 +76,7 @@
   // and ask the chart page to open the matching element drawer on arrival.
   function openAuthorChartWithInfo(kind, key) {
     const birth = {
-      name: 'orangeman7557',
+      name: 'Javi G.O.',
       date: '1984-03-13',
       time: '09:30',
       timezone: 'Europe/Madrid',
@@ -1053,7 +1053,7 @@
   /* "instalar como app" — discreet top link, same size/colour as the footer. */
   .install-bar {
     text-align: center;
-    margin-bottom: 1.4rem;
+    margin-bottom: 3rem;
   }
   .install-link {
     background: none;
@@ -1063,13 +1063,10 @@
     font-size: 0.8rem;
     color: #64646a;
     cursor: pointer;
-    text-decoration: underline;
-    text-decoration-color: #3a3a42;
-    text-underline-offset: 2px;
+    text-decoration: none;
   }
   .install-link:hover {
     color: var(--text-muted);
-    text-decoration-color: var(--accent);
   }
 
   footer {
