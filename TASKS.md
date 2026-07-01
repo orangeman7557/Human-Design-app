@@ -19,7 +19,37 @@ lives in [`BACKLOG.md`](./BACKLOG.md).
 
 Last updated: 2026-07-01.
 
-> Latest change (2026-07-01, «Sobre esta carta» en puertas/canales): **vuelve el
+> Latest change (2026-07-01, Fase L · instalabilidad construida): **iconos PWA,
+> service worker, manifest e «instalar como app».** (1) **Marca/iconos**: icono propio
+> (columna del bodygraph en oro sobre negro — triángulo equilátero, cuadrado y rombo con
+> esquinas redondeadas, geometría iterada con el autor) en `static/favicon.svg` (maestro)
+> + PNG generados (favicon-32, apple-touch-icon 180, icon-192/512, icon-maskable-512) vía
+> `sharp`. (2) **Service worker** `src/service-worker.js` (SvelteKit lo registra solo):
+> precache del shell + assets, cache-first para assets, network-first con fallback para
+> navegaciones (activa «Instalar» + offline básico; no toca cross-origin). (3) **manifest**
+> con `id` + array `icons`; **app.html** con favicon/apple-touch-icon + metas iOS. (4)
+> **«instalar como app»**: enlace discreto arriba de la home (estilo «ver en navegador»,
+> mismo tamaño/color del footer) — Chromium dispara el prompt nativo
+> (`beforeinstallprompt` capturado en `src/lib/pwa/install.svelte.js`), iOS Safari muestra
+> instrucciones de «Añadir a inicio», y se oculta si ya está instalada. (5) **Acerca de**:
+> título en dorado, «gratis para uso no comercial» en negrita, crédito a «Javi G.O.».
+> Verificado: build de producción compila el SW; iconos con dimensiones correctas;
+> navegador sin errores; enlace e «Acerca de» correctos. **Nota**: el prompt real de
+> instalar solo se activa en producción (HTTPS); en dev el SW no se registra a propósito.
+>
+> Previo (2026-07-01, Fase L registrada): **plan de lanzamiento (→ 1.0)
+> registrado en el roadmap** (sin cambios de código). Nueva pseudo-fase de
+> endurecimiento pre-1.0 antes de publicar: revisión de textos (gate de contenido) →
+> instalabilidad (iconos + service worker + manifest) → SEO (prerender de la home,
+> Open Graph, sitemap) → dominio propio (Cloudflare Registrar + Custom Domain) →
+> «Reportar un fallo» vía **Web3Forms** → «Invítame a un café» vía **Ko-fi** (no
+> bloqueante, puede ir tras 1.0) → política de privacidad → bump a **1.0.0**
+> (lanzamiento web). Las tiendas van después y en fases aparte: **Google Play (TWA)**
+> primero, **Apple App Store** opcional/más tarde. Decisiones fijadas hoy con el autor:
+> feedback = Web3Forms, donaciones = Ko-fi (opcional), 1.0 = solo web. Detalle y
+> croquis en BACKLOG («Phase L — Launch plan»).
+>
+> Previo (2026-07-01, «Sobre esta carta» en puertas/canales): **vuelve el
 > ángulo «Sobre esta carta» a los drawers de puertas y canales, con prompt según el
 > estado.** Antes (decisión de Fase 6.D) solo aparecía «Info general» salvo que el
 > elemento estuviera activo. Ahora la sección «Saber más usando IA» ofrece **ambos
@@ -706,6 +736,29 @@ Subtareas completadas:
   essences + 3-state codas** for gates/channels. Full spec in
   `docs/informe-inicial.md`. (Added 2026-06-22; built 2026-06-30 — composite/
   transits/sync stay at 8/9/10.)
+- **Phase L — Launch (→ 1.0).** 🟡 Pre-launch hardening pass that gates the 1.0
+  release. **Step 1 (installability) done 2026-07-01** — own app icon, service
+  worker, manifest icons, app.html iOS metas, and an "instalar como app" link.
+  **The web launch is 1.0; the app stores are later, separate phases.**
+  Ordered: (0) **full-app text review** — the content gate; (1) **installability** —
+  app icons (192/512 + maskable), favicon, apple-touch-icon, a minimal service worker
+  (fetch handler), complete manifest (icons array, screenshots); (2) **SEO** —
+  prerender the home route only (chart page stays SPA), Open Graph + Twitter card +
+  share image, tuned title/description, robots.txt, sitemap.xml, canonical, JSON-LD;
+  (3) **custom domain** — Cloudflare Registrar (at-cost) attached as a Worker Custom
+  Domain (auto TLS); (4) **report a bug** — wire the deferred "Reportar un fallo"
+  (About modal) to **Web3Forms**; (5) **donations (non-blocking, may ship post-1.0)** —
+  wire "Invítame a un café" to **Ko-fi**; (6) **privacy policy** page; (7) **bump to
+  1.0.0**, tag, deploy. Decisions locked 2026-07-01: feedback = Web3Forms; donations =
+  Ko-fi (optional); 1.0 = web-only. Full croquis + rationale in BACKLOG ("Phase L —
+  Launch plan").
+- **Google Play packaging (TWA) — after 1.0.** `assetlinks.json` on the domain +
+  Bubblewrap/PWABuilder package + Google Play dev account (one-time $25) + store listing
+  (screenshots, description, privacy policy). Needs Phase L installability + domain done.
+- **Apple App Store packaging — optional, later.** WKWebView/Capacitor/PWABuilder-iOS
+  package + Apple Developer Program ($99/yr) + a Mac with Xcode; must add native value to
+  clear App Store review guideline 4.2 ("minimum functionality"). Lowest priority — iOS
+  "Add to Home Screen" already covers most of the value once apple-touch-icons exist.
 - **Phase 8 — Composite chart.** Two saved charts rendered as a combined
   bodygraph (visual overlay distinguishing each person).
 - **Phase 9 — Transits.** View live transits over a saved chart.

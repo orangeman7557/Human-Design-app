@@ -41,10 +41,10 @@
     </header>
 
     <div class="facts">
-      <p>Proyecto source-available, gratis para uso no comercial. (PolyForm Noncommercial 1.0.0)</p>
+      <p>Proyecto source-available, <strong>gratis para uso no comercial</strong>. (PolyForm Noncommercial 1.0.0)</p>
       <p>
-        Creado por orangeman7557 con asistencia de IA. Creado sin ánimo
-        de lucro ni ánimo de nada, lo creé porque me dio la gana, como buen
+        Creado por Javi G.O. con asistencia de IA, sin ánimo de lucro y sin
+        ánimo de nada, lo creé porque me dio la gana, como buen
         {#if onElement}<button type="button" class="tlink" onclick={() => openElement('type', 'manifestor')}>Manifestor</button>{:else}Manifestor{/if} que soy :)
       </p>
       <p>Ojalá que te sea útil. ¡Que vivas bien y feliz!</p>
@@ -107,6 +107,7 @@
     font-size: 1rem;
     font-weight: 500;
     margin: 0;
+    color: var(--accent);
   }
   .close {
     background: none;
@@ -128,6 +129,9 @@
     line-height: 1.5;
     color: #c4c4ca;
     margin: 0.35rem 0 0;
+  }
+  .facts strong {
+    font-weight: 600;
   }
   /* "Manifestor" link → opens the type drawer (chart page only). Subtle
      underline, like the in-text links elsewhere. */

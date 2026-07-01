@@ -13,6 +13,7 @@
   const version = __APP_VERSION__;
   import CityAutocomplete from '$lib/components/CityAutocomplete.svelte';
   import About from '$lib/components/About.svelte';
+  import { install, promptInstall } from '$lib/pwa/install.svelte.js';
   import { dialog } from '$lib/components/dialog.svelte.js';
   import { cityCountry } from '$lib/geo/place.js';
   import {
@@ -86,6 +87,21 @@
     sessionStorage.setItem('birthData', JSON.stringify(birth));
     sessionStorage.setItem('hd:openInfo', `${kind}:${key}`);
     goto('/chart');
+  }
+
+  // "instalar como app" link (top of the home). Chromium → native prompt;
+  // iOS Safari → manual "Add to Home Screen" instructions. The link only shows
+  // when install.mode is set (see install.svelte.js).
+  async function onInstallClick() {
+    if (install.mode === 'prompt') {
+      await promptInstall();
+    } else if (install.mode === 'ios') {
+      await dialog.alert({
+        title: 'Instalar como app',
+        message:
+          'Abre el menú Compartir de Safari y elige «Añadir a pantalla de inicio».'
+      });
+    }
   }
 
   let submitting = $state(false);
@@ -395,6 +411,11 @@
 <svelte:window onclick={tipTap} />
 
 <main>
+  {#if install.mode}
+    <div class="install-bar">
+      <button class="install-link" type="button" onclick={onInstallClick}>instalar como app</button>
+    </div>
+  {/if}
   <header>
     <h1>Human Design Chart</h1>
     <!-- The final period is the hidden smoke-test shortcut. -->
@@ -1027,6 +1048,28 @@
   .io {
     display: flex;
     gap: 0.4rem;
+  }
+
+  /* "instalar como app" — discreet top link, same size/colour as the footer. */
+  .install-bar {
+    text-align: center;
+    margin-bottom: 1.4rem;
+  }
+  .install-link {
+    background: none;
+    border: none;
+    padding: 0;
+    font: inherit;
+    font-size: 0.8rem;
+    color: #64646a;
+    cursor: pointer;
+    text-decoration: underline;
+    text-decoration-color: #3a3a42;
+    text-underline-offset: 2px;
+  }
+  .install-link:hover {
+    color: var(--text-muted);
+    text-decoration-color: var(--accent);
   }
 
   footer {

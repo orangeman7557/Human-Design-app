@@ -1,6 +1,7 @@
 {
   "name": "Human Design Chart",
   "short_name": "HD Chart",
+  "id": "/",
   "description": "Calcular, guardar y consultar cartas de Human Design.",
   "start_url": "/",
   "scope": "/",
@@ -8,5 +9,11 @@
   "orientation": "portrait",
   "background_color": "#0b0b0d",
   "theme_color": "#0b0b0d",
-  "lang": "es"
+  "lang": "es",
+  "icons": [
+    { "src": "/favicon.svg", "type": "image/svg+xml", "sizes": "any" },
+    { "src": "/icon-192.png", "type": "image/png", "sizes": "192x192", "purpose": "any" },
+    { "src": "/icon-512.png", "type": "image/png", "sizes": "512x512", "purpose": "any" },
+    { "src": "/icon-maskable-512.png", "type": "image/png", "sizes": "512x512", "purpose": "maskable" }
+  ]
 }

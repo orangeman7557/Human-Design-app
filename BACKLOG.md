@@ -751,6 +751,107 @@ context.
 - The centre cards now read "Es uno de tus centros **definidos/abiertos**: …" so it's
   clear it's *your* chart.
 
+## Phase L — Launch plan (→ 1.0) — added 2026-07-01
+
+The pre-launch hardening pass that gates the 1.0 release. Decided with the author
+2026-07-01. **The web launch is 1.0; the app stores are later, separate phases.**
+Rationale for a dedicated pseudo-phase: the remaining content work (the full-app text
+review) is the *content* gate, but "publishing" also needs a small *technical* checklist
+that doesn't exist yet (icons, service worker, SEO, domain) plus wiring the two deferred
+About-modal actions (report-a-bug, donations).
+
+**Decisions locked (2026-07-01):**
+
+- Report a bug/suggestion → **Web3Forms** (embeddable, no backend, no user account, keeps
+  the author's email hidden). GitHub Issues optionally as a secondary technical route.
+- Donations → **Ko-fi** ("invítame a un café"; 0% platform fee, connects PayPal/Stripe).
+  **Non-blocking for 1.0** — may ship after. Voluntary tips don't conflict with the
+  PolyForm Noncommercial license (no sale, no paywall; keep the "voluntary support" framing).
+- 1.0 is **web-only**. Play Store next, Apple after.
+
+**Ordered checklist:**
+
+0. **Full-app text review** — the content gate (see "Full-app text review" above).
+1. **Installability** — app icons (192/512 + maskable), favicon, apple-touch-icon; a
+   minimal service worker with a fetch handler; complete the manifest (icons array,
+   screenshots). Today the manifest has no icons and there's no SW (2026-06-15 audit).
+   Unblocks add-to-home-screen, the SEO icons, and a future TWA.
+2. **SEO / discovery** — prerender the **home route only** (real HTML for crawlers and AI
+   bots; the chart page stays SPA); Open Graph + Twitter Card + a share image; tuned
+   title/description; robots.txt, sitemap.xml, canonical, JSON-LD (`WebApplication`);
+   landing copy with the keywords people search. Both routes are ssr:false/prerender:false
+   today, so crawlers see an empty shell — this is the key fix. Realistic outcome:
+   long-tail traffic (Spanish queries, "free chart no signup"), not the top of
+   "human design".
+3. **Custom domain** — buy via Cloudflare Registrar (at-cost) and attach as a Worker Custom
+   Domain (auto DNS + TLS). Required before the TWA (Digital Asset Links).
+4. **Report a bug** — wire the deferred "Reportar un fallo" (`About.svelte`) to Web3Forms.
+5. **Donations (optional, may ship post-1.0)** — wire "Invítame a un café" to Ko-fi.
+6. **Privacy policy** — a simple page; both stores require one, and it's trivial here
+   (nothing leaves the device; local-only storage).
+7. **Bump to 1.0.0**, tag, deploy — the web launch.
+
+**Dependencies:** installability (1) unblocks the SEO icons and the TWA; the domain (3)
+unblocks assetlinks for Play. So 1 and 3 come before the store phases.
+
+**Sustainability / cost (confirmed 2026-07-01):** the app is 100% client-side, so there's
+no server cost that scales with users. Cloudflare Workers free tier (100k req/day; static
+assets unmetered) covers it comfortably; only the domain (~10 €/yr) is a real recurring
+cost, and the paid Workers plan ($5/mo, 10M req) is a distant ceiling. The one shared
+external dependency is the public Photon geocoder — see the note below.
+
+**Photon public instance — usage headroom (answered 2026-07-01).** Unlike Nominatim
+(hard limit: 1 req/s, no bulk), komoot's public Photon has a **fair-use** policy with **no
+published numeric limit**; the concern is **bulk/automated** geocoding, not interactive
+typeahead. Our requests are human-paced and already debounced + aborted + deduped in
+`CityAutocomplete`, so a chart creation is only a handful of requests. Even at thousands of
+daily users that's a few thousand requests/day — negligible. **Worry only** if the
+*pattern* changes (bulk batch geocoding) or if komoot starts returning 429/errors.
+Self-hosting a Photon mirror (needs a large OSM/Elasticsearch index) is a "only if traffic
+really grows" move, not a launch task.
+
+### Step 1 — installability, built 2026-07-01
+
+- **App icon (own mark).** A "bodygraph column" glyph in amber (`#d4a657`) on the deep-black
+  tile (`#0b0b0d`): an equilateral triangle, a square, and a diamond (rotated square) with
+  slightly rounded corners, joined by two short "channel" strokes, vertically centred.
+  Geometry iterated with the author (v4): sized so the three read about equal, with a smaller
+  gap triangle→square than square→rhombus. Master SVG in `static/favicon.svg`; the PNGs
+  (`favicon-32`, `apple-touch-icon` 180, `icon-192`, `icon-512`, `icon-maskable-512`) render
+  from the same mark with `sharp` (a throwaway `_gen-icons.mjs`, run from the worktree and
+  deleted — `sharp` resolves from the main checkout, not added as a dependency).
+- **Service worker** (`src/service-worker.js`, auto-registered by SvelteKit): precache the
+  built shell + static files; cache-first for immutable assets; network-first for navigations
+  with a cached-shell fallback (basic offline). Same-origin only — never intercepts Photon.
+- **Manifest** gained `id` + an `icons` array (svg + 192/512 `any` + 512 `maskable`);
+  **app.html** gained favicon / apple-touch-icon links + iOS meta tags.
+- **"instalar como app" link** at the top of the home ("view in browser" style, same
+  size/colour as the footer). Logic in `src/lib/pwa/install.svelte.js`: captures
+  `beforeinstallprompt` (Chromium → native prompt), detects iOS Safari (→ manual "Add to Home
+  Screen" instructions via the app dialog), hides when already standalone or unsupported. The
+  link only shows when `install.mode` is set.
+- **About modal tweaks** (author request): gold title, "gratis para uso no comercial" in bold,
+  and the credit now reads "Creado por Javi G.O.".
+- **Verified**: production build compiles the SW; icons at correct dimensions; no browser
+  console errors; the install link and About changes render correctly. The real install prompt
+  only fires on the deployed HTTPS build (the SW isn't registered in dev by design).
+
+## Post-1.0 packaging — Google Play (TWA) then Apple
+
+Separate from the web 1.0. Prerequisite for both: Phase L installability (icons + SW) done.
+
+- **Google Play (TWA — Trusted Web Activity).** A thin Android wrapper over the PWA, built
+  with **Bubblewrap** or **PWABuilder** from the manifest. Needs: an installable PWA, a
+  `/.well-known/assetlinks.json` on the custom domain (Digital Asset Links → hides the URL
+  bar), a Google Play developer account (**one-time $25**), and store assets (screenshots,
+  description, privacy policy). ~1–2 days once the PWA is installable.
+- **Apple App Store (optional, later).** WKWebView/Capacitor/PWABuilder-iOS wrapper +
+  **Apple Developer Program ($99/yr, recurring)** + a Mac with Xcode. Higher friction:
+  Apple rejects "just a wrapped website" under review guideline **4.2 (minimum
+  functionality)**, so it needs some native value (offline, notifications, native share).
+  Lowest priority — iOS "Add to Home Screen" already gives an app-like PWA once
+  apple-touch-icons exist.
+
 ## Features already identified for future phases
 
 Roadmap renumbered 2026-06-10: 3 visual polish → 4 unknown hour →

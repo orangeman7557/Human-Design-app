@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120" role="img" aria-label="Human Design Chart">
+  <rect width="120" height="120" rx="26" fill="#0b0b0d"/>
+  <g transform="translate(2.75 2.75) scale(1.145)">
+    <g fill="#d4a657" stroke="#d4a657" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
+      <path d="M38.5 9.87 L61.5 9.87 L50 29.78 Z"/>
+      <path d="M50 29.78 L50 36.78" fill="none" stroke-width="4"/>
+      <path d="M39.65 36.78 L60.35 36.78 L60.35 57.48 L39.65 57.48 Z"/>
+      <path d="M50 57.48 L50 65.98" fill="none" stroke-width="4"/>
+      <path d="M50 65.98 L62.08 78.06 L50 90.13 L37.92 78.06 Z"/>
+    </g>
+  </g>
+</svg>
