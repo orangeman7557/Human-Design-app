@@ -831,6 +831,17 @@ Subtareas completadas:
 - **Phase 9 — Transits.** View live transits over a saved chart.
 - **Phase 10 — Online sync.** Optional cloud persistence of saved charts
   (local-only stays the default).
+- **Phase 11 — Internationalization (i18n).** The UI and content are Spanish-only
+  today (the content module `src/lib/hd/content/` was already built i18n-ready).
+  Turning that into real multi-language means: (a) a locale routing scheme (path
+  prefix per language, e.g. `/es`, `/en`) with translated UI + content per locale;
+  (b) **multilingual SEO** — one URL per language, each declaring its own
+  `<html lang>` / `og:locale` / JSON-LD `inLanguage`, cross-linked with `hreflang`
+  alternates (home **and** `/privacy`), and a sitemap listing the alternates. Today
+  everything hardcodes `es` (correct for the Spanish-first 1.0 launch); the domain
+  `hdchart.app` is language-neutral, so no rework there. The pattern is additive:
+  the current Spanish home becomes the `/es` variant and `/en` is added alongside.
+  Full SEO rationale in BACKLOG ("Multilingual SEO — deferred to Phase 11 i18n").
 
 ---
 
