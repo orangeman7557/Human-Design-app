@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://human-design-chart-app.orangeman7557.workers.dev/sitemap.xml
+Sitemap: https://hdchart.app/sitemap.xml

@@ -31,8 +31,8 @@
   // ── SEO (Phase L, step 2) ─────────────────────────────────────────────
   // The home is prerendered (see +page.js), so these tags land in the real
   // static HTML that crawlers and social scrapers read. Absolute URLs use the
-  // live Workers domain; update SITE_URL when the custom domain lands (step 3).
-  const SITE_URL = 'https://human-design-chart-app.orangeman7557.workers.dev';
+  // custom domain (Phase L, step 3). www redirects to the root at Cloudflare.
+  const SITE_URL = 'https://hdchart.app';
   const SEO_TITLE = 'Human Design Chart — calcula tu carta gratis, sin registro';
   const SEO_DESC =
     'Calcula tu carta de Human Design gratis y sin registro: tipo, estrategia, autoridad, perfil, centros y canales, con un bodygraph interactivo. Tus datos se quedan en tu dispositivo.';

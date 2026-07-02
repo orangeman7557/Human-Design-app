@@ -857,6 +857,10 @@ About-modal actions (report-a-bug, donations).
    "human design".
 3. **Custom domain** — buy via Cloudflare Registrar (at-cost) and attach as a Worker Custom
    Domain (auto DNS + TLS). Required before the TWA (Digital Asset Links).
+   **Done 2026-07-03**: bought `hdchart.app` in Cloudflare Registrar; `SITE_URL` +
+   robots + sitemap updated to `https://hdchart.app`. `hdchart.app` (root) is the
+   canonical host. **Pending: add a `www.hdchart.app` → root redirect at Cloudflare**
+   (Redirect Rule or a second Custom Domain) so the `www` subdomain resolves.
 4. **Report a bug** — wire the deferred "Reportar un fallo" (`About.svelte`) to Web3Forms.
 5. **Donations (optional, may ship post-1.0)** — wire "Invítame a un café" to Ko-fi.
 6. **Privacy policy** — a simple page; both stores require one, and it's trivial here
