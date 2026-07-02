@@ -70,12 +70,7 @@ Open (added 2026-07-02, author's batch — unverified, not yet triaged):
   `install.mode` is set (`beforeinstallprompt`, Chromium). Investigate Android
   install-eligibility criteria / timing, and confirm it was tested on the
   deployed HTTPS build (the SW isn't registered in dev).
-- ⬜ **Home form fields misaligned on mobile (betatester).** On the phone the
-  home form's input boxes don't line up — some are wider than others; fine on
-  Mac. Likely the date/time overlay hack or the CityAutocomplete width; check the
-  "Mobile form centring" done item below for a possible regression.
-
-Fixed in the 2026-07-02 batch (easy items from the author's batch above):
+Fixed in the 2026-07-02 batch (from the author's batch above):
 
 - ✅ **Removed the type-% tooltips.** Dropped the `data-tip` on the type-chip
   `.pct` spans (`chart/+page.svelte`); the % still shows, just no hover tooltip.
@@ -89,6 +84,14 @@ Fixed in the 2026-07-02 batch (easy items from the author's batch above):
   the Personality/Design colour dot (vertically centred) and rides as a small
   superscript over the "Peso" label, so revealing it never widens the cell or
   spills past the table's horizontal scroller. Verified at 375px and desktop.
+- ✅ **Home form fields misaligned on iOS Safari (betatester).** iOS sized the
+  native date/time inputs and the place autocomplete to their intrinsic width and,
+  as flex items with `min-width:auto`, wouldn't shrink them, so the fields
+  overflowed the form on a phone. Forced `width:100%` + `min-width:0` on every
+  entry field (checkbox/range excluded) and `min-width:0` on the flex wrappers
+  (`+page.svelte`, `CityAutocomplete.svelte`). Verified no regression in Chrome
+  (375px + desktop); iOS not reproducible locally — **reopen if the betatester
+  still sees it on the deployed build.**
 
 Fixed in the 2026-06-24 batch:
 
