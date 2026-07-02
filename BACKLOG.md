@@ -865,6 +865,12 @@ About-modal actions (report-a-bug, donations).
 5. **Donations (optional, may ship post-1.0)** — wire "Invítame a un café" to Ko-fi.
 6. **Privacy policy** — a simple page; both stores require one, and it's trivial here
    (nothing leaves the device; local-only storage).
+   **Done 2026-07-03**: prerendered page at `/privacy` (`src/routes/privacy/`),
+   plain-language + RGPD (Spain/EU). Honest about the real touchpoints — local-first
+   calculation, Photon (city search), Web3Forms (bug form), AI handoff, Cloudflare
+   edge logs — and about what's absent (no cookies/analytics/accounts/data sale).
+   Controller: "Javi G.O., autor de la app"; contact via the in-app bug form.
+   Linked as "privacidad" in both footers; added to `sitemap.xml`.
 7. **Bump to 1.0.0**, tag, deploy — the web launch.
 
 **Dependencies:** installability (1) unblocks the SEO icons and the TWA; the domain (3)

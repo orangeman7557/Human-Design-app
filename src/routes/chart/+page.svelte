@@ -1101,6 +1101,8 @@
       <About version={version} onElement={(kind, key) => openInfoFor(CATEGORY_BY_KIND[kind] ?? '', kind, key)} />
       <span aria-hidden="true">·</span>
       <ReportBug version={version} />
+      <span aria-hidden="true">·</span>
+      <a class="foot-link" href="/privacy">privacidad</a>
     </footer>
   {/if}
 </main>
@@ -1498,6 +1500,15 @@
        context and would render the About modal (a descendant) semi-transparent
        and trapped below the page. This colour matches the old muted-at-0.6 look. */
     color: #64646a;
+  }
+  /* Footer "privacidad" link: overrides the global accent-coloured anchor so it
+     matches the muted "acerca de" / "reportar un fallo" siblings. */
+  .foot-link {
+    color: inherit;
+    text-decoration: none;
+  }
+  .foot-link:hover {
+    color: var(--text-muted);
   }
   .cc {
     font-family: inherit;

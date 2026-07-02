@@ -650,6 +650,8 @@
     <About version={version} onElement={openAuthorChartWithInfo} />
     <span aria-hidden="true">·</span>
     <ReportBug version={version} />
+    <span aria-hidden="true">·</span>
+    <a class="foot-link" href="/privacy">privacidad</a>
   </footer>
 </main>
 
@@ -1127,6 +1129,16 @@
     cursor: pointer;
   }
   .install-link:hover {
+    color: var(--text-muted);
+  }
+
+  /* Footer "privacidad" link: overrides the global accent-coloured anchor so it
+     matches the muted "acerca de" / "reportar un fallo" siblings. */
+  .foot-link {
+    color: inherit;
+    text-decoration: none;
+  }
+  .foot-link:hover {
     color: var(--text-muted);
   }
 
