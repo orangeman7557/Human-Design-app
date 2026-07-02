@@ -223,9 +223,25 @@ export function getGateInfo(gate, chart = null, lang = DEFAULT_LANG) {
   const entry = p.gate?.[g];
   const labels = p.promptLabels.center;
   const name = getIchingName(g, lang);
+
+  // Second paragraph (Phase 7 text review): the gate's own centre plus the
+  // harmonic gate(s) — those that complete its channel(s), with their centre.
+  // Gates 10/20/34/57 (the integration cluster) sit on more than one channel,
+  // so this can be plural.
+  const centerLink = (c) => `[centro ${labels[c] ?? c}](center:${c})`;
+  const frags = CHANNELS.filter(([a, b]) => a === g || b === g)
+    .map(([a, b]) => (a === g ? b : a))
+    .map((h) => `la [puerta ${h} (${gateTheme(h, lang)})](gate:${h}), en el ${centerLink(CENTER_BY_GATE[h])}`);
+  const centerLine =
+    frags.length === 0
+      ? `Está en el ${centerLink(center)}.`
+      : frags.length === 1
+        ? `Está en el ${centerLink(center)} y su puerta armónica (la puerta que completa su canal) es ${frags[0]}.`
+        : `Está en el ${centerLink(center)} y sus puertas armónicas (las que completan sus canales) son ${frags.slice(0, -1).join('; ')}; y ${frags[frags.length - 1]}.`;
+
   const paragraphs = [
-    entry?.text ??
-      `La puerta ${g} se sitúa en el **[centro ${labels[center] ?? center}](center:${center})**.`,
+    entry?.text ?? `La puerta ${g}.`,
+    centerLine,
     name
       ? `Su raíz es el hexagrama ${g} del I Ching, "${name}".`
       : `Le corresponde el hexagrama ${g} del I Ching.`

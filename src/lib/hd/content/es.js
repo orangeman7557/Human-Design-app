@@ -99,41 +99,41 @@ export default {
     generator: {
       title: 'Generator',
       paragraphs: [
-        'Tipo mayoritario: alrededor del **37 % de la población**. Su rasgo definitorio es el [centro Sacral](center:sacral) definido, la fuente de energía vital del sistema, generativa y de carácter renovable.',
-        'Opera por respuesta: **reacciona a lo que la vida le presenta** en lugar de iniciar desde la mente. Comprometer su energía con lo correcto produce satisfacción; forzarla donde no corresponde, frustración.',
-        'En la práctica, el Sacral responde antes que la mente: ante algo concreto —una propuesta, una pregunta, una situación— surge una reacción visceral de atracción o rechazo. **Seguir esa señal del cuerpo**, en vez de razonar la decisión, es lo que mantiene su energía bien empleada.'
+        'Tipo mayoritario, Generador *puro*: alrededor del **37 % de la población**. Su rasgo definitorio es el [centro Sacral](center:sacral) definido: la fuente de energía vital del sistema, generativa y de carácter renovable. Su energía generadora y constructora, cuando está bien alineado, es continuada y abundante.',
+        'Opera por respuesta: **reacciona a lo que la vida le presenta** en lugar de iniciar desde la mente y lo racional. Cuando compromete su energía con lo correcto, aparece la *satisfacción*; si no se escucha bien y fuerza su energía donde no toca, aparece la *frustración*.',
+        'En la práctica, su centro Sacral responde antes que su mente: ante algo concreto —una propuesta, una pregunta, una situación— surge una reacción visceral de atracción o rechazo. **Seguir esa señal del cuerpo**, en vez de decidir desde el pensamiento y la razón, es lo que mantiene su energía bien empleada.'
       ]
     },
     'manifesting-generator': {
       title: 'Manifesting Generator',
       paragraphs: [
-        'Una variante del [Generador](type:generator) —los Manifesting Generators suponen un 33 % de la población, y junto al resto de Generadores, cerca del 70 %—: un MG tiene el [Sacral](center:sacral) definido, y además, tiene el Sacral conectado, directa o indirectamente, con la [Garganta](center:throat). Eso le da la energía generadora del Generador y también capacidad de manifestar y materializar con rapidez.',
-        'Su estrategia es **responder y luego informar**: primero espera la respuesta sacral —el sí o el no del cuerpo— y, una vez lo tiene, avisa a quienes se verán afectados antes de lanzarse. Tiende a ser polifacético, veloz y no lineal: salta pasos, hace varias cosas a la vez y a veces tiene que volver atrás a rematar lo que se saltó.',
-        'La clave para gestionar su energía es no dispersarse iniciando sin respuesta: cuando se compromete con lo que de verdad le enciende, avanza muy rápido; cuando fuerza por mente, acumula frustración y trabajo a medias.'
+        'Una variante del [Generador](type:generator) —los Manifesting Generators suponen un 33 % de la población, y junto al resto de Generadores, cerca del 70 %—: un MG tiene el [Sacral](center:sacral) definido, y lo que lo diferencia de otros Generadores es que tiene el Sacral conectado, directa o indirectamente, con la [Garganta](center:throat). Eso le da la energía generadora propia de los Generadores y, además, capacidad de manifestar y materializar con rapidez.',
+        'Su estrategia es **responder y luego informar**: primero espera la respuesta sacral —el sí o el no del cuerpo— y, una vez la tiene, avisa a quienes se verán afectados antes de lanzarse. Tiende a ser polifacético, veloz y no lineal: salta pasos, hace varias cosas a la vez y a veces vuelve atrás a rematar lo que se saltó.',
+        'La clave para gestionar su energía es no dispersarse iniciando sin haber escuchado la respuesta de su cuerpo: cuando se compromete con lo que de verdad le enciende (cuando su cuerpo dice sí), avanza rápido y siente *satisfacción* y *paz*; pero cuando fuerza empujado por la mente y las ideas, acumula *frustración*, *enfado* y trabajo a medias.'
       ]
     },
     projector: {
       title: 'Projector',
       paragraphs: [
-        'Cerca del **20 % de la población**. No tiene el [Sacral](center:sacral) definido, así que **no está diseñado para un trabajo constante** ni para sostener la misma energía que un [Generador](type:generator). Su don es otro: ver a los demás con enorme profundidad y saber guiar y orientar la energía ajena.',
-        'Su estrategia es **esperar la invitación** para lo importante —el trabajo, el amor, el lugar donde vivir—. El Proyector necesita ser reconocido e invitado para que su sabiduría sea bien recibida; cuando se ofrece sin que se lo pidan, suele encontrar resistencia. Reconocimiento y éxito, frente a amargura, marcan si va por buen camino.',
-        'En la gestión de la energía, su tarea es **descansar y dosificarse**: no compite en resistencia física, sino en penetración y maestría. Dormir y soltar antes de quedar agotado, y elegir bien a quién entregar su atención, es lo que sostiene su bienestar.'
+        'Cerca del **20 % de la población**. No tiene el [Sacral](center:sacral) definido, así que **no está diseñado para un trabajo constante** ni para sostener la misma energía que un [Generador](type:generator): conviene que tenga cuidado con intentar rendir de manera continuada y sin descanso. Su don es otro: ver a los demás con enorme profundidad y saber guiar y orientar la energía ajena.',
+        'Su estrategia es **esperar la invitación** para lo importante —el trabajo, el amor, el lugar donde vivir—. Necesita ser reconocido e invitado para que su sabiduría y su esfuerzo sean bien recibidos; cuando se ofrece o se mete sin que se lo pidan, lo normal es que encuentre resistencia y rechazo. Cuando en su vida aparecen el *reconocimiento* y el *éxito*, son la pista de que va por buen camino. En cambio, el síntoma que aparece cuando no vive alineado es la *amargura*.',
+        'En la gestión de su energía, su tarea es **descansar y dosificarse**: no compite en resistencia física, sino en profundidad y maestría. Su bienestar se fundamenta en dormir y soltar antes de quedar agotado, y en elegir bien a quién entrega su atención y esfuerzo: aprender a decir que sí o que no cuando toca (porque no toda invitación significa que tenga que decir que sí).'
       ]
     },
     manifestor: {
       title: 'Manifestor',
       paragraphs: [
-        'Alrededor del **9 % de la población**, es el tipo más independiente. Tiene un centro motor conectado a la [Garganta](center:throat), pero **el [Sacral](center:sacral) no está definido**, así que su energía no es constante: llega a impulsos, para iniciar y poner cosas en marcha, y luego necesita reposo.',
-        'Su estrategia es **informar antes de actuar**. No se trata de pedir permiso, sino de avisar a quienes su impacto va a alcanzar: al hacerlo, reduce la resistencia y el rechazo que de otro modo encuentra a su alrededor. Hacerlo bien trae paz; no hacerlo, enfado y oposición.',
+        'El tipo más independiente, alrededor del **9 % de la población**. Tiene al menos un centro motor (Corazón, Plexo solar, Bazo) conectado a la [Garganta](center:throat), pero el [Sacral](center:sacral) sin definir, así que su energía no es constante: llega a impulsos, que utiliza para iniciar y poner cosas en marcha, y luego necesita reposo, bastante reposo.',
+        'Su estrategia es **informar antes de actuar**. No se trata de pedir permiso, sino de avisar a quienes su impacto va a alcanzar: al hacerlo, reduce la resistencia y el rechazo que de otro modo encuentra a su alrededor. Actuar de manera alineada con su estrategia le trae *paz*; y si no lo hace, siente oposición y crece en él el *enfado*.',
         'El Manifestador está aquí para **iniciar e impactar**, no para ejecutar de forma sostenida. Gestionar su energía pasa por respetar sus ciclos de empuje y descanso, y por proteger su autonomía sin aislarse de quienes le rodean.'
       ]
     },
     reflector: {
       title: 'Reflector',
       paragraphs: [
-        'El tipo más raro: apenas el **1 % de la población**. No tiene **ningún centro definido**: todo su bodygraph está abierto. Eso lo convierte en un espejo extraordinariamente sensible de la gente y los lugares que lo rodean, capaz de percibir la salud de una comunidad.',
+        'El tipo más infrecuente: apenas el **1 % de la población**. No tiene ningún centro definido: todo su bodygraph está abierto. Eso lo convierte en un espejo extraordinariamente sensible de la gente y los lugares que lo rodean, capaz de percibir la salud de una comunidad.',
         'Como muestrea constantemente la energía ajena, **el entorno y las compañías le afectan muchísimo**: con quién y dónde está cambia profundamente su experiencia. Su estrategia es **esperar un ciclo lunar** —unos 28 días— antes de las decisiones importantes, dejando que el asunto se vea desde muchos ángulos antes de cerrarlo.',
-        'Su mayor cuidado en la gestión de la energía es elegir bien los entornos y no identificarse con lo que solo está reflejando. Sorpresa y deleite, frente a decepción, son las señales de que vive en el lugar y con la gente adecuados.'
+        'Su mayor cuidado en la gestión de la energía es elegir bien los entornos y no identificarse con lo que solo está reflejando. Cuando vive alineado con su diseño, viviendo en el lugar y con las personas adecuadas, aparecen en él la *sorpresa* y el *deleite*. Si por el contrario no vive alineado, el síntoma que aparece en él es la *decepción*.'
       ]
     }
   },
@@ -144,35 +144,35 @@ export default {
       title: 'Responder',
       paragraphs: [
         'La estrategia del Generador. En lugar de salir a iniciar desde la cabeza, el diseño pide **esperar a tener algo a lo que responder**: una propuesta, una pregunta, una oportunidad que aparece. La vida presenta el material; el cuerpo responde.',
-        'La respuesta surge en el centro Sacral como una **reacción visceral**, anterior al razonamiento: un impulso de acercarse o de apartarse. Confiar en ese sí o no del cuerpo, en vez de convencerse mentalmente, es lo que lleva a la satisfacción; forzar la acción donde no hay respuesta conduce a la frustración.'
+        'La respuesta surge en el [centro Sacral](center:sacral) como una **reacción visceral**, anterior al razonamiento: un impulso de acercarse o de apartarse. Un sí o un no. Confiar en ese sí o no del cuerpo, en vez de convencerse mentalmente, es lo que lleva a la satisfacción; forzar la acción donde no hay respuesta conduce a la frustración.'
       ]
     },
     'respond-then-inform': {
       title: 'Responder y luego informar',
       paragraphs: [
-        'La estrategia del Generador Manifestante: una combinación de las dos primeras. Ante todo, como cualquier Generador, **espera la respuesta sacral** —el sí o el no del cuerpo ante algo concreto—; no inicia por mente.',
+        'La estrategia del Generador Manifestante, que combina las dos estrategias de responder e informar. Ante todo, como cualquier Generador, responde, es decir: **espera la respuesta sacral** —el sí o el no del cuerpo ante algo concreto—; no inicia por mente.',
         'Una vez tiene esa respuesta y va a actuar, **informa a quienes se verán afectados** antes de lanzarse. Por su capacidad de manifestar con rapidez, avisar reduce la fricción con el entorno y evita que su velocidad genere resistencia. Saltarse cualquiera de los dos pasos —responder e informar— es la fuente habitual de su desgaste.'
       ]
     },
     'inform-before-acting': {
       title: 'Informar antes de actuar',
       paragraphs: [
-        'La estrategia del Manifestador. Como su energía inicia e impacta sin avisar, el diseño pide **informar a las personas afectadas antes de ponerse en marcha**. No es pedir permiso ni justificarse: es comunicar lo que se va a hacer.',
-        'El efecto es muy práctico: **informar disuelve gran parte de la resistencia** que el Manifestador encuentra cuando actúa por sorpresa. Hacerlo trae paz a su alrededor; omitirlo provoca enfado y oposición que, sin saberlo, acaban dificultando su propio movimiento.'
+        'La estrategia del Manifestador. Como su energía inicia e impacta sin avisar, el diseño pide **informar a las personas a las que va a afectar antes de ponerse en marcha**. No se trata de pedir permiso ni justificarse: es simplemente comunicar lo que se va a hacer.',
+        'El efecto es muy práctico: informar disuelve gran parte de la resistencia que encuentra cuando actúa por sorpresa. De hecho, informar incluso puede traerle aliados que facilitan el camino. Hacerlo trae paz a su alrededor; omitirlo provoca el enfado y la oposición que, sin darse cuenta, acaban dificultando su propio movimiento.'
       ]
     },
     'wait-for-invitation': {
       title: 'Esperar la invitación',
       paragraphs: [
         'La estrategia del Proyector. Para las cosas importantes —un trabajo, una relación, un compromiso grande— el diseño pide **esperar a ser reconocido e invitado** en lugar de ofrecerse sin que nadie lo pida.',
-        'No es pasividad: el Proyector sigue viviendo y preparándose, pero reserva su sabiduría para quien la valora y la solicita. **La invitación correcta abre la puerta** a que su don sea bien recibido; insistir sin ella suele traer resistencia y amargura. Reconocimiento y éxito son la señal de que la espera ha valido la pena.'
+        'No es pasividad: el Proyector sigue viviendo y preparándose, pero reserva su sabiduría para quien la valora y la solicita. **La invitación correcta abre la puerta** a que su don sea bien recibido; insistir sin ella suele traer resistencia, amargura y rechazo. El reconocimiento y el éxito son la señal de que la espera ha valido la pena.'
       ]
     },
     'wait-lunar-cycle': {
       title: 'Esperar un ciclo lunar',
       paragraphs: [
         'La estrategia del Reflector. Antes de una decisión importante, el diseño pide **dejar pasar un ciclo lunar completo** —unos 28 días— en lugar de resolver de golpe.',
-        'Durante ese tiempo, el Reflector **conversa, muestrea distintos entornos y observa cómo cambia su percepción** del asunto día a día. Como su carta está completamente abierta, necesita ese recorrido para distinguir lo que es suyo de lo que solo está reflejando. La claridad llega por acumulación, no por impulso.'
+        'Durante ese tiempo, el Reflector **conversa, muestrea distintos entornos y observa cómo cambia su percepción** del asunto día a día. Como su carta está completamente abierta, necesita ese recorrido para distinguir lo que es suyo de lo que solo está reflejando. La claridad llega por acumulación, por ver el asunto desde diferentes perspectivas, no por impulso.'
       ]
     }
   },
@@ -189,7 +189,7 @@ export default {
     sacral: {
       title: 'Autoridad sacral',
       paragraphs: [
-        'La autoridad de la mayoría de Generadores. Reside en el **[centro Sacral](center:sacral)**, que responde **en el momento** con un sonido o un impulso visceral —una especie de "ajá" de atracción o un "mmm-mmm" de rechazo— ante algo concreto.',
+        'La autoridad de la mayoría de Generadores. Reside en el **[centro Sacral](center:sacral)**, que responde **en el momento** con un sonido o un impulso visceral —una especie de "ajá" de atracción o un "mmm-mmm" de rechazo— ante algo concreto: el cuerpo *dice* sí o no.',
         'Es una autoridad **inmediata y corporal**: no razona, reacciona. Funciona mejor con preguntas de sí/no y se nubla cuando la mente intenta argumentar la decisión. Aprender a captar y confiar en esa respuesta instantánea del vientre es la práctica central de quien la tiene.'
       ]
     },
@@ -217,15 +217,15 @@ export default {
     mental: {
       title: 'Autoridad mental',
       paragraphs: [
-        'También llamada autoridad ambiental o "caja de resonancia", propia de algunos Proyectores sin centros internos definidos para decidir. **No hay una autoridad corporal interna**: la claridad no surge de dentro de golpe, sino del diálogo.',
-        'La práctica consiste en **hablar el asunto con personas de confianza y en el entorno adecuado**, no para que decidan por ti, sino para escucharte pensar en voz alta. El lugar y la compañía correctos son aquí parte del método: la decisión se va decantando con el tiempo y la conversación.'
+        'También llamada autoridad ambiental o "caja de resonancia", propia de algunos Proyectores sin centros internos definidos para decidir. No hay una autoridad corporal interna fija: la claridad no surge de dentro de golpe, **la claridad surge del diálogo**.',
+        'La práctica consiste en **hablar el asunto con personas de confianza y en el entorno adecuado**, no para que decidan por uno, sino para escucharse pensar en voz alta. El lugar y la compañía correctos son aquí parte del método: la decisión se va decantando con el tiempo y la conversación.'
       ]
     },
     lunar: {
       title: 'Autoridad lunar',
       paragraphs: [
         'La autoridad del Reflector, el único tipo sin ningún centro definido. Al no haber una fuente interna fija, la guía es el **tiempo**: un ciclo lunar completo, unos 28 días, antes de las decisiones importantes.',
-        'Durante ese ciclo, la persona **muestrea distintos estados, entornos y conversaciones**, y observa cómo evoluciona su percepción del asunto. La claridad llega por **maduración**, no por impulso: lo que sigue resonando tras recorrer el ciclo entero es lo fiable.'
+        'Durante ese ciclo, la persona **muestrea distintos estados, entornos y conversaciones**, y observa cómo evoluciona su percepción del asunto. La claridad llega por **maduración** y acumulación de perspectivas, no por impulso: lo que sigue resonando tras recorrer el ciclo entero es lo fiable.'
       ]
     }
   },
@@ -250,28 +250,28 @@ export default {
       title: 'Línea 3 — el ensayo y error',
       paragraphs: [
         'La tercera línea aprende **probando**: por contacto directo con la vida, a base de intentos, descubrimientos y también tropiezos. Cada "error" es información, no fracaso.',
-        'Es una energía **experimental y resiliente**: descubre lo que funciona descartando lo que no. Su sabiduría es muy práctica, siempre que no lea sus traspiés como defectos personales, sino como el método mismo por el que está diseñada para aprender.'
+        'Es una energía **experimental y resiliente**: descubre lo que funciona descartando lo que no. Su sabiduría es muy práctica, y resulta esencial que no lea sus traspiés como defectos personales, sino como el método mismo por el que está diseñada para aprender.'
       ]
     },
     '4': {
       title: 'Línea 4 — la red',
       paragraphs: [
         'La cuarta línea funciona a través de los **vínculos y la comunidad**. Las oportunidades —trabajo, amor, cambios— suelen llegarle por personas que ya conoce, no por desconocidos ni por salir a buscar en frío.',
-        'Es una energía **cálida y relacional**, que necesita solidez en sus afectos. Su consejo práctico clásico es no soltar una base —un empleo, una situación— hasta tener la siguiente asegurada a través de su red: las transiciones le funcionan mejor de mano en mano.'
+        'Es una energía **cálida y relacional**, que necesita solidez en sus afectos. Su consejo práctico clásico es no soltar una base —un empleo, una situación— hasta tener la siguiente asegurada a través de su red: las transiciones le funcionan mejor así.'
       ]
     },
     '5': {
       title: 'Línea 5 — la proyección',
       paragraphs: [
-        'La quinta línea vive bajo un **campo de proyección**: los demás depositan en ella expectativas, esperando soluciones prácticas. Se la ve como alguien capaz de resolver, casi a la manera de un salvador.',
-        'Eso le da influencia y un papel natural de **liderazgo útil**, pero también la expone: si no cumple lo proyectado, la misma fuerza puede volverse en su contra. Su reto es gestionar bien su **reputación** y prometer solo lo que de verdad puede entregar.'
+        'La quinta línea vive bajo un **campo de proyección**: los demás depositan en ella expectativas, esperando soluciones prácticas. Lo hacen porque la ven como alguien capaz de resolver, casi a la manera de un salvador.',
+        'Eso le da influencia y un papel natural de **liderazgo útil**, pero también la expone y le exige: si no cumple lo proyectado, la misma fuerza puede volverse en su contra. Su reto es gestionar bien su **reputación** y aclarar en lo posible las expectativas de los demás, poniendo cuidado en prometer solo lo que de verdad puede entregar.'
       ]
     },
     '6': {
       title: 'Línea 6 — el modelo',
       paragraphs: [
-        'La sexta línea recorre **tres fases vitales**. Hasta cerca de los 30 vive como una tercera línea, probando y tropezando; luego se retira a observar —"sobre el tejado"— durante una segunda etapa; y a partir de los 50, aproximadamente, emerge como **ejemplo y referente**.',
-        'Su orientación de fondo es la **objetividad y la madurez**: aspira a vivir según lo que considera correcto y a convertirse en modelo para otros. Entender en qué fase está ayuda a no juzgarse: la observación de la etapa media no es desconexión, sino preparación.'
+        'La sexta línea recorre **tres fases vitales**: (1) hasta cerca de los 30 años, vive como una línea 3, probando, tropezando y hasta colapsando; luego (2) vive una segunda etapa donde se retira energéticamente a observar y procesar —etapa "sobre el tejado"—; y a partir de los 50, aproximadamente, emerge como **ejemplo y referente**.',
+        'Su orientación de fondo es la **objetividad y la madurez**: aspira a vivir según lo que considera correcto y verdadero, y a convertirse en modelo para otros. Entender en qué fase está ayuda a no juzgarse: la observación de la etapa media no es desconexión, sino preparación.'
       ]
     }
   },
@@ -289,20 +289,20 @@ export default {
       title: 'Definición única',
       paragraphs: [
         'Todos los centros definidos están **conectados en un solo bloque**. La energía fluye internamente sin interrupciones, lo que da una sensación de **autosuficiencia**: la persona accede a su propia consistencia sin depender de otros para "completarse".',
-        'Su reto suele ser el opuesto al de las definiciones divididas: como funciona bien por sí sola, puede **ensimismarse o costarle abrirse** a la influencia ajena. Reconocer cuándo conviene salir de la propia burbuja es parte de su aprendizaje.'
+        'Su reto suele ser el opuesto al de las definiciones divididas: como funciona bien por sí sola, puede ensimismarse o costarle abrirse a la influencia ajena. Reconocer cuándo conviene salir de la propia burbuja es parte de su aprendizaje.'
       ]
     },
     split: {
       title: 'Definición split',
       paragraphs: [
         'Los centros definidos forman **dos grupos separados**, sin un canal que los una por dentro. La persona suele experimentar una **búsqueda de conexión**: algo que tienda el puente entre sus dos partes.',
-        'Ese puente llega a menudo a través de **otras personas** —cuya energía completa el canal que falta— o de tránsitos que activan la puerta intermedia. No es una carencia: entender qué une sus dos grupos ayuda a elegir mejor las compañías y entornos que la hacen sentir integrada.'
+        'Ese puente llega a menudo a través de otras personas —cuya energía completa el canal que falta— o de tránsitos planetarios que activan la puerta intermedia. Esta separación (split) no es una carencia: se trata de entender que hay compañías y entornos que la hacen sentir integrada, y esto sucede de manera natural.'
       ]
     },
     'triple-split': {
       title: 'Definición triple split',
       paragraphs: [
-        'Los centros definidos se reparten en **tres grupos** separados. El cableado interno es más complejo y, con frecuencia, la persona necesita **más variedad de estímulos y de gente** para sentir que sus partes se conectan.',
+        'Los centros definidos se reparten en **tres grupos** separados. El cableado interno es más complejo y, con frecuencia, la persona necesita **más variedad de estímulos y de gente** para sentir que sus partes internas se conectan.',
         'Suele funcionar bien en entornos diversos y con cierto movimiento; la quietud excesiva puede dejarle la sensación de que algo no termina de juntarse. Conocer esta estructura ayuda a no interpretar esa necesidad de variedad como dispersión.'
       ]
     },
@@ -523,70 +523,70 @@ export default {
   // the gate is active or not; getGateInfo appends a personalised state coda.
   // `theme` is a short noun phrase used to compose channel descriptions.
   gate: {
-    1: { theme: 'la expresión creativa', text: 'En el [centro G](center:g), la puerta 1 es la energía de **crear desde la propia identidad**: una expresión original que no imita a nadie. En su mejor versión inspira a los demás; en su sombra, se repliega en la melancolía cuando no encuentra cómo salir al mundo.' },
-    2: { theme: 'la dirección receptiva', text: 'En el [centro G](center:g), la puerta 2 es la **dirección receptiva**: saber hacia dónde ir sin forzarlo, dejando que el rumbo emerja en vez de imponerlo. Su don es una orientación natural que da sentido al movimiento; su sombra, sentirse perdido cuando intenta dirigir desde la pura voluntad.' },
-    3: { theme: 'el orden en lo nuevo', text: 'En el [centro Sacral](center:sacral), la puerta 3 es la energía de **poner orden en lo nuevo**: arrancar algo desde el caos del comienzo, cuando aún no hay forma. Su don es saber iniciar y estructurar lo que empieza; su sombra, la frustración y el bloqueo cuando se quiere ir más rápido de lo que el proceso permite.' },
-    4: { theme: 'las respuestas mentales', text: 'En el [centro Ajna](center:ajna), la puerta 4 es la mente que **busca respuestas y fórmulas** ante las preguntas abiertas. Su don es conceptualizar soluciones lógicas; su sombra, la presión por tener ya una respuesta, confundiendo una hipótesis con una certeza.' },
-    5: { theme: 'los ritmos fijos', text: 'En el [centro Sacral](center:sacral), la puerta 5 son los **ritmos y los hábitos fijos**: la energía que sostiene rutinas constantes y un compás propio. Su don es la fiabilidad de un ritmo natural que ancla el día; su sombra, la ansiedad cuando ese ritmo se rompe.' },
-    6: { theme: 'la intimidad y la fricción', text: 'En el [centro del Plexo solar](center:solarPlexus), la puerta 6 regula la **intimidad y la fricción emocional**: cuándo abrirse y cuándo cerrarse, la frontera de lo íntimo. Su don es una emocionalidad que crea cercanía profunda; su sombra, el conflicto y la reactividad cuando esa frontera se gestiona desde la emoción del momento.' },
-    7: { theme: 'el liderazgo y la dirección', text: 'En el [centro G](center:g), la puerta 7 es el **papel de guía hacia el futuro**: la capacidad de dar dirección y liderar, a menudo desde un segundo plano. Su don es una autoridad natural que otros quieren seguir; su sombra, la necesidad de controlar el rumbo o de imponerse.' },
-    8: { theme: 'la contribución', text: 'En el [centro de la Garganta](center:throat), la puerta 8 es la **contribución**: aportar algo propio que marque una diferencia y dar voz a lo que importa. Su don es una expresión auténtica que invita a otros a sumarse; su sombra, contribuir buscando reconocimiento y quedarse en lo vacío.' },
-    9: { theme: 'el foco en el detalle', text: 'En el [centro Sacral](center:sacral), la puerta 9 es la energía del **foco y la concentración** en los detalles que hacen falta para llevar algo a término. Su don es una atención sostenida que completa; su sombra, perderse en lo pequeño o dispersarse.' },
-    10: { theme: 'el amor propio', text: 'En el [centro G](center:g), la puerta 10 es el **amor propio y la fidelidad a uno mismo**: comportarse de acuerdo con lo que se es. Su don es una autenticidad que no se traiciona; su sombra, la autocrítica o contorsionarse para encajar.' },
-    11: { theme: 'las ideas', text: 'En el [centro Ajna](center:ajna), la puerta 11 es la mente **llena de ideas** para compartir y dar sentido a la experiencia. Su don es una riqueza conceptual estimulante; su sombra, la presión por llevar cada idea a la acción, cuando las ideas están para compartirse más que para ejecutarse.' },
-    12: { theme: 'la expresión cauta', text: 'En el [centro de la Garganta](center:throat), la puerta 12 es la **expresión cauta**: hablar cuando el ánimo y el momento son los adecuados. Su don es una palabra que emociona y conmueve en su instante justo; su sombra, hablar fuera de tono o callar por reparo.' },
-    13: { theme: 'la escucha', text: 'En el [centro G](center:g), la puerta 13 es la **escucha y la memoria**: recoger las historias y los secretos de los demás y darles sentido. Su don es un oído que invita a confiar y orienta; su sombra, cargar con lo que otros depositan.' },
-    14: { theme: 'el poder para los recursos', text: 'En el [centro Sacral](center:sacral), la puerta 14 es la **energía para generar y dirigir recursos**: el empuje que da poder al trabajo propio. Su don es una fuerza generadora que prospera; su sombra, trabajar sin un porqué o sin valores que la guíen.' },
-    15: { theme: 'el amor a la diversidad', text: 'En el [centro G](center:g), la puerta 15 es el **amor a la humanidad y a sus extremos**: una atracción por la diversidad de ritmos y formas de vivir. Su don es acoger lo distinto y encontrar el flujo adecuado; su sombra, un ritmo errático o juzgar el ritmo ajeno.' },
-    16: { theme: 'el entusiasmo y la destreza', text: 'En el [centro de la Garganta](center:throat), la puerta 16 es el **entusiasmo y la destreza**: el talento que se expresa y se afina con la práctica. Su don es un entusiasmo contagioso y la maestría; su sombra, el entusiasmo vacío sin fondo ni preparación.' },
-    17: { theme: 'las opiniones', text: 'En el [centro Ajna](center:ajna), la puerta 17 es la mente que **forma opiniones** y se anticipa para organizar. Su don son opiniones útiles que estructuran; su sombra, presentar como hechos lo que son solo pareceres.' },
-    18: { theme: 'la corrección', text: 'En el [Bazo](center:spleen), la puerta 18 es el instinto de **corregir y mejorar** lo que se ha torcido. Su don es una mirada aguda que perfecciona y protege; su sombra, la crítica incesante y el perfeccionismo.' },
-    19: { theme: 'la sensibilidad a las necesidades', text: 'En el [centro Raíz](center:root), la puerta 19 es la **sensibilidad a las necesidades**: captar lo que la gente y la comunidad necesitan, también lo material y afectivo. Su don es una fina sintonía con lo que hace falta; su sombra, la necesidad excesiva o la hipersensibilidad.' },
-    20: { theme: 'el ahora', text: 'En el [centro de la Garganta](center:throat), la puerta 20 es el **ahora**: la conciencia y la expresión del momento presente. Su don es una acción espontánea y certera en el instante; su sombra, el ajetreo o el hablar sin presencia.' },
-    21: { theme: 'el control', text: 'En el [centro del Corazón](center:heart), la puerta 21 es la **voluntad de controlar** los propios recursos y el propio territorio. Su don es una autoridad legítima sobre lo que es suyo; su sombra, querer controlarlo todo o sentirse controlado.' },
-    22: { theme: 'la gracia', text: 'En el [centro del Plexo solar](center:solarPlexus), la puerta 22 es la **gracia y la apertura emocional**: el encanto social que sabe escuchar y abrirse. Su don es una emocionalidad que atrae y conecta; su sombra, el retraimiento cuando el ánimo no acompaña.' },
-    23: { theme: 'la asimilación', text: 'En el [centro de la Garganta](center:throat), la puerta 23 es la **asimilación**: traducir un saber individual a algo simple y comprensible. Su don es hacer claro lo complejo, esos "clics" que otros entienden; su sombra, hablar a destiempo y no ser comprendido.' },
-    24: { theme: 'la racionalización', text: 'En el [centro Ajna](center:ajna), la puerta 24 es la mente que **vuelve una y otra vez sobre un pensamiento** hasta darle sentido. Su don es la revelación que nace de revisar; su sombra, el bucle obsesivo del que no se sale.' },
-    25: { theme: 'el amor universal', text: 'En el [centro G](center:g), la puerta 25 es la **inocencia y el amor universal**: un querer puro que no espera nada a cambio. Su don es una entrega limpia y desinteresada; su sombra, perder esa inocencia por herida o por ego.' },
-    26: { theme: 'la transmisión persuasiva', text: 'En el [centro del Corazón](center:heart), la puerta 26 es la **transmisión persuasiva**: la voluntad de comunicar y poner en valor, de "vender" una idea. Su don es un poder de convicción que mueve; su sombra, la manipulación y las medias verdades.' },
-    27: { theme: 'el cuidado', text: 'En el [centro Sacral](center:sacral), la puerta 27 es el **cuidado y la nutrición**: la energía de hacerse cargo y sostener a otros. Su don es un cuidado que nutre de verdad; su sombra, sobreproteger o darse hasta agotarse.' },
-    28: { theme: 'la búsqueda de sentido', text: 'En el [Bazo](center:spleen), la puerta 28 es la **búsqueda de sentido**: el juego de arriesgarse por algo que merezca la pena. Su don es encontrar un propósito por el que valga la pena luchar; su sombra, la lucha por la lucha y el miedo a una vida sin sentido.' },
-    29: { theme: 'el compromiso', text: 'En el [centro Sacral](center:sacral), la puerta 29 es el **compromiso**: la energía de decir sí y perseverar hasta el final. Su don es una entrega que cumple lo que empieza; su sombra, comprometerse en exceso o decir sí donde no tocaba.' },
-    30: { theme: 'el deseo', text: 'En el [centro del Plexo solar](center:solarPlexus), la puerta 30 es el **deseo y el anhelo**: el fuego de las expectativas que impulsa a vivir experiencias. Su don es una pasión que da combustible a la vida; su sombra, dejarse consumir por ansias que no se sacian.' },
-    31: { theme: 'el liderazgo por la voz', text: 'En el [centro de la Garganta](center:throat), la puerta 31 es el **liderazgo por la voz**: la influencia de quien habla por un grupo y lo representa. Su don es un liderazgo que otros eligen seguir; su sombra, liderar sin mandato real o por mera ambición.' },
-    32: { theme: 'la continuidad', text: 'En el [Bazo](center:spleen), la puerta 32 es el instinto de **continuidad**: olfatear qué perdura y qué hay que adaptar para que dure. Su don es un instinto para el valor duradero; su sombra, el miedo al fracaso y al cambio que paraliza.' },
-    33: { theme: 'el retiro y el relato', text: 'En el [centro de la Garganta](center:throat), la puerta 33 es el **retiro y el relato**: apartarse para luego contar lo vivido. Su don es una sabiduría que se comparte tras la reflexión; su sombra, no honrar la necesidad de retirarse, o contar de más o de menos.' },
-    34: { theme: 'el poder', text: 'En el [centro Sacral](center:sacral), la puerta 34 es el **poder puro**: la fuerza independiente y ocupada de hacer. Su don es una potencia productiva enorme; su sombra, el ajetreo por el ajetreo, ponerse en marcha sin haber respondido.' },
-    35: { theme: 'el ansia de experiencia', text: 'En el [centro de la Garganta](center:throat), la puerta 35 es el **ansia de experiencia y de progreso**: el impulso de probarlo todo y avanzar. Su don es un hambre de vivir que empuja hacia adelante; su sombra, la inquietud de nunca quedar satisfecho.' },
-    36: { theme: 'la crisis y lo nuevo', text: 'En el [centro del Plexo solar](center:solarPlexus), la puerta 36 es la **crisis emocional y lo nuevo**: el vaivén que lleva a experiencias inéditas. Su don es crecer a través de la intensidad emocional; su sombra, lanzarse al drama o a la crisis sin estar preparado.' },
-    37: { theme: 'la amistad y los pactos', text: 'En el [centro del Plexo solar](center:solarPlexus), la puerta 37 es la **amistad y la comunidad**: la calidez que une a través de pactos y acuerdos. Su don es un afecto que crea familia y pertenencia; su sombra, la dependencia o los pactos rotos.' },
-    38: { theme: 'la lucha con sentido', text: 'En el [centro Raíz](center:root), la puerta 38 es la **lucha por lo que vale la pena**: la tenacidad de plantar cara por una causa. Su don es una perseverancia con propósito; su sombra, pelear por pelear o la cabezonería.' },
-    39: { theme: 'la provocación', text: 'En el [centro Raíz](center:root), la puerta 39 es la **provocación**: remover la emoción ajena para sacar a la luz lo que de verdad importa. Su don es provocar para revelar el espíritu; su sombra, la provocación gratuita o el malhumor.' },
-    40: { theme: 'la entrega y el descanso', text: 'En el [centro del Corazón](center:heart), la puerta 40 es la **entrega y la soledad**: trabajar y proveer para luego retirarse a reponerse. Su don es una generosidad que sabe también descansar; su sombra, el exceso de trabajo sin pausa, o negarse a dar.' },
-    41: { theme: 'la imaginación que inicia el deseo', text: 'En el [centro Raíz](center:root), la puerta 41 es la **imaginación que inicia el deseo**: el comienzo de toda nueva experiencia, soñada antes de vivirse. Su don es una fantasía que abre experiencias nuevas; su sombra, una imaginación desconectada de la realidad o la presión de un anhelo no saciado.' },
-    42: { theme: 'la culminación', text: 'En el [centro Sacral](center:sacral), la puerta 42 es la **culminación**: la energía de cerrar ciclos y llevar las cosas hasta el final. Su don es la capacidad de completar lo empezado; su sombra, empezar sin terminar o el miedo a los finales.' },
-    43: { theme: 'la intuición mental', text: 'En el [centro Ajna](center:ajna), la puerta 43 es la **intuición mental**: un saber individual que llega como un fogonazo, adelantado a los demás. Su don es una idea original y reveladora; su sombra, empeñarse en decirla a destiempo y que no la entiendan.' },
-    44: { theme: 'el instinto del pasado', text: 'En el [Bazo](center:spleen), la puerta 44 es el **instinto que lee el pasado**: una alerta para reconocer patrones, personas y oportunidades. Su don es un olfato para la gente y el momento; su sombra, el miedo a que el pasado se repita.' },
-    45: { theme: 'la voz de los recursos', text: 'En el [centro de la Garganta](center:throat), la puerta 45 es la **voz que reúne y reparte los recursos**: el "yo tengo" de quien administra lo común. Su don es una administración generosa que cuida del grupo; su sombra, el acaparamiento o el sentirse con derecho a todo.' },
-    46: { theme: 'el amor al cuerpo', text: 'En el [centro G](center:g), la puerta 46 es el **amor al cuerpo y el buen estar**: la determinación de habitar el cuerpo y de estar en el lugar correcto. Su don es una serendipia que pone en el sitio justo en el momento justo; su sombra, descuidar o forzar el cuerpo.' },
-    47: { theme: 'la realización mental', text: 'En el [centro Ajna](center:ajna), la puerta 47 es la **realización**: la presión mental por dar sentido a la confusión hasta que llega el "ajá". Su don es resolver lo confuso en una comprensión clara; su sombra, quedarse atrapado en la sensación de opresión o sinsentido.' },
-    48: { theme: 'la profundidad', text: 'En el [Bazo](center:spleen), la puerta 48 es la **profundidad**: un pozo de talento y sabiduría del que sacar soluciones. Su don es una hondura que aporta lo que falta; su sombra, el miedo a no ser suficiente o a no estar listo.' },
-    49: { theme: 'los principios', text: 'En el [centro del Plexo solar](center:solarPlexus), la puerta 49 son los **principios y la revolución**: aceptar o rechazar según valores profundos. Su don es transformar los vínculos desde principios claros; su sombra, el rechazo rígido o la revolución sin sensibilidad.' },
-    50: { theme: 'los valores', text: 'En el [Bazo](center:spleen), la puerta 50 son los **valores y la responsabilidad**: el cuidado de las normas que protegen el bienestar del grupo. Su don es una guarda de valores que sostiene a los demás; su sombra, la sobre-responsabilidad y el miedo a fallar al grupo.' },
-    51: { theme: 'el impulso y el choque', text: 'En el [centro del Corazón](center:heart), la puerta 51 es el **impulso de ser el primero**: la iniciativa que sacude y despierta. Su don es un coraje que espabila a otros; su sombra, la competitividad o la temeridad.' },
-    52: { theme: 'la quietud y el foco', text: 'En el [centro Raíz](center:root), la puerta 52 es la **quietud y la concentración**: la presión de parar para enfocar y ver el conjunto. Su don es una calma que permite concentrarse; su sombra, la inercia o la inquietud de no saber estarse quieto.' },
-    53: { theme: 'los comienzos', text: 'En el [centro Raíz](center:root), la puerta 53 son los **comienzos**: la presión y la energía para iniciar nuevos ciclos. Su don es el empuje para arrancar lo nuevo; su sombra, empezar sin descanso sin llegar a completar.' },
-    54: { theme: 'la ambición', text: 'En el [centro Raíz](center:root), la puerta 54 es la **ambición**: el impulso de ascender, en lo material y en lo espiritual. Su don es una ambición que eleva; su sombra, perseguir el ascenso por la aprobación ajena o pasarse de la raya.' },
-    55: { theme: 'la abundancia del ánimo', text: 'En el [centro del Plexo solar](center:solarPlexus), la puerta 55 es el **espíritu y la abundancia emocional**: la riqueza de los estados de ánimo y la fe. Su don es una hondura emocional y una fe que sostienen; su sombra, dejar que la melancolía o el vaivén del ánimo decidan.' },
-    56: { theme: 'el relato estimulante', text: 'En el [centro de la Garganta](center:throat), la puerta 56 es el **relato que estimula**: contar ideas y experiencias que enganchan. Su don es una narración cautivadora que abre horizontes; su sombra, adornar de más o la atención que divaga.' },
-    57: { theme: 'la intuición en el ahora', text: 'En el [Bazo](center:spleen), la puerta 57 es la **intuición aguda en el ahora**: una claridad instintiva que penetra el presente. Su don es un saber sutil y certero en el instante; su sombra, el miedo al futuro que paraliza.' },
-    58: { theme: 'la vitalidad y la mejora', text: 'En el [centro Raíz](center:root), la puerta 58 es la **vitalidad y la alegría de vivir**: la energía que empuja a mejorar las cosas. Su don es un gozo vital que impulsa la corrección; su sombra, la inquietud o la crítica sin alegría.' },
-    59: { theme: 'la intimidad', text: 'En el [centro Sacral](center:sacral), la puerta 59 es la **intimidad**: la energía para romper barreras y crear vínculo, también sexual. Su don es el poder de generar cercanía y unión; su sombra, levantar muros o invadir en la intimidad.' },
-    60: { theme: 'la aceptación del límite', text: 'En el [centro Raíz](center:root), la puerta 60 es la **aceptación del límite**: convertir la restricción en semilla de lo nuevo. Su don es transformar los límites en posibilidad; su sombra, quedarse atascado en la limitación y la melancolía.' },
-    61: { theme: 'la verdad interior', text: 'En el [centro de la Cabeza](center:head), la puerta 61 es la **verdad interior y el misterio**: la presión por conocer lo que no se puede saber del todo. Su don es una inspiración que busca el fondo de las cosas; su sombra, la presión mental de querer saberlo todo.' },
-    62: { theme: 'el detalle y el orden', text: 'En el [centro de la Garganta](center:throat), la puerta 62 es el **detalle y la organización**: poner nombre y orden a las cosas para expresarlas con precisión. Su don es una expresión clara y ordenada; su sombra, perderse en el detalle o explicarse de más.' },
-    63: { theme: 'la duda', text: 'En el [centro de la Cabeza](center:head), la puerta 63 es la **duda**: la presión que empuja a cuestionar y verificar. Su don es una duda sana que pone a prueba; su sombra, la sospecha que corroe y la ansiedad.' },
-    64: { theme: 'la confusión fértil', text: 'En el [centro de la Cabeza](center:head), la puerta 64 es la **confusión que busca sentido**: una presión de imágenes sin procesar que pugnan por ordenarse. Su don es una riqueza de imágenes que acaba en comprensión; su sombra, el agobio de querer resolver la confusión antes de tiempo.' }
+    1: { theme: 'la expresión creativa', text: 'La puerta 1 es la energía de **crear desde la propia identidad**: una expresión original que no imita a nadie. En su mejor versión inspira a los demás; en su sombra, se repliega en la melancolía cuando no encuentra cómo salir al mundo.' },
+    2: { theme: 'la dirección receptiva', text: 'La puerta 2 es la **dirección receptiva**: saber hacia dónde ir sin forzarlo, dejando que el rumbo emerja en vez de imponerlo. Su don es una orientación natural que da sentido al movimiento; su sombra, sentirse perdido cuando intenta dirigir desde la pura voluntad.' },
+    3: { theme: 'el orden en lo nuevo', text: 'La puerta 3 es la energía de **poner orden en lo nuevo**: arrancar algo desde el caos del comienzo, cuando aún no hay forma. Su don es saber iniciar y estructurar lo que empieza; su sombra, la frustración y el bloqueo cuando se quiere ir más rápido de lo que el proceso permite.' },
+    4: { theme: 'las respuestas mentales', text: 'La puerta 4 es la mente que **busca respuestas y fórmulas** ante las preguntas abiertas. Su don es conceptualizar soluciones lógicas; su sombra, la presión por tener ya una respuesta, confundiendo una hipótesis con una certeza.' },
+    5: { theme: 'los ritmos fijos', text: 'La puerta 5 son los **ritmos y los hábitos fijos**: la energía que sostiene rutinas constantes y un compás propio. Su don es la fiabilidad de un ritmo natural que ancla el día; su sombra, la ansiedad cuando ese ritmo se rompe.' },
+    6: { theme: 'la intimidad y la fricción', text: 'La puerta 6 regula la **intimidad y la fricción emocional**: cuándo abrirse y cuándo cerrarse, la frontera de lo íntimo. Su don es una emocionalidad que crea cercanía profunda; su sombra, el conflicto y la reactividad cuando esa frontera se gestiona desde la emoción del momento.' },
+    7: { theme: 'el liderazgo y la dirección', text: 'La puerta 7 es el **papel de guía hacia el futuro**: la capacidad de dar dirección y liderar, a menudo desde un segundo plano. Su don es una autoridad natural que otros quieren seguir; su sombra, la necesidad de controlar el rumbo o de imponerse.' },
+    8: { theme: 'la contribución', text: 'La puerta 8 es la **contribución**: aportar algo propio que marque una diferencia y dar voz a lo que importa. Su don es una expresión auténtica que invita a otros a sumarse; su sombra, contribuir buscando reconocimiento y quedarse en lo vacío.' },
+    9: { theme: 'el foco en el detalle', text: 'La puerta 9 es la energía del **foco y la concentración** en los detalles que hacen falta para llevar algo a término. Su don es una atención sostenida que completa; su sombra, perderse en lo pequeño o dispersarse.' },
+    10: { theme: 'el amor propio', text: 'La puerta 10 es el **amor propio y la fidelidad a uno mismo**: comportarse de acuerdo con lo que se es. Su don es una autenticidad que no se traiciona; su sombra, la autocrítica o contorsionarse para encajar.' },
+    11: { theme: 'las ideas', text: 'La puerta 11 es la mente **llena de ideas** para compartir y dar sentido a la experiencia. Su don es una riqueza conceptual estimulante; su sombra, la presión por llevar cada idea a la acción, cuando las ideas están para compartirse más que para ejecutarse.' },
+    12: { theme: 'la expresión cauta', text: 'La puerta 12 es la **expresión cauta**: hablar cuando el ánimo y el momento son los adecuados. Su don es una palabra que emociona y conmueve en su instante justo; su sombra, hablar fuera de tono o callar por reparo.' },
+    13: { theme: 'la escucha', text: 'La puerta 13 es la **escucha y la memoria**: recoger las historias y los secretos de los demás y darles sentido. Su don es un oído que invita a confiar y orienta; su sombra, cargar con lo que otros depositan.' },
+    14: { theme: 'el poder para los recursos', text: 'La puerta 14 es la **energía para generar y dirigir recursos**: el empuje que da poder al trabajo propio. Su don es una fuerza generadora que prospera; su sombra, trabajar sin un porqué o sin valores que la guíen.' },
+    15: { theme: 'el amor a la diversidad', text: 'La puerta 15 es el **amor a la humanidad y a sus extremos**: una atracción por la diversidad de ritmos y formas de vivir. Su don es acoger lo distinto y encontrar el flujo adecuado; su sombra, un ritmo errático o juzgar el ritmo ajeno.' },
+    16: { theme: 'el entusiasmo y la destreza', text: 'La puerta 16 es el **entusiasmo y la destreza**: el talento que se expresa y se afina con la práctica. Su don es un entusiasmo contagioso y la maestría; su sombra, el entusiasmo vacío sin fondo ni preparación.' },
+    17: { theme: 'las opiniones', text: 'La puerta 17 es la mente que **forma opiniones** y se anticipa para organizar. Su don son opiniones útiles que estructuran; su sombra, presentar como hechos lo que son solo pareceres.' },
+    18: { theme: 'la corrección', text: 'La puerta 18 es el instinto de **corregir y mejorar** lo que se ha torcido. Su don es una mirada aguda que perfecciona y protege; su sombra, la crítica incesante y el perfeccionismo.' },
+    19: { theme: 'la sensibilidad a las necesidades', text: 'La puerta 19 es la **sensibilidad a las necesidades**: captar lo que la gente y la comunidad necesitan, también lo material y afectivo. Su don es una fina sintonía con lo que hace falta; su sombra, la necesidad excesiva o la hipersensibilidad.' },
+    20: { theme: 'el ahora', text: 'La puerta 20 es el **ahora**: la conciencia y la expresión del momento presente. Su don es una acción espontánea y certera en el instante; su sombra, el ajetreo o el hablar sin presencia.' },
+    21: { theme: 'el control', text: 'La puerta 21 es la **voluntad de controlar** los propios recursos y el propio territorio. Su don es una autoridad legítima sobre lo que es suyo; su sombra, querer controlarlo todo o sentirse controlado.' },
+    22: { theme: 'la gracia', text: 'La puerta 22 es la **gracia y la apertura emocional**: el encanto social que sabe escuchar y abrirse. Su don es una emocionalidad que atrae y conecta; su sombra, el retraimiento cuando el ánimo no acompaña.' },
+    23: { theme: 'la asimilación', text: 'La puerta 23 es la **asimilación**: traducir un saber individual a algo simple y comprensible. Su don es hacer claro lo complejo, esos "clics" que otros entienden; su sombra, hablar a destiempo y no ser comprendido.' },
+    24: { theme: 'la racionalización', text: 'La puerta 24 es la mente que **vuelve una y otra vez sobre un pensamiento** hasta darle sentido. Su don es la revelación que nace de revisar; su sombra, el bucle obsesivo del que no se sale.' },
+    25: { theme: 'el amor universal', text: 'La puerta 25 es la **inocencia y el amor universal**: un querer puro que no espera nada a cambio. Su don es una entrega limpia y desinteresada; su sombra, perder esa inocencia por herida o por ego.' },
+    26: { theme: 'la transmisión persuasiva', text: 'La puerta 26 es la **transmisión persuasiva**: la voluntad de comunicar y poner en valor, de "vender" una idea. Su don es un poder de convicción que mueve; su sombra, la manipulación y las medias verdades.' },
+    27: { theme: 'el cuidado', text: 'La puerta 27 es el **cuidado y la nutrición**: la energía de hacerse cargo y sostener a otros. Su don es un cuidado que nutre de verdad; su sombra, sobreproteger o darse hasta agotarse.' },
+    28: { theme: 'la búsqueda de sentido', text: 'La puerta 28 es la **búsqueda de sentido**: el juego de arriesgarse por algo que merezca la pena. Su don es encontrar un propósito por el que valga la pena luchar; su sombra, la lucha por la lucha y el miedo a una vida sin sentido.' },
+    29: { theme: 'el compromiso', text: 'La puerta 29 es el **compromiso**: la energía de decir sí y perseverar hasta el final. Su don es una entrega que cumple lo que empieza; su sombra, comprometerse en exceso o decir sí donde no tocaba.' },
+    30: { theme: 'el deseo', text: 'La puerta 30 es el **deseo y el anhelo**: el fuego de las expectativas que impulsa a vivir experiencias. Su don es una pasión que da combustible a la vida; su sombra, dejarse consumir por ansias que no se sacian.' },
+    31: { theme: 'el liderazgo por la voz', text: 'La puerta 31 es el **liderazgo por la voz**: la influencia de quien habla por un grupo y lo representa. Su don es un liderazgo que otros eligen seguir; su sombra, liderar sin mandato real o por mera ambición.' },
+    32: { theme: 'la continuidad', text: 'La puerta 32 es el instinto de **continuidad**: olfatear qué perdura y qué hay que adaptar para que dure. Su don es un instinto para el valor duradero; su sombra, el miedo al fracaso y al cambio que paraliza.' },
+    33: { theme: 'el retiro y el relato', text: 'La puerta 33 es el **retiro y el relato**: apartarse para luego contar lo vivido. Su don es una sabiduría que se comparte tras la reflexión; su sombra, no honrar la necesidad de retirarse, o contar de más o de menos.' },
+    34: { theme: 'el poder', text: 'La puerta 34 es el **poder puro**: la fuerza independiente y ocupada de hacer. Su don es una potencia productiva enorme; su sombra, el ajetreo por el ajetreo, ponerse en marcha sin haber respondido.' },
+    35: { theme: 'el ansia de experiencia', text: 'La puerta 35 es el **ansia de experiencia y de progreso**: el impulso de probarlo todo y avanzar. Su don es un hambre de vivir que empuja hacia adelante; su sombra, la inquietud de nunca quedar satisfecho.' },
+    36: { theme: 'la crisis y lo nuevo', text: 'La puerta 36 es la **crisis emocional y lo nuevo**: el vaivén que lleva a experiencias inéditas. Su don es crecer a través de la intensidad emocional; su sombra, lanzarse al drama o a la crisis sin estar preparado.' },
+    37: { theme: 'la amistad y los pactos', text: 'La puerta 37 es la **amistad y la comunidad**: la calidez que une a través de pactos y acuerdos. Su don es un afecto que crea familia y pertenencia; su sombra, la dependencia o los pactos rotos.' },
+    38: { theme: 'la lucha con sentido', text: 'La puerta 38 es la **lucha por lo que vale la pena**: la tenacidad de plantar cara por una causa. Su don es una perseverancia con propósito; su sombra, pelear por pelear o la cabezonería.' },
+    39: { theme: 'la provocación', text: 'La puerta 39 es la **provocación**: remover la emoción ajena para sacar a la luz lo que de verdad importa. Su don es provocar para revelar el espíritu; su sombra, la provocación gratuita o el malhumor.' },
+    40: { theme: 'la entrega y el descanso', text: 'La puerta 40 es la **entrega y la soledad**: trabajar y proveer para luego retirarse a reponerse. Su don es una generosidad que sabe también descansar; su sombra, el exceso de trabajo sin pausa, o negarse a dar.' },
+    41: { theme: 'la imaginación que inicia el deseo', text: 'La puerta 41 es la **imaginación que inicia el deseo**: el comienzo de toda nueva experiencia, soñada antes de vivirse. Su don es una fantasía que abre experiencias nuevas; su sombra, una imaginación desconectada de la realidad o la presión de un anhelo no saciado.' },
+    42: { theme: 'la culminación', text: 'La puerta 42 es la **culminación**: la energía de cerrar ciclos y llevar las cosas hasta el final. Su don es la capacidad de completar lo empezado; su sombra, empezar sin terminar o el miedo a los finales.' },
+    43: { theme: 'la intuición mental', text: 'La puerta 43 es la **intuición mental**: un saber individual que llega como un fogonazo, adelantado a los demás. Su don es una idea original y reveladora; su sombra, empeñarse en decirla a destiempo y que no la entiendan.' },
+    44: { theme: 'el instinto del pasado', text: 'La puerta 44 es el **instinto que lee el pasado**: una alerta para reconocer patrones, personas y oportunidades. Su don es un olfato para la gente y el momento; su sombra, el miedo a que el pasado se repita.' },
+    45: { theme: 'la voz de los recursos', text: 'La puerta 45 es la **voz que reúne y reparte los recursos**: el "yo tengo" de quien administra lo común. Su don es una administración generosa que cuida del grupo; su sombra, el acaparamiento o el sentirse con derecho a todo.' },
+    46: { theme: 'el amor al cuerpo', text: 'La puerta 46 es el **amor al cuerpo y el buen estar**: la determinación de habitar el cuerpo y de estar en el lugar correcto. Su don es una serendipia que pone en el sitio justo en el momento justo; su sombra, descuidar o forzar el cuerpo.' },
+    47: { theme: 'la realización mental', text: 'La puerta 47 es la **realización**: la presión mental por dar sentido a la confusión hasta que llega el "ajá". Su don es resolver lo confuso en una comprensión clara; su sombra, quedarse atrapado en la sensación de opresión o sinsentido.' },
+    48: { theme: 'la profundidad', text: 'La puerta 48 es la **profundidad**: un pozo de talento y sabiduría del que sacar soluciones. Su don es una hondura que aporta lo que falta; su sombra, el miedo a no ser suficiente o a no estar listo.' },
+    49: { theme: 'los principios', text: 'La puerta 49 son los **principios y la revolución**: aceptar o rechazar según valores profundos. Su don es transformar los vínculos desde principios claros; su sombra, el rechazo rígido o la revolución sin sensibilidad.' },
+    50: { theme: 'los valores', text: 'La puerta 50 son los **valores y la responsabilidad**: el cuidado de las normas que protegen el bienestar del grupo. Su don es una guarda de valores que sostiene a los demás; su sombra, la sobre-responsabilidad y el miedo a fallar al grupo.' },
+    51: { theme: 'el impulso y el choque', text: 'La puerta 51 es el **impulso de ser el primero**: la iniciativa que sacude y despierta. Su don es un coraje que espabila a otros; su sombra, la competitividad o la temeridad.' },
+    52: { theme: 'la quietud y el foco', text: 'La puerta 52 es la **quietud y la concentración**: la presión de parar para enfocar y ver el conjunto. Su don es una calma que permite concentrarse; su sombra, la inercia o la inquietud de no saber estarse quieto.' },
+    53: { theme: 'los comienzos', text: 'La puerta 53 son los **comienzos**: la presión y la energía para iniciar nuevos ciclos. Su don es el empuje para arrancar lo nuevo; su sombra, empezar sin descanso sin llegar a completar.' },
+    54: { theme: 'la ambición', text: 'La puerta 54 es la **ambición**: el impulso de ascender, en lo material y en lo espiritual. Su don es una ambición que eleva; su sombra, perseguir el ascenso por la aprobación ajena o pasarse de la raya.' },
+    55: { theme: 'la abundancia del ánimo', text: 'La puerta 55 es el **espíritu y la abundancia emocional**: la riqueza de los estados de ánimo y la fe. Su don es una hondura emocional y una fe que sostienen; su sombra, dejar que la melancolía o el vaivén del ánimo decidan.' },
+    56: { theme: 'el relato estimulante', text: 'La puerta 56 es el **relato que estimula**: contar ideas y experiencias que enganchan. Su don es una narración cautivadora que abre horizontes; su sombra, adornar de más o la atención que divaga.' },
+    57: { theme: 'la intuición en el ahora', text: 'La puerta 57 es la **intuición aguda en el ahora**: una claridad instintiva que penetra el presente. Su don es un saber sutil y certero en el instante; su sombra, el miedo al futuro que paraliza.' },
+    58: { theme: 'la vitalidad y la mejora', text: 'La puerta 58 es la **vitalidad y la alegría de vivir**: la energía que empuja a mejorar las cosas. Su don es un gozo vital que impulsa la corrección; su sombra, la inquietud o la crítica sin alegría.' },
+    59: { theme: 'la intimidad', text: 'La puerta 59 es la **intimidad**: la energía para romper barreras y crear vínculo, también sexual. Su don es el poder de generar cercanía y unión; su sombra, levantar muros o invadir en la intimidad.' },
+    60: { theme: 'la aceptación del límite', text: 'La puerta 60 es la **aceptación del límite**: convertir la restricción en semilla de lo nuevo. Su don es transformar los límites en posibilidad; su sombra, quedarse atascado en la limitación y la melancolía.' },
+    61: { theme: 'la verdad interior', text: 'La puerta 61 es la **verdad interior y el misterio**: la presión por conocer lo que no se puede saber del todo. Su don es una inspiración que busca el fondo de las cosas; su sombra, la presión mental de querer saberlo todo.' },
+    62: { theme: 'el detalle y el orden', text: 'La puerta 62 es el **detalle y la organización**: poner nombre y orden a las cosas para expresarlas con precisión. Su don es una expresión clara y ordenada; su sombra, perderse en el detalle o explicarse de más.' },
+    63: { theme: 'la duda', text: 'La puerta 63 es la **duda**: la presión que empuja a cuestionar y verificar. Su don es una duda sana que pone a prueba; su sombra, la sospecha que corroe y la ansiedad.' },
+    64: { theme: 'la confusión fértil', text: 'La puerta 64 es la **confusión que busca sentido**: una presión de imágenes sin procesar que pugnan por ordenarse. Su don es una riqueza de imágenes que acaba en comprensión; su sombra, el agobio de querer resolver la confusión antes de tiempo.' }
   },
 
   // Initial report (Phase 7). General-frame sections (Parte A) + the shared
@@ -859,73 +859,75 @@ export default {
   },
 
   // Public-domain root of each gate: its King Wen hexagram name (gate N ↔
-  // hexagram N). Names follow the classic Wilhelm/Vogelmann Spanish edition.
-  // Used as the I Ching anchor in the gate/channel info (Phase 6.D).
+  // hexagram N). Names follow the classic Wilhelm/Vogelmann Spanish edition,
+  // with casing normalised to sentence case (only the first letter capitalised)
+  // per the author's text review. Used as the I Ching anchor in the gate/channel
+  // info (Phase 6.D).
   iching: {
-    1: 'Lo Creativo',
-    2: 'Lo Receptivo',
-    3: 'La Dificultad Inicial',
-    4: 'La Necedad Juvenil',
-    5: 'La Espera',
-    6: 'El Conflicto',
-    7: 'El Ejército',
-    8: 'La Solidaridad',
-    9: 'La Fuerza Domesticadora de lo Pequeño',
-    10: 'El Porte',
-    11: 'La Paz',
-    12: 'El Estancamiento',
-    13: 'La Comunidad con los Hombres',
-    14: 'La Posesión de lo Grande',
-    15: 'La Modestia',
-    16: 'El Entusiasmo',
-    17: 'El Seguimiento',
-    18: 'El Trabajo en lo Echado a Perder',
-    19: 'El Acercamiento',
-    20: 'La Contemplación',
-    21: 'La Mordedura Tajante',
-    22: 'La Gracia',
-    23: 'La Desintegración',
-    24: 'El Retorno',
-    25: 'La Inocencia',
-    26: 'La Fuerza Domesticadora de lo Grande',
-    27: 'La Nutrición',
-    28: 'La Preponderancia de lo Grande',
-    29: 'Lo Abismal (el Agua)',
-    30: 'Lo Adherente (el Fuego)',
-    31: 'El Influjo',
-    32: 'La Duración',
-    33: 'La Retirada',
-    34: 'El Poder de lo Grande',
-    35: 'El Progreso',
-    36: 'El Oscurecimiento de la Luz',
-    37: 'La Familia',
-    38: 'El Antagonismo',
-    39: 'El Impedimento',
-    40: 'La Liberación',
-    41: 'La Merma',
-    42: 'El Aumento',
-    43: 'El Desbordamiento',
-    44: 'El Ir al Encuentro',
-    45: 'La Reunión',
-    46: 'La Subida',
-    47: 'La Desazón',
-    48: 'El Pozo',
-    49: 'La Revolución',
-    50: 'El Caldero',
-    51: 'Lo Suscitativo (la Conmoción)',
-    52: 'El Aquietamiento (la Montaña)',
-    53: 'La Evolución',
-    54: 'La Muchacha que se Casa',
-    55: 'La Plenitud',
-    56: 'El Andariego',
-    57: 'Lo Suave (el Viento)',
-    58: 'Lo Sereno (el Lago)',
-    59: 'La Disolución',
-    60: 'La Restricción',
-    61: 'La Verdad Interior',
-    62: 'La Preponderancia de lo Pequeño',
-    63: 'Después de la Consumación',
-    64: 'Antes de la Consumación'
+    1: 'Lo creativo',
+    2: 'Lo receptivo',
+    3: 'La dificultad inicial',
+    4: 'La necedad juvenil',
+    5: 'La espera',
+    6: 'El conflicto',
+    7: 'El ejército',
+    8: 'La solidaridad',
+    9: 'La fuerza domesticadora de lo pequeño',
+    10: 'El porte',
+    11: 'La paz',
+    12: 'El estancamiento',
+    13: 'La comunidad con los hombres',
+    14: 'La posesión de lo grande',
+    15: 'La modestia',
+    16: 'El entusiasmo',
+    17: 'El seguimiento',
+    18: 'El trabajo en lo echado a perder',
+    19: 'El acercamiento',
+    20: 'La contemplación',
+    21: 'La mordedura tajante',
+    22: 'La gracia',
+    23: 'La desintegración',
+    24: 'El retorno',
+    25: 'La inocencia',
+    26: 'La fuerza domesticadora de lo grande',
+    27: 'La nutrición',
+    28: 'La preponderancia de lo grande',
+    29: 'Lo abismal (el agua)',
+    30: 'Lo adherente (el fuego)',
+    31: 'El influjo',
+    32: 'La duración',
+    33: 'La retirada',
+    34: 'El poder de lo grande',
+    35: 'El progreso',
+    36: 'El oscurecimiento de la luz',
+    37: 'La familia',
+    38: 'El antagonismo',
+    39: 'El impedimento',
+    40: 'La liberación',
+    41: 'La merma',
+    42: 'El aumento',
+    43: 'El desbordamiento',
+    44: 'El ir al encuentro',
+    45: 'La reunión',
+    46: 'La subida',
+    47: 'La desazón',
+    48: 'El pozo',
+    49: 'La revolución',
+    50: 'El caldero',
+    51: 'Lo suscitativo (la conmoción)',
+    52: 'El aquietamiento (la montaña)',
+    53: 'La evolución',
+    54: 'La muchacha que se casa',
+    55: 'La plenitud',
+    56: 'El andariego',
+    57: 'Lo suave (el viento)',
+    58: 'Lo sereno (el lago)',
+    59: 'La disolución',
+    60: 'La restricción',
+    61: 'La verdad interior',
+    62: 'La preponderancia de lo pequeño',
+    63: 'Después de la consumación',
+    64: 'Antes de la consumación'
   },
 
   // Natural-language labels used to build AI prompts. Kept separate from the
