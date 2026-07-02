@@ -263,12 +263,12 @@ export function channelState(a, b, chart) {
 }
 
 /** Personalised coda for a channel given the chart, or null. */
-function channelCoda(a, b, chart) {
+function channelCoda(a, b, chart, nameA, nameB) {
   if (!chart?.activeGates) return null;
   const aOn = chart.activeGates.includes(a);
   const bOn = chart.activeGates.includes(b);
   if (aOn && bOn) {
-    return 'Tienes este canal completo en tu carta: define sus dos centros y mantiene esa corriente estable entre ellos.';
+    return `Tienes este canal completo en tu carta: conecta el centro ${nameA} y el centro ${nameB}, manteniendo una corriente estable entre ellos.`;
   }
   if (aOn || bOn) {
     const on = aOn ? a : b;
@@ -294,13 +294,16 @@ export function getChannelInfo(pair, chart = null, lang = DEFAULT_LANG) {
   const labels = pack(lang).promptLabels.center;
   const ta = gateTheme(a, lang);
   const tb = gateTheme(b, lang);
+  const ch = pack(lang).channel?.[a < b ? `${a}-${b}` : `${b}-${a}`];
   const paragraphs = [
     `El canal ${a}-${b} conecta el **[centro ${labels[ca] ?? ca}](center:${ca})** ([puerta ${a}](gate:${a})) con el **[centro ${labels[cb] ?? cb}](center:${cb})** ([puerta ${b}](gate:${b})). Con sus dos puertas activas queda completo, define ambos centros y crea una corriente de energía estable entre ellos.`
   ];
-  if (ta && tb) {
+  if (ch && ta && tb) {
+    paragraphs.push(`Es el **${ch.name}**. Reúne ${ta} ([puerta ${a}](gate:${a})) y ${tb} ([puerta ${b}](gate:${b})): ${ch.essence}`);
+  } else if (ta && tb) {
     paragraphs.push(`Reúne ${ta} ([puerta ${a}](gate:${a})) y ${tb} ([puerta ${b}](gate:${b})), que conviene leer juntas para captar su carácter.`);
   }
-  const coda = channelCoda(a, b, chart);
+  const coda = channelCoda(a, b, chart, labels[ca] ?? ca, labels[cb] ?? cb);
   if (coda) paragraphs.push(coda);
   paragraphs.push('Para una lectura más a fondo, puedes utilizar la opción de "saber más usando IA".');
   return { title: `Canal ${a}-${b}`, paragraphs };
