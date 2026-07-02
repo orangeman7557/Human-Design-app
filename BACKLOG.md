@@ -48,9 +48,42 @@ without competing against a clone of the same code.
 **Files touched in this change:**
 `LICENSE`, `NOTICE` (new), `README.md`, `package.json`, `BACKLOG.md`.
 
-## Known bugs & pre-MVP tasks (updated 2026-06-24)
+## Known bugs & pre-MVP tasks (updated 2026-07-02)
 
-Open: none.
+Open (added 2026-07-02, author's batch — unverified, not yet triaged):
+
+- ⬜ **PDF export title not centred.** In the export / PDF report, the title
+  isn't centre-aligned — looks like something in the PNG/canvas generation step.
+  (The PNG share export centres title+subtitle only in the export; check whether
+  the PDF path reuses or drops that treatment.)
+- ⬜ **Profile drawer: add the 6 profile-line descriptions.** The profile "i"
+  drawer should include a description for each of the 6 profiles (currently
+  absent).
+- ⬜ **Unknown-time checkbox resets the slider to 12:00.** Checking "Hora
+  desconocida" should seed the slider from the time already entered (nearest
+  half-hour), not reset to 12:00. (Seems to contradict the "Unknown-hour slider
+  should respect the current time — done" item under *Possible improvements*;
+  `seedSliderFromTime` exists in `+page.svelte` — likely only seeds when a time
+  is already present, or a regression. Verify.)
+- ⬜ **Activations table: the "i" dots and weight overflow on mobile.** The info
+  "i" next to Personality / Design (and the weight/peso) spills outside the table
+  on phones. Place the "i" as a superscript right where the word's letters end
+  instead of overflowing.
+- ⬜ **Remove the type-% tooltips.** The population-% tooltips on the type chips
+  are no longer needed — drop them.
+- ⬜ **Authority text fix.** Add the missing words so it reads "la mente no es de
+  fiar …" (currently missing "la mente").
+- ⬜ **Ants analogy wording.** Start the paragraph with "En cierta forma, podemos
+  usar a las hormigas como símil:".
+- ⬜ **Install link missing on mobile Chrome (betatester).** "instalar como app"
+  shows on Mac Chrome but not on the phone (both Chrome). Only shows when
+  `install.mode` is set (`beforeinstallprompt`, Chromium). Investigate Android
+  install-eligibility criteria / timing, and confirm it was tested on the
+  deployed HTTPS build (the SW isn't registered in dev).
+- ⬜ **Home form fields misaligned on mobile (betatester).** On the phone the
+  home form's input boxes don't line up — some are wider than others; fine on
+  Mac. Likely the date/time overlay hack or the CityAutocomplete width; check the
+  "Mobile form centring" done item below for a possible regression.
 
 Fixed in the 2026-06-24 batch:
 
