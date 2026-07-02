@@ -13,6 +13,7 @@
   const version = __APP_VERSION__;
   import CityAutocomplete from '$lib/components/CityAutocomplete.svelte';
   import About from '$lib/components/About.svelte';
+  import ReportBug from '$lib/components/ReportBug.svelte';
   import { install, promptInstall } from '$lib/pwa/install.svelte.js';
   import { dialog } from '$lib/components/dialog.svelte.js';
   import { cityCountry } from '$lib/geo/place.js';
@@ -647,6 +648,8 @@
       <span aria-hidden="true">·</span>
     {/if}
     <About version={version} onElement={openAuthorChartWithInfo} />
+    <span aria-hidden="true">·</span>
+    <ReportBug version={version} />
   </footer>
 </main>
 

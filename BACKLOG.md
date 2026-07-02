@@ -948,6 +948,38 @@ further tandas may still land, but the gate no longer blocks 1.0.**
   excludes `/` from the worker; 16/16 vitest; a clean dev server serves the tuned head; the chart
   route still loads as SPA (bodygraph renders, no console errors).
 
+### Step 4 — report a bug, done 2026-07-03
+
+Wires the deferred About-modal action into its own footer component. **Built, browser-verified and
+committed 2026-07-03; the author confirmed the test emails arrive.**
+
+- **`src/lib/components/ReportBug.svelte`** — a footer link "reportar un fallo" with a bug glyph
+  *after* the text, rotated 45° clockwise so it reads as crawling up-right (`transform:
+  rotate(45deg)`). Rendered on both the home and chart footers, next to "acerca de". The link is a
+  plain inline-block `<button>` (like About's) so it baseline-aligns with the rest of the footer —
+  an earlier `inline-flex` version dropped the row's vertical alignment.
+- **Modal "Reportar un fallo o enviar una sugerencia"**, chrome mirroring `About.svelte`:
+  - A "¿De qué se trata?" toggle → **Reportar un fallo/bug** | **Enviar una sugerencia/mensaje**;
+    switching it swaps the intro copy, the textarea label ("¿Qué ha pasado?" / "Escribe tu
+    sugerencia") and its placeholder. The intro is a **CSS grid stack** (both paragraphs share one
+    cell, the inactive one `visibility: hidden`) so the box always keeps the taller height and the
+    modal never resizes when toggling.
+  - Required description (`message`); optional name + email; a hidden honeypot (`botcheck`).
+  - Sending / success / error states; the success panel wipes the draft (name/email included) on
+    close.
+- **Auto-captured context** (so the reporter never describes their setup) sent as hidden fields:
+  `Navegador` (userAgent), `Idioma`, `Pantalla`, `Ventana`, `Modo` (PWA vs browser), `App` (version).
+- **Web3Forms**: `POST https://api.web3forms.com/submit` as `multipart/form-data` (`FormData`), with
+  `access_key` (public, hides the author's email), `subject` = "HD Chart · Fallo/Sugerencia" and
+  `from_name`.
+- **Screenshot attachment dropped.** The docs claimed the free plan allows small attachments, but a
+  live test with an `attachment` field returned **400** — `"You are trying to use a Pro feature,
+  Please upgrade to use file uploads."` Attachments are Web3Forms **Pro** (paid); the author chose
+  not to upgrade, so the form is **text-only**. (If images are ever wanted for free, a provider like
+  FormSubmit.co supports attachments on its free tier — a future switch, not done here.)
+- **Text fixes** on the author's supplied copy: "el sugerencia" → "la sugerencia", "Cuánto más" →
+  "Cuanto más" (both orthographic).
+
 ## Post-1.0 packaging — Google Play (TWA) then Apple
 
 Separate from the web 1.0. Prerequisite for both: Phase L installability (icons + SW) done.

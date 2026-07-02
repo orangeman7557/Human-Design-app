@@ -12,6 +12,7 @@
   import InitialReport from '$lib/components/InitialReport.svelte';
   import InfoDot from '$lib/components/InfoDot.svelte';
   import About from '$lib/components/About.svelte';
+  import ReportBug from '$lib/components/ReportBug.svelte';
   import { dialog } from '$lib/components/dialog.svelte.js';
   import { cityCountry } from '$lib/geo/place.js';
   import { getElementInfo, getProfileInfo, getGateInfo, getChannelInfo, getConceptInfo, getActivationWeight } from '$lib/hd/content/index.js';
@@ -1098,6 +1099,8 @@
 
     <footer>
       <About version={version} onElement={(kind, key) => openInfoFor(CATEGORY_BY_KIND[kind] ?? '', kind, key)} />
+      <span aria-hidden="true">·</span>
+      <ReportBug version={version} />
     </footer>
   {/if}
 </main>
