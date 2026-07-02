@@ -852,6 +852,46 @@ really grows" move, not a launch task.
   console errors; the install link and About changes render correctly. The real install prompt
   only fires on the deployed HTTPS build (the SW isn't registered in dev by design).
 
+### Step 0 — full-app text review, marked OK 2026-07-02
+
+The content gate. The author's first review pass (the two-column Word in `revision-textos/`) plus
+the follow-up passes (quotes → straight `"`, 2nd/3rd-person sync, gate/channel names + essences,
+sentence-case titles) are considered good enough to ship. **Marked OK by the author 2026-07-02;
+further tandas may still land, but the gate no longer blocks 1.0.**
+
+### Step 2 — SEO / discovery, built 2026-07-02
+
+- **Prerender the home only.** New `src/routes/+page.js` sets `prerender = true` + `ssr = true`,
+  overriding the app-wide `ssr = false` in `+layout.js` for this route. Prerendering needs server
+  rendering, so `ssr` must be re-enabled here. The whole home component tree is SSR-safe: browser
+  APIs (`sessionStorage`, IndexedDB, `window`) are only touched inside `onMount`/`$effect`/handlers,
+  and the one module-level risk — `new Dexie()` in `db/charts.js` — was verified harmless in Node
+  (Dexie 4 only touches `indexedDB` on `.open()`, not at construction). The chart route keeps its
+  SPA setup (`chart/+page.js` stays ssr:false/prerender:false); it's per-user and not indexable.
+  adapter-cloudflare emits `/` (and the static assets below) as excluded from the worker in
+  `_routes.json`, serving them as static files; `/chart` still runs through the worker.
+- **`svelte:head` SEO on the home** (baked into the prerendered HTML): tuned `<title>` +
+  `description`, `<link rel="canonical">`, Open Graph (`type`, `site_name`, `title`, `description`,
+  `url`, `image` 1200×630 + `width`/`height`/`alt`, `locale` es_ES), Twitter Card
+  (`summary_large_image`), and a `WebApplication` JSON-LD block (free/`price: 0`, author Javi G.O.).
+  Constants `SITE_URL`/`SEO_TITLE`/`SEO_DESC` live at the top of `+page.svelte`.
+- **`app.html`**: removed the static `<title>` and `<meta name="description">` so the prerendered
+  home doesn't end up with two of each (Svelte doesn't dedupe app.html's static tags against
+  `svelte:head`). The chart route got its own minimal `svelte:head` (title "Tu carta · Human Design
+  Chart") as the per-route baseline.
+- **Share image** `static/og-image.png` (1200×630): the bodygraph glyph in amber + wordmark +
+  tagline on the deep-black tile, rendered from an SVG with `sharp` via a throwaway `_gen-og.mjs`
+  (run from the worktree, deleted — same pattern as the icons).
+- **`static/robots.txt`** (allow all, points at the sitemap) and **`static/sitemap.xml`** (just the
+  home; the chart is per-user, no public URL to index).
+- **Domain caveat**: every absolute URL (canonical, og:url, og:image, robots Sitemap, sitemap loc)
+  uses the current `https://human-design-chart-app.orangeman7557.workers.dev` origin. **Step 3
+  (custom domain) must update `SITE_URL` in `src/routes/+page.svelte` and the two `static/` files.**
+- **Verified**: build prerenders `/` with real content (h1 + form) and exactly one
+  `<title>`/`description`; OG/canonical/JSON-LD present and the JSON-LD parses; `_routes.json`
+  excludes `/` from the worker; 16/16 vitest; a clean dev server serves the tuned head; the chart
+  route still loads as SPA (bodygraph renders, no console errors).
+
 ## Post-1.0 packaging — Google Play (TWA) then Apple
 
 Separate from the web 1.0. Prerequisite for both: Phase L installability (icons + SW) done.

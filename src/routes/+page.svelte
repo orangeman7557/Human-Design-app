@@ -27,6 +27,31 @@
   } from '$lib/db/charts.js';
   import { computeChart } from '$lib/hd/chart.js';
 
+  // ── SEO (Phase L, step 2) ─────────────────────────────────────────────
+  // The home is prerendered (see +page.js), so these tags land in the real
+  // static HTML that crawlers and social scrapers read. Absolute URLs use the
+  // live Workers domain; update SITE_URL when the custom domain lands (step 3).
+  const SITE_URL = 'https://human-design-chart-app.orangeman7557.workers.dev';
+  const SEO_TITLE = 'Human Design Chart — calcula tu carta gratis, sin registro';
+  const SEO_DESC =
+    'Calcula tu carta de Human Design gratis y sin registro: tipo, estrategia, autoridad, perfil, centros y canales, con un bodygraph interactivo. Tus datos se quedan en tu dispositivo.';
+  const jsonLd =
+    `<script type="application/ld+json">` +
+    JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'WebApplication',
+      name: 'Human Design Chart',
+      url: `${SITE_URL}/`,
+      description: SEO_DESC,
+      applicationCategory: 'LifestyleApplication',
+      operatingSystem: 'Web',
+      inLanguage: 'es',
+      isAccessibleForFree: true,
+      offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
+      author: { '@type': 'Person', name: 'Javi G.O.' }
+    }) +
+    `<\/script>`;
+
   const TYPE_LABELS = {
     generator: 'Generator',
     'manifesting-generator': 'Manifesting Generator',
@@ -409,6 +434,30 @@
 </script>
 
 <svelte:window onclick={tipTap} />
+
+<svelte:head>
+  <title>{SEO_TITLE}</title>
+  <meta name="description" content={SEO_DESC} />
+  <link rel="canonical" href="{SITE_URL}/" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Human Design Chart" />
+  <meta property="og:title" content={SEO_TITLE} />
+  <meta property="og:description" content={SEO_DESC} />
+  <meta property="og:url" content="{SITE_URL}/" />
+  <meta property="og:image" content="{SITE_URL}/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Human Design Chart" />
+  <meta property="og:locale" content="es_ES" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={SEO_TITLE} />
+  <meta name="twitter:description" content={SEO_DESC} />
+  <meta name="twitter:image" content="{SITE_URL}/og-image.png" />
+
+  {@html jsonLd}
+</svelte:head>
 
 <main>
   <header>

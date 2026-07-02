@@ -646,6 +646,11 @@
   }
 </script>
 
+<svelte:head>
+  <title>Tu carta · Human Design Chart</title>
+  <meta name="description" content="Tu carta de Human Design: bodygraph interactivo con tipo, estrategia, autoridad, perfil, centros y canales." />
+</svelte:head>
+
 {#snippet imgButtons()}
   <button
     class="img-btn"
