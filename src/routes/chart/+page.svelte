@@ -1055,13 +1055,13 @@
             <tr>
               <th></th>
               <th data-inner-key="actcol:personality">
-                <span class="side-head" data-tip="Se define en el momento del nacimiento">Personality<span class="side-dot personality" aria-hidden="true"></span></span>{#if innerReveal === 'actcol:personality' || infoIsOpen('activationCol', 'personality')}<span class="dot-side" data-info-cat="Activaciones" data-info-kind="activationCol" data-info-key="personality"><InfoDot active={infoIsOpen('activationCol', 'personality')} label="Qué es Personality" /></span>{/if}
+                <span class="side-head" data-tip="Se define en el momento del nacimiento">Personality<span class="side-dot personality" aria-hidden="true"></span>{#if innerReveal === 'actcol:personality' || infoIsOpen('activationCol', 'personality')}<span class="dot-side head-i" data-info-cat="Activaciones" data-info-kind="activationCol" data-info-key="personality"><InfoDot active={infoIsOpen('activationCol', 'personality')} label="Qué es Personality" /></span>{/if}</span>
               </th>
               <th data-inner-key="actcol:design">
-                <span class="side-head" data-tip={'Se define 88° de arco solar antes\ndel nacimiento (~88 días)'}>Design<span class="side-dot design" aria-hidden="true"></span></span>{#if innerReveal === 'actcol:design' || infoIsOpen('activationCol', 'design')}<span class="dot-side" data-info-cat="Activaciones" data-info-kind="activationCol" data-info-key="design"><InfoDot active={infoIsOpen('activationCol', 'design')} label="Qué es Design" /></span>{/if}
+                <span class="side-head" data-tip={'Se define 88° de arco solar antes\ndel nacimiento (~88 días)'}>Design<span class="side-dot design" aria-hidden="true"></span>{#if innerReveal === 'actcol:design' || infoIsOpen('activationCol', 'design')}<span class="dot-side head-i" data-info-cat="Activaciones" data-info-kind="activationCol" data-info-key="design"><InfoDot active={infoIsOpen('activationCol', 'design')} label="Qué es Design" /></span>{/if}</span>
               </th>
               <th class="weight-col" data-inner-key="actcol:weight">
-                <span class="side-head" data-tip={'Influencia relativa de la activación\n(el Sol y la Tierra pesan más)'}>Peso</span>{#if innerReveal === 'actcol:weight' || infoIsOpen('activationCol', 'weight')}<span class="dot-side" data-info-cat="Activaciones" data-info-kind="activationCol" data-info-key="weight"><InfoDot active={infoIsOpen('activationCol', 'weight')} label="Qué es el peso" /></span>{/if}
+                <span class="side-head" data-tip={'Influencia relativa de la activación\n(el Sol y la Tierra pesan más)'}>Peso{#if innerReveal === 'actcol:weight' || infoIsOpen('activationCol', 'weight')}<span class="dot-side head-i" data-info-cat="Activaciones" data-info-kind="activationCol" data-info-key="weight"><InfoDot active={infoIsOpen('activationCol', 'weight')} label="Qué es el peso" /></span>{/if}</span>
               </th>
             </tr>
           </thead>
@@ -1760,10 +1760,30 @@
   }
 
   .side-head {
+    position: relative;
     display: inline-flex;
     align-items: center;
     gap: 0.4em;
     cursor: help;
+  }
+  /* Activations-header info "i": pinned absolutely to the header's top-right so
+     revealing it never widens the cell or spills past the table on mobile (the
+     table lives in an overflow-x:auto scroller). Personality/Design overlay the
+     colour dot (vertically centred); Peso has no dot, so it rides as a small
+     superscript over the label's end, like the gate/channel chip "i". */
+  .side-head .head-i {
+    position: absolute;
+    top: 50%;
+    right: -5px;
+    transform: translateY(-50%);
+    height: auto;
+    margin: 0;
+    z-index: 1;
+  }
+  .weight-col .side-head .head-i {
+    top: -3px;
+    right: -8px;
+    transform: none;
   }
   /* Same colours the two sides use on gates/channels in the graph. */
   .side-dot {

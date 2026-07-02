@@ -65,10 +65,6 @@ Open (added 2026-07-02, author's batch — unverified, not yet triaged):
   should respect the current time — done" item under *Possible improvements*;
   `seedSliderFromTime` exists in `+page.svelte` — likely only seeds when a time
   is already present, or a regression. Verify.)
-- ⬜ **Activations table: the "i" dots and weight overflow on mobile.** The info
-  "i" next to Personality / Design (and the weight/peso) spills outside the table
-  on phones. Place the "i" as a superscript right where the word's letters end
-  instead of overflowing.
 - ⬜ **Install link missing on mobile Chrome (betatester).** "instalar como app"
   shows on Mac Chrome but not on the phone (both Chrome). Only shows when
   `install.mode` is set (`beforeinstallprompt`, Chromium). Investigate Android
@@ -88,6 +84,11 @@ Fixed in the 2026-07-02 batch (easy items from the author's batch above):
   propia vida**", matching the already-correct 2nd-person `report.authority`.
 - ✅ **Ants analogy opening reworded.** The intro paragraph now starts "En cierta
   forma, podemos usar a las hormigas como símil: …" (`es.js` intro → `ants`).
+- ✅ **Activations header "i" no longer overflows on mobile.** The column "i"
+  (`chart/+page.svelte`) is now pinned absolutely inside `.side-head`: it overlays
+  the Personality/Design colour dot (vertically centred) and rides as a small
+  superscript over the "Peso" label, so revealing it never widens the cell or
+  spills past the table's horizontal scroller. Verified at 375px and desktop.
 
 Fixed in the 2026-06-24 batch:
 
@@ -267,6 +268,20 @@ corrected).
   would avoid potential jank (it's already sequence-guarded).
 
 ## Possible improvements (not scheduled, not part of Phase 5)
+
+- **Click a centre or gate in the bodygraph to open its drawer (requested
+  2026-07-02).** Tapping/clicking a centre shape or a gate marker in the bodygraph
+  should open the same info drawer that the summary chips open. **Channels
+  excluded** — several overlap in the graph, so a channel click target would be
+  ambiguous.
+
+- **Gate drawers: list the associated channel(s) and harmonic gate(s) at the end
+  (requested 2026-07-02).** At the bottom of each gate drawer add two rows —
+  "Canal asociado: [channel chip]" and "Puerta armónica (completa el canal):
+  [gate chip]". When the gate belongs to more than one channel, show them in the
+  plural with several chips each. (The harmonic gate — the one that completes the
+  channel — is already named in the gate text via `getGateInfo`; this surfaces it
+  as a tappable chip.)
 
 - **Centre labels on the bodygraph (requested 2026-07-01).** Make the link between
   the **Centros** chips and the graph explicit: either render each centre's name
