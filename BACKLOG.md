@@ -70,6 +70,7 @@ Open (added 2026-07-02, author's batch — unverified, not yet triaged):
   `install.mode` is set (`beforeinstallprompt`, Chromium). Investigate Android
   install-eligibility criteria / timing, and confirm it was tested on the
   deployed HTTPS build (the SW isn't registered in dev).
+
 Fixed in the 2026-07-02 batch (from the author's batch above):
 
 - ✅ **Removed the type-% tooltips.** Dropped the `data-tip` on the type-chip
