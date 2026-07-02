@@ -847,7 +847,8 @@ Subtareas completadas:
 
 ## Useful pointers
 
-- Live URL: <https://human-design-chart-app.orangeman7557.workers.dev/>
+- Live URL: <https://hdchart.app/> (also reachable at the old
+  `human-design-chart-app.orangeman7557.workers.dev` Workers origin)
 - Repo: <https://github.com/orangeman7557/human-design-chart-app>
 - Validation case: orangeman7557's own chart — hidden shortcut: clicking
   the final period of the home tagline pre-fills the form

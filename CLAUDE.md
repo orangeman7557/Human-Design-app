@@ -34,7 +34,7 @@ El usuario introduce su fecha, hora y lugar de nacimiento → la app calcula su 
 | Lenguaje | JavaScript (sin TypeScript; JSDoc para tipos internos) |
 
 **URLs:**
-- Live: `https://human-design-chart-app.orangeman7557.workers.dev/`
+- Live: `https://hdchart.app/` (custom domain; also served at the original `human-design-chart-app.orangeman7557.workers.dev` Workers origin)
 - Repo: `https://github.com/orangeman7557/human-design-chart-app`
 
 **CI/CD:** auto-deploy en cada push a `main` via Cloudflare Workers Builds.
