@@ -695,6 +695,7 @@
     gap: 0.35rem;
     font-size: 0.85rem;
     color: var(--text-muted);
+    min-width: 0;
   }
   label span {
     text-transform: uppercase;
@@ -718,6 +719,15 @@
   input:disabled {
     opacity: 0.45;
   }
+  /* Full-width, shrinkable entry fields. iOS Safari otherwise sizes native
+     date/time inputs (and any input without an explicit width) to their
+     intrinsic width and, as flex items with min-width:auto, refuses to shrink
+     them — so on a phone the date/time/place fields misalign and overflow the
+     form to the right. Checkbox and range keep their own sizing. */
+  input:not([type='checkbox']):not([type='range']) {
+    width: 100%;
+    min-width: 0;
+  }
 
   /* Wrapper for date/time inputs: anchors the mobile-only centred value
      overlay (.dt-value, hidden on desktop — see the media query). */
@@ -725,6 +735,7 @@
     position: relative;
     display: flex;
     flex-direction: column;
+    min-width: 0;
   }
   .dtwrap input {
     width: 100%;
@@ -741,6 +752,7 @@
     gap: 0.35rem;
     font-size: 0.85rem;
     color: var(--text-muted);
+    min-width: 0;
   }
   .field-head {
     display: flex;
@@ -924,6 +936,7 @@
 
   button[type='submit'] {
     margin-top: 1rem;
+    width: 100%;
     background: var(--accent);
     color: #1a1408;
     border: none;

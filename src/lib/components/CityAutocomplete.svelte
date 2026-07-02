@@ -163,9 +163,11 @@
 <style>
   .autocomplete {
     position: relative;
+    min-width: 0;
   }
   input {
     width: 100%;
+    min-width: 0;
     background: var(--surface);
     border: 1px solid var(--border);
     color: var(--text);
