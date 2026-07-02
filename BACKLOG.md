@@ -69,12 +69,6 @@ Open (added 2026-07-02, author's batch — unverified, not yet triaged):
   "i" next to Personality / Design (and the weight/peso) spills outside the table
   on phones. Place the "i" as a superscript right where the word's letters end
   instead of overflowing.
-- ⬜ **Remove the type-% tooltips.** The population-% tooltips on the type chips
-  are no longer needed — drop them.
-- ⬜ **Authority text fix.** Add the missing words so it reads "la mente no es de
-  fiar …" (currently missing "la mente").
-- ⬜ **Ants analogy wording.** Start the paragraph with "En cierta forma, podemos
-  usar a las hormigas como símil:".
 - ⬜ **Install link missing on mobile Chrome (betatester).** "instalar como app"
   shows on Mac Chrome but not on the phone (both Chrome). Only shows when
   `install.mode` is set (`beforeinstallprompt`, Chromium). Investigate Android
@@ -84,6 +78,16 @@ Open (added 2026-07-02, author's batch — unverified, not yet triaged):
   home form's input boxes don't line up — some are wider than others; fine on
   Mac. Likely the date/time overlay hack or the CityAutocomplete width; check the
   "Mobile form centring" done item below for a possible regression.
+
+Fixed in the 2026-07-02 batch (easy items from the author's batch above):
+
+- ✅ **Removed the type-% tooltips.** Dropped the `data-tip` on the type-chip
+  `.pct` spans (`chart/+page.svelte`); the % still shows, just no hover tooltip.
+- ✅ **Authority text: "la mente" added.** The "La autoridad" concept (`es.js`,
+  3rd person) now reads "…pero **la mente no es de fiar para decidir sobre la
+  propia vida**", matching the already-correct 2nd-person `report.authority`.
+- ✅ **Ants analogy opening reworded.** The intro paragraph now starts "En cierta
+  forma, podemos usar a las hormigas como símil: …" (`es.js` intro → `ants`).
 
 Fixed in the 2026-06-24 batch:
 

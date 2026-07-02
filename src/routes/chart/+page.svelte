@@ -758,7 +758,7 @@
             {#each TYPES as t, i}
               <span class="tchip" class:on={chart.type === t.key} data-inner-key={`type:${t.key}`}>
                 {t.label}
-                <span class="pct" data-tip={`representan el ${t.pct} de la población`}>{t.pct}</span>
+                <span class="pct">{t.pct}</span>
                 {#if innerReveal === `type:${t.key}` || infoIsOpen('type', t.key)}
                   <span class="dot-slot" data-info-cat="Tipo" data-info-kind="type" data-info-key={t.key}>
                     <InfoDot active={infoIsOpen('type', t.key)} label={`Más información sobre ${t.label}`} />

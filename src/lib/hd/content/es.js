@@ -38,7 +38,7 @@ export default {
     authority: {
       title: 'La autoridad',
       paragraphs: [
-        'La **autoridad** indica desde dónde tomar una decisión de forma fiable: qué parte de ti tiene la última palabra. En Diseño Humano la mente sirve para procesar información y aconsejar a otros, pero **no es de fiar para decidir sobre la propia vida**; la autoridad nace siempre de una fuente más corporal.',
+        'La **autoridad** indica desde dónde tomar una decisión de forma fiable: qué parte de ti tiene la última palabra. En Diseño Humano la mente sirve para procesar información y aconsejar a otros, pero **la mente no es de fiar para decidir sobre la propia vida**; la autoridad nace siempre de una fuente más corporal.',
         'Hay siete: emocional (Plexo solar), sacral, esplénica (Bazo), del ego (Corazón), autoproyectada (G), mental/ambiental y lunar. Se determinan por jerarquía según los centros definidos. Algunas operan **en el momento** (la sacral y la esplénica) y otras necesitan **tiempo** (la emocional, que pide esperar a recorrer la onda emocional antes de tener claridad).',
         'La autoridad es la herramienta más práctica de la carta: convierte la estrategia en un método concreto de decisión cotidiana. Antes de un sí o un no importante, indica a qué señal interna conviene atender.'
       ]
@@ -604,7 +604,7 @@ export default {
     ants: {
       title: 'La analogía de las hormigas',
       paragraphs: [
-        'Se podría decir que los humanos nos parecemos a las hormigas. En un hormiguero no hay una "hormiga genérica": hay exploradoras que salen a rastrear, soldados construidas para defender, obreras que mantienen el nido y una reina cuya función es otra por completo. Ninguna es mejor; cada una está hecha para una forma de operar distinta, y el hormiguero funciona precisamente porque no son todas iguales. Pedirle a una exploradora que haga el trabajo de una soldado es agotarla en algo para lo que no está diseñada.',
+        'En cierta forma, podemos usar a las hormigas como símil: en un hormiguero no hay una "hormiga genérica": hay exploradoras que salen a rastrear, soldados construidas para defender, obreras que mantienen el nido y una reina cuya función es otra por completo. Ninguna es mejor; cada una está hecha para una forma de operar distinta, y el hormiguero funciona precisamente porque no son todas iguales. Pedirle a una exploradora que haga el trabajo de una soldado es agotarla en algo para lo que no está diseñada.',
         'Con las personas pasa algo parecido: tenemos maneras distintas de actuar y de relacionarnos en función de nuestra propia energía y diseño. El error habitual es suponer que todos deberíamos rendir, decidir o arrancar igual. El Diseño Humano propone lo contrario, y a esas diferentes maneras las llama [tipos](section:type). Lo valioso del marco es esa mirada: **deja de medirte con la vara de otro diseño**.'
       ]
     },
