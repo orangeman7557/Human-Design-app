@@ -1,4 +1,4 @@
-<!-- AI-authored — "reportar un fallo" footer link + report form modal (Phase L, step 4). -->
+<!-- AI-authored — "notificar un fallo" footer link + report form modal (Phase L, step 4). -->
 <!-- Posts to Web3Forms (no backend, no account for the reporter); the author's email -->
 <!-- stays hidden behind the public access key. Device / OS / app context is captured -->
 <!-- automatically so the reporter never has to describe their setup. Covers both bugs -->
@@ -94,7 +94,7 @@
 
 <svelte:window {onkeydown} />
 
-<button class="link" type="button" onclick={() => (open = true)}>reportar un fallo<svg class="bug" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+<button class="link" type="button" onclick={() => (open = true)}>notificar un fallo<svg class="bug" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
     <path d="M8 5a4 4 0 0 1 8 0" />
     <rect x="7" y="7" width="10" height="12" rx="5" />
     <path d="M12 10v8M4 11h3M4 16h3.2M17 11h3M16.8 16H20M6 7 4.5 5.5M18 7l1.5-1.5M6 19l-1.6 1.6M18 19l1.6 1.6" />
@@ -102,9 +102,9 @@
 
 {#if open}
   <div class="scrim" onclick={close} role="presentation" transition:fade={{ duration: 120 }}></div>
-  <div class="modal" role="dialog" aria-modal="true" aria-label="Reportar un fallo o sugerencia" transition:fly={{ y: 12, duration: 180 }}>
+  <div class="modal" role="dialog" aria-modal="true" aria-label="Notificar un fallo o sugerencia" transition:fly={{ y: 12, duration: 180 }}>
     <header>
-      <h2>Reportar un fallo o enviar una sugerencia</h2>
+      <h2>Notificar un fallo o enviar una sugerencia</h2>
       <button class="close" type="button" onclick={close} aria-label="Cerrar">✕</button>
     </header>
 
@@ -119,7 +119,7 @@
         <div class="field">
           <span>¿De qué se trata?</span>
           <div class="toggle" role="group" aria-label="Tipo de reporte">
-            <button type="button" class:active={kind === 'fallo'} onclick={() => (kind = 'fallo')}>Reportar un fallo/bug</button>
+            <button type="button" class:active={kind === 'fallo'} onclick={() => (kind = 'fallo')}>Notificar un fallo/bug</button>
             <button type="button" class:active={kind === 'sugerencia'} onclick={() => (kind = 'sugerencia')}>Enviar una sugerencia/mensaje</button>
           </div>
         </div>
