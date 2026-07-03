@@ -234,7 +234,7 @@ export function getGateInfo(gate, chart = null, lang = DEFAULT_LANG) {
   const centerLink = (c) => `[centro ${labels[c] ?? c}](center:${c})`;
   const frags = CHANNELS.filter(([a, b]) => a === g || b === g)
     .map(([a, b]) => (a === g ? b : a))
-    .map((h) => `la [puerta ${h} (${gateTheme(h, lang)})](gate:${h}), en el ${centerLink(CENTER_BY_GATE[h])}`);
+    .map((h) => `la [puerta ${h} ("${gateTheme(h, lang)}")](gate:${h}), en el ${centerLink(CENTER_BY_GATE[h])}`);
   const centerLine =
     frags.length === 0
       ? `Está en el ${centerLink(center)}.`
@@ -302,9 +302,9 @@ export function getChannelInfo(pair, chart = null, lang = DEFAULT_LANG) {
     `El canal ${a}-${b} conecta el **[centro ${labels[ca] ?? ca}](center:${ca})** ([puerta ${a}](gate:${a})) con el **[centro ${labels[cb] ?? cb}](center:${cb})** ([puerta ${b}](gate:${b})). Con sus dos puertas activas queda completo, define ambos centros y crea una corriente de energía estable entre ellos.`
   ];
   if (ch && ta && tb) {
-    paragraphs.push(`Es el **${ch.name}**. Reúne ${ta} ([puerta ${a}](gate:${a})) y ${tb} ([puerta ${b}](gate:${b})): ${ch.essence}`);
+    paragraphs.push(`Es el **${ch.name}**. Reúne "${ta}" ([puerta ${a}](gate:${a})) y "${tb}" ([puerta ${b}](gate:${b})): ${ch.essence}`);
   } else if (ta && tb) {
-    paragraphs.push(`Reúne ${ta} ([puerta ${a}](gate:${a})) y ${tb} ([puerta ${b}](gate:${b})), que conviene leer juntas para captar su carácter.`);
+    paragraphs.push(`Reúne "${ta}" ([puerta ${a}](gate:${a})) y "${tb}" ([puerta ${b}](gate:${b})), que conviene leer juntas para captar su carácter.`);
   }
   const coda = channelCoda(a, b, chart, labels[ca] ?? ca, labels[cb] ?? cb);
   if (coda) paragraphs.push(coda);
