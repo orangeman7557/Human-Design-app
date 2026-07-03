@@ -22,21 +22,30 @@
 
   const COFFEE_URL = 'https://buymeacoffee.com/orangeman7557';
 
-  // "Send love": each click pops the heart, cycles it through vivid colours,
-  // fires a small confetti burst and bumps a global counter kept in
-  // Cloudflare KV (/api/love). The animation is fully local — if the API is
-  // unreachable (offline, KV not provisioned) the counter simply hides.
+  // "Send love": each click cycles the heart through vivid colours, pops it,
+  // and throws a deliberately over-the-top full-screen party (confetti burst
+  // from the heart + emoji flyers) that breaks the app's sobriety for a few
+  // seconds. A global click counter lives in Cloudflare KV (/api/love); the
+  // party is fully local — if the API is unreachable the counter line hides.
   const BURST_COLORS = ['#e84672', '#d4a657', '#8e6cf0', '#6ec48a', '#5aa9e6', '#e8788a'];
+  // No square-tile emojis here (e.g. 🌠 renders as a framed picture on Apple).
+  const FLYERS = ['🌟', '⭐', '✨', '🌈', '🦄', '💫', '💖', '🎉'];
+  const BASE_LABEL = '¡Mándame amor!';
+  // Escalating thank-yous: one step every 4 clicks so each stays readable.
+  const THANKS = ['gracias', 'lo recibo', 'qué gusto', 'cuánto cariño', 'ole ole ole', 'voy a explotar'];
 
-  /** @type {number | null} global click count; null = unknown → counter hidden */
+  /** @type {number | null} global click count; null = unknown → line hidden */
   let loveCount = $state(null);
   let heartColor = $state('');
+  let heartLabel = $state(BASE_LABEL);
   let clicks = 0;
+  let partyClicks = 0;
   let pending = 0;
   let flushTimer;
+  let labelTimer;
   let heartEl;
-  let burstHost;
-  let countEl;
+  let partyHost;
+  let numEl;
 
   const reducedMotion =
     typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -61,6 +70,7 @@
     flushTimer = setTimeout(async () => {
       const n = pending;
       pending = 0;
+      if (n < 1) return;
       try {
         const res = await fetch('/api/love', {
           method: 'POST',
@@ -81,6 +91,15 @@
     if (loveCount !== null) loveCount += 1;
     pending += 1;
     flushLater();
+
+    heartLabel = THANKS[Math.min(Math.floor(partyClicks / 4), THANKS.length - 1)];
+    partyClicks += 1;
+    clearTimeout(labelTimer);
+    labelTimer = setTimeout(() => {
+      heartLabel = BASE_LABEL;
+      partyClicks = 0;
+    }, 4000);
+
     if (reducedMotion) return;
     heartEl?.animate(
       [
@@ -91,42 +110,77 @@
       ],
       { duration: 450, easing: 'ease-out' }
     );
-    countEl?.animate(
+    numEl?.animate(
       [
-        { transform: 'translateY(0.45em) scale(1.25)', color, opacity: 0.3 },
-        { transform: 'translateY(0) scale(1)', opacity: 1 }
+        { transform: 'scale(1.45)' },
+        { transform: 'scale(1)' }
       ],
-      { duration: 420, easing: 'ease-out' }
+      { duration: 450, easing: 'ease-out' }
     );
-    burst(color);
+    explode(color);
   }
 
-  // Particles are plain spans styled inline (Svelte scoping can't reach
-  // JS-created nodes) and removed as soon as their animation ends.
-  function burst(baseColor) {
-    if (!burstHost) return;
-    const N = 12;
-    for (let i = 0; i < N; i++) {
+  // Full-screen party: confetti shot from the heart across the viewport plus
+  // emoji flyers crossing the screen. Elements are plain spans styled inline
+  // (Svelte scoping can't reach JS-created nodes), animated with WAAPI and
+  // removed when done; a cap keeps runaway clicking cheap.
+  function explode(baseColor) {
+    if (!partyHost || !heartEl) return;
+    if (partyHost.childElementCount > 160) return;
+    const rect = heartEl.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    const W = window.innerWidth;
+    const H = window.innerHeight;
+
+    for (let i = 0; i < 28; i++) {
       const p = document.createElement('span');
       const color = i % 3 === 0 ? baseColor : BURST_COLORS[(Math.random() * BURST_COLORS.length) | 0];
-      const size = 4 + Math.random() * 5;
+      const size = 5 + Math.random() * 7;
       const round = Math.random() < 0.4;
-      p.style.cssText = `position:absolute;left:50%;top:50%;width:${size}px;height:${size}px;background:${color};border-radius:${round ? '50%' : '2px'};pointer-events:none;`;
-      burstHost.appendChild(p);
-      const angle = (i / N) * 2 * Math.PI + Math.random() * 0.6;
-      const dist = 34 + Math.random() * 32;
+      p.style.cssText = `position:absolute;left:${cx}px;top:${cy}px;width:${size}px;height:${size}px;background:${color};border-radius:${round ? '50%' : '2px'};`;
+      partyHost.appendChild(p);
+      const angle = Math.random() * 2 * Math.PI;
+      const dist = (0.25 + Math.random() * 0.55) * Math.max(W, H);
       const dx = Math.cos(angle) * dist;
-      const dy = Math.sin(angle) * dist - 10;
+      const dy = Math.sin(angle) * dist * 0.7;
+      const fall = 140 + Math.random() * 320;
       p.animate(
         [
-          { transform: 'translate(-50%, -50%) scale(1)', opacity: 1 },
+          { transform: 'translate(-50%, -50%)', opacity: 1 },
           {
-            transform: `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px)) scale(0.3) rotate(${(Math.random() * 260 - 130) | 0}deg)`,
+            transform: `translate(calc(-50% + ${dx * 0.7}px), calc(-50% + ${dy * 0.7}px)) rotate(${(Math.random() * 360) | 0}deg)`,
+            opacity: 1,
+            offset: 0.55
+          },
+          {
+            transform: `translate(calc(-50% + ${dx}px), calc(-50% + ${dy + fall}px)) rotate(${(Math.random() * 720 - 360) | 0}deg) scale(0.5)`,
             opacity: 0
           }
         ],
-        { duration: 620 + Math.random() * 240, easing: 'cubic-bezier(0.15, 0.6, 0.3, 1)', fill: 'forwards' }
+        { duration: 1800 + Math.random() * 1800, easing: 'cubic-bezier(0.2, 0.5, 0.4, 1)', fill: 'forwards' }
       ).onfinish = () => p.remove();
+    }
+
+    for (let i = 0; i < 5; i++) {
+      const e = document.createElement('span');
+      e.textContent = FLYERS[(Math.random() * FLYERS.length) | 0];
+      const fromLeft = Math.random() < 0.5;
+      const y0 = Math.random() * H * 0.85;
+      const drift = (Math.random() * 0.5 - 0.25) * H;
+      e.style.cssText = `position:absolute;left:${fromLeft ? -70 : W + 70}px;top:${y0}px;font-size:${22 + Math.random() * 22}px;line-height:1;`;
+      partyHost.appendChild(e);
+      const dx = (fromLeft ? 1 : -1) * (W + 160);
+      const tilt = ((Math.random() * 60 - 30) | 0) * (fromLeft ? 1 : -1);
+      e.animate(
+        [
+          { transform: 'translate(0, 0) rotate(0deg)', opacity: 0 },
+          { opacity: 1, offset: 0.1 },
+          { opacity: 1, offset: 0.85 },
+          { transform: `translate(${dx}px, ${drift}px) rotate(${tilt}deg)`, opacity: 0 }
+        ],
+        { duration: 1600 + Math.random() * 2600, easing: 'linear', fill: 'forwards' }
+      ).onfinish = () => e.remove();
     }
   }
 
@@ -164,24 +218,18 @@
 
     <div class="support">
       <button type="button" class="scard" onclick={sendLove}>
-        <span class="iconwrap">
-          <span class="icon" bind:this={heartEl}>
-            <svg viewBox="0 0 24 24" width="34" height="34" aria-hidden="true">
-              <path
-                d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
-                fill={heartColor || 'none'}
-                stroke={heartColor || 'currentColor'}
-                stroke-width="1.6"
-                stroke-linejoin="round"
-              />
-            </svg>
-          </span>
-          <span class="burstbox" bind:this={burstHost} aria-hidden="true"></span>
+        <span class="icon" bind:this={heartEl}>
+          <svg viewBox="0 0 24 24" width="34" height="34" aria-hidden="true">
+            <path
+              d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+              fill={heartColor || 'none'}
+              stroke={heartColor || 'currentColor'}
+              stroke-width="1.6"
+              stroke-linejoin="round"
+            />
+          </svg>
         </span>
-        <span class="slabel">¡Mándame amor!</span>
-        {#if loveCount !== null}
-          <span class="count" bind:this={countEl}>{loveCount.toLocaleString('es')}</span>
-        {/if}
+        <span class="slabel">{heartLabel}</span>
       </button>
 
       <a class="scard" href={COFFEE_URL} target="_blank" rel="noopener noreferrer">
@@ -196,6 +244,13 @@
       </a>
     </div>
 
+    {#if loveCount !== null}
+      <p class="lovecount">
+        <em>Amores</em> recibidos:
+        <span class="num" bind:this={numEl} style:color={heartColor || null}>{loveCount.toLocaleString('es')}</span>
+      </p>
+    {/if}
+
     <p class="fine">
       Proyecto independiente sin afiliación a ninguna organización. Cualquier
       marca es propiedad de sus respectivos titulares. Todo el contenido
@@ -205,6 +260,9 @@
 
     {#if version}<p class="fine ver">v{version}</p>{/if}
   </div>
+  <!-- Party layer: sibling of .modal (its transform would trap position:fixed
+       children and its overflow would clip the confetti). -->
+  <div class="party" bind:this={partyHost} aria-hidden="true"></div>
 {/if}
 
 <style>
@@ -297,7 +355,7 @@
     text-decoration-color: var(--accent);
   }
   /* Support row: two sober cards; the heart deliberately breaks the sobriety
-     when clicked (colour + confetti), the coffee card links out to BMC. */
+     when clicked (colour + full-screen party), the coffee card links to BMC. */
   .support {
     margin-top: 1rem;
     display: grid;
@@ -326,12 +384,9 @@
     border-color: #3f3f46;
     color: var(--text);
   }
-  .iconwrap {
-    position: relative;
-    display: inline-flex;
-  }
   .icon {
     display: inline-flex;
+    color: var(--accent);
   }
   .icon svg {
     display: block;
@@ -339,16 +394,25 @@
   .icon path {
     transition: fill 0.25s, stroke 0.25s;
   }
-  .burstbox {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
+  /* Counter line: same voice/size as the credits above; the number takes (and
+     keeps) the heart's current colour once clicked. */
+  .lovecount {
+    margin: 0.6rem 0 0;
+    font-size: 0.88rem;
+    line-height: 1.5;
+    color: #c4c4ca;
   }
-  .count {
-    font-size: 0.78rem;
-    color: var(--text-muted);
+  .num {
+    display: inline-block;
     font-variant-numeric: tabular-nums;
-    line-height: 1;
+    transition: color 0.25s;
+  }
+  .party {
+    position: fixed;
+    inset: 0;
+    z-index: 72;
+    pointer-events: none;
+    overflow: hidden;
   }
   .fine {
     margin: 1rem 0 0;

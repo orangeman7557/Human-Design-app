@@ -17,12 +17,10 @@
   },
   "observability": {
     "enabled": true
-  }
-  // Global "send love" counter (About modal → /api/love). Uncomment once the
-  // KV namespace exists (Cloudflare dashboard → Storage & Databases → KV →
-  // create namespace, e.g. "hd-love") and paste its id below. Until then the
-  // endpoint degrades gracefully and the counter is hidden in the UI.
-  // ,"kv_namespaces": [
-  //   { "binding": "LOVE", "id": "PASTE_NAMESPACE_ID_HERE" }
-  // ]
+  },
+  // Global "send love" counter (About modal → /api/love). KV namespace
+  // "hd-love", created 2026-07-03 in the Cloudflare dashboard.
+  "kv_namespaces": [
+    { "binding": "LOVE", "id": "93a9c82535d44143bd16b10147ddde29" }
+  ]
 }
