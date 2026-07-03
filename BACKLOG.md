@@ -70,6 +70,13 @@ Open (added 2026-07-02, author's batch — unverified, not yet triaged):
   `install.mode` is set (`beforeinstallprompt`, Chromium). Investigate Android
   install-eligibility criteria / timing, and confirm it was tested on the
   deployed HTTPS build (the SW isn't registered in dev).
+- ⬜ **"instalar como app" inconsistent between home and chart (author,
+  2026-07-03).** Repro: load the home, the link shows there; compute a chart
+  (navigate to `/chart`) and it's gone on that page. Both routes gate the link
+  on the same `install.mode` state (`beforeinstallprompt` listener), so either
+  the listener/prompt reference isn't carried across the navigation (SPA route
+  change) or the chart page's own install-eligibility check differs from the
+  home's. Investigate how `install.mode` is set up per-route.
 
 Fixed in the 2026-07-02 batch (from the author's batch above):
 
