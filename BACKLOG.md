@@ -52,6 +52,16 @@ without competing against a clone of the same code.
 
 Open (added 2026-07-02, author's batch — unverified, not yet triaged):
 
+- ⬜ **iOS: background scrolls behind the "acerca de" modal (betatester,
+  2026-07-03).** With the About popup open on iOS, scrolling "does odd
+  things": it scrolls the main page underneath instead of the popup
+  content. Classic iOS Safari scroll bleed-through — the fixed scrim
+  doesn't stop touchmove from reaching the page. Likely fix: lock body
+  scroll while any modal is open (e.g. `overflow: hidden` +
+  `position: fixed` on body, or `overscroll-behavior: contain` on the
+  modal). Applies to `About.svelte` and probably `ReportBug.svelte` /
+  `InitialReport.svelte` too — check all overlays.
+
 - ⬜ **PDF export title not centred.** In the export / PDF report, the title
   isn't centre-aligned — looks like something in the PNG/canvas generation step.
   (The PNG share export centres title+subtitle only in the export; check whether
@@ -109,7 +119,13 @@ Fixed in the 2026-07-02 batch (from the author's batch above):
   entry field (checkbox/range excluded) and `min-width:0` on the flex wrappers
   (`+page.svelte`, `CityAutocomplete.svelte`). Verified no regression in Chrome
   (375px + desktop); iOS not reproducible locally — **reopen if the betatester
-  still sees it on the deployed build.**
+  still sees it on the deployed build.** → REOPENED 2026-07-03: betatester still
+  saw the overflow on the deployed 1.0.0 build (fix confirmed present in the
+  live CSS, so it was insufficient on real iOS). Reinforced 2026-07-03:
+  `-webkit-appearance: none` + explicit `box-sizing: border-box` on all entry
+  fields strips the iOS UA sizing, plus a `::-webkit-date-and-time-value`
+  min-height so empty date/time fields don't collapse without native
+  appearance. **Pending betatester confirmation on device.**
 
 Fixed in the 2026-06-24 batch:
 

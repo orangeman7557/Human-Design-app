@@ -705,10 +705,25 @@
      date/time inputs (and any input without an explicit width) to their
      intrinsic width and, as flex items with min-width:auto, refuses to shrink
      them — so on a phone the date/time/place fields misalign and overflow the
-     form to the right. Checkbox and range keep their own sizing. */
+     form to the right. Checkbox and range keep their own sizing.
+     appearance:none + border-box strip the iOS UA sizing entirely: real
+     devices still overflowed with width/min-width alone (betatester, jul
+     2026); without native appearance iOS honours the authored width. */
   input:not([type='checkbox']):not([type='range']) {
     width: 100%;
     min-width: 0;
+    box-sizing: border-box;
+    -webkit-appearance: none;
+    appearance: none;
+    /* Uniform height: without native appearance each input type picks its
+       own; 2.75rem ≈ 44px, the iOS minimum tap-target size. */
+    height: 2.75rem;
+  }
+  /* iOS renders date/time values in a shadow div that collapses to zero
+     height when empty once appearance is stripped; keep a text line alive. */
+  input::-webkit-date-and-time-value {
+    min-height: 1.2em;
+    text-align: inherit;
   }
 
   /* Wrapper for date/time inputs: anchors the mobile-only centred value
