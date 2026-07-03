@@ -22,6 +22,7 @@
     setPreferredAngle
   } from '$lib/ai/handoff.js';
   import { renderInline } from '$lib/markup.js';
+  import { focusTrap } from './focus-trap.js';
 
   /**
    * @type {{
@@ -206,6 +207,7 @@
     role="dialog"
     aria-modal="true"
     aria-label={info.title}
+    use:focusTrap
     transition:fly={{ x: wide ? 460 : 0, y: wide ? 0 : 60, duration: 240, opacity: 1 }}
   >
     <div class="grabber" aria-hidden="true"></div>

@@ -9,7 +9,7 @@
 //
 // `install.mode` drives the UI:
 //   'prompt' → Chromium: call promptInstall()
-//   'ios'    → iOS Safari: show manual instructions
+//   'ios'    → any iOS browser: show manual instructions
 //   null     → nothing to offer (already installed, or unsupported browser)
 
 let deferred = null;
@@ -24,18 +24,20 @@ function isStandalone() {
   );
 }
 
-function isIosSafari() {
+// Any iOS browser (all are WebKit). Since iOS 16.4 Add to Home Screen is
+// available from the share menu in Chrome/Firefox/Edge too, not just Safari,
+// so the manual instructions apply to all of them (audit 2026-07-03, item 14).
+function isIos() {
   const ua = window.navigator.userAgent;
-  const iOS =
+  return (
     /iPad|iPhone|iPod/.test(ua) ||
     // iPadOS 13+ presents as desktop Safari; detect the touch Mac instead
-    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-  const otherIosBrowser = /CriOS|FxiOS|EdgiOS|OPiOS/.test(ua); // Chrome/FF/Edge/Opera on iOS
-  return iOS && /WebKit/.test(ua) && !otherIosBrowser;
+    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)
+  );
 }
 
 if (typeof window !== 'undefined' && !isStandalone()) {
-  if (isIosSafari()) install.mode = 'ios';
+  if (isIos()) install.mode = 'ios';
 
   window.addEventListener('beforeinstallprompt', (e) => {
     // Suppress the mini-infobar; we surface our own affordance instead.

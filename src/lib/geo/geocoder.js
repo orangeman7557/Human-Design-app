@@ -56,7 +56,11 @@ export async function searchPlaces(query, signal) {
 
   /** @type {{ features?: any[] }} */
   const json = await res.json();
-  const places = (json.features ?? []).map(toPlace).filter((p) => p.label);
+  // Features without a label or without real coordinates are dropped: NaN
+  // coords would make the timezone lookup throw when the place is picked.
+  const places = (json.features ?? [])
+    .map(toPlace)
+    .filter((p) => p.label && Number.isFinite(p.latitude) && Number.isFinite(p.longitude));
   return dedupeAndRank(places).slice(0, 6);
 }
 

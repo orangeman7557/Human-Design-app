@@ -216,54 +216,83 @@ This resolves the inconsistency found in the gate/channel state codas
 
 ### Medium
 
-- ⬜ **5. Validate + dedupe in `importCharts`** (`db/charts.js`): a malformed
-  JSON can add records missing date/time/timezone that only fail when opened;
-  importing the same file twice duplicates every chart.
-- ⬜ **6. Autocomplete: distinguish "no matches" from "service down"**, and
-  guard `toPlace` against features without geometry (NaN coords would make
-  `tzLookup` throw on pick) — `geo/geocoder.js`, `CityAutocomplete.svelte`.
-- ⬜ **7. Modal focus management** (extends the 2026-06-15 a11y item):
-  ElementInfo / About / ReportBug / InitialReport move no focus on open and
-  have no focus trap (Dialog already focuses); the place autocomplete has no
-  arrow-key navigation.
+- ✅ **5. Validate + dedupe in `importCharts` — DONE 2026-07-03.** Records
+  missing date/time/timezone are rejected (`invalid`), records identical to an
+  already saved chart (same name + birth data) are skipped (`duplicates`), and
+  the import dialog reports all three counts. Verified in the browser:
+  re-importing the same file imports 0.
+- ✅ **6. Autocomplete service errors + geometry guard — DONE 2026-07-03.**
+  A failed Photon call now shows "No se pudo buscar. Revisa tu conexión…"
+  instead of the misleading "Sin resultados"; features without real
+  coordinates are dropped in `geocoder.js` (NaN coords would make `tzLookup`
+  throw on pick).
+- ✅ **7. Modal focus management + autocomplete keyboard nav — DONE
+  2026-07-03.** New shared Svelte action `focusTrap`
+  (`src/lib/components/focus-trap.js`): moves focus into the overlay on open,
+  cycles Tab/Shift+Tab inside it, restores focus to the opener on close.
+  Applied to ElementInfo, InitialReport, About, ReportBug and Dialog (whose
+  own input/confirm focus still wins). The place autocomplete gained
+  ArrowUp/Down + Enter + Escape handling and combobox/listbox ARIA
+  (`aria-expanded`, `aria-activedescendant`, `role="option"`). Verified in the
+  browser (focus in/restore on About and the gate drawer; arrow+Enter picks
+  Madrid). Keyboard access for the channel/gate *chips* remains open under the
+  2026-06-15 a11y item.
 - ⬜ **Full text & prompt improvement pass with Fable (author request
   2026-07-03).** A dedicated review of *all* app texts and prompts to improve
   wording and quality (the author has spotted improvable spots). Distinct from
   the shipped correctness review: this one is about making the copy better,
-  and must respect the text-voice rule above.
+  and must respect the text-voice rule above. Include the small copy notes
+  from this audit (e.g. the mixed-language invalid-data error already
+  registered under "Possible improvements").
 
 ### Low
 
-- ⬜ **9. Sanitise `imageFileName()`** (chart page): a chart named e.g. "a/b"
-  produces an illegal filename for the PNG/PDF download.
-- ⬜ **10. Share-image errors show a misleading "No se pudo guardar:" prefix**
-  (they reuse `saveError`); give sharing its own message.
-- ⬜ **11. Back arrow / error state on `/chart` without history**: falls into
-  `history.back()` with nowhere to go (new tab); fall back to `goto('/')`, and
-  give the "No hay datos de nacimiento" state an explicit link home.
-- ⬜ **12. Saved-charts list shows the raw ISO date** (`1984-03-13 09:30`)
-  while the chart page formats it (`13/03/1984, 09:30`); unify.
+- ✅ **9. Sanitise `imageFileName()` — DONE 2026-07-03.** `safeFilePart`
+  replaces filename-illegal characters (`/ \ : * ? " < > |`) with a dash in
+  the chart name and city before composing the PNG/PDF filename.
+- ✅ **10. Share-image errors — DONE 2026-07-03.** Image/PDF export failures
+  now land in their own `shareError` state with accurate messages ("No se pudo
+  compartir la imagen / descargar la imagen / generar el PDF: …") instead of
+  reusing `saveError`'s "No se pudo guardar:" prefix.
+- ✅ **11. `/chart` without history — DONE 2026-07-03.** The back arrow falls
+  back to `goto('/')` when there is no history to go back to, and the "No hay
+  datos de nacimiento" error state shows an explicit "Volver al formulario"
+  link.
+- ✅ **12. Saved-charts list date — DONE 2026-07-03.** Now formatted like the
+  chart subtitle ("13/03/1984, 09:30"), not raw ISO.
 - ✅ **13. "Mental (sounding board)" label → Spanish — DONE 2026-07-03.** Now
   "Mental (ambiental)", matching the app's own authority texts ("mental/
   ambiental", "autoridad ambiental") in `es.js`.
-- ⬜ **14. iOS non-Safari browsers get no install affordance** though iOS
-  ≥16.4 supports Add to Home Screen from Chrome/Firefox; consider offering
-  the instructions dialog there too (`pwa/install.svelte.js`).
-- ⬜ **15. Untrack the two backup files** (`src/lib/hd/bodygraph-geometry.js.bak`,
-  `docs/bodygraph-reference-coordinates-backup.txt`) — `.wrangler/` is already
-  ignored, so that half of the 2026-06-15 hygiene item is done.
-- ⬜ **16. Security headers via `static/_headers`** (basic CSP,
-  `X-Content-Type-Options`…) — concretises the 2026-06-15 note.
-- ⬜ **17. Offline quirk: reloading `/chart` with no network serves the
-  prerendered home HTML under the `/chart` URL** (the SW's navigation
-  fallback caches `/`). Document as a limitation or serve a neutral shell.
-- ⬜ **18. Install-prompt dismissal hides the link until reload**
-  (`install.mode` is nulled after a dismissed native prompt); acceptable, but
-  could keep offering it.
-
-Other small copy notes from the pass (fold into the Fable text pass): the
-share-error prefix (10), the mixed-language invalid-data error already
-registered under "Possible improvements".
+- ✅ **14. iOS non-Safari install affordance — DONE 2026-07-03.** `install.mode
+  = 'ios'` now covers every iOS browser (all WebKit; iOS ≥16.4 offers Add to
+  Home Screen from Chrome/Firefox/Edge too), and the instructions dialog says
+  "el menú de compartir del navegador" instead of naming Safari. Not
+  verifiable locally — **check on a real iPhone after deploy.**
+- ✅ **15. Backup files untracked — DONE 2026-07-03.**
+  `bodygraph-geometry.js.bak` and `docs/…-backup.txt` removed from git
+  (history keeps them); `.gitignore` gained `*.bak` + the docs backup.
+- ✅ **16. Security headers — PARTIALLY DONE 2026-07-03.** New
+  `static/_headers` with the safe baseline (`X-Content-Type-Options: nosniff`,
+  `Referrer-Policy`, `X-Frame-Options: SAMEORIGIN`, `Permissions-Policy`).
+  Note: Cloudflare applies `_headers` to **static assets only** (the
+  prerendered `/` and `/privacy`; `/chart` runs through the worker), and
+  SvelteKit's service worker had to stop precaching it
+  (`kit.serviceWorker.files` filter in `svelte.config.js` — Cloudflare
+  consumes `_headers` without serving it, so precaching would 404 and abort
+  the SW install; verified excluded in the build). **A real CSP is deferred**:
+  it needs SvelteKit's `kit.csp` (hashed inline scripts) + careful testing
+  against the worker — do it as its own task, not blind.
+- ✅ **17. Offline navigation fallback — IMPROVED 2026-07-03.** The SW now
+  precaches `/privacy` alongside `/`, and offline navigations to any other URL
+  **redirect to `/`** instead of serving the home HTML under a foreign URL
+  (e.g. `/chart`). Known remaining limitation: offline, the chart itself isn't
+  restorable by URL — the user lands on the (fully functional) home. Not
+  verifiable in dev (the SW only registers in production builds) — **smoke-test
+  offline after deploy.**
+- ✅ **18. Install-prompt dismissal — REVIEWED 2026-07-03, no change.** Hiding
+  the link after a dismissed prompt matches platform guidance: the captured
+  `beforeinstallprompt` event cannot be reused after `prompt()`, and Chromium
+  re-fires it on a later visit (the listener then re-shows the link).
 
 ## Audit 2026-06-15 — improvement proposals (UNCONFIRMED)
 

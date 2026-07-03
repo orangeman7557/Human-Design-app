@@ -91,26 +91,49 @@ export async function exportCharts() {
 /**
  * Import charts from an exported JSON string. Appends as new records at
  * the end of the list (ignores incoming ids to avoid collisions).
+ *
+ * Records missing the fields computeChart needs (date/time/timezone) are
+ * rejected instead of stored broken, and records identical to an already
+ * saved chart (same name + birth data) are skipped, so re-importing the
+ * same file doesn't duplicate the whole list. (Audit 2026-07-03.)
  * @param {string} json
- * @returns {Promise<number>} number of charts imported
+ * @returns {Promise<{ imported: number, duplicates: number, invalid: number }>}
  */
 export async function importCharts(json) {
   const data = JSON.parse(json);
   if (!data || !Array.isArray(data.charts)) {
     throw new Error('El archivo no tiene el formato esperado.');
   }
-  let count = 0;
+  const validBirth = (b) =>
+    b && typeof b === 'object' &&
+    typeof b.date === 'string' && typeof b.time === 'string' && typeof b.timezone === 'string';
+  const key = (name, b) => [name, b.date, b.time, b.timezone, b.placeLabel ?? ''].join('|');
+  const existing = new Set(
+    (await db.charts.toArray()).filter((c) => validBirth(c.birth)).map((c) => key(c.name, c.birth))
+  );
+  let imported = 0;
+  let duplicates = 0;
+  let invalid = 0;
   const base = Date.now();
   for (const c of data.charts) {
-    if (!c || typeof c.name !== 'string' || !c.birth) continue;
+    if (!c || typeof c.name !== 'string' || !validBirth(c.birth)) {
+      invalid++;
+      continue;
+    }
+    const k = key(c.name, c.birth);
+    if (existing.has(k)) {
+      duplicates++;
+      continue;
+    }
+    existing.add(k);
     await db.charts.add({
       name: c.name,
       createdAt: typeof c.createdAt === 'string' ? c.createdAt : new Date().toISOString(),
-      sortOrder: base + count,
+      sortOrder: base + imported,
       birth: c.birth,
       type: typeof c.type === 'string' ? c.type : undefined
     });
-    count++;
+    imported++;
   }
-  return count;
+  return { imported, duplicates, invalid };
 }

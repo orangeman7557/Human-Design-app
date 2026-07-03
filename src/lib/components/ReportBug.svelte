@@ -5,6 +5,7 @@
 <!-- and suggestions via a small type toggle. Modal chrome mirrors About.svelte. -->
 <script>
   import { fade, fly } from 'svelte/transition';
+  import { focusTrap } from './focus-trap.js';
 
   /** @type {{ version?: string }} */
   let { version = '' } = $props();
@@ -102,7 +103,7 @@
 
 {#if open}
   <div class="scrim" onclick={close} role="presentation" transition:fade={{ duration: 120 }}></div>
-  <div class="modal" role="dialog" aria-modal="true" aria-label="Notificar un fallo o sugerencia" transition:fly={{ y: 12, duration: 180 }}>
+  <div class="modal" role="dialog" aria-modal="true" aria-label="Notificar un fallo o sugerencia" use:focusTrap transition:fly={{ y: 12, duration: 180 }}>
     <header>
       <h2>Notificar un fallo o enviar una sugerencia</h2>
       <button class="close" type="button" onclick={close} aria-label="Cerrar">✕</button>
