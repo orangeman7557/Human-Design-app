@@ -989,6 +989,8 @@ About-modal actions (report-a-bug, donations).
 - Donations → **Ko-fi** ("invítame a un café"; 0% platform fee, connects PayPal/Stripe).
   **Non-blocking for 1.0** — may ship after. Voluntary tips don't conflict with the
   PolyForm Noncommercial license (no sale, no paywall; keep the "voluntary support" framing).
+  **Switched 2026-07-03: the author opened a Buy Me a Coffee account instead**
+  (`buymeacoffee.com/orangeman7557`); same voluntary-support framing applies.
 - 1.0 is **web-only**. Play Store next, Apple after.
 
 **Ordered checklist:**
@@ -1013,6 +1015,20 @@ About-modal actions (report-a-bug, donations).
    (Redirect Rule or a second Custom Domain) so the `www` subdomain resolves.
 4. **Report a bug** — wire the deferred "Reportar un fallo" (`About.svelte`) to Web3Forms.
 5. **Donations (optional, may ship post-1.0)** — wire "Invítame a un café" to Ko-fi.
+   **Done 2026-07-03 (as Buy Me a Coffee)**: the About modal gained a support row
+   with two sober cards — a "¡Mándame amor!" heart (click → colour-cycling fill,
+   WAAPI pop, ~12 confetti particles, and a global click counter that bumps as part
+   of the animation; rapid re-clicks welcome, batched into one POST after 900 ms)
+   and "Invítame a un café" → `buymeacoffee.com/orangeman7557`. The counter is the
+   app's first server endpoint, `/api/love` (GET/POST), backed by a Cloudflare KV
+   namespace (binding `LOVE`). Graceful degradation: no KV / offline → `count: null`
+   → the counter hides; the heart never needs the network; `prefers-reduced-motion`
+   skips the animations. **Pending: create the KV namespace in the Cloudflare
+   dashboard (Storage & Databases → KV) and paste its id in `wrangler.jsonc`**
+   (the binding ships commented out so deploys don't break meanwhile). Known
+   trade-off, fine for a love counter: KV read-modify-write can drop a few counts
+   under simultaneous clicks from different visitors (no atomic increment in KV;
+   Durable Objects would fix it if it ever matters).
 6. **Privacy policy** — a simple page; both stores require one, and it's trivial here
    (nothing leaves the device; local-only storage).
    **Done 2026-07-03**: prerendered page at `/privacy` (`src/routes/privacy/`),

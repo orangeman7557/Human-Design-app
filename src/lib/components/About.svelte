@@ -1,7 +1,8 @@
 <!-- AI-authored — "acerca de" footer link + light info modal (Phase 6.F). -->
 <!-- A discreet, underlined footer link opens a compact modal: a few credit / -->
 <!-- license lines plus minimal disclaimers (kept mainly for the US market). -->
-<!-- "Reportar un fallo" and "donar / invitar a un café" are deferred (BACKLOG). -->
+<!-- "Reportar un fallo" lives in its own footer link; the support row (send -->
+<!-- love + buy me a coffee) was added closing Phase L (jul 2026). -->
 <script>
   import { fade, fly } from 'svelte/transition';
   import { focusTrap } from './focus-trap.js';
@@ -12,12 +13,122 @@
    *   onElement?: (kind: string, key: string) => void
    * }}
    * onElement (chart page only) opens an element's drawer — used by the
-   * "Manifestor" link. Where it's not provided (home page, no drawer system)
+   * "Manifestador" link. Where it's not provided (home page, no drawer system)
    * the word renders as plain text.
    */
   let { onElement, version = '' } = $props();
 
   let open = $state(false);
+
+  const COFFEE_URL = 'https://buymeacoffee.com/orangeman7557';
+
+  // "Send love": each click pops the heart, cycles it through vivid colours,
+  // fires a small confetti burst and bumps a global counter kept in
+  // Cloudflare KV (/api/love). The animation is fully local — if the API is
+  // unreachable (offline, KV not provisioned) the counter simply hides.
+  const BURST_COLORS = ['#e84672', '#d4a657', '#8e6cf0', '#6ec48a', '#5aa9e6', '#e8788a'];
+
+  /** @type {number | null} global click count; null = unknown → counter hidden */
+  let loveCount = $state(null);
+  let heartColor = $state('');
+  let clicks = 0;
+  let pending = 0;
+  let flushTimer;
+  let heartEl;
+  let burstHost;
+  let countEl;
+
+  const reducedMotion =
+    typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  $effect(() => {
+    if (open) loadCount();
+  });
+
+  async function loadCount() {
+    try {
+      const res = await fetch('/api/love');
+      const data = await res.json();
+      if (typeof data.count === 'number') loveCount = data.count;
+    } catch {
+      // offline or counter not provisioned — the heart still works
+    }
+  }
+
+  // Clicks are batched (900 ms of quiet) so a burst of taps is one request.
+  function flushLater() {
+    clearTimeout(flushTimer);
+    flushTimer = setTimeout(async () => {
+      const n = pending;
+      pending = 0;
+      try {
+        const res = await fetch('/api/love', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ n })
+        });
+        const data = await res.json();
+        if (typeof data.count === 'number' && data.count > (loveCount ?? 0)) loveCount = data.count;
+      } catch {
+        // keep the optimistic local count
+      }
+    }, 900);
+  }
+
+  function sendLove() {
+    const color = BURST_COLORS[clicks++ % BURST_COLORS.length];
+    heartColor = color;
+    if (loveCount !== null) loveCount += 1;
+    pending += 1;
+    flushLater();
+    if (reducedMotion) return;
+    heartEl?.animate(
+      [
+        { transform: 'scale(1)' },
+        { transform: 'scale(1.35) rotate(-7deg)', offset: 0.35 },
+        { transform: 'scale(0.94)', offset: 0.7 },
+        { transform: 'scale(1)' }
+      ],
+      { duration: 450, easing: 'ease-out' }
+    );
+    countEl?.animate(
+      [
+        { transform: 'translateY(0.45em) scale(1.25)', color, opacity: 0.3 },
+        { transform: 'translateY(0) scale(1)', opacity: 1 }
+      ],
+      { duration: 420, easing: 'ease-out' }
+    );
+    burst(color);
+  }
+
+  // Particles are plain spans styled inline (Svelte scoping can't reach
+  // JS-created nodes) and removed as soon as their animation ends.
+  function burst(baseColor) {
+    if (!burstHost) return;
+    const N = 12;
+    for (let i = 0; i < N; i++) {
+      const p = document.createElement('span');
+      const color = i % 3 === 0 ? baseColor : BURST_COLORS[(Math.random() * BURST_COLORS.length) | 0];
+      const size = 4 + Math.random() * 5;
+      const round = Math.random() < 0.4;
+      p.style.cssText = `position:absolute;left:50%;top:50%;width:${size}px;height:${size}px;background:${color};border-radius:${round ? '50%' : '2px'};pointer-events:none;`;
+      burstHost.appendChild(p);
+      const angle = (i / N) * 2 * Math.PI + Math.random() * 0.6;
+      const dist = 34 + Math.random() * 32;
+      const dx = Math.cos(angle) * dist;
+      const dy = Math.sin(angle) * dist - 10;
+      p.animate(
+        [
+          { transform: 'translate(-50%, -50%) scale(1)', opacity: 1 },
+          {
+            transform: `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px)) scale(0.3) rotate(${(Math.random() * 260 - 130) | 0}deg)`,
+            opacity: 0
+          }
+        ],
+        { duration: 620 + Math.random() * 240, easing: 'cubic-bezier(0.15, 0.6, 0.3, 1)', fill: 'forwards' }
+      ).onfinish = () => p.remove();
+    }
+  }
 
   function openElement(kind, key) {
     open = false;
@@ -44,11 +155,45 @@
     <div class="facts">
       <p>Proyecto source-available, <strong>gratis para uso no comercial</strong>. (PolyForm Noncommercial 1.0.0)</p>
       <p>
-        Creado por Javi G.O. con asistencia de IA, sin ánimo de lucro y sin
-        ánimo de nada, lo creé porque me dio la gana, como buen
-        {#if onElement}<button type="button" class="tlink" onclick={() => openElement('type', 'manifestor')}>Manifestor</button>{:else}Manifestor{/if} que soy :)
+        App creada por Javi G.O. con asistencia de IA, sin ánimo de lucro y sin
+        ánimo de nada, la creé porque me dio la gana, como buen
+        {#if onElement}<button type="button" class="tlink" onclick={() => openElement('type', 'manifestor')}>Manifestador</button>{:else}Manifestador{/if} que soy :)
       </p>
-      <p>Ojalá que te sea útil. ¡Que vivas bien y feliz!</p>
+      <p>Ojalá que te sea útil, ¡y que vivas bien y feliz con tu diseño, querido humano!</p>
+    </div>
+
+    <div class="support">
+      <button type="button" class="scard" onclick={sendLove}>
+        <span class="iconwrap">
+          <span class="icon" bind:this={heartEl}>
+            <svg viewBox="0 0 24 24" width="34" height="34" aria-hidden="true">
+              <path
+                d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+                fill={heartColor || 'none'}
+                stroke={heartColor || 'currentColor'}
+                stroke-width="1.6"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </span>
+          <span class="burstbox" bind:this={burstHost} aria-hidden="true"></span>
+        </span>
+        <span class="slabel">¡Mándame amor!</span>
+        {#if loveCount !== null}
+          <span class="count" bind:this={countEl}>{loveCount.toLocaleString('es')}</span>
+        {/if}
+      </button>
+
+      <a class="scard" href={COFFEE_URL} target="_blank" rel="noopener noreferrer">
+        <span class="icon">
+          <svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M4 10h12v5.5a4.5 4.5 0 0 1-4.5 4.5h-3A4.5 4.5 0 0 1 4 15.5V10z" />
+            <path d="M16 11.5h1.5a2.75 2.75 0 0 1 0 5.5H16" />
+            <path d="M7.5 7V5.5M10 7V5M12.5 7V5.5" />
+          </svg>
+        </span>
+        <span class="slabel">Invítame a un café</span>
+      </a>
     </div>
 
     <p class="fine">
@@ -134,7 +279,7 @@
   .facts strong {
     font-weight: 600;
   }
-  /* "Manifestor" link → opens the type drawer (chart page only). Subtle
+  /* "Manifestador" link → opens the type drawer (chart page only). Subtle
      underline, like the in-text links elsewhere. */
   .tlink {
     background: none;
@@ -150,6 +295,60 @@
   .tlink:hover {
     color: var(--text);
     text-decoration-color: var(--accent);
+  }
+  /* Support row: two sober cards; the heart deliberately breaks the sobriety
+     when clicked (colour + confetti), the coffee card links out to BMC. */
+  .support {
+    margin-top: 1rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem;
+  }
+  .scard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.45rem;
+    padding: 0.85rem 0.5rem 0.75rem;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text-muted);
+    font: inherit;
+    font-size: 0.82rem;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: border-color 0.15s, color 0.15s;
+  }
+  .scard:hover {
+    border-color: #3f3f46;
+    color: var(--text);
+  }
+  .iconwrap {
+    position: relative;
+    display: inline-flex;
+  }
+  .icon {
+    display: inline-flex;
+  }
+  .icon svg {
+    display: block;
+  }
+  .icon path {
+    transition: fill 0.25s, stroke 0.25s;
+  }
+  .burstbox {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .count {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
   }
   .fine {
     margin: 1rem 0 0;
