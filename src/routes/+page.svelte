@@ -644,7 +644,9 @@
     position: relative;
     max-width: 460px;
     margin: 0 auto;
-    padding: 3rem 1.25rem 4rem;
+    /* 1.75rem side air (author request 2026-07-03): fields and CTA breathe
+       instead of running near the phone edge; only visible below max-width. */
+    padding: 3rem 1.75rem 4rem;
     min-height: 100vh;
     display: flex;
     flex-direction: column;

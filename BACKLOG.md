@@ -125,7 +125,11 @@ Fixed in the 2026-07-02 batch (from the author's batch above):
   `-webkit-appearance: none` + explicit `box-sizing: border-box` on all entry
   fields strips the iOS UA sizing, plus a `::-webkit-date-and-time-value`
   min-height so empty date/time fields don't collapse without native
-  appearance. **Pending betatester confirmation on device.**
+  appearance. **CONFIRMED by the betatester on device 2026-07-03** — no
+  overflow. (Their confirmation screenshot looked edge-to-edge, but that was
+  ~110% pinch-zoom cropping the margins; measured against their first
+  screenshot the real 20px side padding was intact. The author asked for more
+  side air anyway: `main` padding-inline bumped 1.25rem → 1.75rem same day.)
 
 Fixed in the 2026-06-24 batch:
 
