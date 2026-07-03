@@ -13,6 +13,7 @@
   import InfoDot from '$lib/components/InfoDot.svelte';
   import About from '$lib/components/About.svelte';
   import ReportBug from '$lib/components/ReportBug.svelte';
+  import { install, promptInstall } from '$lib/pwa/install.svelte.js';
   import { dialog } from '$lib/components/dialog.svelte.js';
   import { cityCountry } from '$lib/geo/place.js';
   import { getElementInfo, getProfileInfo, getGateInfo, getChannelInfo, getConceptInfo, getActivationWeight } from '$lib/hd/content/index.js';
@@ -86,7 +87,7 @@
     splenic: 'Bazo (intuición)',
     ego: 'Ego (corazón)',
     'self-projected': 'Autoproyectada (G-Garganta)',
-    mental: 'Mental (sounding board)',
+    mental: 'Mental (ambiental)',
     lunar: 'Lunar'
   };
 
@@ -645,6 +646,20 @@
   function back() {
     history.back();
   }
+
+  // "instalar como app" footer link — same behaviour as the home's: Chromium
+  // fires the captured native prompt, iOS Safari gets manual instructions.
+  async function onInstallClick() {
+    if (install.mode === 'prompt') {
+      await promptInstall();
+    } else if (install.mode === 'ios') {
+      await dialog.alert({
+        title: 'Instalar como app',
+        message:
+          'Abre el menú Compartir de Safari y elige "Añadir a pantalla de inicio".'
+      });
+    }
+  }
 </script>
 
 <svelte:head>
@@ -1098,6 +1113,10 @@
     </section>
 
     <footer>
+      {#if install.mode}
+        <button class="install-link" type="button" onclick={onInstallClick}>instalar como app</button>
+        <span aria-hidden="true">·</span>
+      {/if}
       <ReportBug version={version} />
       <span aria-hidden="true">·</span>
       <a class="foot-link" href="/privacy">privacidad</a>
@@ -1508,6 +1527,19 @@
     text-decoration: none;
   }
   .foot-link:hover {
+    color: var(--text-muted);
+  }
+  /* Footer "instalar como app" link, matching the home's. */
+  .install-link {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+  }
+  .install-link:hover {
     color: var(--text-muted);
   }
   .cc {

@@ -70,13 +70,10 @@ Open (added 2026-07-02, author's batch — unverified, not yet triaged):
   `install.mode` is set (`beforeinstallprompt`, Chromium). Investigate Android
   install-eligibility criteria / timing, and confirm it was tested on the
   deployed HTTPS build (the SW isn't registered in dev).
-- ⬜ **"instalar como app" inconsistent between home and chart (author,
-  2026-07-03).** Repro: load the home, the link shows there; compute a chart
-  (navigate to `/chart`) and it's gone on that page. Both routes gate the link
-  on the same `install.mode` state (`beforeinstallprompt` listener), so either
-  the listener/prompt reference isn't carried across the navigation (SPA route
-  change) or the chart page's own install-eligibility check differs from the
-  home's. Investigate how `install.mode` is set up per-route.
+- ✅ **"instalar como app" inconsistent between home and chart (author,
+  2026-07-03) — FIXED 2026-07-03.** Root cause: the chart page simply never
+  rendered the footer install link — `install.mode` carries across SPA
+  navigation fine. Fixed as item 2 of the 2026-07-03 audit (see below).
 - ⬜ **Personality/Design/Peso tooltips invisible on desktop (author,
   2026-07-03).** In the activations table header, hovering "Personality",
   "Design" or "Peso" shows the `?` cursor (so the `data-tip` hover is firing)
@@ -163,6 +160,110 @@ Fixed in the second 2026-06-11 batch (Phase 5 close):
 - ✅ **Mobile form centring.** Labels, field text and the unknown-time
   checkbox centred on mobile; the checkbox sits below the time field
   there (top-right of the field label on desktop, as before).
+
+## Audit 2026-07-03 — full-app audit (triaged with the author)
+
+Second external-style audit pass (the first was 2026-06-15), covering concept,
+calculation, UX, PWA/offline, robustness, accessibility, code health and repo
+hygiene. Headline: **no new grave bugs**; the calculation core is solid (the
+type/authority derivation was re-verified by hand, including the subtle
+self-projected case). The list below was triaged and accepted by the author
+2026-07-03. One finding was **deliberately excluded** from the list:
+`Bodygraph.svelte` computes activation state once at mount (not reactively
+from the `chart` prop) — fine today, and transits/composite may well be new
+pages rather than live updates of `/chart`, so nothing to prepare now.
+
+### Decision log — text voice (2026-07-03)
+
+**Rule:** the **initial report** (and its PDF) speaks in the **second person**
+— it is a document addressed to the chart's owner, like a printed reading, so
+the "tú" is correct even when someone else generates it. **Everything else**
+(drawers, prompts, tooltips) stays **impersonal** — it is reference material
+for the *viewer*, who may be looking at someone else's saved chart. Lines that
+describe the on-screen chart's state say **"esta carta"**, never "tu carta".
+Conscious exception: the report's closing handoff prompt is first person
+("Según el Diseño Humano soy…") because it lives inside the document frame.
+This resolves the inconsistency found in the gate/channel state codas
+(`content/index.js`), which were second person.
+
+### High
+
+- ✅ **1. Tests: freeze reference charts for the untested types/authorities —
+  DONE 2026-07-03.** Six self-frozen regression anchors added to
+  `chart.test.js` (headline values + centres + channels), covering Generator,
+  MG and Projector and the sacral / splenic / ego / self-projected / mental
+  authorities — with the two externally-validated charts, all 5 types and all
+  7 authorities are now pinned. 22/22 tests. (The anchors freeze current
+  behaviour; only the two original charts are externally verified.)
+- ✅ **2. "instalar como app" link missing from the chart page footer — DONE
+  2026-07-03.** Root cause of the registered inconsistency bug confirmed by
+  code: the chart footer simply never rendered the `{#if install.mode}` block
+  the home has — not a `beforeinstallprompt` timing issue. Added the link with
+  the same handler (native prompt on Chromium, iOS instructions dialog),
+  first in the footer like the home. Verified in the browser by dispatching a
+  synthetic `beforeinstallprompt`.
+- ✅ **3. Update CLAUDE.md to reality — DONE 2026-07-03.** §1 now describes
+  the shipped installability + basic offline; §3's tree gained
+  `service-worker.js`, `pwa/install.svelte.js`, `report-pdf.js`, `privacy/`,
+  About/ReportBug and the static assets; §4 records the text-voice rule and
+  the real test coverage; §6 gained the Phase L summary and drops the stale
+  "text review pending" notes (gate closed 2026-07-02).
+- ✅ **4. Gate/channel state codas → impersonal ("esta carta") — DONE
+  2026-07-03.** The 6 coda templates in `content/index.js` now follow the
+  voice rule ("En esta carta forma parte…", "No está activa en esta carta…",
+  etc.). Verified in the browser for the three gate states and a complete
+  channel.
+
+### Medium
+
+- ⬜ **5. Validate + dedupe in `importCharts`** (`db/charts.js`): a malformed
+  JSON can add records missing date/time/timezone that only fail when opened;
+  importing the same file twice duplicates every chart.
+- ⬜ **6. Autocomplete: distinguish "no matches" from "service down"**, and
+  guard `toPlace` against features without geometry (NaN coords would make
+  `tzLookup` throw on pick) — `geo/geocoder.js`, `CityAutocomplete.svelte`.
+- ⬜ **7. Modal focus management** (extends the 2026-06-15 a11y item):
+  ElementInfo / About / ReportBug / InitialReport move no focus on open and
+  have no focus trap (Dialog already focuses); the place autocomplete has no
+  arrow-key navigation.
+- ⬜ **Full text & prompt improvement pass with Fable (author request
+  2026-07-03).** A dedicated review of *all* app texts and prompts to improve
+  wording and quality (the author has spotted improvable spots). Distinct from
+  the shipped correctness review: this one is about making the copy better,
+  and must respect the text-voice rule above.
+
+### Low
+
+- ⬜ **9. Sanitise `imageFileName()`** (chart page): a chart named e.g. "a/b"
+  produces an illegal filename for the PNG/PDF download.
+- ⬜ **10. Share-image errors show a misleading "No se pudo guardar:" prefix**
+  (they reuse `saveError`); give sharing its own message.
+- ⬜ **11. Back arrow / error state on `/chart` without history**: falls into
+  `history.back()` with nowhere to go (new tab); fall back to `goto('/')`, and
+  give the "No hay datos de nacimiento" state an explicit link home.
+- ⬜ **12. Saved-charts list shows the raw ISO date** (`1984-03-13 09:30`)
+  while the chart page formats it (`13/03/1984, 09:30`); unify.
+- ✅ **13. "Mental (sounding board)" label → Spanish — DONE 2026-07-03.** Now
+  "Mental (ambiental)", matching the app's own authority texts ("mental/
+  ambiental", "autoridad ambiental") in `es.js`.
+- ⬜ **14. iOS non-Safari browsers get no install affordance** though iOS
+  ≥16.4 supports Add to Home Screen from Chrome/Firefox; consider offering
+  the instructions dialog there too (`pwa/install.svelte.js`).
+- ⬜ **15. Untrack the two backup files** (`src/lib/hd/bodygraph-geometry.js.bak`,
+  `docs/bodygraph-reference-coordinates-backup.txt`) — `.wrangler/` is already
+  ignored, so that half of the 2026-06-15 hygiene item is done.
+- ⬜ **16. Security headers via `static/_headers`** (basic CSP,
+  `X-Content-Type-Options`…) — concretises the 2026-06-15 note.
+- ⬜ **17. Offline quirk: reloading `/chart` with no network serves the
+  prerendered home HTML under the `/chart` URL** (the SW's navigation
+  fallback caches `/`). Document as a limitation or serve a neutral shell.
+- ⬜ **18. Install-prompt dismissal hides the link until reload**
+  (`install.mode` is nulled after a dismissed native prompt); acceptable, but
+  could keep offering it.
+
+Other small copy notes from the pass (fold into the Fable text pass): the
+share-error prefix (10), the mixed-language invalid-data error already
+registered under "Possible improvements".
 
 ## Audit 2026-06-15 — improvement proposals (UNCONFIRMED)
 
