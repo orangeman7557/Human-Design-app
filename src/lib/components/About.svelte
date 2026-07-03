@@ -4,6 +4,7 @@
 <!-- "Reportar un fallo" and "donar / invitar a un café" are deferred (BACKLOG). -->
 <script>
   import { fade, fly } from 'svelte/transition';
+  import { focusTrap } from './focus-trap.js';
 
   /**
    * @type {{
@@ -34,7 +35,7 @@
 
 {#if open}
   <div class="scrim" onclick={() => (open = false)} role="presentation" transition:fade={{ duration: 120 }}></div>
-  <div class="modal" role="dialog" aria-modal="true" aria-label="Acerca de" transition:fly={{ y: 12, duration: 180 }}>
+  <div class="modal" role="dialog" aria-modal="true" aria-label="Acerca de" use:focusTrap transition:fly={{ y: 12, duration: 180 }}>
     <header>
       <h2>Acerca de</h2>
       <button class="close" type="button" onclick={() => (open = false)} aria-label="Cerrar">✕</button>

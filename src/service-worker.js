@@ -16,12 +16,14 @@ self.addEventListener('install', (event) => {
     (async () => {
       const cache = await caches.open(CACHE);
       await cache.addAll(ASSETS);
-      // The SPA entry shell isn't in build/files; fetch it so offline
-      // navigations have something to fall back to. Non-fatal if it fails.
-      try {
-        await cache.add('/');
-      } catch {
-        // ignore — install must still succeed
+      // The prerendered pages aren't in build/files; fetch them so offline
+      // navigations have something to serve. Non-fatal if any fails.
+      for (const page of ['/', '/privacy']) {
+        try {
+          await cache.add(page);
+        } catch {
+          // ignore — install must still succeed
+        }
       }
       await self.skipWaiting();
     })()
@@ -54,7 +56,10 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Navigations: network-first (fresh content online), cached shell offline.
+  // Navigations: network-first (fresh content online). Offline, serve the
+  // page itself if cached ('/' and '/privacy'); any other URL redirects to
+  // the home so its HTML never renders under a foreign URL (e.g. /chart) —
+  // the redirect lands on '/', which this same handler then serves from cache.
   if (request.mode === 'navigate') {
     event.respondWith(
       (async () => {
@@ -62,8 +67,10 @@ self.addEventListener('fetch', (event) => {
           return await fetch(request);
         } catch {
           const cache = await caches.open(CACHE);
-          const fallback = (await cache.match('/')) || (await cache.match(request));
-          return fallback || Response.error();
+          const cached = await cache.match(request);
+          if (cached) return cached;
+          if (url.pathname !== '/') return Response.redirect('/', 303);
+          return Response.error();
         }
       })()
     );

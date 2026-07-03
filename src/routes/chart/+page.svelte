@@ -429,11 +429,15 @@
   let pdfShot = $state(false);
 
   // "nombre carta YYYY-MM-DD-HHMM-ciudad.png" — city = placeLabel up to
-  // the first comma.
+  // the first comma. Characters that are illegal in filenames (a chart named
+  // "a/b" would break the download) are replaced with a dash.
+  function safeFilePart(s) {
+    return s.replace(/[/\\:*?"<>|]/g, '-').replace(/\s+/g, ' ').trim();
+  }
   function imageFileName() {
-    const name = (birthData?.name || 'carta').trim();
+    const name = safeFilePart(birthData?.name || 'carta');
     const time = (birthData?.time || '').replace(':', '');
-    const place = (birthData?.placeLabel || '').split(',')[0].trim();
+    const place = safeFilePart((birthData?.placeLabel || '').split(',')[0]);
     const tail = [birthData?.date, time, place].filter(Boolean).join('-');
     return [name, tail].filter(Boolean).join(' ') + '.png';
   }
@@ -515,9 +519,15 @@
     URL.revokeObjectURL(url);
   }
 
+  // Image/PDF export errors get their own state: they used to land in
+  // saveError, which renders with a misleading "No se pudo guardar:" prefix.
+  /** @type {string | null} */
+  let shareError = $state(null);
+
   async function share() {
     if (!captureEl || sharing) return;
     sharing = true;
+    shareError = null;
     try {
       const blob = await captureBlob();
       const file = new File([blob], imageFileName(), { type: 'image/png' });
@@ -529,7 +539,7 @@
       }
     } catch (e) {
       if (e?.name !== 'AbortError') {
-        saveError = e instanceof Error ? e.message : String(e);
+        shareError = `No se pudo compartir la imagen: ${e instanceof Error ? e.message : String(e)}`;
       }
     } finally {
       sharing = false;
@@ -539,10 +549,11 @@
   async function download() {
     if (!captureEl || sharing) return;
     sharing = true;
+    shareError = null;
     try {
       downloadBlob(await captureBlob());
     } catch (e) {
-      saveError = e instanceof Error ? e.message : String(e);
+      shareError = `No se pudo descargar la imagen: ${e instanceof Error ? e.message : String(e)}`;
     } finally {
       sharing = false;
     }
@@ -577,6 +588,7 @@
   async function downloadReportPdf({ sections }) {
     if (!captureEl || sharing) return;
     sharing = true;
+    shareError = null;
     pdfShot = true;
     try {
       const cover = await blobToImage(await captureBlob({ summaryOnly: true }));
@@ -584,7 +596,7 @@
       const pdf = await buildReportPdf({ image: cover, sections });
       downloadBlob(pdf, imageFileName().replace(/\.png$/i, '.pdf'));
     } catch (e) {
-      saveError = e instanceof Error ? e.message : String(e);
+      shareError = `No se pudo generar el PDF: ${e instanceof Error ? e.message : String(e)}`;
     } finally {
       sharing = false;
       pdfShot = false;
@@ -644,11 +656,14 @@
   });
 
   function back() {
-    history.back();
+    // Opened directly (new tab, shared URL) there is no in-app history to go
+    // back to — go home instead of doing nothing or leaving the site.
+    if (history.length > 1) history.back();
+    else goto('/');
   }
 
   // "instalar como app" footer link — same behaviour as the home's: Chromium
-  // fires the captured native prompt, iOS Safari gets manual instructions.
+  // fires the captured native prompt, iOS browsers get manual instructions.
   async function onInstallClick() {
     if (install.mode === 'prompt') {
       await promptInstall();
@@ -656,7 +671,7 @@
       await dialog.alert({
         title: 'Instalar como app',
         message:
-          'Abre el menú Compartir de Safari y elige "Añadir a pantalla de inicio".'
+          'Abre el menú de compartir del navegador y elige "Añadir a pantalla de inicio".'
       });
     }
   }
@@ -741,11 +756,15 @@
   {#if saveError}
     <p class="status error">No se pudo guardar: {saveError}</p>
   {/if}
+  {#if shareError}
+    <p class="status error">{shareError}</p>
+  {/if}
 
   {#if loading}
     <p class="status">Calculando…</p>
   {:else if error}
     <p class="status error">Error: {error}</p>
+    <p class="status"><a href="/">Volver al formulario</a></p>
   {:else if chart}
     {#if birthData}
       <p class="birth">{formatBirth(birthData)}</p>

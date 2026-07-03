@@ -5,6 +5,7 @@
   import { tick } from 'svelte';
   import { fade, scale } from 'svelte/transition';
   import { dialog } from './dialog.svelte.js';
+  import { focusTrap } from './focus-trap.js';
 
   let inputValue = $state('');
   /** @type {HTMLInputElement | null} */
@@ -78,6 +79,7 @@
       role={a.mode === 'alert' ? 'alertdialog' : 'dialog'}
       aria-modal="true"
       aria-label={a.title || a.message || 'Diálogo'}
+      use:focusTrap
       transition:scale={{ duration: 130, start: 0.96, opacity: 0 }}
     >
       {#if a.title}<h2>{a.title}</h2>{/if}

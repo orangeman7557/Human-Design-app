@@ -36,6 +36,10 @@
   let results = $state(/** @type {{ label: string, latitude: number, longitude: number }[]} */ ([]));
   let loading = $state(false);
   let focused = $state(false);
+  // Distinguishes "the service failed" from "no city matches" in the hint.
+  let searchError = $state(false);
+  // Keyboard-highlighted result (-1 = none); ArrowUp/Down move it, Enter picks it.
+  let activeIndex = $state(-1);
 
   /** @type {AbortController | null} */
   let inflight = null;
@@ -53,6 +57,8 @@
   function onInput() {
     // Typing invalidates the previous confirmed place.
     value = null;
+    searchError = false;
+    activeIndex = -1;
 
     if (debounce) clearTimeout(debounce);
 
@@ -78,10 +84,13 @@
       loading = true;
       try {
         results = await searchPlaces(trimmed, inflight.signal);
+        searchError = false;
+        activeIndex = -1;
       } catch (err) {
         if (err && err.name !== 'AbortError') {
           console.error('Place search failed', err);
           results = [];
+          searchError = true;
         }
       } finally {
         loading = false;
@@ -98,7 +107,29 @@
     };
     query = p.label;
     results = [];
+    activeIndex = -1;
     focused = false;
+  }
+
+  // Arrow keys walk the open suggestion list; Enter picks the highlighted one
+  // (when none is highlighted, Enter falls through to the form as usual).
+  function onKeydown(e) {
+    if (!results.length) return;
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      focused = true;
+      activeIndex = (activeIndex + 1) % results.length;
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      focused = true;
+      activeIndex = (activeIndex - 1 + results.length) % results.length;
+    } else if (e.key === 'Enter' && focused && activeIndex >= 0) {
+      e.preventDefault();
+      pick(results[activeIndex]);
+    } else if (e.key === 'Escape' && focused) {
+      focused = false;
+      activeIndex = -1;
+    }
   }
 
   function onBlur() {
@@ -115,11 +146,17 @@
     type="text"
     bind:value={query}
     oninput={onInput}
+    onkeydown={onKeydown}
     onfocus={() => (focused = true)}
     onblur={onBlur}
     {placeholder}
     autocomplete="off"
     spellcheck="false"
+    role="combobox"
+    aria-autocomplete="list"
+    aria-expanded={focused && results.length > 0}
+    aria-controls="city-results"
+    aria-activedescendant={activeIndex >= 0 ? `city-opt-${activeIndex}` : undefined}
   />
 
   {#if value}
@@ -139,9 +176,11 @@
     </svg>
   {/if}
 
-  <span class="hint" class:warn={query.length >= 3 && !loading && results.length === 0 && !value}>
+  <span class="hint" class:warn={!loading && (searchError || (query.length >= 3 && results.length === 0 && !value))}>
     {#if loading}
       Buscando…
+    {:else if searchError}
+      No se pudo buscar. Revisa tu conexión e inténtalo de nuevo.
     {:else if !value && query.length >= 3 && results.length === 0}
       Sin resultados
     {:else}
@@ -150,10 +189,10 @@
   </span>
 
   {#if focused && results.length > 0}
-    <ul class="results">
-      {#each results as r}
-        <li>
-          <button type="button" onclick={() => pick(r)}>{r.label}</button>
+    <ul class="results" id="city-results" role="listbox" aria-label="Sugerencias de ciudad">
+      {#each results as r, i}
+        <li id={`city-opt-${i}`} role="option" aria-selected={i === activeIndex}>
+          <button type="button" class:active={i === activeIndex} tabindex="-1" onclick={() => pick(r)}>{r.label}</button>
         </li>
       {/each}
     </ul>
@@ -234,7 +273,8 @@
     padding: 0.55rem 0.85rem;
     cursor: pointer;
   }
-  .results li button:hover {
+  .results li button:hover,
+  .results li button.active {
     background: var(--surface);
     color: var(--accent);
   }

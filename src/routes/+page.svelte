@@ -125,7 +125,7 @@
       await dialog.alert({
         title: 'Instalar como app',
         message:
-          'Abre el menú Compartir de Safari y elige "Añadir a pantalla de inicio".'
+          'Abre el menú de compartir del navegador y elige "Añadir a pantalla de inicio".'
       });
     }
   }
@@ -405,9 +405,12 @@
     const file = e.target.files?.[0];
     if (!file) return;
     try {
-      const count = await importCharts(await file.text());
+      const { imported, duplicates, invalid } = await importCharts(await file.text());
       await refreshList();
-      await dialog.alert({ message: `${count} carta(s) importada(s).` });
+      const parts = [`${imported} carta(s) importada(s).`];
+      if (duplicates) parts.push(`${duplicates} omitida(s) por estar ya guardada(s).`);
+      if (invalid) parts.push(`${invalid} descartada(s) por datos incompletos.`);
+      await dialog.alert({ message: parts.join(' ') });
     } catch (err) {
       listError = err instanceof Error ? err.message : String(err);
     } finally {
@@ -415,10 +418,12 @@
     }
   }
 
+  // Same date shape as the chart subtitle ("13/03/1984, 09:30").
   function formatDate(c) {
-    const d = c.birth?.date ?? '';
+    const [y, m, d] = (c.birth?.date ?? '').split('-');
+    const date = d ? `${d}/${m}/${y}` : (c.birth?.date ?? '');
     const t = c.birth?.time ?? '';
-    return `${d} ${t}`.trim();
+    return [date, t].filter(Boolean).join(', ');
   }
 
   // Touch has no hover, so there a tap toggles the tooltip via the global
