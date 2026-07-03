@@ -1,10 +1,5 @@
 <script>
-  // Birth-data entry form.
-  //
-  // The form starts empty. orangeman7557's chart (the validation test case)
-  // is behind a hidden shortcut: clicking the final period of the tagline
-  // pre-fills the form, with place carrying pre-resolved
-  // latitude/longitude/timezone so it submits without the autocomplete.
+  // Birth-data entry form. The form starts empty.
 
   import { onMount } from 'svelte';
   import { goto } from '$app/navigation';
@@ -82,19 +77,6 @@
     error = null;
     sessionStorage.removeItem('birthData');
     formEpoch++;
-  }
-
-  // Hidden smoke-test shortcut (the final period of the tagline).
-  function fillAuthorData() {
-    name = 'orangeman7557';
-    date = '1984-03-13';
-    time = '09:30';
-    place = {
-      label: 'Madrid, Comunidad de Madrid, España',
-      latitude: 40.4168,
-      longitude: -3.7038,
-      timezone: 'Europe/Madrid'
-    };
   }
 
   // From the About modal's "Manifestor" link (no drawer system on the home
@@ -468,10 +450,7 @@
 <main>
   <header>
     <h1>Human Design Chart</h1>
-    <!-- The final period is the hidden smoke-test shortcut. -->
-    <!-- onclickcapture attaches directly to the span (not delegated), so
-         it also responds when the page is driven programmatically. -->
-    <p class="tagline">Introduce tus datos de nacimiento<span role="presentation" onclickcapture={fillAuthorData}>.</span></p>
+    <p class="tagline">Introduce tus datos de nacimiento.</p>
   </header>
 
   <form onsubmit={submit}>
@@ -686,13 +665,6 @@
     margin: 0;
     font-size: 0.9rem;
   }
-  /* Invisible enlarged hit area for the hidden shortcut — a bare period
-     would be a hopeless touch target. */
-  .tagline span {
-    padding: 0.6rem;
-    margin: -0.6rem;
-  }
-
   form {
     display: flex;
     flex-direction: column;

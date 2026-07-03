@@ -402,8 +402,9 @@ corrected).
   and rename / delete / import (home). Supports prompt / confirm / alert
   modes; the delete confirm uses the danger style. (Author request,
   2026-06-18.)
-- The dev shortcut (author pre-fill on the tagline period) ships in the
-  production bundle.
+- ~~The dev shortcut (author pre-fill on the tagline period) ships in the
+  production bundle.~~ Resolved: the shortcut was removed at the 1.0.0
+  launch (2026-07-03).
 
 ### Contested / needs reproduction
 
@@ -1052,6 +1053,11 @@ About-modal actions (report-a-bug, donations).
    Controller: "Javi G.O., autor de la app"; contact via the in-app bug form.
    Linked as "privacidad" in both footers; added to `sitemap.xml`.
 7. **Bump to 1.0.0**, tag, deploy — the web launch.
+   **Done 2026-07-03**: version bumped to 1.0.0, tagged `v1.0.0`, pushed to
+   `main` (auto-deploy publishes it). The hidden home-tagline shortcut
+   (author pre-fill) was removed as part of the release. Post-deploy live
+   checks pending: KV counter, `www` redirect, SW offline/redirect,
+   security headers, real iOS.
 
 **Dependencies:** installability (1) unblocks the SEO icons and the TWA; the domain (3)
 unblocks assetlinks for Play. So 1 and 3 come before the store phases.

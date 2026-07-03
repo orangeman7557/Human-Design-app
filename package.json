@@ -1,6 +1,6 @@
 {
   "name": "human-design-chart-app",
-  "version": "0.1.1",
+  "version": "1.0.0",
   "description": "Source-available PWA for calculating, saving, and consulting Human Design charts. Free for any noncommercial use.",
   "license": "SEE LICENSE IN LICENSE",
   "private": false,
