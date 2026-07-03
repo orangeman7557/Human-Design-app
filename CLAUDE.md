@@ -13,7 +13,7 @@ El usuario introduce su fecha, hora y lugar de nacimiento → la app calcula su 
 
 **Para quién:** personas interesadas en Human Design que quieren calcular y consultar su carta sin depender de servicios externos de pago. La app está orientada al uso personal y no comercial (ver licencia).
 
-**Problema que resuelve:** las herramientas de referencia (MyBodyGraph, iHD) son de pago o requieren cuenta. Esta app es gratuita para uso no comercial y mantiene los datos exclusivamente en el dispositivo del usuario. (Hacerla **instalable** como PWA es un objetivo del proyecto; el funcionamiento **offline** completo está pendiente de decidir — si será 100% offline o no. Ver BACKLOG, auditoría 2026-06-15.)
+**Problema que resuelve:** las herramientas de referencia (MyBodyGraph, iHD) son de pago o requieren cuenta. Esta app es gratuita para uso no comercial y mantiene los datos exclusivamente en el dispositivo del usuario. Es **instalable** como PWA (iconos + service worker + enlace "instalar como app", Fase L jul 2026) y funciona **offline en modo básico**: el shell y los assets se cachean y el cálculo es 100% local; solo la búsqueda de ciudades (Photon) necesita red.
 
 **Licencia:** PolyForm Noncommercial 1.0.0 — source-available, libre para uso no comercial. El autor es el único titular de copyright. Cualquier contribución externa requiere CLA antes del merge.
 
@@ -54,16 +54,21 @@ El usuario introduce su fecha, hora y lugar de nacimiento → la app calcula su 
 ├── vitest.config.js     ← configuración de tests (vitest)
 ├── wrangler.jsonc       ← configuración de Cloudflare Workers
 ├── static/
-│   └── manifest.webmanifest
+│   ├── manifest.webmanifest
+│   ├── favicon.svg + iconos PNG (32/180/192/512/maskable) + og-image.png
+│   └── robots.txt · sitemap.xml
 └── src/
     ├── app.html         ← shell HTML
     ├── app.css          ← tokens CSS globales (:root variables)
+    ├── service-worker.js ← precache del shell + offline básico (Fase L)
     ├── routes/
-    │   ├── +layout.js   ← SPA mode (ssr: false, prerender: false)
+    │   ├── +layout.js   ← SPA mode por defecto (ssr: false, prerender: false)
     │   ├── +layout.svelte
+    │   ├── +page.js     ← la home se prerenderiza (SEO): ssr/prerender true solo aquí
     │   ├── +page.svelte ← pantalla 1: formulario de nacimiento
+    │   ├── privacy/     ← política de privacidad (prerenderizada, Fase L)
     │   └── chart/
-    │       ├── +page.js      ← recoge datos de sessionStorage
+    │       ├── +page.js      ← recoge datos de sessionStorage (SPA puro)
     │       └── +page.svelte  ← pantalla 2: bodygraph + resumen textual
     └── lib/
         ├── hd/
@@ -74,6 +79,7 @@ El usuario introduce su fecha, hora y lugar de nacimiento → la app calcula su 
         │   ├── bodygraph-geometry.js  ← coordenadas SVG: centros, formas, posiciones de las 64 puertas
         │   ├── prompts.js             ← genera los prompts para la IA del usuario (handoff, Fase 6)
         │   ├── report.js              ← ensambla el informe inicial desde el chart (Fase 7)
+        │   ├── report-pdf.js          ← maqueta el informe en PDF con jsPDF (import diferido)
         │   └── content/               ← textos propios (es.js) + accesores (index.js): conceptos, tipos, centros, 64 puertas, informe
         ├── geo/
         │   ├── geocoder.js   ← geocodificación vía Photon (typeahead, debounce, abort, dedup)
@@ -83,6 +89,8 @@ El usuario introduce su fecha, hora y lugar de nacimiento → la app calcula su 
         │   └── charts.js     ← persistencia local (IndexedDB vía Dexie)
         ├── ai/
         │   └── handoff.js    ← deep-links a IAs + preferencia (sin API)
+        ├── pwa/
+        │   └── install.svelte.js ← captura beforeinstallprompt / detecta iOS ("instalar como app")
         ├── markup.js         ← renderInline: **negrita**/*cursiva*/[enlaces] → HTML (compartido)
         └── components/
             ├── CityAutocomplete.svelte  ← campo de ciudad con sugerencias de Photon
@@ -90,7 +98,9 @@ El usuario introduce su fecha, hora y lugar de nacimiento → la app calcula su 
             ├── Dialog.svelte            ← diálogos propios prompt/confirm/alert (vía dialog.svelte.js)
             ├── ElementInfo.svelte       ← panel "i" reutilizable (info + handoff IA)
             ├── InitialReport.svelte     ← overlay del informe inicial (Fase 7)
-            └── InfoDot.svelte           ← la "i" de información
+            ├── InfoDot.svelte           ← la "i" de información
+            ├── About.svelte             ← modal "acerca de" (footer)
+            └── ReportBug.svelte         ← "notificar un fallo" → Web3Forms (footer)
 ```
 
 **Flujo de datos:** formulario → `sessionStorage` → `computeChart()` → SVG + texto. Sin backend, todo client-side.
@@ -106,8 +116,9 @@ El usuario introduce su fecha, hora y lugar de nacimiento → la app calcula su 
 - **Constantes y datos de referencia** viven en `constants.js`. La lógica no importa datos fijos de otros archivos.
 - **Comentarios de cabecera en archivos de geometría/cálculo** documentan las fases que los modificaron (registro de cambios arquitectónico).
 - **Idioma de los comentarios:** inglés en el código. El usuario se comunica en español; la UI también está en español (pendiente de internacionalización formal en fases futuras).
+- **Voz de los textos (decisión 2026-07-03):** el **informe inicial** (y su PDF) habla en **2ª persona** — es un documento dirigido al dueño de la carta. **Todo lo demás** (drawers "i", prompts, tooltips) es **impersonal** — material de consulta del que mira, que puede estar viendo la carta guardada de otra persona. Las líneas de estado dicen "esta carta", nunca "tu carta". Excepción consciente: el prompt de cierre del informe va en 1ª persona (vive dentro del marco-documento).
 - **Caso de prueba de validación:** atajo oculto — pinchar el punto final del subtítulo de la home ("…datos de nacimiento.") rellena el formulario con los datos de orangeman7557 (1984-03-13, 09:30, Madrid) como smoke test rápido.
-- **Tests del núcleo de cálculo con vitest** (`npm test`; ver `src/lib/hd/chart.test.js`): dos cartas de referencia congeladas + límites de `longitudeToGate`/`cityCountry`. El resto se valida manualmente contra la carta conocida del autor.
+- **Tests del núcleo de cálculo con vitest** (`npm test`; ver `src/lib/hd/chart.test.js`): dos cartas de referencia validadas externamente (Reflector + autor) con snapshot completo de activaciones, seis anclas de regresión auto-congeladas que cubren los 5 tipos y las 7 autoridades (2026-07-03), y límites de `longitudeToGate`/`cityCountry`. El resto se valida manualmente contra la carta conocida del autor.
 - **Nunca ejecutar `npm install` dentro de un worktree.** Las sesiones de IA trabajan en worktrees bajo `.claude/worktrees/` sin `node_modules` propio: Node resuelve las dependencias subiendo hasta el `node_modules` del checkout principal, y `vite.config.js` permite servirlas desde ahí. Si una tarea añade una dependencia nueva, instalarla en la carpeta principal del proyecto (`npm install <paquete>` en `/Users/i7up/Documents/Claude/Projects/human-design-app`).
 
 ---
@@ -174,12 +185,13 @@ Colores de centros definidos: Head/G amarillo `#e5cf3d`, Ajna verde `#6cb46c`, T
 - **Fase 3 — Pulido visual:** resumen y centros como overlays a los lados del bodygraph, tipo como chips con % de población, columnas de canales/colgantes con interacciones hover/tap hacia centros y activaciones (con chip seleccionada destacada y resto atenuado), canales Both rayados 70/30, cartas guardadas con tipo y reordenado drag & drop (Dexie schema v2). Detalle en TASKS.md.
 - **Fase 4 — Modo hora desconocida:** formulario en orden fecha-lugar-hora; checkbox "Hora desconocida" que deshabilita el campo y muestra un slider 0-24h (pasos de 30 min) con banda de tipos del día y preview del tipo resultante; la hora del slider es la que usa "Calcular carta".
 - **Fase 5 — Compartir imagen (cierra el MVP, validada 2026-06-12):** botones compartir/descargar en la página de carta que capturan toda la vista a PNG vía `html-to-image` (título y subtítulo centrados solo en la exportación); share sheet nativo en táctil, descarga en escritorio; fichero `nombre carta YYYY-MM-DD-HHMM-ciudad.png`. Durante el cierre se corrigió además el **bug grave de cálculo** (nodo lunar medio → nodo verdadero osculante en `ephemeris.js`).
+- **Fase L — Preparación de lanzamiento (jun-jul 2026, casi cerrada):** revisión de textos (gate OK 2026-07-02) → instalabilidad (iconos propios, service worker, manifest, enlace "instalar como app") → SEO (home y `/privacy` prerenderizadas, Open Graph, og-image, robots, sitemap, JSON-LD) → dominio propio **`hdchart.app`** (Cloudflare Registrar + Custom Domain) → "notificar un fallo" vía **Web3Forms** (`ReportBug.svelte`) → política de privacidad en `/privacy`. **Queda:** redirect `www` → root en Cloudflare, Ko-fi (opcional, puede ir tras 1.0) y el **bump a 1.0.0** (lanzamiento web). Detalle en BACKLOG ("Phase L — Launch plan").
 
 ### Pendiente
 
 - **Estabilización post-MVP:** en curso. Aterrizado (jun 2026): tests del núcleo con vitest, diálogos propios, autocompletado por prefijo (Photon), flecha de volver y etiqueta "ciudad, país". Pendiente: pruebas con cartas reales, opcional TWA para Google Play, y las mejoras menores de BACKLOG ("Possible improvements").
-- **Fase 6 — Integración IA (handoff) + info de elementos:** generar desde cualquier elemento de la app un prompt listo para llevar a la IA del propio usuario (la IA no corre dentro de la app), más información textual básica de cada elemento (tipo, autoridad, perfil, centros, canales) — solo si es legalmente viable: redacción propia o fuentes libres, nunca copiado de Jovian Archive. **Funcionalmente completa** (6.A–6.F construidas y verificadas, jun 2026); pendiente solo la revisión de textos por el autor y el bump opcional a 0.2.0. Las **64 puertas** estrenan esencia propia (2-3 frases desde el hexagrama de dominio público + el centro + don/sombra) con **coda de 3 estados** según la carta (completa/colgante/inactiva); los canales heredan la misma lógica (jun 2026). Detalle en TASKS/BACKLOG.
-- **Fase 7 — Informe inicial:** primer de HD en lenguaje llano para quien ve su carta sin saber nada del sistema. **Construida y verificada (jun 2026; pendiente la revisión de textos del autor).** Overlay `InitialReport.svelte` abierto por un botón "Informe" junto al nombre de la carta; `report.js` (`buildReport`) ensambla ~13 secciones desde el chart — Parte A (qué es HD + analogía de las hormigas + bodygraph/centros + condicionamiento + desacondicionamiento), Parte B personalizada (tipo y lugar en el colectivo, estrategia, autoridad/decisiones, energía·trampa·señales por tipo, perfil, definición, recorrido de centros con su estado real) y Parte C (handoff de carta completa) — reutilizando la biblioteca de Fase 6 + bloques `report`/`typeReport`; arquitectura **híbrida** (estático determinista + handoff para profundizar). Spec en `docs/informe-inicial.md`.
+- **Fase 6 — Integración IA (handoff) + info de elementos:** generar desde cualquier elemento de la app un prompt listo para llevar a la IA del propio usuario (la IA no corre dentro de la app), más información textual básica de cada elemento (tipo, autoridad, perfil, centros, canales) — solo si es legalmente viable: redacción propia o fuentes libres, nunca copiado de Jovian Archive. **Funcionalmente completa** (6.A–6.F construidas y verificadas, jun 2026; revisión de textos del autor cerrada 2026-07-02 — el bump de versión llegará con el 1.0.0 de Fase L). Las **64 puertas** estrenan esencia propia (2-3 frases desde el hexagrama de dominio público + el centro + don/sombra) con **coda de 3 estados** según la carta (completa/colgante/inactiva); los canales heredan la misma lógica (jun 2026). Detalle en TASKS/BACKLOG.
+- **Fase 7 — Informe inicial:** primer de HD en lenguaje llano para quien ve su carta sin saber nada del sistema. **Construida y verificada (jun 2026; revisión de textos del autor cerrada 2026-07-02).** Overlay `InitialReport.svelte` abierto por un botón "Informe" junto al nombre de la carta; `report.js` (`buildReport`) ensambla ~13 secciones desde el chart — Parte A (qué es HD + analogía de las hormigas + bodygraph/centros + condicionamiento + desacondicionamiento), Parte B personalizada (tipo y lugar en el colectivo, estrategia, autoridad/decisiones, energía·trampa·señales por tipo, perfil, definición, recorrido de centros con su estado real) y Parte C (handoff de carta completa) — reutilizando la biblioteca de Fase 6 + bloques `report`/`typeReport`; arquitectura **híbrida** (estático determinista + handoff para profundizar). Spec en `docs/informe-inicial.md`.
 - **Fase 8 — Carta compuesta:** overlay visual de dos cartas guardadas.
 - **Fase 9 — Tránsitos:** vista de tránsitos en tiempo real sobre una carta guardada.
 - **Fase 10 — Guardado en línea:** sincronización opcional en la nube (local-only sigue siendo el default).

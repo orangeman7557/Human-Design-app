@@ -193,15 +193,18 @@ export function gateState(gate, chart) {
   return inChannel ? 'complete' : 'hanging';
 }
 
-/** Personalised one-line coda for a gate given its state, or null. */
+/** Chart-state one-line coda for a gate, or null. Impersonal by rule: the
+ *  drawers are the viewer's reference material and the chart on screen may be
+ *  someone else's, so state lines say "esta carta" (voice decision 2026-07-03;
+ *  only the initial report speaks in the second person). */
 function gateCoda(state) {
   switch (state) {
     case 'complete':
-      return 'En tu carta forma parte de un canal completo: es una energía que aportas de forma estable e integrada.';
+      return 'En esta carta forma parte de un canal completo: es una energía que se aporta de forma estable e integrada.';
     case 'hanging':
-      return 'En tu carta está activa pero colgante: aportas su tema, y su otra mitad solo se completa de forma puntual, con ciertas personas o en ciertos tránsitos.';
+      return 'En esta carta está activa pero colgante: su tema está presente, y su otra mitad solo se completa de forma puntual, con ciertas personas o en ciertos tránsitos.';
     case 'inactive':
-      return 'No está activa en tu carta: es una energía que reconoces y recibes de los demás y del entorno, más que una constante tuya.';
+      return 'No está activa en esta carta: es una energía que se reconoce y se recibe de los demás y del entorno, más que una constante propia.';
     default:
       return null;
   }
@@ -262,20 +265,20 @@ export function channelState(a, b, chart) {
   return 'none';
 }
 
-/** Personalised coda for a channel given the chart, or null. */
+/** Chart-state coda for a channel, or null. Impersonal, same rule as gateCoda. */
 function channelCoda(a, b, chart, nameA, nameB) {
   if (!chart?.activeGates) return null;
   const aOn = chart.activeGates.includes(a);
   const bOn = chart.activeGates.includes(b);
   if (aOn && bOn) {
-    return `Tienes este canal completo en tu carta: conecta el centro ${nameA} y el centro ${nameB}, manteniendo una corriente estable entre ellos.`;
+    return `En esta carta el canal está completo: conecta el centro ${nameA} y el centro ${nameB}, manteniendo una corriente estable entre ellos.`;
   }
   if (aOn || bOn) {
     const on = aOn ? a : b;
     const off = aOn ? b : a;
-    return `En tu carta tienes una de sus dos puertas (la [puerta ${on}](gate:${on})) pero no la otra (la [puerta ${off}](gate:${off})): es un medio canal que se completa de forma puntual, con quien tenga la puerta que falta o en ciertos tránsitos.`;
+    return `En esta carta está activa una de sus dos puertas (la [puerta ${on}](gate:${on})) pero no la otra (la [puerta ${off}](gate:${off})): es un medio canal que se completa de forma puntual, con quien tenga la puerta que falta o en ciertos tránsitos.`;
   }
-  return 'Ninguna de sus dos puertas está activa en tu carta: es una corriente que encuentras sobre todo en los demás.';
+  return 'Ninguna de sus dos puertas está activa en esta carta: es una corriente que se encuentra sobre todo en los demás.';
 }
 
 /**
