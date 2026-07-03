@@ -77,6 +77,19 @@ Open (added 2026-07-02, author's batch — unverified, not yet triaged):
   the listener/prompt reference isn't carried across the navigation (SPA route
   change) or the chart page's own install-eligibility check differs from the
   home's. Investigate how `install.mode` is set up per-route.
+- ⬜ **Personality/Design/Peso tooltips invisible on desktop (author,
+  2026-07-03).** In the activations table header, hovering "Personality",
+  "Design" or "Peso" shows the `?` cursor (so the `data-tip` hover is firing)
+  but the tooltip text never appears. Likely cause: the tip is an
+  absolutely-positioned `::after` anchored `bottom: calc(100% + 7px)` above the
+  trigger (`[chart/+page.svelte:1367](src/routes/chart/+page.svelte:1367)`),
+  but the header lives inside `.acts-scroll`
+  (`[chart/+page.svelte:1844](src/routes/chart/+page.svelte:1844)`), which sets
+  `overflow-x: auto` — per spec that forces the browser to also clip
+  `overflow-y`, cutting off anything positioned above the scroller's own box.
+  Verify and, if confirmed, either flip the tooltip to open downward for these
+  three headers or give `.acts-scroll` enough top padding/room so the tip isn't
+  clipped.
 
 Fixed in the 2026-07-02 batch (from the author's batch above):
 
