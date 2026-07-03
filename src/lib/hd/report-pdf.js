@@ -217,7 +217,7 @@ export async function buildReportPdf({ image = null, sections = [] }) {
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(8.5);
   doc.setTextColor(...C.accent);
-  doc.text('INFORME INICIAL', MARGIN_X, L.y, { charSpace: 1 });
+  doc.text('TU INFORME INICIAL PERSONALIZADO', MARGIN_X, L.y, { charSpace: 1 });
   L.y += 22;
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(20);
