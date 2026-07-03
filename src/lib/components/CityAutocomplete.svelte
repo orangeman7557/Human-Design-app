@@ -207,6 +207,13 @@
   input {
     width: 100%;
     min-width: 0;
+    /* Same iOS hardening as the home form fields: strip the UA sizing so
+       real devices honour the authored width, same 44px height (see
+       +page.svelte). */
+    box-sizing: border-box;
+    -webkit-appearance: none;
+    appearance: none;
+    height: 2.75rem;
     background: var(--surface);
     border: 1px solid var(--border);
     color: var(--text);
