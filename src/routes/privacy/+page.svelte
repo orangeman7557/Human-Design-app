@@ -68,10 +68,9 @@
       </li>
       <li>
         <strong>Llevar tu carta a una IA.</strong> Si usas la opción de
-        consultar tu carta con una IA (Claude, ChatGPT o Perplexity), la app
-        abre ese servicio con un texto de tu carta ya preparado. A partir de ahí
-        tus datos se rigen por la política de privacidad de ese servicio, no por
-        esta.
+        consultar tu carta con una IA, la app abre el servicio de IA que elijas
+        con un texto de tu carta ya preparado. A partir de ahí tus datos se
+        rigen por la política de privacidad de ese servicio, no por esta.
       </li>
     </ul>
   </section>
@@ -103,7 +102,7 @@
       Datos (RGPD) y a la normativa española y europea, tienes derecho de
       acceso, rectificación, supresión, oposición y portabilidad sobre cualquier
       dato personal. Para ejercerlos, o para cualquier duda sobre privacidad,
-      escríbenos con el botón <strong>«reportar un fallo»</strong> de aquí abajo.
+      escríbenos con el botón <strong>«notificar un fallo»</strong> de aquí abajo.
     </p>
     <p class="resp">Responsable: Javi G.O., autor de la app.</p>
   </section>

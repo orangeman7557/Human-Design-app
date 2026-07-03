@@ -647,11 +647,11 @@
       <button class="install-link" type="button" onclick={onInstallClick}>instalar como app</button>
       <span aria-hidden="true">·</span>
     {/if}
-    <About version={version} onElement={openAuthorChartWithInfo} />
-    <span aria-hidden="true">·</span>
     <ReportBug version={version} />
     <span aria-hidden="true">·</span>
     <a class="foot-link" href="/privacy">privacidad</a>
+    <span aria-hidden="true">·</span>
+    <About version={version} onElement={openAuthorChartWithInfo} />
   </footer>
 </main>
 
@@ -1133,7 +1133,7 @@
   }
 
   /* Footer "privacidad" link: overrides the global accent-coloured anchor so it
-     matches the muted "acerca de" / "reportar un fallo" siblings. */
+     matches the muted "acerca de" / "notificar un fallo" siblings. */
   .foot-link {
     color: inherit;
     text-decoration: none;

@@ -1098,11 +1098,11 @@
     </section>
 
     <footer>
-      <About version={version} onElement={(kind, key) => openInfoFor(CATEGORY_BY_KIND[kind] ?? '', kind, key)} />
-      <span aria-hidden="true">·</span>
       <ReportBug version={version} />
       <span aria-hidden="true">·</span>
       <a class="foot-link" href="/privacy">privacidad</a>
+      <span aria-hidden="true">·</span>
+      <About version={version} onElement={(kind, key) => openInfoFor(CATEGORY_BY_KIND[kind] ?? '', kind, key)} />
     </footer>
   {/if}
 </main>
@@ -1502,7 +1502,7 @@
     color: #64646a;
   }
   /* Footer "privacidad" link: overrides the global accent-coloured anchor so it
-     matches the muted "acerca de" / "reportar un fallo" siblings. */
+     matches the muted "acerca de" / "notificar un fallo" siblings. */
   .foot-link {
     color: inherit;
     text-decoration: none;
