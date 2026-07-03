@@ -238,7 +238,8 @@ This resolves the inconsistency found in the gate/channel state codas
   Madrid). Keyboard access for the channel/gate *chips* remains open under the
   2026-06-15 a11y item.
 - ⬜ **Full text & prompt improvement pass with Fable (author request
-  2026-07-03).** A dedicated review of *all* app texts and prompts to improve
+  2026-07-03; confirmed same day: NOT blocking for 1.0 — can land after the
+  release).** A dedicated review of *all* app texts and prompts to improve
   wording and quality (the author has spotted improvable spots). Distinct from
   the shipped correctness review: this one is about making the copy better,
   and must respect the text-voice rule above. Include the small copy notes
@@ -1011,8 +1012,11 @@ About-modal actions (report-a-bug, donations).
    Domain (auto DNS + TLS). Required before the TWA (Digital Asset Links).
    **Done 2026-07-03**: bought `hdchart.app` in Cloudflare Registrar; `SITE_URL` +
    robots + sitemap updated to `https://hdchart.app`. `hdchart.app` (root) is the
-   canonical host. **Pending: add a `www.hdchart.app` → root redirect at Cloudflare**
-   (Redirect Rule or a second Custom Domain) so the `www` subdomain resolves.
+   canonical host. **`www` redirect: rule created by the author 2026-07-03**
+   (Cloudflare Redirect Rule), but the dashboard hinted some DNS config might
+   still be missing — **pending live verification** that `www.hdchart.app`
+   actually resolves and redirects to the root (needs a proxied DNS record for
+   `www` for the rule to trigger).
 4. **Report a bug** — wire the deferred "Reportar un fallo" (`About.svelte`) to Web3Forms.
 5. **Donations (optional, may ship post-1.0)** — wire "Invítame a un café" to Ko-fi.
    **Done 2026-07-03 (as Buy Me a Coffee)**: the About modal gained a support row
@@ -1023,12 +1027,17 @@ About-modal actions (report-a-bug, donations).
    app's first server endpoint, `/api/love` (GET/POST), backed by a Cloudflare KV
    namespace (binding `LOVE`). Graceful degradation: no KV / offline → `count: null`
    → the counter hides; the heart never needs the network; `prefers-reduced-motion`
-   skips the animations. **Pending: create the KV namespace in the Cloudflare
-   dashboard (Storage & Databases → KV) and paste its id in `wrangler.jsonc`**
-   (the binding ships commented out so deploys don't break meanwhile). Known
-   trade-off, fine for a love counter: KV read-modify-write can drop a few counts
-   under simultaneous clicks from different visitors (no atomic increment in KV;
-   Durable Objects would fix it if it ever matters).
+   skips the animations. **KV namespace created by the author 2026-07-03**
+   (`hd-love`, id `93a9c82535d44143bd16b10147ddde29`) and wired live in
+   `wrangler.jsonc`; verified end-to-end in dev via the adapter's platform proxy
+   (miniflare emulates the binding locally). Second pass same day: gold icons,
+   the counter moved into an "*Amores* recibidos: N" line (number keeps the
+   heart's colour), full-screen party (confetti across the viewport + emoji
+   flyers, ~3-5 s) and an escalating thank-you label sequence on the button.
+   Known trade-off, fine for a love counter: KV read-modify-write can drop a few
+   counts under simultaneous clicks from different visitors (no atomic increment
+   in KV; Durable Objects would fix it if it ever matters). The POST rejects
+   invalid/empty `n` (adds nothing) and clamps at 50 per request.
 6. **Privacy policy** — a simple page; both stores require one, and it's trivial here
    (nothing leaves the device; local-only storage).
    **Done 2026-07-03**: prerendered page at `/privacy` (`src/routes/privacy/`),
