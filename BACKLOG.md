@@ -1056,8 +1056,9 @@ About-modal actions (report-a-bug, donations).
    **Done 2026-07-03**: version bumped to 1.0.0, tagged `v1.0.0`, pushed to
    `main` (auto-deploy publishes it). The hidden home-tagline shortcut
    (author pre-fill) was removed as part of the release. Post-deploy live
-   checks pending: KV counter, `www` redirect, SW offline/redirect,
-   security headers, real iOS.
+   checks: ✅ KV counter and ✅ `www` redirect confirmed live by the author
+   the same day; still pending — SW offline/redirect, security headers,
+   real iOS.
 
 **Dependencies:** installability (1) unblocks the SEO icons and the TWA; the domain (3)
 unblocks assetlinks for Play. So 1 and 3 come before the store phases.
