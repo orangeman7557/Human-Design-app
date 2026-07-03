@@ -31,8 +31,17 @@
   // No square-tile emojis here (e.g. 🌠 renders as a framed picture on Apple).
   const FLYERS = ['🌟', '⭐', '✨', '🌈', '🦄', '💫', '💖', '🎉'];
   const BASE_LABEL = '¡Mándame amor!';
-  // Escalating thank-yous: one step every 4 clicks so each stays readable.
-  const THANKS = ['gracias', 'lo recibo', 'qué gusto', 'cuánto cariño', 'ole ole ole', 'voy a explotar'];
+  const MORE_LABEL = '¡Mándame más amor!';
+  // Escalating thank-yous: one step every 4 clicks so each stays readable,
+  // more over-the-top the deeper into the spree.
+  const THANKS = [
+    '¡gracias! ❤️',
+    '¡lo recibo! 💛',
+    '¡qué gusto! 💖',
+    '¡¡cuánto cariño!! 💗💗',
+    '¡¡ole ole ole!! ❤️💛💜',
+    '¡¡¡voy a explotar!!! 💥💖💥'
+  ];
 
   /** @type {number | null} global click count; null = unknown → line hidden */
   let loveCount = $state(null);
@@ -96,7 +105,7 @@
     partyClicks += 1;
     clearTimeout(labelTimer);
     labelTimer = setTimeout(() => {
-      heartLabel = BASE_LABEL;
+      heartLabel = MORE_LABEL;
       partyClicks = 0;
     }, 4000);
 
@@ -121,19 +130,23 @@
   }
 
   // Full-screen party: confetti shot from the heart across the viewport plus
-  // emoji flyers crossing the screen. Elements are plain spans styled inline
-  // (Svelte scoping can't reach JS-created nodes), animated with WAAPI and
-  // removed when done; a cap keeps runaway clicking cheap.
+  // emoji flyers crossing the screen; deeper into the spree the party jumps up
+  // twice — fireworks join at ~8 clicks, light flashes and more of everything
+  // at ~16. Elements are plain spans styled inline (Svelte scoping can't reach
+  // JS-created nodes), animated with WAAPI and removed when done; a cap keeps
+  // runaway clicking cheap.
   function explode(baseColor) {
     if (!partyHost || !heartEl) return;
-    if (partyHost.childElementCount > 160) return;
+    if (partyHost.childElementCount > 220) return;
+    const tier = partyClicks >= 16 ? 2 : partyClicks >= 8 ? 1 : 0;
     const rect = heartEl.getBoundingClientRect();
     const cx = rect.left + rect.width / 2;
     const cy = rect.top + rect.height / 2;
     const W = window.innerWidth;
     const H = window.innerHeight;
+    const slow = 1 + tier * 0.25;
 
-    for (let i = 0; i < 28; i++) {
+    for (let i = 0; i < 24 + tier * 8; i++) {
       const p = document.createElement('span');
       const color = i % 3 === 0 ? baseColor : BURST_COLORS[(Math.random() * BURST_COLORS.length) | 0];
       const size = 5 + Math.random() * 7;
@@ -158,11 +171,11 @@
             opacity: 0
           }
         ],
-        { duration: 1800 + Math.random() * 1800, easing: 'cubic-bezier(0.2, 0.5, 0.4, 1)', fill: 'forwards' }
+        { duration: (1800 + Math.random() * 1800) * slow, easing: 'cubic-bezier(0.2, 0.5, 0.4, 1)', fill: 'forwards' }
       ).onfinish = () => p.remove();
     }
 
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 4 + tier; i++) {
       const e = document.createElement('span');
       e.textContent = FLYERS[(Math.random() * FLYERS.length) | 0];
       const fromLeft = Math.random() < 0.5;
@@ -179,9 +192,82 @@
           { opacity: 1, offset: 0.85 },
           { transform: `translate(${dx}px, ${drift}px) rotate(${tilt}deg)`, opacity: 0 }
         ],
-        { duration: 1600 + Math.random() * 2600, easing: 'linear', fill: 'forwards' }
+        { duration: (1600 + Math.random() * 2600) * slow, easing: 'linear', fill: 'forwards' }
       ).onfinish = () => e.remove();
     }
+
+    if (tier >= 1) firework();
+    if (tier >= 2) {
+      firework();
+      flash(W * (0.1 + Math.random() * 0.8), H * (0.1 + Math.random() * 0.5));
+    }
+  }
+
+  // A rocket climbs from the bottom edge and pops into a radial spark burst
+  // with a light flash at the apex.
+  function firework() {
+    if (!partyHost) return;
+    const W = window.innerWidth;
+    const H = window.innerHeight;
+    const x0 = W * (0.15 + Math.random() * 0.7);
+    const x1 = x0 + (Math.random() * 120 - 60);
+    const y1 = H * (0.12 + Math.random() * 0.35);
+    const color = BURST_COLORS[(Math.random() * BURST_COLORS.length) | 0];
+    const rocket = document.createElement('span');
+    rocket.style.cssText = `position:absolute;left:${x0}px;top:${H + 12}px;width:5px;height:14px;border-radius:3px;background:${color};box-shadow:0 0 8px ${color};`;
+    partyHost.appendChild(rocket);
+    rocket.animate(
+      [
+        { transform: 'translate(0, 0)' },
+        { transform: `translate(${x1 - x0}px, ${y1 - H - 12}px)` }
+      ],
+      { duration: 650 + Math.random() * 350, easing: 'cubic-bezier(0.2, 0.7, 0.5, 1)', fill: 'forwards' }
+    ).onfinish = () => {
+      rocket.remove();
+      if (!partyHost) return;
+      flash(x1, y1);
+      for (let i = 0; i < 18; i++) {
+        const s = document.createElement('span');
+        const c = Math.random() < 0.3 ? '#fff2cf' : BURST_COLORS[(Math.random() * BURST_COLORS.length) | 0];
+        const size = 3 + Math.random() * 4;
+        s.style.cssText = `position:absolute;left:${x1}px;top:${y1}px;width:${size}px;height:${size}px;border-radius:50%;background:${c};box-shadow:0 0 6px ${c};`;
+        partyHost.appendChild(s);
+        const a = (i / 18) * 2 * Math.PI + Math.random() * 0.4;
+        const d = 60 + Math.random() * 110;
+        s.animate(
+          [
+            { transform: 'translate(-50%, -50%)', opacity: 1 },
+            {
+              transform: `translate(calc(-50% + ${Math.cos(a) * d}px), calc(-50% + ${Math.sin(a) * d * 0.9}px))`,
+              opacity: 1,
+              offset: 0.6
+            },
+            {
+              transform: `translate(calc(-50% + ${Math.cos(a) * d * 1.15}px), calc(-50% + ${Math.sin(a) * d * 0.9 + 40}px)) scale(0.4)`,
+              opacity: 0
+            }
+          ],
+          { duration: 900 + Math.random() * 500, easing: 'cubic-bezier(0.1, 0.6, 0.4, 1)', fill: 'forwards' }
+        ).onfinish = () => s.remove();
+      }
+    };
+  }
+
+  // Soft radial glint that swells and fades — the "camera flash" sparkle.
+  function flash(x, y) {
+    if (!partyHost) return;
+    const f = document.createElement('span');
+    const size = 140 + Math.random() * 160;
+    f.style.cssText = `position:absolute;left:${x - size / 2}px;top:${y - size / 2}px;width:${size}px;height:${size}px;border-radius:50%;background:radial-gradient(circle, rgba(255,250,235,0.95) 0%, rgba(255,220,160,0.35) 40%, rgba(255,220,160,0) 70%);`;
+    partyHost.appendChild(f);
+    f.animate(
+      [
+        { transform: 'scale(0.2)', opacity: 0 },
+        { opacity: 1, offset: 0.25 },
+        { transform: 'scale(1.4)', opacity: 0 }
+      ],
+      { duration: 650, easing: 'ease-out', fill: 'forwards' }
+    ).onfinish = () => f.remove();
   }
 
   function openElement(kind, key) {
@@ -246,7 +332,7 @@
 
     {#if loveCount !== null}
       <p class="lovecount">
-        <em>Amores</em> recibidos:
+        Amores recibidos:
         <span class="num" bind:this={numEl} style:color={heartColor || null}>{loveCount.toLocaleString('es')}</span>
       </p>
     {/if}
@@ -366,7 +452,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
+    /* Centred so the cards stay balanced when a long thank-you label wraps
+       to two lines mid-party (the grid row stretches both cards together). */
+    justify-content: center;
     gap: 0.45rem;
     padding: 0.85rem 0.5rem 0.75rem;
     background: var(--surface-2);

@@ -1012,11 +1012,10 @@ About-modal actions (report-a-bug, donations).
    Domain (auto DNS + TLS). Required before the TWA (Digital Asset Links).
    **Done 2026-07-03**: bought `hdchart.app` in Cloudflare Registrar; `SITE_URL` +
    robots + sitemap updated to `https://hdchart.app`. `hdchart.app` (root) is the
-   canonical host. **`www` redirect: rule created by the author 2026-07-03**
-   (Cloudflare Redirect Rule), but the dashboard hinted some DNS config might
-   still be missing — **pending live verification** that `www.hdchart.app`
-   actually resolves and redirects to the root (needs a proxied DNS record for
-   `www` for the rule to trigger).
+   canonical host. **`www` redirect: rule + proxied DNS record for `www` created
+   by the author 2026-07-03** (Cloudflare Redirect Rule; the DNS record was the
+   missing piece the dashboard warned about) — **pending live verification**
+   that `www.hdchart.app` resolves and redirects to the root.
 4. **Report a bug** — wire the deferred "Reportar un fallo" (`About.svelte`) to Web3Forms.
 5. **Donations (optional, may ship post-1.0)** — wire "Invítame a un café" to Ko-fi.
    **Done 2026-07-03 (as Buy Me a Coffee)**: the About modal gained a support row
@@ -1034,6 +1033,12 @@ About-modal actions (report-a-bug, donations).
    the counter moved into an "*Amores* recibidos: N" line (number keeps the
    heart's colour), full-screen party (confetti across the viewport + emoji
    flyers, ~3-5 s) and an escalating thank-you label sequence on the button.
+   Third pass same day: exclamations + hearts in the thank-you labels (more
+   exaggerated deeper into the spree), two intensity jumps (~8 clicks add
+   fireworks — rocket + radial sparks + apex flash; ~16 add a second rocket,
+   stray light glints and longer-lived confetti), the resting label becomes
+   "¡Mándame más amor!" after the first party, and "Amores recibidos:" lost
+   its italics.
    Known trade-off, fine for a love counter: KV read-modify-write can drop a few
    counts under simultaneous clicks from different visitors (no atomic increment
    in KV; Durable Objects would fix it if it ever matters). The POST rejects
