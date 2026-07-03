@@ -441,6 +441,20 @@ corrected).
 
 ## Possible improvements (not scheduled, not part of Phase 5)
 
+- **Love counter: track unique senders, not just clicks (requested
+  2026-07-03).** Besides the ever-growing click total, keep a second KV
+  counter of **how many distinct people** have ever sent love. Backend-first:
+  it's for the author's occasional consultation; surfacing it in the About
+  modal is optional but already has approved wording — "Amores recibidos:
+  1.234 (de N humanos queridos)". Cheap approximate implementation (no
+  accounts, no personal data): the client keeps a "this device already sent
+  love" flag in `localStorage` and includes `first: true` in the first
+  batched POST; the endpoint (`src/routes/api/love/+server.js`) then also
+  increments a `love-senders` KV key (clamped to +1 per request, same
+  junk-proofing as `n`). Counts devices/browsers rather than true humans
+  (clearing storage or switching devices re-counts) — fine for its purpose.
+  GET returns both keys, so the front can show it whenever wanted.
+
 - **Click a centre or gate in the bodygraph to open its drawer (requested
   2026-07-02).** Tapping/clicking a centre shape or a gate marker in the bodygraph
   should open the same info drawer that the summary chips open. **Channels
