@@ -65,3 +65,17 @@ button {
   pointer-events: none;
   z-index: 40;
 }
+
+/* Inside the activations scroller (overflow-x: auto) a tooltip above the
+   header gets clipped: flip it below, and right-align it on the right-edge
+   columns. Twin of the scoped :hover rules in the chart page. */
+.acts-scroll [data-tip].tip-open::after {
+  bottom: auto;
+  top: calc(100% + 7px);
+}
+.acts-scroll th:nth-child(3) [data-tip].tip-open::after,
+.acts-scroll .weight-col [data-tip].tip-open::after {
+  left: auto;
+  right: 0;
+  transform: none;
+}

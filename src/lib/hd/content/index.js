@@ -30,7 +30,28 @@ export function getElementInfo(kind, key, lang = DEFAULT_LANG) {
   if (kind === 'center') {
     return { title: entry.title, paragraphs: [entry.fn, entry.defined, entry.open] };
   }
-  return entry;
+  // Closed-set categories append the full set of possibilities (text audit,
+  // jul 2026): a compact clickable schema with the current element highlighted.
+  const rel = relatedIndex(kind, key, lang);
+  return rel ? { ...entry, related: rel } : entry;
+}
+
+/** Closed-set schema ({ heading, items }) for a category, with `currentKeys`
+ *  highlighted, or null when the category has no closed set. */
+function relatedIndex(kind, currentKeys, lang = DEFAULT_LANG) {
+  const idx = pack(lang).relatedIndex?.[kind];
+  if (!idx) return null;
+  const cur = new Set((Array.isArray(currentKeys) ? currentKeys : [currentKeys]).map(String));
+  return {
+    heading: idx.heading,
+    items: Object.entries(idx.items).map(([k, it]) => ({
+      kind,
+      key: k,
+      label: it.label,
+      note: it.note,
+      current: cur.has(String(k))
+    }))
+  };
 }
 
 /** Whether an element has explanatory content (drives the info "i"). */
@@ -74,12 +95,13 @@ export function getProfileInfo(profile, lang = DEFAULT_LANG) {
   return {
     title: `Perfil ${profile}`,
     paragraphs: [
-      `El perfil ${profile} combina dos líneas: la ${a}, consciente, y la ${b}, inconsciente. Cada una aporta su matiz, y juntas describen tu forma de aprender, relacionarte y desplegar tu propósito.`,
+      `El perfil ${profile} combina dos líneas: la ${a}, consciente, y la ${b}, inconsciente. Cada una aporta su matiz, y juntas describen una forma de aprender, de relacionarse y de desplegar el propósito.`,
       `**${la.title}.** ${la.paragraphs[0]}`,
       ...la.paragraphs.slice(1),
       `**${lb.title}.** ${lb.paragraphs[0]}`,
       ...lb.paragraphs.slice(1)
-    ]
+    ],
+    related: relatedIndex('profile', [a, b], lang)
   };
 }
 
@@ -227,32 +249,41 @@ export function getGateInfo(gate, chart = null, lang = DEFAULT_LANG) {
   const labels = p.promptLabels.center;
   const name = getIchingName(g, lang);
 
-  // Second paragraph (Phase 7 text review): the gate's own centre plus the
-  // harmonic gate(s) — those that complete its channel(s), with their centre.
-  // Gates 10/20/34/57 (the integration cluster) sit on more than one channel,
-  // so this can be plural.
-  const centerLink = (c) => `[centro ${labels[c] ?? c}](center:${c})`;
-  const frags = CHANNELS.filter(([a, b]) => a === g || b === g)
-    .map(([a, b]) => (a === g ? b : a))
-    .map((h) => `la [puerta ${h} ("${gateTheme(h, lang)}")](gate:${h}), en el ${centerLink(CENTER_BY_GATE[h])}`);
-  const centerLine =
-    frags.length === 0
-      ? `Está en el ${centerLink(center)}.`
-      : frags.length === 1
-        ? `Está en el ${centerLink(center)} y su puerta armónica (la puerta que completa su canal) es ${frags[0]}.`
-        : `Está en el ${centerLink(center)} y sus puertas armónicas (las que completan sus canales) son ${frags.slice(0, -1).join('; ')}; y ${frags[frags.length - 1]}.`;
+  // Mechanical identity as a schematic `facts` block (text audit, jul 2026):
+  // centre / channel(s) / harmonic gate(s), one row per element, rendered by
+  // ElementInfo as aligned chip rows. Gates 10/20/34/57 (the integration
+  // cluster) sit on more than one channel, so channel rows can be plural.
+  const pairs = CHANNELS.filter(([a, b]) => a === g || b === g);
+  const facts = [
+    { label: 'Centro', rows: [{ chip: { label: labels[center] ?? center, kind: 'center', key: center, center } }] },
+    {
+      label: pairs.length > 1 ? 'Canales' : 'Canal',
+      rows: pairs.map(([a, b]) => {
+        const k = `${a}-${b}`;
+        const chName = p.channel?.[k]?.name;
+        return { chip: { label: k, kind: 'channel', key: k }, note: chName ? `("${chName}")` : null };
+      })
+    },
+    {
+      label: pairs.length > 1 ? 'Puertas armónicas' : 'Puerta armónica',
+      tip: pairs.length > 1 ? 'completan sus canales' : 'completa el canal',
+      rows: pairs.map(([a, b]) => {
+        const h = a === g ? b : a;
+        const t = gateTheme(h, lang);
+        return { chip: { label: String(h), kind: 'gate', key: String(h) }, note: t ? `("${t}")` : null };
+      })
+    }
+  ];
 
-  const paragraphs = [
-    entry?.text ?? `La puerta ${g}.`,
-    centerLine,
+  const after = [
     name
       ? `Su raíz es el hexagrama ${g} del I Ching, "${name}".`
       : `Le corresponde el hexagrama ${g} del I Ching.`
   ];
   const coda = gateCoda(gateState(g, chart));
-  if (coda) paragraphs.push(coda);
-  paragraphs.push('Para una lectura más a fondo, puedes utilizar la opción de "saber más usando IA".');
-  return { title: `Puerta ${g}`, paragraphs };
+  if (coda) after.push(coda);
+  after.push('Para una lectura más a fondo, puedes utilizar la opción de "saber más usando IA".');
+  return { title: `Puerta ${g}`, paragraphs: [entry?.text ?? `La puerta ${g}.`], facts, after };
 }
 
 /** A channel's state in a chart: 'complete' | 'half' | 'none', or null if no chart. */
@@ -266,12 +297,12 @@ export function channelState(a, b, chart) {
 }
 
 /** Chart-state coda for a channel, or null. Impersonal, same rule as gateCoda. */
-function channelCoda(a, b, chart, nameA, nameB) {
+function channelCoda(a, b, chart) {
   if (!chart?.activeGates) return null;
   const aOn = chart.activeGates.includes(a);
   const bOn = chart.activeGates.includes(b);
   if (aOn && bOn) {
-    return `En esta carta el canal está completo: conecta el centro ${nameA} y el centro ${nameB}, manteniendo una corriente estable entre ellos.`;
+    return 'En esta carta el canal está completo: es una corriente que se aporta de forma estable e integrada.';
   }
   if (aOn || bOn) {
     const on = aOn ? a : b;
@@ -298,16 +329,38 @@ export function getChannelInfo(pair, chart = null, lang = DEFAULT_LANG) {
   const ta = gateTheme(a, lang);
   const tb = gateTheme(b, lang);
   const ch = pack(lang).channel?.[a < b ? `${a}-${b}` : `${b}-${a}`];
-  const paragraphs = [
-    `El canal ${a}-${b} conecta el **[centro ${labels[ca] ?? ca}](center:${ca})** ([puerta ${a}](gate:${a})) con el **[centro ${labels[cb] ?? cb}](center:${cb})** ([puerta ${b}](gate:${b})). Con sus dos puertas activas queda completo, define ambos centros y crea una corriente de energía estable entre ellos.`
-  ];
+
+  // Essence first; the mechanical identity (centres, gates) lives in the
+  // schematic `facts` block below (text audit, jul 2026).
+  const paragraphs = [];
   if (ch && ta && tb) {
-    paragraphs.push(`Es el **${ch.name}**. Reúne "${ta}" ([puerta ${a}](gate:${a})) y "${tb}" ([puerta ${b}](gate:${b})): ${ch.essence}`);
+    paragraphs.push(`Es el **${ch.name}**: ${ch.essence}`);
   } else if (ta && tb) {
     paragraphs.push(`Reúne "${ta}" ([puerta ${a}](gate:${a})) y "${tb}" ([puerta ${b}](gate:${b})), que conviene leer juntas para captar su carácter.`);
   }
-  const coda = channelCoda(a, b, chart, labels[ca] ?? ca, labels[cb] ?? cb);
-  if (coda) paragraphs.push(coda);
-  paragraphs.push('Para una lectura más a fondo, puedes utilizar la opción de "saber más usando IA".');
-  return { title: `Canal ${a}-${b}`, paragraphs };
+
+  const facts = [
+    {
+      label: 'Centros',
+      rows: [
+        { chip: { label: labels[ca] ?? ca, kind: 'center', key: ca, center: ca } },
+        { chip: { label: labels[cb] ?? cb, kind: 'center', key: cb, center: cb } }
+      ]
+    },
+    {
+      label: 'Puertas',
+      rows: [
+        { chip: { label: String(a), kind: 'gate', key: String(a) }, note: ta ? `("${ta}")` : null },
+        { chip: { label: String(b), kind: 'gate', key: String(b) }, note: tb ? `("${tb}")` : null }
+      ]
+    }
+  ];
+
+  const after = [
+    'Con sus dos puertas activas, el canal queda completo: define los dos centros que conecta y crea una corriente de energía estable entre ellos.'
+  ];
+  const coda = channelCoda(a, b, chart);
+  if (coda) after.push(coda);
+  after.push('Para una lectura más a fondo, puedes utilizar la opción de "saber más usando IA".');
+  return { title: `Canal ${a}-${b}`, paragraphs, facts, after };
 }

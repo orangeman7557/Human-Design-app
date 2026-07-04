@@ -22,32 +22,49 @@
 import { getPromptLabels, gateState, channelState, DEFAULT_LANG } from './content/index.js';
 
 const FRAME = 'En el marco de Human Design';
+// Nudges the AI away from vague-mystical answers (text audit, jul 2026).
+const TONE = ', de forma práctica y aterrizada';
 
-/** General angle: "En el marco de Human Design, ¿me explicas en detalle <subject>?" */
-const ask = (subject) => `${FRAME}, ¿me explicas en detalle ${subject}?`;
+/** General angle: "En el marco de Human Design, ¿me explicas en detalle <subject>, de forma práctica y aterrizada?" */
+const ask = (subject) => `${FRAME}, ¿me explicas en detalle ${subject}${TONE}?`;
 
-/** Impersonal descriptor of the chart, e.g. "un Generador, perfil 3/5, autoridad Sacral, centros definidos …". */
+/** Impersonal descriptor of the chart, e.g. "un Generador, perfil 3/5, autoridad Sacral, definición split, centros definidos …". */
 function who(L, chart) {
   const type = L.type[chart.type] ?? chart.type;
   const authority = L.authority[chart.authority] ?? chart.authority;
+  const definition = L.definition[chart.definition] ?? chart.definition;
   const centers = (chart.definedCenters ?? [])
     .map((c) => L.center[c] ?? c)
     .join(', ');
   return (
     `un ${type}, perfil ${chart.profile}, autoridad ${authority}, ` +
-    `centros definidos ${centers || 'ninguno'}`
+    `${definition}, centros definidos ${centers || 'ninguno'}`
   );
 }
 
 /** Chart angle: same as `ask` but prefixed with the chart descriptor. */
 const askChart = (L, chart, subject) =>
-  `${FRAME}, para ${who(L, chart)}, ¿me explicas en detalle ${subject}?`;
+  `${FRAME}, para ${who(L, chart)}, ¿me explicas en detalle ${subject}${TONE}?`;
 
-/** Gate chart-angle subject, naming the gate's state in the chart. */
-function gateChartSubject(g, state) {
+/** The planets whose Personality/Design activations light up gate `g`, e.g.
+ *  "el Sol en Personalidad (línea 3)". Empty when the gate isn't active. */
+function gateActivations(L, chart, g) {
+  const parts = [];
+  for (const [side, label] of [['personality', 'Personalidad'], ['design', 'Diseño']]) {
+    for (const [planet, act] of Object.entries(chart?.[side] ?? {})) {
+      if (act?.gate === g) parts.push(`${L.planet?.[planet] ?? planet} en ${label} (línea ${act.line})`);
+    }
+  }
+  return parts;
+}
+
+/** Gate chart-angle subject, naming the gate's state (and activations) in the chart. */
+function gateChartSubject(L, chart, g, state) {
+  const acts = gateActivations(L, chart, g);
+  const by = acts.length ? ` está activada por ${acts.join(' y ')} y` : '';
   const tail = {
-    complete: ', que en esta carta forma parte de un canal completo',
-    hanging: ', que en esta carta está colgante (activa, pero sin la otra mitad de su canal)',
+    complete: `, que en esta carta${by} forma parte de un canal completo`,
+    hanging: `, que en esta carta${by} está colgante (sin la otra mitad de su canal)`,
     inactive: ', que en esta carta no está activa'
   }[state] ?? '';
   return `la puerta ${g}${tail}`;
@@ -102,10 +119,12 @@ export function buildPrompts(kind, key, chart, lang = DEFAULT_LANG) {
   }
 
   if (kind === 'profile') {
-    // key is the "3/5" string.
+    // key is the "3/5" string, or a single line ("3") from the lines schema.
+    const isLine = !String(key).includes('/');
+    const subject = isLine ? `la línea ${key} del perfil` : `el perfil ${key}`;
     return {
-      general: ask(`el perfil ${key}`),
-      chart: askChart(L, chart, `el perfil ${key}`)
+      general: ask(subject),
+      chart: isLine ? null : askChart(L, chart, subject)
     };
   }
 
@@ -134,7 +153,7 @@ export function buildPrompts(kind, key, chart, lang = DEFAULT_LANG) {
     const state = gateState(g, chart);
     return {
       general: ask(`la puerta ${g}`),
-      chart: state ? askChart(L, chart, gateChartSubject(g, state)) : null
+      chart: state ? askChart(L, chart, gateChartSubject(L, chart, g, state)) : null
     };
   }
 
@@ -151,9 +170,9 @@ export function buildPrompts(kind, key, chart, lang = DEFAULT_LANG) {
   if (kind === 'activationCol') {
     const subject = {
       personality:
-        'la parte consciente (Personality) de una carta, calculada en el momento del nacimiento',
+        'la parte consciente (Personalidad) de una carta, calculada en el momento del nacimiento',
       design:
-        'la parte inconsciente (Design) de una carta, calculada unos 88 días antes del nacimiento',
+        'la parte inconsciente (Diseño) de una carta, calculada unos 88 días antes del nacimiento',
       weight: 'el peso o influencia relativa de cada activación planetaria'
     };
     return { general: ask(subject[key] ?? key), chart: null };
@@ -170,8 +189,8 @@ export function buildPrompts(kind, key, chart, lang = DEFAULT_LANG) {
         p && d
           ? `${FRAME}, para ${who(L, chart)}, ¿me explicas en detalle qué ` +
             `representa ${name} y qué aportan sus dos activaciones en esta ` +
-            `carta: ${p.gate}.${p.line} (consciente, Personality) y ` +
-            `${d.gate}.${d.line} (inconsciente, Design)?`
+            `carta: ${p.gate}.${p.line} (consciente, Personalidad) y ` +
+            `${d.gate}.${d.line} (inconsciente, Diseño)${TONE}?`
           : null
     };
   }

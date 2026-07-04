@@ -50,10 +50,10 @@
 
   // Ordered by estimated share of the population.
   const TYPES = [
-    { key: 'generator', label: 'Generator' },
-    { key: 'manifesting-generator', label: 'Manifesting Generator' },
-    { key: 'projector', label: 'Projector' },
-    { key: 'manifestor', label: 'Manifestor' },
+    { key: 'generator', label: 'Generador' },
+    { key: 'manifesting-generator', label: 'Generador Manifestante' },
+    { key: 'projector', label: 'Proyector' },
+    { key: 'manifestor', label: 'Manifestador' },
     { key: 'reflector', label: 'Reflector' }
   ];
 
@@ -81,11 +81,12 @@
     'wait-lunar-cycle': 'Esperar un ciclo lunar'
   };
 
+  // Same quality-(centre) order as the drawers and prompts (text audit, jul 2026).
   const AUTHORITY_LABELS = {
-    emotional: 'Plexo solar (emocional)',
+    emotional: 'Emocional (Plexo solar)',
     sacral: 'Sacral',
-    splenic: 'Bazo (intuición)',
-    ego: 'Ego (corazón)',
+    splenic: 'Esplénica (Bazo)',
+    ego: 'Ego (Corazón)',
     'self-projected': 'Autoproyectada (G-Garganta)',
     mental: 'Mental (ambiental)',
     lunar: 'Lunar'
@@ -143,10 +144,12 @@
     planet: 'Planeta'
   };
 
-  /** Resolve an element's `{ title, paragraphs, list? }` by kind. */
+  /** Resolve an element's `{ title, paragraphs, facts?, after?, related?, list? }` by kind. */
   function resolveInfo(kind, key) {
     return kind === 'concept' ? getConceptInfo(key)
-      : kind === 'profile' ? getProfileInfo(key)
+      // A profile key is "3/5"; a bare line number ("3", from the lines
+      // schema) opens that line's own entry instead.
+      : kind === 'profile' ? (String(key).includes('/') ? getProfileInfo(key) : getElementInfo(kind, key))
       : kind === 'gate' ? getGateInfo(key, chart)
       : kind === 'channel' ? getChannelInfo(key, chart)
       : getElementInfo(kind, key);
@@ -724,13 +727,14 @@
     <div class="title-wrap">
       <h1>{birthData?.name?.trim() || 'Tu carta'}</h1>
       {#if chart}
-        <button class="report-btn" type="button" onclick={() => (reportOpen = true)} data-tip="Informe" aria-label="Informe inicial">
+        <button class="report-btn" type="button" onclick={() => (reportOpen = true)} aria-label="Informe inicial">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
             <polyline points="14 2 14 8 20 8" />
             <line x1="8" y1="13" x2="16" y2="13" />
             <line x1="8" y1="17" x2="16" y2="17" />
           </svg>
+          <span class="report-lbl">Informe</span>
         </button>
       {/if}
     </div>
@@ -1110,13 +1114,13 @@
             <tr>
               <th></th>
               <th data-inner-key="actcol:personality">
-                <span class="side-head" data-tip="Se define en el momento del nacimiento">Personality<span class="side-dot personality" aria-hidden="true"></span>{#if innerReveal === 'actcol:personality' || infoIsOpen('activationCol', 'personality')}<span class="dot-side head-i" data-info-cat="Activaciones" data-info-kind="activationCol" data-info-key="personality"><InfoDot active={infoIsOpen('activationCol', 'personality')} label="Qué es Personality" /></span>{/if}</span>
+                <span class="side-head" data-tip="Se define en el momento del nacimiento">Personalidad<span class="side-dot personality" aria-hidden="true"></span><span class="dot-side head-i" data-info-cat="Activaciones" data-info-kind="activationCol" data-info-key="personality">{#if innerReveal === 'actcol:personality' || infoIsOpen('activationCol', 'personality')}<InfoDot active={infoIsOpen('activationCol', 'personality')} label="Qué es Personalidad" />{/if}</span></span>
               </th>
               <th data-inner-key="actcol:design">
-                <span class="side-head" data-tip={'Se define 88° de arco solar antes\ndel nacimiento (~88 días)'}>Design<span class="side-dot design" aria-hidden="true"></span>{#if innerReveal === 'actcol:design' || infoIsOpen('activationCol', 'design')}<span class="dot-side head-i" data-info-cat="Activaciones" data-info-kind="activationCol" data-info-key="design"><InfoDot active={infoIsOpen('activationCol', 'design')} label="Qué es Design" /></span>{/if}</span>
+                <span class="side-head" data-tip={'Se define 88° de arco solar antes\ndel nacimiento (~88 días)'}>Diseño<span class="side-dot design" aria-hidden="true"></span><span class="dot-side head-i" data-info-cat="Activaciones" data-info-kind="activationCol" data-info-key="design">{#if innerReveal === 'actcol:design' || infoIsOpen('activationCol', 'design')}<InfoDot active={infoIsOpen('activationCol', 'design')} label="Qué es Diseño" />{/if}</span></span>
               </th>
               <th class="weight-col" data-inner-key="actcol:weight">
-                <span class="side-head" data-tip={'Influencia relativa de la activación\n(el Sol y la Tierra pesan más)'}>Peso{#if innerReveal === 'actcol:weight' || infoIsOpen('activationCol', 'weight')}<span class="dot-side head-i" data-info-cat="Activaciones" data-info-kind="activationCol" data-info-key="weight"><InfoDot active={infoIsOpen('activationCol', 'weight')} label="Qué es el peso" /></span>{/if}</span>
+                <span class="side-head" data-tip={'Influencia relativa de la activación\n(el Sol y la Tierra pesan más)'}>Peso<span class="dot-side head-i" data-info-cat="Activaciones" data-info-kind="activationCol" data-info-key="weight">{#if innerReveal === 'actcol:weight' || infoIsOpen('activationCol', 'weight')}<InfoDot active={infoIsOpen('activationCol', 'weight')} label="Qué es el peso" />{/if}</span></span>
               </th>
             </tr>
           </thead>
@@ -1219,19 +1223,35 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    gap: 0.4rem;
     flex: none;
-    width: 2rem;
     height: 2rem;
-    padding: 0;
+    padding: 0 0.6rem;
     background: var(--accent-soft);
     border: 1px solid var(--accent);
     color: var(--accent);
     border-radius: var(--radius);
     cursor: pointer;
+    font-family: inherit;
   }
   .report-btn svg {
     width: 16px;
     height: 16px;
+  }
+  .report-lbl {
+    font-size: 0.85rem;
+    font-weight: 500;
+  }
+  /* Mobile: icon only — the label would crowd the title row. */
+  @media (max-width: 679px) {
+    .report-lbl {
+      display: none;
+    }
+    .report-btn {
+      width: 2rem;
+      padding: 0;
+      gap: 0;
+    }
   }
   .report-btn:hover {
     background: var(--accent);
@@ -1391,7 +1411,7 @@
     width: 17px;
     height: 17px;
     vertical-align: middle;
-    margin-left: 0.35rem;
+    margin-left: 0.18rem;
   }
   .dot-host {
     display: inline-flex;
@@ -1906,23 +1926,48 @@
     gap: 0.4em;
     cursor: help;
   }
-  /* Activations-header info "i": pinned absolutely to the header's top-right so
-     revealing it never widens the cell or spills past the table on mobile (the
-     table lives in an overflow-x:auto scroller). Personality/Design overlay the
-     colour dot (vertically centred); Peso has no dot, so it rides as a small
-     superscript over the label's end, like the gate/channel chip "i". */
+  /* Activations-header info "i" (text audit, jul 2026): on desktop it is a
+     permanent inline slot right of the text+dot — like .dot-h2 — so revealing
+     the "i" never shifts the columns. On mobile it goes back to an absolute
+     overlay so it can't widen the scrollable table (see the media block). */
   .side-head .head-i {
-    position: absolute;
-    top: 50%;
-    right: -5px;
-    transform: translateY(-50%);
-    height: auto;
+    position: static;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 17px;
+    height: 17px;
     margin: 0;
+    transform: none;
     z-index: 1;
   }
-  .weight-col .side-head .head-i {
-    top: -3px;
-    right: -8px;
+  @media (max-width: 679px) {
+    .side-head .head-i {
+      position: absolute;
+      top: 50%;
+      right: -5px;
+      transform: translateY(-50%);
+      width: auto;
+      height: auto;
+    }
+    .weight-col .side-head .head-i {
+      top: -3px;
+      right: -8px;
+      transform: none;
+    }
+  }
+  /* The activations tooltips pop *below* their header: the table scroller
+     (overflow-x: auto) clips anything above it, which hid them entirely. */
+  .acts-scroll .side-head:hover::after {
+    bottom: auto;
+    top: calc(100% + 7px);
+  }
+  /* Right-edge columns: right-align the tooltip so it stays inside the
+     scroller instead of being clipped at its right edge. */
+  .acts-scroll th:nth-child(3) .side-head:hover::after,
+  .acts-scroll .weight-col .side-head:hover::after {
+    left: auto;
+    right: 0;
     transform: none;
   }
   /* Same colours the two sides use on gates/channels in the graph. */

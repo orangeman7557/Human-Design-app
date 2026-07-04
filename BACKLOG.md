@@ -84,19 +84,16 @@ Open (added 2026-07-02, author's batch — unverified, not yet triaged):
   2026-07-03) — FIXED 2026-07-03.** Root cause: the chart page simply never
   rendered the footer install link — `install.mode` carries across SPA
   navigation fine. Fixed as item 2 of the 2026-07-03 audit (see below).
-- ⬜ **Personality/Design/Peso tooltips invisible on desktop (author,
-  2026-07-03).** In the activations table header, hovering "Personality",
-  "Design" or "Peso" shows the `?` cursor (so the `data-tip` hover is firing)
-  but the tooltip text never appears. Likely cause: the tip is an
-  absolutely-positioned `::after` anchored `bottom: calc(100% + 7px)` above the
-  trigger (`[chart/+page.svelte:1367](src/routes/chart/+page.svelte:1367)`),
-  but the header lives inside `.acts-scroll`
-  (`[chart/+page.svelte:1844](src/routes/chart/+page.svelte:1844)`), which sets
-  `overflow-x: auto` — per spec that forces the browser to also clip
-  `overflow-y`, cutting off anything positioned above the scroller's own box.
-  Verify and, if confirmed, either flip the tooltip to open downward for these
-  three headers or give `.acts-scroll` enough top padding/room so the tip isn't
-  clipped.
+- ✅ **Personality/Design/Peso tooltips invisible on desktop (author,
+  2026-07-03) — FIXED 2026-07-04.** Cause confirmed: the tip is an
+  absolutely-positioned `::after` anchored above the trigger, but the header
+  lives inside `.acts-scroll` (`overflow-x: auto`), which per spec also clips
+  vertical overflow — anything above the scroller's box was cut off. Fix:
+  the three header tooltips now open *downward* (over the table rows, inside
+  the clip box), and the right-edge columns (Diseño/Peso) right-align theirs
+  so they don't clip at the scroller's right edge. Applied to both the scoped
+  `:hover` rules (chart page) and the global `.tip-open` touch rules
+  (`app.css`). Verified with the `.tip-open` geometry in the browser.
 
 Fixed in the 2026-07-02 batch (from the author's batch above):
 
@@ -257,14 +254,16 @@ This resolves the inconsistency found in the gate/channel state codas
   browser (focus in/restore on About and the gate drawer; arrow+Enter picks
   Madrid). Keyboard access for the channel/gate *chips* remains open under the
   2026-06-15 a11y item.
-- ⬜ **Full text & prompt improvement pass with Fable (author request
-  2026-07-03; confirmed same day: NOT blocking for 1.0 — can land after the
-  release).** A dedicated review of *all* app texts and prompts to improve
-  wording and quality (the author has spotted improvable spots). Distinct from
-  the shipped correctness review: this one is about making the copy better,
-  and must respect the text-voice rule above. Include the small copy notes
-  from this audit (e.g. the mixed-language invalid-data error already
-  registered under "Possible improvements").
+- ✅ **Full text & prompt improvement pass with Fable — DONE 2026-07-04.**
+  Audit presented 2026-07-04 and the approved batch implemented the same day
+  (see TASKS latest entry): typo/wording fixes across `es.js`, everything in
+  Spanish (type names, Personalidad/Diseño columns), the impersonal-voice rule
+  enforced in concept/planet/column drawers (the initial report keeps "tú"),
+  schematic facts blocks in gate/channel drawers, closed-set schemas at the
+  end of value drawers, richer prompts (definition in the chart descriptor,
+  gate activations, "de forma práctica y aterrizada"), plus the header
+  tooltip fix and assorted UI polish. The mixed-language invalid-data error
+  under "Possible improvements" remains open (not part of this batch).
 
 ### Low
 

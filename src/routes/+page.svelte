@@ -30,7 +30,7 @@
   const SITE_URL = 'https://hdchart.app';
   const SEO_TITLE = 'Human Design Chart — calcula tu carta gratis, sin registro';
   const SEO_DESC =
-    'Calcula tu carta de Human Design gratis y sin registro: tipo, estrategia, autoridad, perfil, centros y canales, con un bodygraph interactivo. Tus datos se quedan en tu dispositivo.';
+    'Calcula tu carta de Human Design gratis y sin registro: tipo, estrategia, autoridad, perfil, centros y canales, con un bodygraph interactivo.';
   const jsonLd =
     `<script type="application/ld+json">` +
     JSON.stringify({
@@ -49,10 +49,10 @@
     `<\/script>`;
 
   const TYPE_LABELS = {
-    generator: 'Generator',
-    'manifesting-generator': 'Manifesting Generator',
-    projector: 'Projector',
-    manifestor: 'Manifestor',
+    generator: 'Generador',
+    'manifesting-generator': 'Generador Manifestante',
+    projector: 'Proyector',
+    manifestor: 'Manifestador',
     reflector: 'Reflector'
   };
 
@@ -450,7 +450,7 @@
 <main>
   <header>
     <h1>Human Design Chart</h1>
-    <p class="tagline">Introduce tus datos de nacimiento.</p>
+    <p class="tagline">Calcula tu carta de Diseño Humano — gratis y sin registro. Introduce tus datos de nacimiento.</p>
   </header>
 
   <form onsubmit={submit}>
