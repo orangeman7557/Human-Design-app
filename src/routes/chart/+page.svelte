@@ -1476,7 +1476,9 @@
      zone lets clicks fall through to the graph except on the label itself. */
   .bg-title-zone {
     position: absolute;
-    top: 0;
+    /* Slightly above the graph top so there's ~4px of air between the word
+       and the Head apex, without lowering the whole graph. */
+    top: -8px;
     left: 0;
     right: 0;
     display: flex;
@@ -1517,9 +1519,8 @@
   /* Push the graph slightly right so the wider info cards breathe. */
   @media (min-width: 680px) {
     .graph > :global(.bodygraph-wrap) {
-      /* Room above the head for the "Bodygraph" label (absolute at graph top),
-         with a little air so the label doesn't touch the Head centre. */
-      margin-top: 2.2rem;
+      /* Room above the head for the "Bodygraph" label (absolute at graph top). */
+      margin-top: 1.7rem;
       transform: translateX(46px);
     }
   }
@@ -1801,12 +1802,12 @@
   }
   main.pdf-shot .graph > :global(.bodygraph-wrap) {
     order: 0;
-    margin-top: 2.2rem;
+    margin-top: 1.7rem;
     transform: translateX(46px);
   }
   main.pdf-shot .bg-title-zone {
     position: absolute;
-    top: 0;
+    top: -8px;
     left: 0;
     right: 0;
     order: 0;
