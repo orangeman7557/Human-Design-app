@@ -1495,6 +1495,15 @@
     /* Reserve the inline concept "i" height so revealing it doesn't shift. */
     line-height: 1.35;
   }
+  /* Float the concept "i" out of flow (just right of the word) so it doesn't
+     add width and pull "Bodygraph" off the SVG's horizontal centre. */
+  .bg-title .dot-h2 {
+    position: absolute;
+    left: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    margin-left: 0.25rem;
+  }
   .overlay.left {
     position: absolute;
     top: 0;
@@ -1508,8 +1517,9 @@
   /* Push the graph slightly right so the wider info cards breathe. */
   @media (min-width: 680px) {
     .graph > :global(.bodygraph-wrap) {
-      /* Room above the head for the "Bodygraph" label (absolute at graph top). */
-      margin-top: 1.7rem;
+      /* Room above the head for the "Bodygraph" label (absolute at graph top),
+         with a little air so the label doesn't touch the Head centre. */
+      margin-top: 2.2rem;
       transform: translateX(46px);
     }
   }
@@ -1791,7 +1801,7 @@
   }
   main.pdf-shot .graph > :global(.bodygraph-wrap) {
     order: 0;
-    margin-top: 1.7rem;
+    margin-top: 2.2rem;
     transform: translateX(46px);
   }
   main.pdf-shot .bg-title-zone {
