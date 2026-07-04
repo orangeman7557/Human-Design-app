@@ -19,6 +19,14 @@
 export default {
   // ── Concept level (the card / cajetín "i"): what each category is. ──
   concept: {
+    bodygraph: {
+      title: 'El bodygraph',
+      paragraphs: [
+        'El **bodygraph** es el esquema gráfico del cuerpo sobre el que se dibuja la carta: las nueve formas geométricas son los [centros](concept:center) y las líneas que los conectan son los [canales](concept:channel), que van de una puerta a otra. Cada centro gobierna una función concreta —pensar, comunicar, sentir, querer, actuar, intuir— y, en conjunto, dibujan cómo circula la energía.',
+        'Lo que hace única a cada carta es cuáles de esos [centros](concept:center), [canales](concept:channel) y [puertas](concept:gate) están activos: de esa combinación salen el tipo, la autoridad y la forma de funcionar de la persona.',
+        'La distinción clave es si cada centro está **definido** o **indefinido** (abierto). Un centro **definido** —coloreado en el bodygraph— funciona de forma fija y fiable: es una energía consistente, propia y constante. Un centro **indefinido** —que se ve vacío— no es un defecto: es una zona abierta donde se recibe y amplifica la energía de los demás y del entorno; es donde más se aprende, pero también donde es fácil dejarse condicionar y confundir lo ajeno con lo propio.'
+      ]
+    },
     type: {
       title: 'Los tipos',
       paragraphs: [
