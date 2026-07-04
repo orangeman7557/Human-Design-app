@@ -22,7 +22,7 @@ export default {
     bodygraph: {
       title: 'El bodygraph',
       paragraphs: [
-        'El **bodygraph** es el esquema gráfico del cuerpo sobre el que se dibuja la carta: las nueve formas geométricas son los [centros](concept:center) y las líneas que los conectan son los [canales](concept:channel), que van de una puerta a otra. Cada centro gobierna una función concreta —pensar, comunicar, sentir, querer, actuar, intuir— y, en conjunto, dibujan cómo circula la energía.',
+        'El **bodygraph** es el esquema gráfico del cuerpo sobre el que se dibuja la carta: las nueve formas geométricas son los [centros](concept:center) y las líneas que los conectan son los [canales](concept:channel), que van de una puerta a otra. Cada centro gobierna una función concreta y, en conjunto, dibujan cómo circula la energía.',
         'Lo que hace única a cada carta es cuáles de esos [centros](concept:center), [canales](concept:channel) y [puertas](concept:gate) están activos: de esa combinación salen el tipo, la autoridad y la forma de funcionar de la persona.',
         'La distinción clave es si cada centro está **definido** o **indefinido** (abierto). Un centro **definido** —coloreado en el bodygraph— funciona de forma fija y fiable: es una energía consistente, propia y constante. Un centro **indefinido** —que se ve vacío— no es un defecto: es una zona abierta donde se recibe y amplifica la energía de los demás y del entorno; es donde más se aprende, pero también donde es fácil dejarse condicionar y confundir lo ajeno con lo propio.'
       ]
@@ -30,23 +30,23 @@ export default {
     type: {
       title: 'Los tipos',
       paragraphs: [
-        'El **tipo** es la primera y más importante distinción de tu carta: describe cómo está diseñada tu energía para interactuar con el mundo. Hay cinco —[Generador](type:generator), [Generador Manifestante](type:manifesting-generator), [Proyector](type:projector), [Manifestador](type:manifestor) y [Reflector](type:reflector)— y se determinan por qué centros están definidos y cómo se conectan con la [Garganta](center:throat).',
+        'El **tipo** es la primera y más importante distinción de una carta: describe cómo está diseñada la energía de la persona para interactuar con el mundo. Hay cinco —[Generador](type:generator), [Generador Manifestante](type:manifesting-generator), [Proyector](type:projector), [Manifestador](type:manifestor) y [Reflector](type:reflector)— y se determinan por qué centros están definidos y cómo se conectan con la [Garganta](center:throat).',
         'Conocer el tipo importa sobre todo por una razón práctica: cada uno tiene una forma propia y sana de **gestionar su energía y tomar decisiones**. Vivir según el diseño propio —en lugar de imitar a otros tipos— es lo que el sistema asocia con menos resistencia y desgaste.',
-        'No es una etiqueta de personalidad ni un horóscopo, sino una descripción mecánica de cómo funciona tu energía. El valor está en usarlo como espejo: observar si tu manera de moverte por la vida coincide con la que tu carta sugiere.'
+        'No es una etiqueta de personalidad ni un horóscopo, sino una descripción mecánica de cómo funciona la energía de cada uno. El valor está en usarlo como espejo: observar si la manera propia de moverse por la vida coincide con la que la carta sugiere.'
       ]
     },
     strategy: {
       title: 'La estrategia',
       paragraphs: [
-        'La **estrategia** es la forma correcta en que cada tipo debe actuar para vivir alineado. Responde a una pregunta muy concreta: ¿cómo me comprometo con algo —un trabajo, una relación, una decisión— sin forzar la situación? Cada tipo tiene la suya.',
-        'Las cinco son: el Generador *responde* a lo que la vida le presenta; el Generador Manifestante *responde y luego informa*; el Manifestador *informa antes de actuar*; el Proyector *espera la invitación*; y el Reflector *espera un ciclo lunar*. Todas comparten una misma idea: **dejar de iniciar desde la mente** y confiar en la señal del propio cuerpo y de la vida, nunca decidir desde la mente.',
+        'La **estrategia** es la forma correcta en que cada tipo debe actuar para vivir alineado. Responde a una pregunta muy concreta: ¿cómo comprometerse con algo —un trabajo, una relación, una decisión— sin forzar la situación? Cada tipo tiene la suya.',
+        'Las cinco son: el Generador *responde* a lo que la vida le presenta; el Generador Manifestante *responde y luego informa*; el Manifestador *informa antes de actuar*; el Proyector *espera la invitación*; y el Reflector *espera un ciclo lunar*. Todas comparten una misma idea: **dejar de iniciar desde la mente** y confiar en la señal del propio cuerpo y de la vida.',
         '**Seguir la estrategia es, en la práctica, el experimento central del Diseño Humano**. El sistema sugiere observar la diferencia entre las decisiones tomadas a favor de la estrategia y las tomadas en contra, y usar esa experiencia —no la teoría— como guía.'
       ]
     },
     authority: {
       title: 'La autoridad',
       paragraphs: [
-        'La **autoridad** indica desde dónde tomar una decisión de forma fiable: qué parte de ti tiene la última palabra. En Diseño Humano la mente sirve para procesar información y aconsejar a otros, pero **la mente no es de fiar para decidir sobre la propia vida**; la autoridad nace siempre de una fuente más corporal.',
+        'La **autoridad** indica desde dónde tomar una decisión de forma fiable: qué parte de uno tiene la última palabra. En Diseño Humano la mente sirve para procesar información y aconsejar a otros, pero **la mente no es de fiar para decidir sobre la propia vida**; la autoridad nace siempre de una fuente más corporal.',
         'Hay siete: emocional (Plexo solar), sacral, esplénica (Bazo), del ego (Corazón), autoproyectada (G), mental/ambiental y lunar. Se determinan por jerarquía según los centros definidos. Algunas operan **en el momento** (la sacral y la esplénica) y otras necesitan **tiempo** (la emocional, que pide esperar a recorrer la onda emocional antes de tener claridad).',
         'La autoridad es la herramienta más práctica de la carta: convierte la estrategia en un método concreto de decisión cotidiana. Antes de un sí o un no importante, indica a qué señal interna conviene atender.'
       ]
@@ -54,39 +54,40 @@ export default {
     profile: {
       title: 'El perfil',
       paragraphs: [
-        'El **perfil** describe el "cómo" de tu camino: el estilo con el que aprendes, te relacionas y cumples tu propósito. Se compone de dos números (por ejemplo 3/5), tomados de las líneas 1 a 6 del I Ching: la primera viene de tu Sol/Tierra de *personalidad* y la segunda, de tu Sol/Tierra de *diseño*.',
+        'El **perfil** describe el "cómo" del camino de cada uno: el estilo con el que una persona aprende, se relaciona y cumple su propósito. Se compone de dos números (por ejemplo 3/5), tomados de las líneas 1 a 6 del I Ching: la primera viene del Sol/Tierra de *personalidad* y la segunda, del Sol/Tierra de *diseño*.',
         'Cada línea aporta un matiz: 1- cimiento e investigación, 2- talento natural, 3- ensayo y error, 4- vínculos y red, 5- proyección y liderazgo práctico, 6- ejemplo y madurez. La combinación de las **dos líneas** describe una manera reconocible de moverse por la vida —más interna o más relacional, más experimental o más sólida.',
-        'Mientras el tipo y la autoridad responden a *cómo decidir*, el perfil responde a *cómo se despliega tu experiencia*. Es una de las capas más reveladoras para el autoconocimiento, porque suele describir patrones que ya reconoces en tu historia. De los dos números/líneas, el primero se vive de manera más consciente, y el segundo, más inconsciente. La línea inconsciente resulta, en general, más visible para los demás que para uno mismo.'
+        'Mientras el tipo y la autoridad responden a *cómo decidir*, el perfil responde a *cómo se despliega la experiencia*. Es una de las capas más reveladoras para el autoconocimiento, porque suele describir patrones que uno ya reconoce en su propia historia. De las dos líneas, la primera se vive de manera más consciente, y la segunda, más inconsciente. La línea inconsciente resulta, en general, más visible para los demás que para uno mismo.'
       ]
     },
     definition: {
       title: 'La definición',
       paragraphs: [
-        'La **definición** describe cómo están conectados entre sí tus centros definidos: si forman un único bloque de energía o varios grupos separados. Habla de la consistencia interna —qué partes de ti están siempre "encendidas" y enlazadas— y de cómo se integra esa energía.',
+        'La **definición** describe cómo están conectados entre sí los centros definidos de una carta: si forman un único bloque de energía o varios grupos separados. Habla de la consistencia interna —qué partes de la persona están siempre "encendidas" y enlazadas— y de cómo se integra esa energía.',
         'Las variantes son: sin definición ([Reflector](type:reflector), ningún centro definido), única (todo conectado en un grupo), split (dos grupos), triple split (tres) y cuádruple split (cuatro). Una definición única tiende a sentirse **autosuficiente**; las divididas suelen experimentar una **búsqueda de conexión**, a menudo a través de otras personas o de puertas concretas que tienden el puente entre los grupos.',
-        'En la práctica, la definición ayuda a entender qué tipo de compañía o entornos te completan. No es mejor ni peor tener más o menos divisiones: cada una describe una forma distinta de funcionar y de relacionarte.'
+        'En la práctica, la definición ayuda a entender qué tipo de compañía o entornos completan a cada uno. No es mejor ni peor tener más o menos divisiones: cada una describe una forma distinta de funcionar y de relacionarse.'
       ]
     },
     center: {
       title: 'Los centros',
       paragraphs: [
-        'Los **centros** son los nueve focos de energía del bodygraph, cada uno ligado a una función concreta —pensar, comunicar, sentir, intuir, querer, actuar—. Heredan la idea de los chakras, pero aquí lo decisivo es si cada centro está **definido** o **indefinido** (abierto).',
-        'Un centro **definido** funciona de forma fija y fiable: es una energía consistente que aportas siempre, tuya y constante. Un centro **indefinido** no es un defecto: es una zona abierta donde recibes y amplificas la energía de los demás y del entorno; es donde más aprendes, pero también donde es fácil dejarse condicionar y confundir lo ajeno con lo propio.',
-        'Mirar tus centros es una de las claves más prácticas para la **gestión de la energía**: los definidos marcan lo que ofreces de manera estable, y los indefinidos, dónde conviene no tomar decisiones desde una presión prestada. En tu carta, los centros coloreados están definidos y los que se ven vacíos están abiertos.'
+        'Los **centros** son los nueve focos de energía del bodygraph, cada uno ligado a una función concreta. Heredan la idea de los chakras, pero aquí lo decisivo es si cada centro está **definido** o **indefinido** (abierto).',
+        'Los nueve son: la [Cabeza](center:head) (la inspiración y las preguntas), el [Ajna](center:ajna) (el pensamiento), la [Garganta](center:throat) (la comunicación y la acción), el [G](center:g) (la identidad y la dirección), el [Corazón](center:heart) (la voluntad), el [Sacral](center:sacral) (la energía vital), el [Bazo](center:spleen) (el instinto), el [Plexo solar](center:solarPlexus) (las emociones) y la [Raíz](center:root) (la presión y el empuje).',
+        'Un centro **definido** funciona de forma fija y fiable: es una energía consistente que se aporta siempre, propia y constante. Un centro **indefinido** no es un defecto: es una zona abierta donde se recibe y amplifica la energía de los demás y del entorno; es donde más se aprende, pero también donde es fácil dejarse condicionar y confundir lo ajeno con lo propio.',
+        'Mirar los centros es una de las claves más prácticas para la **gestión de la energía**: los definidos marcan lo que cada uno ofrece de manera estable, y los indefinidos, dónde conviene no tomar decisiones desde una presión prestada. En la carta, los centros coloreados están definidos y los que se ven vacíos están abiertos.'
       ]
     },
     channel: {
       title: 'Los canales',
       paragraphs: [
         'Los **canales** son las 36 conexiones del bodygraph: cada uno une dos puertas situadas en centros distintos. Un canal **completo** —con sus dos puertas activas— enlaza esos dos centros, los define y crea una corriente de energía estable y fiable entre ellos.',
-        'Los canales son los que, en conjunto, determinan tu **tipo, tu definición y qué centros están definidos**. Por eso son la columna vertebral mecánica de la carta: no describen un rasgo aislado, sino una forma constante en que dos áreas de tu energía trabajan juntas.',
+        'Los canales son los que, en conjunto, determinan el **tipo, la definición y qué centros están definidos**. Por eso son la columna vertebral mecánica de la carta: no describen un rasgo aislado, sino una forma constante en que dos áreas de la energía trabajan juntas.',
         'Cada canal combina los temas de sus dos puertas (y de sus hexagramas del I Ching). Para una lectura detallada de un canal concreto, puedes utilizar la opción de "saber más usando IA".'
       ]
     },
     gate: {
       title: 'Las puertas',
       paragraphs: [
-        'Las **puertas** son las 64 activaciones posibles del bodygraph, una por cada hexagrama del I Ching. Cada puerta vive en un centro concreto y aporta un matiz específico de energía o carácter; al nacer, tus planetas "encienden" un conjunto de ellas.',
+        'Las **puertas** son las 64 activaciones posibles del bodygraph, una por cada hexagrama del I Ching. Cada puerta vive en un centro concreto y aporta un matiz específico de energía o carácter; en el nacimiento, los planetas "encienden" un conjunto de ellas.',
         'Una puerta activa que no encuentra a su pareja —la del otro extremo de su canal— queda **colgante**: aporta su tema pero busca completarse, a menudo a través de otra persona que tenga la puerta complementaria. Cuando las dos puertas de un canal están activas, el canal se forma y define sus dos centros.',
         'Para profundizar en una puerta concreta —su matiz, su hexagrama del I Ching y cómo se vive— puedes utilizar la opción de "saber más usando IA".'
       ]
@@ -94,8 +95,8 @@ export default {
     activation: {
       title: 'Las activaciones',
       paragraphs: [
-        'Las **activaciones** son las posiciones de los planetas en tu nacimiento, traducidas a puertas y líneas del Diseño Humano. Cada cuerpo "enciende" una puerta concreta (y su línea), y el conjunto de todas ellas es lo que construye tu carta: centros, canales, tipo, autoridad y perfil.',
-        'Se calculan en **dos momentos**, de ahí las dos columnas: *Personality* usa la posición en el instante del nacimiento (lo consciente); *Design* usa la de unos 88 días antes —88° de arco solar— (lo inconsciente). Por eso tienes dos activaciones por planeta.',
+        'Las **activaciones** son las posiciones de los planetas en el momento del nacimiento, traducidas a puertas y líneas del Diseño Humano. Cada cuerpo "enciende" una puerta concreta (y su línea), y el conjunto de todas ellas es lo que construye la carta: centros, canales, tipo, autoridad y perfil.',
+        'Se calculan en **dos momentos**, de ahí las dos columnas: *Personalidad* usa la posición en el instante del nacimiento (lo consciente); *Diseño* usa la de unos 88 días antes —88° de arco solar— (lo inconsciente). Por eso hay dos activaciones por planeta.',
         'Cada activación se escribe como **puerta.línea**: la puerta (de la 1 a la 64) y, dentro de ella, la línea (de la 1 a la 6). Por ejemplo, un **30.3 en el Sol** quiere decir que el Sol activa la **puerta 30 en su línea 3** —el tema de la puerta 30 leído con el matiz que aporta la línea 3—. Es la unidad básica con la que se construye toda la carta.',
         'No todas pesan igual: el **Sol y la Tierra** concentran la mayor parte del significado y el resto matiza; la columna *Peso* resume esa influencia relativa. Toca una activación para abrir la puerta correspondiente. Y para ver las líneas, consulta las posibles líneas en el [perfil](concept:profile).'
       ]
@@ -105,7 +106,7 @@ export default {
   // ── Type (the chip "i"): each concrete type. ──
   type: {
     generator: {
-      title: 'Generator',
+      title: 'Generador',
       paragraphs: [
         'Tipo mayoritario, Generador *puro*: alrededor del **37 % de la población**. Su rasgo definitorio es el [centro Sacral](center:sacral) definido: la fuente de energía vital del sistema, generativa y de carácter renovable. Su energía generadora y constructora, cuando está bien alineado, es continuada y abundante.',
         'Opera por respuesta: **reacciona a lo que la vida le presenta** en lugar de iniciar desde la mente y lo racional. Cuando compromete su energía con lo correcto, aparece la *satisfacción*; si no se escucha bien y fuerza su energía donde no toca, aparece la *frustración*.',
@@ -113,23 +114,23 @@ export default {
       ]
     },
     'manifesting-generator': {
-      title: 'Manifesting Generator',
+      title: 'Generador Manifestante',
       paragraphs: [
-        'Una variante del [Generador](type:generator) —los Manifesting Generators suponen un 33 % de la población, y junto al resto de Generadores, cerca del 70 %—: un MG tiene el [Sacral](center:sacral) definido, y lo que lo diferencia de otros Generadores es que tiene el Sacral conectado, directa o indirectamente, con la [Garganta](center:throat). Eso le da la energía generadora propia de los Generadores y, además, capacidad de manifestar y materializar con rapidez.',
+        'Una variante del [Generador](type:generator) —los Generadores Manifestantes suponen un 33 % de la población, y junto al resto de Generadores, cerca del 70 %—: un MG tiene el [Sacral](center:sacral) definido, y lo que lo diferencia de otros Generadores es que tiene el Sacral conectado, directa o indirectamente, con la [Garganta](center:throat). Eso le da la energía generadora propia de los Generadores y, además, capacidad de manifestar y materializar con rapidez.',
         'Su estrategia es **responder y luego informar**: primero espera la respuesta sacral —el sí o el no del cuerpo— y, una vez la tiene, avisa a quienes se verán afectados antes de lanzarse. Tiende a ser polifacético, veloz y no lineal: salta pasos, hace varias cosas a la vez y a veces vuelve atrás a rematar lo que se saltó.',
         'La clave para gestionar su energía es no dispersarse iniciando sin haber escuchado la respuesta de su cuerpo: cuando se compromete con lo que de verdad le enciende (cuando su cuerpo dice sí), avanza rápido y siente *satisfacción* y *paz*; pero cuando fuerza empujado por la mente y las ideas, acumula *frustración*, *enfado* y trabajo a medias.'
       ]
     },
     projector: {
-      title: 'Projector',
+      title: 'Proyector',
       paragraphs: [
-        'Cerca del **20 % de la población**. No tiene el [Sacral](center:sacral) definido, así que **no está diseñado para un trabajo constante** ni para sostener la misma energía que un [Generador](type:generator): conviene que tenga cuidado con intentar rendir de manera continuada y sin descanso. Su don es otro: ver a los demás con enorme profundidad y saber guiar y orientar la energía ajena.',
+        'Cerca del **20 % de la población**. No tiene el [Sacral](center:sacral) definido, así que **no está diseñado para un trabajo constante** ni para sostener la misma energía que un [Generador](type:generator): debe cuidarse de intentar rendir de manera continuada y sin descanso. Su don es otro: ver a los demás con enorme profundidad y saber guiar y orientar la energía ajena.',
         'Su estrategia es **esperar la invitación** para lo importante —el trabajo, el amor, el lugar donde vivir—. Necesita ser reconocido e invitado para que su sabiduría y su esfuerzo sean bien recibidos; cuando se ofrece o se mete sin que se lo pidan, lo normal es que encuentre resistencia y rechazo. Cuando en su vida aparecen el *reconocimiento* y el *éxito*, son la pista de que va por buen camino. En cambio, el síntoma que aparece cuando no vive alineado es la *amargura*.',
         'En la gestión de su energía, su tarea es **descansar y dosificarse**: no compite en resistencia física, sino en profundidad y maestría. Su bienestar se fundamenta en dormir y soltar antes de quedar agotado, y en elegir bien a quién entrega su atención y esfuerzo: aprender a decir que sí o que no cuando toca (porque no toda invitación significa que tenga que decir que sí).'
       ]
     },
     manifestor: {
-      title: 'Manifestor',
+      title: 'Manifestador',
       paragraphs: [
         'El tipo más independiente, alrededor del **9 % de la población**. Tiene al menos un centro motor (Corazón, Plexo solar, Bazo) conectado a la [Garganta](center:throat), pero el [Sacral](center:sacral) sin definir, así que su energía no es constante: llega a impulsos, que utiliza para iniciar y poner cosas en marcha, y luego necesita reposo, bastante reposo.',
         'Su estrategia es **informar antes de actuar**. No se trata de pedir permiso, sino de avisar a quienes su impacto va a alcanzar: al hacerlo, reduce la resistencia y el rechazo que de otro modo encuentra a su alrededor. Actuar de manera alineada con su estrategia le trae *paz*; y si no lo hace, siente oposición y crece en él el *enfado*.',
@@ -332,7 +333,7 @@ export default {
       title: 'Cabeza',
       fn: 'Es un centro de **presión mental**: la fuerza que nos empuja a pensar, preguntar e inspirarnos. Genera las preguntas y la curiosidad, pero no las responde —eso es tarea del [Ajna](center:ajna)—.',
       defined: '**Definido**, aporta una forma constante de inspirarse y de sentir la presión por entender.',
-      open: '**Indefinido**, amplifica las preguntas y la inquietud mental de los demás: aquí conviene no dejarse arrastrar a resolver dudas que en realidad no son tuyas ni importan para tu vida.'
+      open: '**Indefinido**, amplifica las preguntas y la inquietud mental de los demás: aquí conviene no dejarse arrastrar a resolver dudas que en realidad no son propias ni importan para la propia vida.'
     },
     ajna: {
       title: 'Ajna',
@@ -348,7 +349,7 @@ export default {
     },
     g: {
       title: 'G',
-      fn: 'Es el centro de la **identidad, el amor y la dirección**: el sentido de quién eres y hacia dónde va tu vida. Está ligado también a la sensación de estar en el lugar correcto.',
+      fn: 'Es el centro de la **identidad, el amor y la dirección**: el sentido de quién se es y hacia dónde va la propia vida. Está ligado también a la sensación de estar en el lugar correcto.',
       defined: '**Definido**, aporta un sentido estable de identidad y rumbo.',
       open: '**Indefinido**, vive una identidad más **fluida y cambiante**, que encuentra su dirección a través de los entornos y las personas adecuadas; la clave aquí es el **lugar**: estar en el sitio correcto orienta todo lo demás.'
     },
@@ -387,16 +388,16 @@ export default {
   // ── Activations (Phase 6.E): the table's column headers and planets. ──
   activationCol: {
     personality: {
-      title: 'Personality (consciente)',
+      title: 'Personalidad (consciente)',
       paragraphs: [
-        'La columna **Personality** (personalidad) representa lo **consciente**: lo que reconoces como "tú", tu mente y tu personalidad. Se calcula con la posición de los planetas en el **instante exacto del nacimiento**.',
-        'Es la parte de la carta con la que te identificas y de la que sueles ser consciente. En el bodygraph se pinta en blanco.'
+        'La columna **Personalidad** representa lo **consciente**: lo que la persona reconoce como "yo", su mente y su personalidad. Se calcula con la posición de los planetas en el **instante exacto del nacimiento**.',
+        'Es la parte de la carta con la que uno se identifica y de la que suele ser consciente. En el bodygraph se pinta en blanco.'
       ]
     },
     design: {
-      title: 'Design (inconsciente)',
+      title: 'Diseño (inconsciente)',
       paragraphs: [
-        'La columna **Design** (diseño) representa lo **inconsciente**: el cuerpo, lo heredado, lo que opera sin que lo controles y que otros ven en ti antes que tú. Se calcula unos **88 días antes del nacimiento** (88° de arco solar).',
+        'La columna **Diseño** representa lo **inconsciente**: el cuerpo, lo heredado, lo que opera sin control consciente y que otros suelen ver antes que uno mismo. Se calcula unos **88 días antes del nacimiento** (88° de arco solar).',
         'Es la parte más corporal y menos accesible a la mente; suele expresarse de forma automática. En el bodygraph se pinta en rojo.'
       ]
     },
@@ -415,77 +416,77 @@ export default {
     sun: {
       title: 'Sol',
       paragraphs: [
-        'El **Sol** es la activación más importante de la carta: marca tu **expresión esencial**, la energía que irradias y el propósito que encarnas. Junto con la Tierra, concentra la mayor parte del significado (~70 %).',
-        'Su puerta de personalidad suele leerse como la nota dominante de quién eres de forma consciente.'
+        'El **Sol** es la activación más importante de la carta: marca la **expresión esencial**, la energía que la persona irradia y el propósito que encarna. Junto con la Tierra, concentra la mayor parte del significado (~70 %).',
+        'Su puerta de personalidad suele leerse como la nota dominante de la identidad consciente.'
       ]
     },
     earth: {
       title: 'Tierra',
       paragraphs: [
-        'La **Tierra** equilibra al Sol: es lo que te **arraiga y estabiliza**, el suelo sobre el que se sostiene tu propósito. Forma con el Sol el eje más determinante de la carta.',
-        'Aporta el contrapeso práctico a la energía solar: lo que necesitas para mantenerte centrado.'
+        'La **Tierra** equilibra al Sol: es lo que **arraiga y estabiliza**, el suelo sobre el que se sostiene el propósito. Forma con el Sol el eje más determinante de la carta.',
+        'Aporta el contrapeso práctico a la energía solar: lo que se necesita para mantenerse centrado.'
       ]
     },
     moon: {
       title: 'Luna',
       paragraphs: [
-        'La **Luna** señala lo que te **impulsa y mantiene en marcha**: el motor de la continuidad en el día a día. En el Reflector cobra un papel central, al recorrer su ciclo de unos 28 días.',
-        'Habla de aquello que sostiene tu movimiento cuando el entusiasmo inicial ya pasó.'
+        'La **Luna** señala lo que **impulsa y mantiene en marcha**: el motor de la continuidad en el día a día. En el Reflector cobra un papel central, al recorrer su ciclo de unos 28 días.',
+        'Habla de aquello que sostiene el movimiento cuando el entusiasmo inicial ya pasó.'
       ]
     },
     northNode: {
       title: 'Nodo Norte',
       paragraphs: [
-        'El **Nodo Norte** describe la **dirección y el entorno** hacia los que se orienta la segunda parte de la vida (de forma aproximada, a partir de la madurez). Marca hacia dónde vas.',
-        'No es un rasgo de carácter sino un **contexto**: el escenario donde tu energía se despliega mejor.'
+        'El **Nodo Norte** describe la **dirección y el entorno** hacia los que se orienta la segunda parte de la vida (de forma aproximada, a partir de la madurez). Marca hacia dónde se dirige la vida.',
+        'No es un rasgo de carácter sino un **contexto**: el escenario donde la energía se despliega mejor.'
       ]
     },
     southNode: {
       title: 'Nodo Sur',
       paragraphs: [
-        'El **Nodo Sur** describe el **entorno** de la primera parte de la vida: el escenario del que partes. Con el Nodo Norte forma el eje de tu trayectoria.',
-        'Habla del "de dónde vienes" en términos de ambiente y dirección, más que de personalidad.'
+        'El **Nodo Sur** describe el **entorno** de la primera parte de la vida: el escenario del que se parte. Con el Nodo Norte forma el eje de la trayectoria vital.',
+        'Habla del "de dónde se viene" en términos de ambiente y dirección, más que de personalidad.'
       ]
     },
     mercury: {
       title: 'Mercurio',
       paragraphs: [
-        'Mercurio rige la **comunicación y el pensamiento**: lo que necesitas expresar y compartir, y cómo conectas ideas con los demás.',
-        'Matiza la manera en que hablas y transmites.'
+        'Mercurio rige la **comunicación y el pensamiento**: lo que se necesita expresar y compartir, y cómo se conectan las ideas con los demás.',
+        'Matiza la manera de hablar y transmitir.'
       ]
     },
     venus: {
       title: 'Venus',
       paragraphs: [
-        'Venus se asocia a los **valores, los afectos y el sentido de lo correcto**: lo que aprecias, cómo amas y qué consideras justo o bello.',
-        'Aporta el tono de tus vínculos y de tu moral personal.'
+        'Venus se asocia a los **valores, los afectos y el sentido de lo correcto**: lo que se aprecia, la forma de amar y lo que se considera justo o bello.',
+        'Aporta el tono de los vínculos y de la moral personal.'
       ]
     },
     mars: {
       title: 'Marte',
       paragraphs: [
         'Marte representa la **energía, el impulso y la inmadurez** que se va puliendo con los años: el empuje, a veces desordenado, sobre todo en la juventud.',
-        'Habla de cómo canalizas la fuerza y la acción.'
+        'Habla de cómo se canaliza la fuerza y la acción.'
       ]
     },
     jupiter: {
       title: 'Júpiter',
       paragraphs: [
-        'Júpiter se asocia a la **expansión, la ley y la abundancia**: los principios que te benefician y dónde encuentras crecimiento.',
-        'Aporta el sentido de protección y de lo que te hace prosperar.'
+        'Júpiter se asocia a la **expansión, la ley y la abundancia**: los principios que benefician y dónde se encuentra el crecimiento.',
+        'Aporta el sentido de protección y de lo que hace prosperar.'
       ]
     },
     saturn: {
       title: 'Saturno',
       paragraphs: [
-        'Saturno es la **disciplina y el límite**: el "juez" que exige rigor, corrige y marca lo que aprendes a base de constancia.',
+        'Saturno es la **disciplina y el límite**: el "juez" que exige rigor, corrige y marca lo que se aprende a base de constancia.',
         'Señala dónde la madurez llega a través del esfuerzo y la responsabilidad.'
       ]
     },
     uranus: {
       title: 'Urano',
       paragraphs: [
-        'Urano representa lo **singular y lo inusual**: tu originalidad y aquello en lo que sigues un camino propio, fuera de lo convencional.',
+        'Urano representa lo **singular y lo inusual**: la originalidad y aquello en lo que se sigue un camino propio, fuera de lo convencional.',
         'Se asocia también al cambio, la ciencia y lo inesperado.'
       ]
     },
@@ -500,7 +501,7 @@ export default {
       title: 'Plutón',
       paragraphs: [
         'Plutón es la **verdad y la transformación**: lo que se remueve en profundidad, los procesos psicológicos y los cambios que rehacen desde dentro.',
-        'Señala dónde la vida te confronta con lo esencial para transformarte.'
+        'Señala dónde la vida confronta con lo esencial para transformar desde dentro.'
       ]
     }
   },
@@ -564,7 +565,7 @@ export default {
     31: { theme: 'el liderazgo por la voz', text: 'La puerta 31 es el **liderazgo por la voz**: la influencia de quien habla por un grupo y lo representa. Su don es un liderazgo que otros eligen seguir; su sombra, liderar sin mandato real o por mera ambición.' },
     32: { theme: 'la continuidad', text: 'La puerta 32 es el instinto de **continuidad**: olfatear qué perdura y qué hay que adaptar para que dure. Su don es un instinto para el valor duradero; su sombra, el miedo al fracaso y al cambio que paraliza.' },
     33: { theme: 'el retiro y el relato', text: 'La puerta 33 es el **retiro y el relato**: apartarse para luego contar lo vivido. Su don es una sabiduría que se comparte tras la reflexión; su sombra, no honrar la necesidad de retirarse, o contar de más o de menos.' },
-    34: { theme: 'el poder', text: 'La puerta 34 es el **poder puro**: la fuerza independiente y ocupada de hacer. Su don es una potencia productiva enorme; su sombra, el ajetreo por el ajetreo, ponerse en marcha sin haber respondido.' },
+    34: { theme: 'el poder', text: 'La puerta 34 es el **poder puro**: la fuerza independiente, siempre atareada en hacer. Su don es una potencia productiva enorme; su sombra, el ajetreo por el ajetreo, ponerse en marcha sin haber respondido.' },
     35: { theme: 'el ansia de experiencia', text: 'La puerta 35 es el **ansia de experiencia y de progreso**: el impulso de probarlo todo y avanzar. Su don es un hambre de vivir que empuja hacia adelante; su sombra, la inquietud de nunca quedar satisfecho.' },
     36: { theme: 'la crisis y lo nuevo', text: 'La puerta 36 es la **crisis emocional y lo nuevo**: el vaivén que lleva a experiencias inéditas. Su don es crecer a través de la intensidad emocional; su sombra, lanzarse al drama o a la crisis sin estar preparado.' },
     37: { theme: 'la amistad y los pactos', text: 'La puerta 37 es la **amistad y la comunidad**: la calidez que une a través de pactos y acuerdos. Su don es un afecto que crea familia y pertenencia; su sombra, la dependencia o los pactos rotos.' },
@@ -619,7 +620,7 @@ export default {
     chart: {
       title: 'El bodygraph',
       paragraphs: [
-        'Tu carta se dibuja en un esquema gráfico del cuerpo llamado **bodygraph**: las nueve formas geométricas son los centros y las líneas que los conectan son los canales, que van de una puerta a otra (hay 64 puertas). Cada centro gobierna una función concreta —pensar, comunicar, sentir, querer, actuar, intuir— y, en conjunto, dibujan cómo circula tu energía.',
+        'Tu carta se dibuja en un esquema gráfico del cuerpo llamado **bodygraph**: las nueve formas geométricas son los centros y las líneas que los conectan son los canales, que van de una puerta a otra (hay 64 puertas). Cada centro gobierna una función concreta y, en conjunto, dibujan cómo circula tu energía.',
         'Lo que hace única a tu carta es cuáles de esos centros, canales y puertas están activos: los centros coloreados están definidos y los que se ven vacíos, abiertos. De esa combinación salen tu tipo, tu autoridad y tu forma de funcionar, y es lo que iremos desgranando a continuación.'
       ]
     },
@@ -643,7 +644,7 @@ export default {
         'Como en [el símil de las hormigas](section:intro), los tipos de Diseño Humano describen **las maneras distintas de estar diseñado para usar la energía**. Ninguno es mejor, y el conjunto funciona precisamente porque no todos somos iguales. Igual que el hormiguero funciona porque todos los tipos existen, el colectivo humano necesita de todos los diferentes tipos de persona.',
         '**Generadores (~37%) y Generadores Manifestantes (~33%)**: suponen cerca del 70% de la población. Son los constructores, con energía vital sostenida cuando hacen lo que de verdad les enciende. Son el motor que mueve el mundo humano.',
         '**Proyectores (~20%)**: no tienen esa energía constante; su don es ver, guiar y orientar a los demás. Brillan cuando se les reconoce e invita, no forzándose al ritmo de un Generador.',
-        '**Manifestadores (~9%)**: son los iniciadores, capaces de arrancar cosas de la nada y causar un impacto que inicia cosas, sin esperar a nadie. Su clave es informar a quienes su acción salpica y gestionar su energía inconstante.',
+        '**Manifestadores (~9%)**: son los iniciadores, capaces de arrancar cosas de la nada y causar impacto, sin esperar a nadie. Su clave es informar a quienes su acción salpica y gestionar su energía inconstante.',
         '**Reflectores (~1%)**: los más infrecuentes, son un espejo del entorno que muestrea la salud del grupo y del lugar en que vive.',
         'El error más común es medirse con el diseño de otro: que un Proyector se exija la resistencia de un Generador, o que un Generador se frustre por no iniciar como un Manifestador.'
       ]
@@ -674,11 +675,11 @@ export default {
       'manifesting-generator': [
         'Eres un tipo concreto de [Generador](type:generator) —los Generadores Manifestantes sois un 33 % de la población, y junto al resto de Generadores, sumáis cerca del 70 %—: tienes el [Sacral](center:sacral) definido, y lo que te diferencia de otros Generadores es que tienes el Sacral conectado, directa o indirectamente, con la [Garganta](center:throat). Eso te da la energía generadora propia de los Generadores y, además, capacidad de manifestar y materializar con rapidez.',
         'Tu estrategia es **responder y luego informar**: primero esperas la respuesta sacral —el sí o el no del cuerpo— y, una vez la tienes, avisas a quienes se verán afectados antes de lanzarte. Tiendes a ser polifacético, veloz y no lineal: saltas pasos, haces varias cosas a la vez y a veces vuelves atrás a rematar lo que te saltaste.',
-        'La clave para gestionar tu energía es no dispersarte iniciando sin haber escuchado la respuesta de tu cuerpo: cuando te comprometes con lo que de verdad te enciende (cuando tu cuerpo dice sí), avanzas rápido y sientes *satisfacción* y con *paz*; pero cuando fuerzas empujado por la mente y las ideas, acumulas *frustración*, *enfado* y trabajo a medias.'
+        'La clave para gestionar tu energía es no dispersarte iniciando sin haber escuchado la respuesta de tu cuerpo: cuando te comprometes con lo que de verdad te enciende (cuando tu cuerpo dice sí), avanzas rápido y sientes *satisfacción* y *paz*; pero cuando fuerzas empujado por la mente y las ideas, acumulas *frustración*, *enfado* y trabajo a medias.'
       ],
       projector: [
-        'Los Proyectores sois cerca del **20 % de la población**. No tienes el [Sacral](center:sacral) definido, así que **no estás diseñado para un trabajo constante** ni para sostener la misma energía que un [Generador](type:generator), así que cuidado con intentar rendir de manera continuada y sin descanso. Tu don es otro: ver a los demás con enorme profundidad y saber guiar y orientar la energía ajena.',
-        'Tu estrategia es **esperar la invitación** para lo importante —el trabajo, el amor, el lugar donde vivir—. Necesitas ser invitado para que tu sabiduría y esfuerzo sean bien recibidos; cuando te ofreces o te metes sin que te lo pidan, lo normal es que encuentres resistencia y rechazo. Cuando en tu vida aparecen el *reconocimiento* y el *éxito*, son la pista de que vas por buen camino. En cambio, el síntoma que aparece cuando no estás viviendo alineado: la *amargura*.',
+        'Los Proyectores sois cerca del **20 % de la población**. No tienes el [Sacral](center:sacral) definido, así que **no estás diseñado para un trabajo constante** ni para sostener la misma energía que un [Generador](type:generator); por eso, cuidado con intentar rendir de manera continuada y sin descanso. Tu don es otro: ver a los demás con enorme profundidad y saber guiar y orientar la energía ajena.',
+        'Tu estrategia es **esperar la invitación** para lo importante —el trabajo, el amor, el lugar donde vivir—. Necesitas ser invitado para que tu sabiduría y esfuerzo sean bien recibidos; cuando te ofreces o te metes sin que te lo pidan, lo normal es que encuentres resistencia y rechazo. Cuando en tu vida aparecen el *reconocimiento* y el *éxito*, son la pista de que vas por buen camino. En cambio, el síntoma que aparece cuando no estás viviendo alineado es la *amargura*.',
         'En la gestión de tu energía, tu tarea es **descansar y dosificarte**: no compites en resistencia física, sino en profundidad y maestría. Tu bienestar se fundamenta en dormir y soltar antes de quedar agotado, y elegir bien a quién entregas tu atención y esfuerzo: aprender a decir que sí o que no cuando toca (porque no toda invitación significa que tengas que decir que sí).'
       ],
       manifestor: [
@@ -783,7 +784,7 @@ export default {
       ],
       split: [
         'Tus centros definidos forman **dos grupos separados**, sin un canal que los una por dentro. Por eso sueles experimentar una **búsqueda de conexión**: algo que tienda el puente entre tus dos partes.',
-        'Ese puente te llega a menudo a través de otras personas —cuya energía completa el canal que te falta— o de tránsitos planetarios que activan la puerta intermedia. Esta separación/split no es una carencia: se trata de entender que hay compañías y entornos que te hacen sentir integrado, y esto sucede de manera natural.'
+        'Ese puente te llega a menudo a través de otras personas —cuya energía completa el canal que te falta— o de tránsitos planetarios que activan la puerta intermedia. Esta separación (split) no es una carencia: se trata de entender que hay compañías y entornos que te hacen sentir integrado, y esto sucede de manera natural.'
       ],
       'triple-split': [
         'Tus centros definidos se reparten en **tres grupos** separados. Tu cableado interno es más complejo y, con frecuencia, necesitas **más variedad de estímulos y de gente** para sentir que tus partes internas se conectan.',
@@ -982,6 +983,66 @@ export default {
     '39-55': { name: 'canal de la emoción', essence: 'la provocación que remueve el ánimo y su abundancia para hacer aflorar el espíritu.' },
     '42-53': { name: 'canal de la maduración', essence: 'la energía de los ciclos: iniciar y llevar hasta el final para madurar con la experiencia.' },
     '47-64': { name: 'canal de la abstracción', essence: 'la presión de imágenes confusas que pugna por ordenarse hasta llegar a la comprensión.' }
+  },
+
+  // Closed-set index appended to each value drawer (text audit, jul 2026): the
+  // full set of possibilities for the element's category, one line per option
+  // (chip label + keynote), each clickable for its detail. The current
+  // element(s) are highlighted by getElementInfo/getProfileInfo.
+  relatedIndex: {
+    type: {
+      heading: 'Los cinco tipos',
+      items: {
+        generator: { label: 'Generador', note: 'construye con energía sostenida (~37 %)' },
+        'manifesting-generator': { label: 'Generador Manifestante', note: 'construye rápido y polifacético (~33 %)' },
+        projector: { label: 'Proyector', note: 've, guía y orienta la energía ajena (~20 %)' },
+        manifestor: { label: 'Manifestador', note: 'inicia e impacta con independencia (~9 %)' },
+        reflector: { label: 'Reflector', note: 'refleja y muestrea el entorno (~1 %)' }
+      }
+    },
+    strategy: {
+      heading: 'Las cinco estrategias',
+      items: {
+        respond: { label: 'Responder', note: 'la del Generador' },
+        'respond-then-inform': { label: 'Responder y luego informar', note: 'la del Generador Manifestante' },
+        'inform-before-acting': { label: 'Informar antes de actuar', note: 'la del Manifestador' },
+        'wait-for-invitation': { label: 'Esperar la invitación', note: 'la del Proyector' },
+        'wait-lunar-cycle': { label: 'Esperar un ciclo lunar', note: 'la del Reflector' }
+      }
+    },
+    authority: {
+      heading: 'Las siete autoridades',
+      items: {
+        emotional: { label: 'Emocional', note: 'claridad con tiempo, recorriendo la onda emocional' },
+        sacral: { label: 'Sacral', note: 'el sí o el no visceral del momento' },
+        splenic: { label: 'Esplénica', note: 'el instinto que habla una sola vez' },
+        ego: { label: 'Del ego', note: 'lo que de verdad se quiere' },
+        'self-projected': { label: 'Autoproyectada', note: 'oírse hablar en voz alta para reconocerse' },
+        mental: { label: 'Mental', note: 'la claridad que surge del diálogo' },
+        lunar: { label: 'Lunar', note: 'un ciclo lunar de perspectiva' }
+      }
+    },
+    definition: {
+      heading: 'Las cinco definiciones',
+      items: {
+        'no-definition': { label: 'Sin definición', note: 'ningún centro definido (Reflector)' },
+        single: { label: 'Única', note: 'todo conectado en un solo bloque' },
+        split: { label: 'Split', note: 'dos grupos separados' },
+        'triple-split': { label: 'Triple split', note: 'tres grupos separados' },
+        'quad-split': { label: 'Cuádruple split', note: 'cuatro grupos separados' }
+      }
+    },
+    profile: {
+      heading: 'Las seis líneas',
+      items: {
+        '1': { label: 'Línea 1', note: 'el cimiento: investigar y asentar la base' },
+        '2': { label: 'Línea 2', note: 'el talento natural que otros llaman desde fuera' },
+        '3': { label: 'Línea 3', note: 'el ensayo y error: aprender probando' },
+        '4': { label: 'Línea 4', note: 'la red: las oportunidades llegan por los vínculos' },
+        '5': { label: 'Línea 5', note: 'la proyección: expectativas y liderazgo práctico' },
+        '6': { label: 'Línea 6', note: 'el modelo: tres fases hacia el ejemplo' }
+      }
+    }
   },
 
   // Natural-language labels used to build AI prompts. Kept separate from the

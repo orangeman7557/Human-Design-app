@@ -28,7 +28,14 @@
    * @type {{
    *   open?: boolean,
    *   category?: string,
-   *   info?: { title: string, paragraphs: string[], list?: { label: string, kind: string, key: string }[] } | null,
+   *   info?: {
+   *     title: string,
+   *     paragraphs: string[],
+   *     facts?: { label: string, tip?: string, rows: { chip: { label: string, kind: string, key: string }, note?: string }[] }[],
+   *     after?: string[],
+   *     related?: { heading: string, items: { kind: string, key: string, label: string, note?: string, current?: boolean }[] },
+   *     list?: { label: string, kind: string, key: string }[]
+   *   } | null,
    *   prompts?: { general: string, chart: string | null } | null,
    *   elementKey?: string,
    *   canBack?: boolean,
@@ -231,6 +238,43 @@
       {#each info.paragraphs as p}
         <p class="para">{@html renderInline(p)}</p>
       {/each}
+      {#if info.facts}
+        <!-- Schematic identity block (gates/channels): one row per element,
+             chips aligned left under a shared label (text audit, jul 2026). -->
+        <div class="facts">
+          {#each info.facts as f}
+            <div class="fact">
+              <span class="fact-label">{f.label}{#if f.tip}<sup class="fact-i" data-tip={f.tip}>i</sup>{/if}:</span>
+              <span class="fact-rows">
+                {#each f.rows as r}
+                  <span class="fact-row">
+                    <button class="index-chip" type="button" onclick={() => onnavigate?.(r.chip.kind, r.chip.key)}>{r.chip.label}</button>
+                    {#if r.note}<span class="fact-note">{r.note}</span>{/if}
+                  </span>
+                {/each}
+              </span>
+            </div>
+          {/each}
+        </div>
+      {/if}
+      {#if info.after}
+        {#each info.after as p}
+          <p class="para">{@html renderInline(p)}</p>
+        {/each}
+      {/if}
+      {#if info.related}
+        <!-- Closed-set schema: every possibility of the category, the current
+             element(s) highlighted, each clickable (text audit, jul 2026). -->
+        <div class="related">
+          <div class="rel-head">{info.related.heading}</div>
+          {#each info.related.items as it}
+            <span class="fact-row">
+              <button class="index-chip" class:cur={it.current} type="button" onclick={() => onnavigate?.(it.kind, it.key)}>{it.label}</button>
+              {#if it.note}<span class="fact-note">{it.note}</span>{/if}
+            </span>
+          {/each}
+        </div>
+      {/if}
       {#if info.list}
         <div class="index-list">
           {#each info.list as item}
@@ -500,6 +544,105 @@
     border-color: var(--accent);
     color: var(--text);
     outline: none;
+  }
+
+  /* Schematic facts block (gates/channels): label column + chip rows aligned
+     left with the first chip. */
+  .facts {
+    margin: 0.9rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .fact {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  .fact-label {
+    flex: none;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    padding-top: 0.24rem;
+    white-space: nowrap;
+  }
+  .fact-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    min-width: 0;
+  }
+  .fact-row {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    flex-wrap: wrap;
+  }
+  .fact-note {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+  /* Tiny passive "i" (superscript) with a tooltip — not the interactive
+     InfoDot; it only clarifies the label ("completa el canal"). */
+  .fact-i {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 13px;
+    height: 13px;
+    margin-left: 3px;
+    border-radius: 50%;
+    border: 1px solid #4a4a54;
+    background: var(--surface-2);
+    color: var(--text-muted);
+    font-family: Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 9px;
+    line-height: 1;
+    vertical-align: super;
+    cursor: help;
+    position: relative;
+  }
+  .fact-i[data-tip]:hover::after {
+    content: attr(data-tip);
+    position: absolute;
+    bottom: calc(100% + 6px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: system-ui, sans-serif;
+    font-style: normal;
+    font-size: 0.75rem;
+    font-weight: 400;
+    padding: 0.3rem 0.55rem;
+    border-radius: 7px;
+    white-space: pre;
+    pointer-events: none;
+    z-index: 40;
+  }
+
+  /* Closed-set schema at the end of a value drawer ("Las seis líneas", …). */
+  .related {
+    margin-top: 1.1rem;
+    padding-top: 0.9rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+  .rel-head {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    margin-bottom: 0.2rem;
+  }
+  .index-chip.cur {
+    color: var(--accent);
+    border-color: var(--accent);
+    background: var(--accent-soft);
   }
   .sep {
     border-top: 1px solid var(--border);

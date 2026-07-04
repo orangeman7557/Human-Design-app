@@ -95,7 +95,7 @@
 
 <svelte:window {onkeydown} />
 
-<button class="link" type="button" onclick={() => (open = true)}>notificar un fallo<svg class="bug" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+<button class="link" type="button" onclick={() => (open = true)}>notificar fallo<svg class="bug" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
     <path d="M8 5a4 4 0 0 1 8 0" />
     <rect x="7" y="7" width="10" height="12" rx="5" />
     <path d="M12 10v8M4 11h3M4 16h3.2M17 11h3M16.8 16H20M6 7 4.5 5.5M18 7l1.5-1.5M6 19l-1.6 1.6M18 19l1.6 1.6" />
