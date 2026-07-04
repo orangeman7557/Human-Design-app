@@ -50,11 +50,11 @@
 
   // Ordered by estimated share of the population.
   const TYPES = [
-    { key: 'generator', label: 'Generator', pct: '37%' },
-    { key: 'manifesting-generator', label: 'Manifesting Generator', pct: '33%' },
-    { key: 'projector', label: 'Projector', pct: '20%' },
-    { key: 'manifestor', label: 'Manifestor', pct: '9%' },
-    { key: 'reflector', label: 'Reflector', pct: '1%' }
+    { key: 'generator', label: 'Generator' },
+    { key: 'manifesting-generator', label: 'Manifesting Generator' },
+    { key: 'projector', label: 'Projector' },
+    { key: 'manifestor', label: 'Manifestor' },
+    { key: 'reflector', label: 'Reflector' }
   ];
 
   const PLANET_SYMBOLS = {
@@ -771,6 +771,27 @@
     {/if}
 
     <div class="graph" bind:this={graphEl}>
+      <!-- Bodygraph label + concept "i". Absolute over the head on desktop;
+           on mobile it rides the graph's empty top-left corner (see the
+           media query) so it doesn't push the graph down. -->
+      <div
+        class="bg-title-zone"
+        role="presentation"
+        onclick={(e) => cardClick(e, 'bodygraph')}
+        onmouseover={(e) => cardOver(e, 'bodygraph')}
+        onmouseleave={clearReveal}
+      >
+        <span class="bg-title">
+          Bodygraph
+          <span class="dot-h2">
+            {#if cardReveal === 'bodygraph' || infoIsOpen('concept', 'bodygraph')}
+              <span class="dot-host" data-info-cat="Bodygraph" data-info-kind="concept" data-info-key="bodygraph">
+                <InfoDot active={infoIsOpen('concept', 'bodygraph')} label="Qué es el bodygraph" />
+              </span>
+            {/if}
+          </span>
+        </span>
+      </div>
       <div class="overlay left">
         <div
           class="card type-card"
@@ -793,7 +814,6 @@
             {#each TYPES as t, i}
               <span class="tchip" class:on={chart.type === t.key} data-inner-key={`type:${t.key}`}>
                 {t.label}
-                <span class="pct">{t.pct}</span>
                 {#if innerReveal === `type:${t.key}` || infoIsOpen('type', t.key)}
                   <span class="dot-slot" data-info-cat="Tipo" data-info-kind="type" data-info-key={t.key}>
                     <InfoDot active={infoIsOpen('type', t.key)} label={`Más información sobre ${t.label}`} />
@@ -1318,8 +1338,6 @@
     gap: 0.3rem;
     margin-top: 0.2rem;
   }
-  /* Muted via explicit colours, not opacity — otherwise the population
-     tooltip rendered inside the chip becomes translucent too. */
   .tchip {
     position: relative;
     border: 1px solid #232328;
@@ -1390,9 +1408,6 @@
        type card if kept on one line. */
     white-space: normal;
   }
-  .tchip .pct {
-    cursor: help;
-  }
   /* Forces the G+MG / P+M+R two-row split on mobile; inert on desktop. */
   .row-break {
     display: none;
@@ -1456,6 +1471,30 @@
     max-width: 660px;
     margin: 0 auto;
   }
+  /* Desktop: the label floats absolutely, centred over the head (shifted
+     +46px to match the bodygraph's translate). pointer-events:none on the
+     zone lets clicks fall through to the graph except on the label itself. */
+  .bg-title-zone {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    transform: translateX(46px);
+    z-index: 2;
+    pointer-events: none;
+  }
+  .bg-title {
+    pointer-events: auto;
+    position: relative;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    /* Reserve the inline concept "i" height so revealing it doesn't shift. */
+    line-height: 1.35;
+  }
   .overlay.left {
     position: absolute;
     top: 0;
@@ -1469,6 +1508,8 @@
   /* Push the graph slightly right so the wider info cards breathe. */
   @media (min-width: 680px) {
     .graph > :global(.bodygraph-wrap) {
+      /* Room above the head for the "Bodygraph" label (absolute at graph top). */
+      margin-top: 1.7rem;
       transform: translateX(46px);
     }
   }
@@ -1641,6 +1682,19 @@
     .graph > :global(.bodygraph-wrap) {
       order: 2;
     }
+    /* Mobile: the label rides the graph's empty top-left corner instead of
+       sitting over the head, so it adds no height and the graph doesn't drop.
+       height:0 + overflow lets the text overlap the bodygraph below it. */
+    .bg-title-zone {
+      position: static;
+      order: 2;
+      justify-content: flex-start;
+      align-self: flex-start;
+      height: 0;
+      overflow: visible;
+      transform: none;
+      margin: 0.1rem 0 0 0.15rem;
+    }
     /* Centres card goes below the graph on mobile. */
     .overlay.right {
       position: static;
@@ -1653,10 +1707,13 @@
       flex-wrap: wrap;
       justify-content: flex-start;
     }
-    /* Types in two left-aligned rows: G + MG, then P / M / R. */
+    /* Types in two left-aligned rows: G + MG, then P / M / R. The selected
+       chip is taller (bigger font + padding); align-items:center keeps every
+       chip on a row vertically centred so the marked one doesn't sit off. */
     .type-list {
       flex-direction: row;
       flex-wrap: wrap;
+      align-items: center;
       column-gap: 0.35rem;
       row-gap: 0.3rem;
     }
@@ -1734,6 +1791,18 @@
   }
   main.pdf-shot .graph > :global(.bodygraph-wrap) {
     order: 0;
+    margin-top: 1.7rem;
+    transform: translateX(46px);
+  }
+  main.pdf-shot .bg-title-zone {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    order: 0;
+    height: auto;
+    margin: 0;
+    justify-content: center;
     transform: translateX(46px);
   }
   main.pdf-shot .type-list,
@@ -1750,15 +1819,6 @@
     font-size: 0.85rem;
     opacity: 0.7;
     margin: 0;
-  }
-
-  .pct {
-    font-size: 0.7em;
-    opacity: 0.75;
-    /* opacity makes .pct a stacking context that would otherwise trap its
-       tooltip behind the "i"; a z-index above the dot keeps the tip on top. */
-    position: relative;
-    z-index: 2;
   }
 
   .cols {

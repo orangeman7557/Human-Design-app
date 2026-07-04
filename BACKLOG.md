@@ -445,6 +445,18 @@ corrected).
 
 ## Possible improvements (not scheduled, not part of Phase 5)
 
+- ✅ **Done 2026-07-04 — "Bodygraph" label + drawer, no type percentages,
+  mobile type-chip alignment.** The chart page now shows a **"Bodygraph"**
+  label above the graph with its own concept "i"/drawer (`concept.bodygraph`
+  in `content/es.js`): impersonal version of the initial report's "El
+  bodygraph" section plus a short defined-vs-open explanation, with "centros",
+  "canales" and "puertas" as in-text links to their drawers. Desktop centres
+  the label over the Head centre (extra top gap on the graph); mobile pins it
+  to the graph's empty top-left corner (`height:0`, absolute) so it doesn't
+  push the graph down. The **population percentages were removed** from the
+  type chips. On mobile the selected (taller) type chip was vertically
+  off-centre in its row — fixed with `align-items: center` on `.type-list`.
+
 - **Love counter: track unique senders, not just clicks (requested
   2026-07-03).** Besides the ever-growing click total, keep a second KV
   counter of **how many distinct people** have ever sent love. Backend-first:

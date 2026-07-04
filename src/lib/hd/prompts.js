@@ -181,6 +181,12 @@ export function buildPrompts(kind, key, chart, lang = DEFAULT_LANG) {
 
 /** Concept-level prompts (the card / section-title "i"). Only `center` has a chart angle. */
 function conceptPrompts(L, key, chart) {
+  if (key === 'bodygraph') {
+    return {
+      general: ask('qué es el bodygraph de Diseño Humano y cómo se lee'),
+      chart: askChart(L, chart, 'cómo se lee este bodygraph en concreto')
+    };
+  }
   if (key === 'center') {
     return {
       general: ask(
