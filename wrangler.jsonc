@@ -26,14 +26,18 @@
   // Staging — deployed by Workers Builds from the `staging` branch with
   // `npx wrangler deploy --env staging`. Top-level keys (main, assets,
   // compatibility_date, observability) are inherited; bindings are NOT.
-  // The LOVE KV binding is deliberately absent until an hd-love-staging
-  // namespace exists — /api/love answers { count: null } and the client
-  // hides the counter. The custom domain is provisioned on first deploy.
+  // The custom domain is provisioned automatically on first deploy.
   "env": {
     "staging": {
       "name": "human-design-chart-app-staging",
       "routes": [
         { "pattern": "staging.hdchart.app", "custom_domain": true }
+      ],
+      // TEMPORARY: shares the production hd-love namespace (staging clicks
+      // land on the real counter). Switch to hd-love-staging once the
+      // namespace can be created — see BACKLOG "KV namespaces" note.
+      "kv_namespaces": [
+        { "binding": "LOVE", "id": "93a9c82535d44143bd16b10147ddde29" }
       ]
     }
   }

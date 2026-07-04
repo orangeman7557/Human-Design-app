@@ -445,6 +445,17 @@ corrected).
 
 ## Possible improvements (not scheduled, not part of Phase 5)
 
+- **KV namespaces: staging split + senders counters (requested 2026-07-04).**
+  The staging environment (`env.staging` in `wrangler.jsonc`) temporarily binds
+  the **production** `hd-love` namespace because the Cloudflare dashboard hung
+  when creating namespaces on setup day — staging love-clicks currently land on
+  the real counter. Pending, once namespaces can be created again:
+  1. Create `hd-love-staging` and point `env.staging`'s LOVE binding at it.
+  2. Create `hd-love-senders` (and `hd-love-senders-staging`) for the unique
+     senders counter — see the "track unique senders" item below. Note when
+     implementing: a second **key** inside the existing namespaces (as that
+     item sketches) would also work without new namespaces; decide then.
+
 - **Love counter: track unique senders, not just clicks (requested
   2026-07-03).** Besides the ever-growing click total, keep a second KV
   counter of **how many distinct people** have ever sent love. Backend-first:
