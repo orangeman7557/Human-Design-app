@@ -1517,9 +1517,13 @@
   /* Push the graph slightly right so the wider info cards breathe. */
   @media (min-width: 680px) {
     .graph > :global(.bodygraph-wrap) {
-      /* Room above the head for the "Bodygraph" label (absolute at graph top),
-         with a little air so the label doesn't touch the Head centre. */
-      margin-top: 2.2rem;
+      /* margin-top positions the whole graph below the birth line (it collapses
+         through .graph, so it shifts graph + label + side cards together).
+         padding-top instead drops only the SVG inside the wrap, opening ~3px of
+         air between the "Bodygraph" label (fixed at graph top, level with the
+         side cards) and the Head apex — without moving the label or the cards. */
+      margin-top: 1.7rem;
+      padding-top: 7.5px;
       transform: translateX(46px);
     }
   }
@@ -1801,7 +1805,8 @@
   }
   main.pdf-shot .graph > :global(.bodygraph-wrap) {
     order: 0;
-    margin-top: 2.2rem;
+    margin-top: 1.7rem;
+    padding-top: 7.5px;
     transform: translateX(46px);
   }
   main.pdf-shot .bg-title-zone {
