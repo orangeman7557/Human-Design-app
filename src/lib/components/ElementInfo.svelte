@@ -260,7 +260,7 @@
       {/if}
       {#if info.centerStates}
         <!-- The nine centres with the chart's defined/open state: chip gold when
-             defined, outlined when open, with a hover tooltip. -->
+             defined, outlined when open. -->
         <div class="cstates">
           {#each info.centerStates as it}
             <div class="cstate">
@@ -269,10 +269,9 @@
                 class:gold={it.defined}
                 class:copen={!it.defined}
                 type="button"
-                title={it.defined ? 'definido' : 'abierto'}
                 onclick={() => onnavigate?.(it.kind, it.key)}
               >{it.label}</button>
-              <span class="fact-note">({it.note})</span>
+              <span class="fact-note">{it.note}</span>
             </div>
           {/each}
         </div>

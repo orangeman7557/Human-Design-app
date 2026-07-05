@@ -73,10 +73,11 @@ export default {
       // per-centre descriptions live in `centerBrief` below.
       title: 'Los centros',
       paragraphs: [
-        'Los **centros** son los nueve focos de energía del bodygraph, cada uno ligado a una función concreta. Heredan la idea de los chakras, pero aquí lo decisivo es si cada centro está **definido** o **indefinido** (abierto). Los nueve centros son:'
+        'Los **centros** son los nueve focos de energía del bodygraph, cada uno ligado a una función concreta. Heredan la idea de los chakras, pero aquí lo decisivo es si cada centro está **definido** o **indefinido** (abierto). Los nueve centros y sus funciones son:'
       ],
       after: [
-        'Un centro **definido** aparece con color en el bodygraph y funciona de forma fija y fiable: es una energía consistente que se aporta siempre, propia y constante. Un centro **indefinido** se muestra sin color (vacío) en el bodygraph y no es un defecto: es una zona abierta donde se recibe y amplifica la energía de los demás y del entorno; es donde más se aprende, pero también donde es fácil dejarse condicionar y confundir lo ajeno con lo propio.',
+        'Los centros definidos aparecen coloreados y los centros abiertos se ven vacíos.',
+        'Un centro **definido** funciona de forma fija y fiable: es una energía consistente que se aporta siempre, propia y constante. Un centro **indefinido** no es un defecto: es una zona abierta donde se recibe y amplifica la energía de los demás y del entorno; es donde más se aprende, pero también donde es fácil dejarse condicionar y confundir lo ajeno con lo propio.',
         'Mirar los centros es una de las claves más prácticas para la **gestión de la energía**: los definidos marcan lo que cada uno ofrece de manera estable, y los indefinidos, dónde conviene no tomar decisiones desde una presión prestada.'
       ]
     },
@@ -1013,7 +1014,7 @@ export default {
   // element(s) are highlighted by getElementInfo/getProfileInfo.
   relatedIndex: {
     type: {
-      heading: 'Los cinco tipos',
+      heading: 'Los cinco tipos en el colectivo humano',
       items: {
         generator: { label: 'Generador', note: 'construye con energía sostenida', pct: '~37 %' },
         'manifesting-generator': { label: 'Generador Manifestante', note: 'construye rápido y polifacético', pct: '~33 %' },

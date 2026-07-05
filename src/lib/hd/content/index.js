@@ -6,7 +6,7 @@
 // `key`, and optionally a language.
 
 import es from './es.js';
-import { CENTER_BY_GATE, CHANNELS, GATES_BY_CENTER } from '../constants.js';
+import { CENTER_BY_GATE, CHANNELS, GATES_BY_CENTER, CENTERS } from '../constants.js';
 
 const LANGS = { es };
 export const DEFAULT_LANG = 'es';
@@ -134,7 +134,7 @@ export function getConceptInfo(key, chart = null, lang = DEFAULT_LANG) {
     const defined = new Set(chart?.definedCenters ?? []);
     return {
       ...base,
-      centerStates: Object.keys(GATES_BY_CENTER).map((c) => ({
+      centerStates: CENTERS.map((c) => ({
         kind: 'center',
         key: c,
         label: labels[c] ?? c,
