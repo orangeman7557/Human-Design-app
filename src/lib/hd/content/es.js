@@ -68,12 +68,16 @@ export default {
       ]
     },
     center: {
+      // The nine-centre list (chips with the chart's defined/open state) is
+      // injected by getConceptInfo between `paragraphs` and `after`; the brief
+      // per-centre descriptions live in `centerBrief` below.
       title: 'Los centros',
       paragraphs: [
-        'Los **centros** son los nueve focos de energía del bodygraph, cada uno ligado a una función concreta. Heredan la idea de los chakras, pero aquí lo decisivo es si cada centro está **definido** o **indefinido** (abierto).',
-        'Los nueve son: la [Cabeza](center:head) (la inspiración y las preguntas), el [Ajna](center:ajna) (el pensamiento), la [Garganta](center:throat) (la comunicación y la acción), el [G](center:g) (la identidad y la dirección), el [Corazón](center:heart) (la voluntad), el [Sacral](center:sacral) (la energía vital), el [Bazo](center:spleen) (el instinto), el [Plexo solar](center:solarPlexus) (las emociones) y la [Raíz](center:root) (la presión y el empuje).',
-        'Un centro **definido** funciona de forma fija y fiable: es una energía consistente que se aporta siempre, propia y constante. Un centro **indefinido** no es un defecto: es una zona abierta donde se recibe y amplifica la energía de los demás y del entorno; es donde más se aprende, pero también donde es fácil dejarse condicionar y confundir lo ajeno con lo propio.',
-        'Mirar los centros es una de las claves más prácticas para la **gestión de la energía**: los definidos marcan lo que cada uno ofrece de manera estable, y los indefinidos, dónde conviene no tomar decisiones desde una presión prestada. En la carta, los centros coloreados están definidos y los que se ven vacíos están abiertos.'
+        'Los **centros** son los nueve focos de energía del bodygraph, cada uno ligado a una función concreta. Heredan la idea de los chakras, pero aquí lo decisivo es si cada centro está **definido** o **indefinido** (abierto). Los nueve centros son:'
+      ],
+      after: [
+        'Un centro **definido** aparece con color en el bodygraph y funciona de forma fija y fiable: es una energía consistente que se aporta siempre, propia y constante. Un centro **indefinido** se muestra sin color (vacío) en el bodygraph y no es un defecto: es una zona abierta donde se recibe y amplifica la energía de los demás y del entorno; es donde más se aprende, pero también donde es fácil dejarse condicionar y confundir lo ajeno con lo propio.',
+        'Mirar los centros es una de las claves más prácticas para la **gestión de la energía**: los definidos marcan lo que cada uno ofrece de manera estable, y los indefinidos, dónde conviene no tomar decisiones desde una presión prestada.'
       ]
     },
     channel: {
@@ -116,7 +120,7 @@ export default {
     'manifesting-generator': {
       title: 'Generador Manifestante',
       paragraphs: [
-        'Una variante del [Generador](type:generator) —los Generadores Manifestantes suponen un 33 % de la población, y junto al resto de Generadores, cerca del 70 %—: un MG tiene el [Sacral](center:sacral) definido, y lo que lo diferencia de otros Generadores es que tiene el Sacral conectado, directa o indirectamente, con la [Garganta](center:throat). Eso le da la energía generadora propia de los Generadores y, además, capacidad de manifestar y materializar con rapidez.',
+        'Una variante del [Generador](type:generator) —los Generadores Manifestantes suponen un 33 % de la población, y junto al resto de Generadores, cerca del 70 %—: un GM tiene el [Sacral](center:sacral) definido, y lo que lo diferencia de otros Generadores es que tiene el Sacral conectado, directa o indirectamente, con la [Garganta](center:throat). Eso le da la energía generadora propia de los Generadores y, además, capacidad de manifestar y materializar con rapidez.',
         'Su estrategia es **responder y luego informar**: primero espera la respuesta sacral —el sí o el no del cuerpo— y, una vez la tiene, avisa a quienes se verán afectados antes de lanzarse. Tiende a ser polifacético, veloz y no lineal: salta pasos, hace varias cosas a la vez y a veces vuelve atrás a rematar lo que se saltó.',
         'La clave para gestionar su energía es no dispersarse iniciando sin haber escuchado la respuesta de su cuerpo: cuando se compromete con lo que de verdad le enciende (cuando su cuerpo dice sí), avanza rápido y siente *satisfacción* y *paz*; pero cuando fuerza empujado por la mente y las ideas, acumula *frustración*, *enfado* y trabajo a medias.'
       ]
@@ -224,7 +228,7 @@ export default {
       ]
     },
     mental: {
-      title: 'Autoridad mental',
+      title: 'Autoridad mental/ambiental',
       paragraphs: [
         'También llamada autoridad ambiental o "caja de resonancia", propia de algunos Proyectores sin centros internos definidos para decidir. No hay una autoridad corporal interna fija: la claridad no surge de dentro de golpe, **la claridad surge del diálogo**.',
         'La práctica consiste en **hablar el asunto con personas de confianza y en el entorno adecuado**, no para que decidan por uno, sino para escucharse pensar en voz alta. El lugar y la compañía correctos son aquí parte del método: la decisión se va decantando con el tiempo y la conversación.'
@@ -638,25 +642,29 @@ export default {
         'El experimento es fácil de enunciar (aunque lleve su tiempo ponerlo en práctica): **tomar tus decisiones según [tu estrategia](section:strategy) y [tu autoridad](section:authority)** —las dos herramientas que verás más adelante— en vez de dejarte llevar por lo que se espera de ti, por la prisa, por la cabeza o por los mecanismos y patrones que llevas aplicando toda tu vida. Poco a poco, esto te devuelve a tu manera natural de funcionar. A este proceso se le llama **desacondicionamiento**, y es, en el fondo, de lo que va todo lo demás.'
       ]
     },
+    // The five type lines render as a bulleted list in the report (buildReport
+    // composes intro + bullets + outro); the intro/outro stay as paragraphs.
     collective: {
       title: 'Tu lugar en el colectivo',
-      paragraphs: [
+      intro:
         'Como en [el símil de las hormigas](section:intro), los tipos de Diseño Humano describen **las maneras distintas de estar diseñado para usar la energía**. Ninguno es mejor, y el conjunto funciona precisamente porque no todos somos iguales. Igual que el hormiguero funciona porque todos los tipos existen, el colectivo humano necesita de todos los diferentes tipos de persona.',
+      bullets: [
         '**Generadores (~37%) y Generadores Manifestantes (~33%)**: suponen cerca del 70% de la población. Son los constructores, con energía vital sostenida cuando hacen lo que de verdad les enciende. Son el motor que mueve el mundo humano.',
         '**Proyectores (~20%)**: no tienen esa energía constante; su don es ver, guiar y orientar a los demás. Brillan cuando se les reconoce e invita, no forzándose al ritmo de un Generador.',
         '**Manifestadores (~9%)**: son los iniciadores, capaces de arrancar cosas de la nada y causar impacto, sin esperar a nadie. Su clave es informar a quienes su acción salpica y gestionar su energía inconstante.',
-        '**Reflectores (~1%)**: los más infrecuentes, son un espejo del entorno que muestrea la salud del grupo y del lugar en que vive.',
+        '**Reflectores (~1%)**: los más infrecuentes, son un espejo del entorno que muestrea la salud del grupo y del lugar en que vive.'
+      ],
+      outro:
         'El error más común es medirse con el diseño de otro: que un Proyector se exija la resistencia de un Generador, o que un Generador se frustre por no iniciar como un Manifestador.'
-      ]
     },
     // Short connective lead-ins prepended to the reused content of each
     // personalised section.
     leadIn: {
       strategy: 'Tu estrategia es tu forma natural e ideal de actuar y comprometerte con las cosas sin forzarlas.',
-      authority: 'Tu autoridad es tu manera correcta de **tomar decisiones** en la vida, de acuerdo con tu diseño y no contra él. Si la estrategia te dice *cuándo* actuar, la autoridad te dice *cómo decidir* cada sí y cada no. La mente sirve para informarte, navegar las decisiones tomadas y aconsejar a otros, pero **la mente no es de fiar para decidir** sobre tu propia vida: las decisiones deben tomarse desde una fuente más corporal y fiable. Esto es la *autoridad*.',
+      authority: 'Tu autoridad es tu manera correcta de tomar decisiones en la vida, de acuerdo con tu diseño y no contra él. Si la estrategia te dice *cómo y cuándo actuar*, **la autoridad te dice** *cómo y cuándo decidir* cada sí y cada no. La mente sirve para informarte, navegar las decisiones tomadas y aconsejar a otros, pero **la mente no es de fiar para decidir** sobre tu propia vida: las decisiones deben tomarse desde una fuente más corporal y fiable. Esto es la *autoridad*.',
       definition: 'La definición describe cómo se agrupan entre sí tus centros definidos: si forman un solo bloque o varios grupos separados.',
       practice: 'Si te tuvieras que quedar con una sola cosa de todo Human Design, que sea esta: **vivir tu diseño es, sobre todo, entrar en acción según [tu estrategia](section:strategy) y decidir desde [tu autoridad](section:authority)**. Lo demás matiza y afina; pero estas dos cosas son lo que de verdad cambia el día a día de tu vida.',
-      centers: 'Veamos cómo queda cada uno de los nueve centros en tu carta:'
+      centers: 'Los nueve centros en tu carta:'
     },
 
     // ── Second-person bodies for the personalised report sections (text pass,
@@ -985,6 +993,20 @@ export default {
     '47-64': { name: 'canal de la abstracción', essence: 'la presión de imágenes confusas que pugna por ordenarse hasta llegar a la comprensión.' }
   },
 
+  // One-line function of each centre, for the nine-centre chip list in the
+  // "Los centros" concept drawer (text audit, jul 2026). Keyed by centre.
+  centerBrief: {
+    head: 'la inspiración y las preguntas',
+    ajna: 'el pensamiento',
+    throat: 'la comunicación y la acción',
+    g: 'la identidad y la dirección',
+    heart: 'la voluntad',
+    spleen: 'el instinto',
+    solarPlexus: 'las emociones',
+    sacral: 'la energía vital',
+    root: 'la presión y el empuje'
+  },
+
   // Closed-set index appended to each value drawer (text audit, jul 2026): the
   // full set of possibilities for the element's category, one line per option
   // (chip label + keynote), each clickable for its detail. The current
@@ -993,11 +1015,11 @@ export default {
     type: {
       heading: 'Los cinco tipos',
       items: {
-        generator: { label: 'Generador', note: 'construye con energía sostenida (~37 %)' },
-        'manifesting-generator': { label: 'Generador Manifestante', note: 'construye rápido y polifacético (~33 %)' },
-        projector: { label: 'Proyector', note: 've, guía y orienta la energía ajena (~20 %)' },
-        manifestor: { label: 'Manifestador', note: 'inicia e impacta con independencia (~9 %)' },
-        reflector: { label: 'Reflector', note: 'refleja y muestrea el entorno (~1 %)' }
+        generator: { label: 'Generador', note: 'construye con energía sostenida', pct: '~37 %' },
+        'manifesting-generator': { label: 'Generador Manifestante', note: 'construye rápido y polifacético', pct: '~33 %' },
+        projector: { label: 'Proyector', note: 've, guía y orienta la energía ajena', pct: '~20 %' },
+        manifestor: { label: 'Manifestador', note: 'inicia e impacta con independencia', pct: '~9 %' },
+        reflector: { label: 'Reflector', note: 'refleja y muestrea el entorno', pct: '~1 %' }
       }
     },
     strategy: {
@@ -1018,7 +1040,7 @@ export default {
         splenic: { label: 'Esplénica', note: 'el instinto que habla una sola vez' },
         ego: { label: 'Del ego', note: 'lo que de verdad se quiere' },
         'self-projected': { label: 'Autoproyectada', note: 'oírse hablar en voz alta para reconocerse' },
-        mental: { label: 'Mental', note: 'la claridad que surge del diálogo' },
+        mental: { label: 'Mental/ambiental', note: 'la claridad que surge del diálogo' },
         lunar: { label: 'Lunar', note: 'un ciclo lunar de perspectiva' }
       }
     },
@@ -1047,6 +1069,10 @@ export default {
 
   // Natural-language labels used to build AI prompts. Kept separate from the
   // chart page's UI labels until i18n is unified (then both read from here).
+  //
+  // i18n note (jul 2026): the Manifesting Generator abbreviates as **GM** in
+  // Spanish ("Generador Manifestante"), not "MG". When adding languages, use
+  // each language's own word order for the acronym.
   promptLabels: {
     type: {
       generator: 'Generador',
@@ -1061,7 +1087,7 @@ export default {
       splenic: 'esplénica (Bazo)',
       ego: 'del Ego (Corazón)',
       'self-projected': 'autoproyectada (G–Garganta)',
-      mental: 'mental',
+      mental: 'mental/ambiental',
       lunar: 'lunar'
     },
     strategy: {

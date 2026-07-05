@@ -239,20 +239,40 @@
         <p class="para">{@html renderInline(p)}</p>
       {/each}
       {#if info.facts}
-        <!-- Schematic identity block (gates/channels): one row per element,
-             chips aligned left under a shared label (text audit, jul 2026). -->
+        <!-- Schematic identity block (gates/channels/centres): one row per
+             element, gold chips aligned left under a shared label. Rows with a
+             note stack one per line; note-less rows (centres) go inline. -->
         <div class="facts">
           {#each info.facts as f}
             <div class="fact">
               <span class="fact-label">{f.label}{#if f.tip}<sup class="fact-i" data-tip={f.tip}>i</sup>{/if}:</span>
-              <span class="fact-rows">
+              <span class="fact-rows" class:inline={f.inline}>
                 {#each f.rows as r}
                   <span class="fact-row">
-                    <button class="index-chip" type="button" onclick={() => onnavigate?.(r.chip.kind, r.chip.key)}>{r.chip.label}</button>
+                    <button class="index-chip gold" type="button" onclick={() => onnavigate?.(r.chip.kind, r.chip.key)}>{r.chip.label}</button>
                     {#if r.note}<span class="fact-note">{r.note}</span>{/if}
                   </span>
                 {/each}
               </span>
+            </div>
+          {/each}
+        </div>
+      {/if}
+      {#if info.centerStates}
+        <!-- The nine centres with the chart's defined/open state: chip gold when
+             defined, outlined when open, with a hover tooltip. -->
+        <div class="cstates">
+          {#each info.centerStates as it}
+            <div class="cstate">
+              <button
+                class="index-chip"
+                class:gold={it.defined}
+                class:copen={!it.defined}
+                type="button"
+                title={it.defined ? 'definido' : 'abierto'}
+                onclick={() => onnavigate?.(it.kind, it.key)}
+              >{it.label}</button>
+              <span class="fact-note">({it.note})</span>
             </div>
           {/each}
         </div>
@@ -263,24 +283,41 @@
         {/each}
       {/if}
       {#if info.related}
-        <!-- Closed-set schema: every possibility of the category, the current
-             element(s) highlighted, each clickable (text audit, jul 2026). -->
+        <!-- Closed-set schema as a borderless table: chip · phrase · (%). The
+             current element(s) are highlighted gold. -->
         <div class="related">
           <div class="rel-head">{info.related.heading}</div>
-          {#each info.related.items as it}
-            <span class="fact-row">
-              <button class="index-chip" class:cur={it.current} type="button" onclick={() => onnavigate?.(it.kind, it.key)}>{it.label}</button>
-              {#if it.note}<span class="fact-note">{it.note}</span>{/if}
-            </span>
-          {/each}
+          <table class="rel-table">
+            <tbody>
+              {#each info.related.items as it}
+                <tr>
+                  <td class="rt-chip"><button class="index-chip" class:gold={it.current} type="button" onclick={() => onnavigate?.(it.kind, it.key)}>{it.label}</button></td>
+                  <td class="rt-note">{it.note}</td>
+                  {#if info.related.hasPct}<td class="rt-pct">{it.pct ?? ''}</td>{/if}
+                </tr>
+              {/each}
+            </tbody>
+          </table>
         </div>
       {/if}
       {#if info.list}
-        <div class="index-list">
-          {#each info.list as item}
-            <button class="index-chip" type="button" onclick={() => onnavigate?.(item.kind, item.key)}>{item.label}</button>
-          {/each}
-        </div>
+        {#if info.list[0]?.note}
+          <!-- Full index as "[chip] name" rows (gates / channels). -->
+          <div class="index-rows">
+            {#each info.list as item}
+              <div class="cstate">
+                <button class="index-chip" type="button" onclick={() => onnavigate?.(item.kind, item.key)}>{item.label}</button>
+                <span class="fact-note">{item.note}</span>
+              </div>
+            {/each}
+          </div>
+        {:else}
+          <div class="index-list">
+            {#each info.list as item}
+              <button class="index-chip" type="button" onclick={() => onnavigate?.(item.kind, item.key)}>{item.label}</button>
+            {/each}
+          </div>
+        {/if}
       {/if}
     </div>
 
@@ -572,6 +609,13 @@
     gap: 0.3rem;
     min-width: 0;
   }
+  /* Note-less facts (e.g. a channel's two centres) sit inline on one line. */
+  .fact-rows.inline {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem;
+  }
   .fact-row {
     display: inline-flex;
     align-items: center;
@@ -623,26 +667,70 @@
     z-index: 40;
   }
 
-  /* Closed-set schema at the end of a value drawer ("Las seis líneas", …). */
+  /* Gold chip — schematic facts and the current element of a closed set. */
+  .index-chip.gold {
+    color: var(--accent);
+    border-color: var(--accent);
+    background: var(--accent-soft);
+  }
+  /* Open-centre chip in the nine-centre list: white outline, like the
+     bodygraph's undefined centres. */
+  .index-chip.copen {
+    color: var(--text);
+    border-color: var(--text-muted);
+    background: transparent;
+  }
+
+  /* The nine-centre state list + the "[chip] name" full index: one item/line. */
+  .cstates,
+  .index-rows {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .cstate {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  /* Closed-set schema table at the end of a value/concept drawer. Borderless;
+     chip · phrase · optional %. */
   .related {
     margin-top: 1.1rem;
     padding-top: 0.9rem;
     border-top: 1px solid var(--border);
-    display: flex;
-    flex-direction: column;
-    gap: 0.35rem;
   }
   .rel-head {
     font-size: 0.72rem;
     text-transform: uppercase;
     letter-spacing: 0.06em;
     color: var(--text-muted);
-    margin-bottom: 0.2rem;
+    margin-bottom: 0.5rem;
   }
-  .index-chip.cur {
-    color: var(--accent);
-    border-color: var(--accent);
-    background: var(--accent-soft);
+  .rel-table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  .rel-table td {
+    padding: 0.22rem 0.5rem 0.22rem 0;
+    vertical-align: middle;
+  }
+  .rt-chip {
+    white-space: nowrap;
+    width: 1%;
+  }
+  .rt-note {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    line-height: 1.35;
+  }
+  .rt-pct {
+    white-space: nowrap;
+    text-align: right;
+    font-size: 0.8rem;
+    color: var(--text-muted);
   }
   .sep {
     border-top: 1px solid var(--border);

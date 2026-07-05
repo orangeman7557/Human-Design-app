@@ -16,7 +16,7 @@
   import { install, promptInstall } from '$lib/pwa/install.svelte.js';
   import { dialog } from '$lib/components/dialog.svelte.js';
   import { cityCountry } from '$lib/geo/place.js';
-  import { getElementInfo, getProfileInfo, getGateInfo, getChannelInfo, getConceptInfo, getActivationWeight } from '$lib/hd/content/index.js';
+  import { getElementInfo, getProfileInfo, getGateInfo, getChannelInfo, getConceptInfo, getPlanetInfo, getActivationWeight } from '$lib/hd/content/index.js';
   import { buildPrompts } from '$lib/hd/prompts.js';
 
   // Etiquetas humanas. En la próxima iteración esto vivirá en i18n.
@@ -88,7 +88,7 @@
     splenic: 'Esplénica (Bazo)',
     ego: 'Ego (Corazón)',
     'self-projected': 'Autoproyectada (G-Garganta)',
-    mental: 'Mental (ambiental)',
+    mental: 'Mental/ambiental',
     lunar: 'Lunar'
   };
 
@@ -146,12 +146,13 @@
 
   /** Resolve an element's `{ title, paragraphs, facts?, after?, related?, list? }` by kind. */
   function resolveInfo(kind, key) {
-    return kind === 'concept' ? getConceptInfo(key)
+    return kind === 'concept' ? getConceptInfo(key, chart)
       // A profile key is "3/5"; a bare line number ("3", from the lines
-      // schema) opens that line's own entry instead.
+      // schema or an activation's line) opens that line's own entry instead.
       : kind === 'profile' ? (String(key).includes('/') ? getProfileInfo(key) : getElementInfo(kind, key))
       : kind === 'gate' ? getGateInfo(key, chart)
       : kind === 'channel' ? getChannelInfo(key, chart)
+      : kind === 'planet' ? getPlanetInfo(key, chart)
       : getElementInfo(kind, key);
   }
 
@@ -190,6 +191,13 @@
   function actClick(e, gate) {
     e.stopPropagation();
     openInfoFor('Puerta', 'gate', String(gate));
+  }
+  // Tapping the line number (the ".N" part) opens that line's drawer, not the
+  // gate. The line 1-6 shares its archetype with the profile lines, so it
+  // reuses the 'profile' content by line number.
+  function actLineClick(e, line) {
+    e.stopPropagation();
+    openInfoFor('Perfil', 'profile', String(line));
   }
 
   // Desktop: one mouseover per card decides whether the pointer sits on an
@@ -1132,14 +1140,12 @@
                   <span class="psym">{PLANET_SYMBOLS[p]}</span>{PLANET_LABELS[p]}{#if innerReveal === `planet:${p}` || infoIsOpen('planet', p)}<span class="dot-side" data-info-cat="Planeta" data-info-kind="planet" data-info-key={p}><InfoDot active={infoIsOpen('planet', p)} label={`Más información sobre ${PLANET_LABELS[p]}`} /></span>{/if}
                 </td>
                 <td>
-                  <button class="act act-btn" class:hl={actHl(chart.personality[p].gate)} onclick={(e) => actClick(e, chart.personality[p].gate)}>
-                    {chart.personality[p].gate}.{chart.personality[p].line}
-                  </button>
+                  <span class="act" class:hl={actHl(chart.personality[p].gate)}
+                    ><button class="act-btn" onclick={(e) => actClick(e, chart.personality[p].gate)}>{chart.personality[p].gate}</button><span class="act-sep">.</span><button class="act-btn" onclick={(e) => actLineClick(e, chart.personality[p].line)}>{chart.personality[p].line}</button></span>
                 </td>
                 <td>
-                  <button class="act act-btn" class:hl={actHl(chart.design[p].gate)} onclick={(e) => actClick(e, chart.design[p].gate)}>
-                    {chart.design[p].gate}.{chart.design[p].line}
-                  </button>
+                  <span class="act" class:hl={actHl(chart.design[p].gate)}
+                    ><button class="act-btn" onclick={(e) => actClick(e, chart.design[p].gate)}>{chart.design[p].gate}</button><span class="act-sep">.</span><button class="act-btn" onclick={(e) => actLineClick(e, chart.design[p].line)}>{chart.design[p].line}</button></span>
                 </td>
                 <td class="weight-col">
                   {#if w}<span class="weight-val" data-tier={w.tier}>{w.label}</span>{/if}
@@ -1885,13 +1891,19 @@
     border-color: var(--accent);
     background: var(--accent-soft);
   }
-  /* Activation values are now buttons (tap → open the gate). Reset the native
-     button chrome so they read exactly like the old <span>. */
+  /* Activation values are split into two buttons: the gate (→ its drawer) and
+     the line (→ that line's drawer), joined by a "." separator. Reset the
+     native button chrome so they read exactly like the old <span>. */
   .act-btn {
     background: none;
     font: inherit;
     color: inherit;
     cursor: pointer;
+    padding: 0;
+    border: 0;
+  }
+  .act-sep {
+    pointer-events: none;
   }
   /* Pin the Peso column wide enough for its longest label ("medio") so that
      expanding "Mostrar más" — which first introduces "medio" rows — can't
