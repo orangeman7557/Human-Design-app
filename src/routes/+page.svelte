@@ -449,8 +449,14 @@
 
 <main>
   <header>
-    <h1>Human Design Chart</h1>
-    <p class="tagline">Calcula tu carta de Diseño Humano — gratis y sin registro. Introduce tus datos de nacimiento.</p>
+    <div class="brand">
+      <h1>Human Design Chart</h1>
+      <!-- The app icon doubles as the "instalar como app" affordance. -->
+      <button class="app-icon" type="button" onclick={onInstallClick} aria-label="Instalar como app" title="Instalar como app">
+        <img src="/favicon.svg" alt="" width="28" height="28" />
+      </button>
+    </div>
+    <p class="tagline">Calcula tu carta de Diseño Humano — gratis y sin registro.</p>
   </header>
 
   <form onsubmit={submit}>
@@ -656,11 +662,38 @@
     text-align: center;
     margin-bottom: 2.5rem;
   }
+  /* Title + app icon on one centred row. */
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.55rem;
+    margin-bottom: 0.4rem;
+  }
   h1 {
     font-size: clamp(1.6rem, 5vw, 2rem);
     font-weight: 500;
-    margin: 0 0 0.4rem;
+    margin: 0;
     letter-spacing: -0.01em;
+  }
+  .app-icon {
+    display: inline-flex;
+    align-items: center;
+    padding: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    line-height: 0;
+    border-radius: 7px;
+  }
+  .app-icon img {
+    width: 1.7rem;
+    height: 1.7rem;
+    display: block;
+    border-radius: 7px;
+  }
+  .app-icon:hover {
+    opacity: 0.85;
   }
   .tagline {
     color: var(--text-muted);

@@ -370,9 +370,14 @@ corrected).
 
 ### To evaluate — distribution / docs
 
-- Social / discovery metadata: Open Graph + Twitter Card tags in
-  [app.html](./src/app.html) so a shared URL shows a title / description /
-  image; favicon + touch icons (overlaps with installability above).
+- Social / discovery metadata: Open Graph + Twitter Card tags — **home done**
+  (Phase L, step 2) and **`/chart` share links done 2026-07-05** via
+  [`src/hooks.server.js`](./src/hooks.server.js), which rewrites the `/chart`
+  `<head>` at the Worker (scraper-visible) with the shared chart's name + type
+  (marker `<!--%og%-->` in [app.html](./src/app.html)). **Deferred**: a
+  *per-chart preview image* (the bodygraph) — would need server-side SVG→PNG
+  rendering at the edge (Workers + a rasteriser, or a satori-style OG image
+  route); today every chart link uses the brand `og-image.png`.
 - Possibly prerender just the home route for SEO / first paint (the chart page
   stays SPA). Today both routes are `ssr:false` / `prerender:false`, so
   crawlers and link-preview bots see a near-empty shell.

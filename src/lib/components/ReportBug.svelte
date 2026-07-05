@@ -129,16 +129,16 @@
              of the tallest (fallo); switching type never resizes the modal. -->
         <div class="intro">
           <p class:hidden={kind !== 'fallo'} aria-hidden={kind !== 'fallo'}>
-            Describe el problema con tanto detalle como puedas. Cuanto más claro,
-            más fácil me será entenderlo y arreglarlo. Los datos de tu
-            dispositivo y navegador se incluyen solos, no hace falta que los
-            escribas.
+            Describe el problema con tanto detalle como puedas. Cuanto más claro
+            lo expliques, más probabilidad de que lo pueda entender y arreglar.
+            (Los datos de tu dispositivo y navegador se incluyen solos, no hace
+            falta que los escribas.)
           </p>
           <p class:hidden={kind !== 'sugerencia'} aria-hidden={kind !== 'sugerencia'}>
             Describe la sugerencia con tanto detalle como puedas. Cuanto más
-            claro, más fácil me será entenderlo y ver si puedo implementarlo. Los
-            datos de tu dispositivo y navegador se incluyen solos, no hace falta
-            que los escribas.
+            claro lo expliques, más probabilidad de que lo pueda entender e
+            implementar. (Los datos de tu dispositivo y navegador se incluyen
+            solos, no hace falta que los escribas.)
           </p>
         </div>
 

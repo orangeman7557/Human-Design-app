@@ -18,6 +18,8 @@
   import { cityCountry } from '$lib/geo/place.js';
   import { getElementInfo, getProfileInfo, getGateInfo, getChannelInfo, getConceptInfo, getPlanetInfo, getActivationWeight } from '$lib/hd/content/index.js';
   import { buildPrompts } from '$lib/hd/prompts.js';
+  import { buildShareUrl, decodeBirth, hasShareParams } from '$lib/hd/share-link.js';
+  import { goto } from '$app/navigation';
 
   // Etiquetas humanas. En la próxima iteración esto vivirá en i18n.
   const CENTER_LABELS = {
@@ -535,25 +537,31 @@
   /** @type {string | null} */
   let shareError = $state(null);
 
-  async function share() {
-    if (!captureEl || sharing) return;
-    sharing = true;
+  // Share the chart as a link (birth data in the URL) rather than an image:
+  // the recipient recomputes the same chart locally. Native share sheet on
+  // touch; clipboard copy (with a brief "copiado" confirmation) on desktop.
+  let linkCopied = $state(false);
+  /** @type {ReturnType<typeof setTimeout> | undefined} */
+  let copiedTimer;
+  async function shareLink() {
+    if (!birthData) return;
     shareError = null;
+    const url = buildShareUrl($state.snapshot(birthData), chart?.type, location.origin);
     try {
-      const blob = await captureBlob();
-      const file = new File([blob], imageFileName(), { type: 'image/png' });
-      if (navigator.canShare?.({ files: [file] })) {
-        await navigator.share({ files: [file], title: 'Carta Human Design' });
+      if (navigator.share) {
+        await navigator.share({ title: 'Carta de Human Design', url });
+      } else if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(url);
+        linkCopied = true;
+        clearTimeout(copiedTimer);
+        copiedTimer = setTimeout(() => (linkCopied = false), 2200);
       } else {
-        // No share sheet available (typical on desktop): just download.
-        downloadBlob(blob);
+        await dialog.alert({ title: 'Enlace de la carta', message: url });
       }
     } catch (e) {
       if (e?.name !== 'AbortError') {
-        shareError = `No se pudo compartir la imagen: ${e instanceof Error ? e.message : String(e)}`;
+        shareError = `No se pudo compartir el enlace: ${e instanceof Error ? e.message : String(e)}`;
       }
-    } finally {
-      sharing = false;
     }
   }
 
@@ -635,16 +643,73 @@
     }
   }
 
+  // Mobile header fit (jul 2026). On a phone the header row is [back] [name +
+  // Informe] [Guardar]. Space permitting, the buttons show words instead of
+  // bare icons; when the name would push them off, the labels collapse in a
+  // fixed order — Informe's word first, then Guardar's — before the name
+  // finally truncates with an ellipsis. We can't express "labels drop before
+  // the name truncates" in CSS alone, so we measure: pick the richest layout in
+  // which the name isn't cut off. Desktop is untouched (media query handles it).
+  //   'full'       → Guardar (text) · Informe (icon + text)
+  //   'noInforme'  → Guardar (text) · Informe (icon)
+  //   'icons'      → Guardar (icon) · Informe (icon)
+  /** @type {HTMLElement | undefined} */
+  let headerEl = $state();
+  let hdrMode = $state('icons');
+  let fitSeq = 0;
+
+  function isMobileHeader() {
+    return window.matchMedia('(max-width: 679px)').matches;
+  }
+  async function fitHeader() {
+    if (!headerEl || !isMobileHeader()) return;
+    const seq = ++fitSeq;
+    const h1 = headerEl.querySelector('h1');
+    if (!h1) return;
+    for (const m of ['full', 'noInforme', 'icons']) {
+      hdrMode = m;
+      await tick();
+      if (seq !== fitSeq) return; // a newer run superseded this one
+      // 'icons' is the last resort; otherwise keep the first mode that doesn't
+      // truncate the name (+1px tolerance for sub-pixel rounding).
+      if (m === 'icons' || h1.scrollWidth <= h1.clientWidth + 1) return;
+    }
+  }
+
+  $effect(() => {
+    const onResize = () => fitHeader();
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  });
+  // Re-fit when the name, the chart's presence, or the save label change width.
+  $effect(() => {
+    void birthData?.name;
+    void chart;
+    void saved;
+    fitHeader();
+  });
+
   onMount(async () => {
     try {
-      // Recogemos los datos guardados por la página del formulario.
-      const raw = sessionStorage.getItem('birthData');
-      if (!raw) {
-        error = 'No hay datos de nacimiento. Vuelve a la página inicial y rellena el formulario.';
-        loading = false;
-        return;
+      // A shared link (/chart?…) carries the birth data in the URL; otherwise
+      // we read what the form left in sessionStorage. A decoded link is also
+      // written back to sessionStorage so save / back / form-restore behave the
+      // same as an in-app chart.
+      let birth = null;
+      const params = new URLSearchParams(location.search);
+      if (hasShareParams(params)) {
+        birth = decodeBirth(params);
+        if (birth) sessionStorage.setItem('birthData', JSON.stringify(birth));
       }
-      const birth = JSON.parse(raw);
+      if (!birth) {
+        const raw = sessionStorage.getItem('birthData');
+        if (!raw) {
+          error = 'No hay datos de nacimiento. Vuelve a la página inicial y rellena el formulario.';
+          loading = false;
+          return;
+        }
+        birth = JSON.parse(raw);
+      }
       birthData = birth;
       chart = await computeChart(birth);
       // A link elsewhere (e.g. the "Manifestor" word in the About modal on the
@@ -696,10 +761,9 @@
 {#snippet imgButtons()}
   <button
     class="img-btn"
-    onclick={share}
-    disabled={sharing}
-    data-tip={sharing ? 'Generando imagen…' : 'Compartir'}
-    aria-label="Compartir carta"
+    onclick={shareLink}
+    data-tip={linkCopied ? 'Enlace copiado ✓' : 'Compartir enlace'}
+    aria-label="Compartir enlace de la carta"
   >
     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <circle cx="18" cy="5" r="3" />
@@ -725,7 +789,12 @@
 <!-- While sharing, .capturing applies the export-only layout (centred
      title and birth line) that the PNG clone picks up. -->
 <main bind:this={captureEl} class:capturing={sharing} class:pdf-shot={pdfShot}>
-  <header>
+  <header
+    bind:this={headerEl}
+    class:hdr-full={hdrMode === 'full'}
+    class:hdr-noinforme={hdrMode === 'noInforme'}
+    class:hdr-icons={hdrMode === 'icons'}
+  >
     <button class="back" onclick={back} aria-label="Volver">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <line x1="19" y1="12" x2="5" y2="12" />
@@ -760,6 +829,7 @@
             <svg class="save-ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" /><polyline points="17 21 17 13 7 13 7 21" /><polyline points="7 3 7 8 15 8" /></svg>
           {/if}
           <span class="save-lbl">{saved ? 'Guardada ✓' : 'Guardar carta'}</span>
+          <span class="save-lbl-m">{saved ? 'Guardada ✓' : 'Guardar'}</span>
         </button>
       </div>
     {/if}
@@ -1248,7 +1318,8 @@
     font-size: 0.85rem;
     font-weight: 500;
   }
-  /* Mobile: icon only — the label would crowd the title row. */
+  /* Mobile: icon only by default; the "Informe" word shows only when the
+     header has room for it (hdr-full — see fitHeader). */
   @media (max-width: 679px) {
     .report-lbl {
       display: none;
@@ -1257,6 +1328,14 @@
       width: 2rem;
       padding: 0;
       gap: 0;
+    }
+    header.hdr-full .report-lbl {
+      display: inline;
+    }
+    header.hdr-full .report-btn {
+      width: auto;
+      padding: 0 0.6rem;
+      gap: 0.4rem;
     }
   }
   .report-btn:hover {
@@ -1283,8 +1362,12 @@
     color: var(--text-muted);
     cursor: default;
   }
-  /* The save icon shows only on mobile, where the label is hidden. */
+  /* The save icon and the short mobile label ("Guardar") show only on mobile;
+     desktop uses the full ".save-lbl" ("Guardar carta"). */
   .save-ic {
+    display: none;
+  }
+  .save-lbl-m {
     display: none;
   }
   /* Holds the name + the report button so the report button sits right next to
@@ -1782,7 +1865,9 @@
       margin: 0.45rem 0 calc(-2rem - 0.45rem);
       z-index: 1;
     }
-    /* Compact icon-only save on mobile (square, like the image buttons). */
+    /* Compact icon-only save by default on mobile (square, like the image
+       buttons); the "Guardar" word replaces the icon when the header has room
+       (hdr-full / hdr-noinforme — see fitHeader). */
     .save {
       width: 2rem;
       height: 2rem;
@@ -1793,6 +1878,20 @@
     }
     .save-ic {
       display: block;
+    }
+    header.hdr-full .save,
+    header.hdr-noinforme .save {
+      width: auto;
+      height: 2rem;
+      padding: 0 0.85rem;
+    }
+    header.hdr-full .save-lbl-m,
+    header.hdr-noinforme .save-lbl-m {
+      display: inline;
+    }
+    header.hdr-full .save-ic,
+    header.hdr-noinforme .save-ic {
+      display: none;
     }
   }
 
