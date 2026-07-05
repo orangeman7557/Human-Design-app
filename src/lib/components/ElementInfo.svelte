@@ -259,15 +259,12 @@
         </div>
       {/if}
       {#if info.centerStates}
-        <!-- The nine centres with the chart's defined/open state: chip gold when
-             defined, outlined when open. -->
+        <!-- The nine centres, each a gold chip + its brief function. -->
         <div class="cstates">
           {#each info.centerStates as it}
             <div class="cstate">
               <button
-                class="index-chip"
-                class:gold={it.defined}
-                class:copen={!it.defined}
+                class="index-chip gold"
                 type="button"
                 onclick={() => onnavigate?.(it.kind, it.key)}
               >{it.label}</button>
@@ -672,15 +669,7 @@
     border-color: var(--accent);
     background: var(--accent-soft);
   }
-  /* Open-centre chip in the nine-centre list: white outline, like the
-     bodygraph's undefined centres. */
-  .index-chip.copen {
-    color: var(--text);
-    border-color: var(--text-muted);
-    background: transparent;
-  }
-
-  /* The nine-centre state list + the "[chip] name" full index: one item/line. */
+  /* The nine-centre list + the "[chip] name" full index: one item/line. */
   .cstates,
   .index-rows {
     margin-top: 1rem;
