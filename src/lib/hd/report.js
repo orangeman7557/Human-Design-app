@@ -64,10 +64,12 @@ export function buildReport(chart, lang = DEFAULT_LANG) {
   const coll = getReportSection('collective', lang);
   if (typeBody) {
     const typeLabel = L.type?.[chart.type] ?? chart.type;
-    // A small sub-heading marks the jump from the general comparison to this
-    // chart's own type, so the transition reads clearly.
+    // The collective comparison reads as intro + a bulleted list of the five
+    // types + outro; then a sub-heading marks the jump to this chart's own type.
     add('type', `Tu tipo: ${typeLabel}`, [
-      ...(coll?.paragraphs ?? []),
+      coll?.intro,
+      coll?.bullets ? { bullets: coll.bullets } : null,
+      coll?.outro,
       { subhead: `Tú eres un ${typeLabel}` },
       ...typeBody
     ]);

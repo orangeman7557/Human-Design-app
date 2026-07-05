@@ -6,7 +6,7 @@
 // `key`, and optionally a language.
 
 import es from './es.js';
-import { CENTER_BY_GATE, CHANNELS } from '../constants.js';
+import { CENTER_BY_GATE, CHANNELS, GATES_BY_CENTER } from '../constants.js';
 
 const LANGS = { es };
 export const DEFAULT_LANG = 'es';
@@ -14,6 +14,9 @@ export const DEFAULT_LANG = 'es';
 function pack(lang) {
   return LANGS[lang] ?? LANGS[DEFAULT_LANG];
 }
+
+/** Capitalise the first letter (for names embedded in a title). */
+const cap = (s) => (s ? s.charAt(0).toUpperCase() + s.slice(1) : s);
 
 /**
  * Explanatory content for an element, or null when none is written yet.
@@ -27,8 +30,14 @@ export function getElementInfo(kind, key, lang = DEFAULT_LANG) {
   if (!entry) return null;
   // Centres are stored split (fn/defined/open) — Phase 7. The chip "i" shows the
   // function plus both states; the report uses getCenterReport for just one.
+  // A centre also lists its channels and gates as a schematic facts block, in
+  // the same style as the gate/channel drawers (text audit, jul 2026).
   if (kind === 'center') {
-    return { title: entry.title, paragraphs: [entry.fn, entry.defined, entry.open] };
+    return {
+      title: entry.title,
+      paragraphs: [entry.fn, entry.defined, entry.open],
+      facts: centerFacts(key, lang)
+    };
   }
   // Closed-set categories append the full set of possibilities (text audit,
   // jul 2026): a compact clickable schema with the current element highlighted.
@@ -36,22 +45,46 @@ export function getElementInfo(kind, key, lang = DEFAULT_LANG) {
   return rel ? { ...entry, related: rel } : entry;
 }
 
-/** Closed-set schema ({ heading, items }) for a category, with `currentKeys`
- *  highlighted, or null when the category has no closed set. */
+/** Closed-set schema ({ heading, items, hasPct }) for a category, with
+ *  `currentKeys` highlighted, or null when the category has no closed set. */
 function relatedIndex(kind, currentKeys, lang = DEFAULT_LANG) {
   const idx = pack(lang).relatedIndex?.[kind];
   if (!idx) return null;
   const cur = new Set((Array.isArray(currentKeys) ? currentKeys : [currentKeys]).map(String));
-  return {
-    heading: idx.heading,
-    items: Object.entries(idx.items).map(([k, it]) => ({
-      kind,
-      key: k,
-      label: it.label,
-      note: it.note,
-      current: cur.has(String(k))
-    }))
-  };
+  const items = Object.entries(idx.items).map(([k, it]) => ({
+    kind,
+    key: k,
+    label: it.label,
+    note: it.note,
+    pct: it.pct ?? null,
+    current: cur.has(String(k))
+  }));
+  return { heading: idx.heading, items, hasPct: items.some((i) => i.pct) };
+}
+
+/** A centre's schematic facts: its channels (with names) and its gates (with
+ *  themes), each a clickable chip row — mirrors the gate/channel drawers. */
+function centerFacts(center, lang = DEFAULT_LANG) {
+  const p = pack(lang);
+  const chans = CHANNELS.filter(([a, b]) => CENTER_BY_GATE[a] === center || CENTER_BY_GATE[b] === center);
+  const gates = GATES_BY_CENTER[center] ?? [];
+  return [
+    {
+      label: 'Canales',
+      rows: chans.map(([a, b]) => {
+        const k = `${a}-${b}`;
+        const name = p.channel?.[k]?.name;
+        return { chip: { label: k, kind: 'channel', key: k }, note: name ?? null };
+      })
+    },
+    {
+      label: 'Puertas',
+      rows: gates.map((g) => {
+        const t = gateTheme(g, lang);
+        return { chip: { label: String(g), kind: 'gate', key: String(g) }, note: t ?? null };
+      })
+    }
+  ];
 }
 
 /** Whether an element has explanatory content (drives the info "i"). */
@@ -67,16 +100,53 @@ export function hasElementInfo(kind, key, lang = DEFAULT_LANG) {
  * @param {string} key 'type'|'strategy'|'authority'|'profile'|'definition'|'center'|'channel'|'gate'
  * @param {string} [lang]
  */
-export function getConceptInfo(key, lang = DEFAULT_LANG) {
+export function getConceptInfo(key, chart = null, lang = DEFAULT_LANG) {
   const base = getElementInfo('concept', key, lang);
   if (!base) return null;
+  const p = pack(lang);
   if (key === 'channel') {
-    return { ...base, list: CHANNELS.map(([a, b]) => ({ label: `${a}-${b}`, kind: 'channel', key: `${a}-${b}` })) };
+    // Full index as "[chip] name" rows (text audit, jul 2026).
+    return {
+      ...base,
+      list: CHANNELS.map(([a, b]) => ({
+        label: `${a}-${b}`,
+        kind: 'channel',
+        key: `${a}-${b}`,
+        note: p.channel?.[`${a}-${b}`]?.name ?? null
+      }))
+    };
   }
   if (key === 'gate') {
-    return { ...base, list: Array.from({ length: 64 }, (_, i) => ({ label: `${i + 1}`, kind: 'gate', key: `${i + 1}` })) };
+    return {
+      ...base,
+      list: Array.from({ length: 64 }, (_, i) => ({
+        label: `${i + 1}`,
+        kind: 'gate',
+        key: `${i + 1}`,
+        note: gateTheme(i + 1, lang)
+      }))
+    };
   }
-  return base;
+  if (key === 'center') {
+    // The nine centres as chips carrying the chart's defined/open state.
+    const labels = p.promptLabels.center;
+    const brief = p.centerBrief ?? {};
+    const defined = new Set(chart?.definedCenters ?? []);
+    return {
+      ...base,
+      centerStates: Object.keys(GATES_BY_CENTER).map((c) => ({
+        kind: 'center',
+        key: c,
+        label: labels[c] ?? c,
+        note: brief[c] ?? '',
+        defined: defined.has(c)
+      }))
+    };
+  }
+  // The five closed-set categories also show their full schema at concept
+  // level (no current element highlighted).
+  const rel = relatedIndex(key, null, lang);
+  return rel ? { ...base, related: rel } : base;
 }
 
 /**
@@ -219,14 +289,14 @@ export function gateState(gate, chart) {
  *  drawers are the viewer's reference material and the chart on screen may be
  *  someone else's, so state lines say "esta carta" (voice decision 2026-07-03;
  *  only the initial report speaks in the second person). */
-function gateCoda(state) {
+function gateCoda(state, g) {
   switch (state) {
     case 'complete':
-      return 'En esta carta forma parte de un canal completo: es una energía que se aporta de forma estable e integrada.';
+      return `En esta carta, la puerta ${g} está activa y forma parte de un canal completo: es una energía que se aporta de forma estable e integrada.`;
     case 'hanging':
-      return 'En esta carta está activa pero colgante: su tema está presente, y su otra mitad solo se completa de forma puntual, con ciertas personas o en ciertos tránsitos.';
+      return `En esta carta, la puerta ${g} está activa pero colgante: su tema está presente, y su otra mitad solo se completa de forma puntual, con ciertas personas o en ciertos tránsitos.`;
     case 'inactive':
-      return 'No está activa en esta carta: es una energía que se reconoce y se recibe de los demás y del entorno, más que una constante propia.';
+      return `En esta carta, la puerta ${g} no está activa: es una energía que se reconoce y se recibe de los demás y del entorno, más que una constante propia.`;
     default:
       return null;
   }
@@ -255,22 +325,22 @@ export function getGateInfo(gate, chart = null, lang = DEFAULT_LANG) {
   // cluster) sit on more than one channel, so channel rows can be plural.
   const pairs = CHANNELS.filter(([a, b]) => a === g || b === g);
   const facts = [
-    { label: 'Centro', rows: [{ chip: { label: labels[center] ?? center, kind: 'center', key: center, center } }] },
+    { label: 'Centro', inline: true, rows: [{ chip: { label: labels[center] ?? center, kind: 'center', key: center } }] },
     {
       label: pairs.length > 1 ? 'Canales' : 'Canal',
       rows: pairs.map(([a, b]) => {
         const k = `${a}-${b}`;
         const chName = p.channel?.[k]?.name;
-        return { chip: { label: k, kind: 'channel', key: k }, note: chName ? `("${chName}")` : null };
+        return { chip: { label: k, kind: 'channel', key: k }, note: chName ?? null };
       })
     },
     {
       label: pairs.length > 1 ? 'Puertas armónicas' : 'Puerta armónica',
-      tip: pairs.length > 1 ? 'completan sus canales' : 'completa el canal',
+      tip: pairs.length > 1 ? 'puertas que completan sus canales' : 'puerta que completa el canal',
       rows: pairs.map(([a, b]) => {
         const h = a === g ? b : a;
         const t = gateTheme(h, lang);
-        return { chip: { label: String(h), kind: 'gate', key: String(h) }, note: t ? `("${t}")` : null };
+        return { chip: { label: String(h), kind: 'gate', key: String(h) }, note: t ?? null };
       })
     }
   ];
@@ -280,10 +350,12 @@ export function getGateInfo(gate, chart = null, lang = DEFAULT_LANG) {
       ? `Su raíz es el hexagrama ${g} del I Ching, "${name}".`
       : `Le corresponde el hexagrama ${g} del I Ching.`
   ];
-  const coda = gateCoda(gateState(g, chart));
+  const coda = gateCoda(gateState(g, chart), g);
   if (coda) after.push(coda);
   after.push('Para una lectura más a fondo, puedes utilizar la opción de "saber más usando IA".');
-  return { title: `Puerta ${g}`, paragraphs: [entry?.text ?? `La puerta ${g}.`], facts, after };
+  const theme = gateTheme(g, lang);
+  const title = theme ? `Puerta ${g}: ${cap(theme)}` : `Puerta ${g}`;
+  return { title, paragraphs: [entry?.text ?? `La puerta ${g}.`], facts, after };
 }
 
 /** A channel's state in a chart: 'complete' | 'half' | 'none', or null if no chart. */
@@ -302,14 +374,14 @@ function channelCoda(a, b, chart) {
   const aOn = chart.activeGates.includes(a);
   const bOn = chart.activeGates.includes(b);
   if (aOn && bOn) {
-    return 'En esta carta el canal está completo: es una corriente que se aporta de forma estable e integrada.';
+    return `En esta carta, el canal ${a}-${b} está completo: es una corriente que se aporta de forma estable e integrada.`;
   }
   if (aOn || bOn) {
     const on = aOn ? a : b;
     const off = aOn ? b : a;
-    return `En esta carta está activa una de sus dos puertas (la [puerta ${on}](gate:${on})) pero no la otra (la [puerta ${off}](gate:${off})): es un medio canal que se completa de forma puntual, con quien tenga la puerta que falta o en ciertos tránsitos.`;
+    return `En esta carta, del canal ${a}-${b} está activa una de sus dos puertas (la [puerta ${on}](gate:${on})) pero no la otra (la [puerta ${off}](gate:${off})): es un medio canal que se completa de forma puntual, con quien tenga la puerta que falta o en ciertos tránsitos.`;
   }
-  return 'Ninguna de sus dos puertas está activa en esta carta: es una corriente que se encuentra sobre todo en los demás.';
+  return `En esta carta, ninguna de las dos puertas del canal ${a}-${b} está activa: es una corriente que se encuentra sobre todo en los demás.`;
 }
 
 /**
@@ -342,16 +414,17 @@ export function getChannelInfo(pair, chart = null, lang = DEFAULT_LANG) {
   const facts = [
     {
       label: 'Centros',
+      inline: true,
       rows: [
-        { chip: { label: labels[ca] ?? ca, kind: 'center', key: ca, center: ca } },
-        { chip: { label: labels[cb] ?? cb, kind: 'center', key: cb, center: cb } }
+        { chip: { label: labels[ca] ?? ca, kind: 'center', key: ca } },
+        { chip: { label: labels[cb] ?? cb, kind: 'center', key: cb } }
       ]
     },
     {
       label: 'Puertas',
       rows: [
-        { chip: { label: String(a), kind: 'gate', key: String(a) }, note: ta ? `("${ta}")` : null },
-        { chip: { label: String(b), kind: 'gate', key: String(b) }, note: tb ? `("${tb}")` : null }
+        { chip: { label: String(a), kind: 'gate', key: String(a) }, note: ta ?? null },
+        { chip: { label: String(b), kind: 'gate', key: String(b) }, note: tb ?? null }
       ]
     }
   ];
@@ -362,5 +435,30 @@ export function getChannelInfo(pair, chart = null, lang = DEFAULT_LANG) {
   const coda = channelCoda(a, b, chart);
   if (coda) after.push(coda);
   after.push('Para una lectura más a fondo, puedes utilizar la opción de "saber más usando IA".');
-  return { title: `Canal ${a}-${b}`, paragraphs, facts, after };
+  const title = ch?.name ? `${a}-${b}: ${cap(ch.name)}` : `Canal ${a}-${b}`;
+  return { title, paragraphs, facts, after };
+}
+
+/**
+ * Info for a planet. With `chart`, appends a schematic facts block with the
+ * gates this planet activates in Personality and Design (text audit, jul 2026).
+ * @param {string} planet
+ * @param {any} [chart]
+ * @param {string} [lang]
+ */
+export function getPlanetInfo(planet, chart = null, lang = DEFAULT_LANG) {
+  const entry = pack(lang).planet?.[planet];
+  if (!entry) return null;
+  const row = (side) => {
+    const act = chart?.[side]?.[planet];
+    if (!act) return null;
+    const t = gateTheme(act.gate, lang);
+    return [{ chip: { label: String(act.gate), kind: 'gate', key: String(act.gate) }, note: t ?? null }];
+  };
+  const pRows = row('personality');
+  const dRows = row('design');
+  const facts = [];
+  if (pRows) facts.push({ label: 'Personalidad', rows: pRows });
+  if (dRows) facts.push({ label: 'Diseño', rows: dRows });
+  return facts.length ? { ...entry, facts } : entry;
 }

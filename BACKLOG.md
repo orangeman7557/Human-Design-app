@@ -444,6 +444,25 @@ corrected).
 
 ## Possible improvements (not scheduled, not part of Phase 5)
 
+- ⬜ **Clickable bodygraph — centres and gates open their drawers (requested
+  2026-07-04).** In `Bodygraph.svelte`, make each **centre shape** and each
+  **gate number** a click target that opens its element drawer (same
+  `openInfoFor('Centro','center',key)` / `('Puerta','gate',key)` the overlay
+  chips already call). Deliberately **not channels**: the integration channels
+  (10-20, 10-34, 10-57, 20-34, 20-57, 34-57) overlap visually, so a click on
+  that cluster can't be resolved to a single channel without extra UI — skip
+  them. Hover/tap affordance + keyboard access to match the existing chips.
+
+- ⬜ **Per gate.line texts (64×6 brief notes; requested 2026-07-04).** Clicking
+  an activation's line number already opens the generic line (1-6) drawer
+  (reusing the profile-line content) and its AI prompt ("la línea N del
+  perfil") is already built. The enrichment: write a short own-voice note for
+  each **gate.line** combination (64 gates × 6 lines = 384 brief texts) so the
+  line drawer, when reached from a specific activation, can show that gate's
+  line rather than the generic archetype. Scoped small on purpose — 2-3
+  sentences each, no new prompt needed. Would live in `content/es.js` keyed
+  `gateLine[gate][line]`, consumed by a chart-aware line drawer.
+
 - ✅ **Done 2026-07-04 — "Bodygraph" label + drawer, no type percentages,
   mobile type-chip alignment.** The chart page now shows a **"Bodygraph"**
   label above the graph with its own concept "i"/drawer (`concept.bodygraph`

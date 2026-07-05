@@ -29,8 +29,8 @@
   // Short labels for the table of contents (section titles are longer).
   const TOC = {
     intro: 'Qué es Human Design', experiment: 'Un experimento vital', chart: 'Bodygraph',
-    type: 'Tipos', centers: 'Centros', strategy: 'Estrategia', authority: 'Autoridad',
-    profile: 'Perfil', definition: 'Definición', practice: 'Vivir tu diseño'
+    type: 'Tu tipo', centers: 'Tus centros', strategy: 'Tu estrategia', authority: 'Tu autoridad',
+    profile: 'Tu perfil', definition: 'Tu definición', practice: 'Vivir tu diseño'
   };
 
   /** @type {HTMLDivElement | undefined} */
@@ -199,8 +199,12 @@
           {#each s.paragraphs as p}
             {#if typeof p === 'string'}
               <p>{@html renderInline(p)}</p>
+            {:else if p.bullets}
+              <ul class="rbullets">
+                {#each p.bullets as b}<li>{@html renderInline(b)}</li>{/each}
+              </ul>
             {:else if p.subhead}
-              <h4 class="subhead">{p.subhead}</h4>
+              <p class="subhead">{@html renderInline(p.subhead)}</p>
             {/if}
           {/each}
           {#if s.items}
@@ -452,12 +456,33 @@
     letter-spacing: 0.01em;
     margin: 0 0 0.8rem;
   }
-  /* Small sub-heading inside a section (e.g. "Tú eres un Manifestador"). */
+  /* Sub-heading inside a section (e.g. "Tú eres un Manifestador"). Styled as a
+     soft accent pill — clearly a highlight, but distinct from the gold section
+     titles so it can't be mistaken for one. */
   .subhead {
-    font-size: 1rem;
+    display: inline-block;
+    font-size: 0.95rem;
     font-weight: 600;
     color: var(--text);
-    margin: 1.6rem 0 0.1rem;
+    background: var(--accent-soft);
+    border: 1px solid var(--accent);
+    border-radius: 999px;
+    padding: 0.25rem 0.8rem;
+    margin: 1.6rem 0 0.2rem;
+  }
+  /* Bulleted list (the five types in "Tu tipo"). */
+  .rbullets {
+    margin: 0.75rem 0 0;
+    padding-left: 1.15rem;
+  }
+  .rbullets li {
+    font-size: 0.92rem;
+    line-height: 1.6;
+    color: #c4c4ca;
+    margin: 0.5rem 0 0;
+  }
+  .rbullets li::marker {
+    color: var(--accent);
   }
   p {
     font-size: 0.92rem;

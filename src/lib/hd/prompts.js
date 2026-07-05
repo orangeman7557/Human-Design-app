@@ -22,11 +22,9 @@
 import { getPromptLabels, gateState, channelState, DEFAULT_LANG } from './content/index.js';
 
 const FRAME = 'En el marco de Human Design';
-// Nudges the AI away from vague-mystical answers (text audit, jul 2026).
-const TONE = ', de forma práctica y aterrizada';
 
-/** General angle: "En el marco de Human Design, ¿me explicas en detalle <subject>, de forma práctica y aterrizada?" */
-const ask = (subject) => `${FRAME}, ¿me explicas en detalle ${subject}${TONE}?`;
+/** General angle: "En el marco de Human Design, ¿me explicas en detalle <subject>?" */
+const ask = (subject) => `${FRAME}, ¿me explicas en detalle ${subject}?`;
 
 /** Impersonal descriptor of the chart, e.g. "un Generador, perfil 3/5, autoridad Sacral, definición split, centros definidos …". */
 function who(L, chart) {
@@ -44,7 +42,7 @@ function who(L, chart) {
 
 /** Chart angle: same as `ask` but prefixed with the chart descriptor. */
 const askChart = (L, chart, subject) =>
-  `${FRAME}, para ${who(L, chart)}, ¿me explicas en detalle ${subject}${TONE}?`;
+  `${FRAME}, para ${who(L, chart)}, ¿me explicas en detalle ${subject}?`;
 
 /** The planets whose Personality/Design activations light up gate `g`, e.g.
  *  "el Sol en Personalidad (línea 3)". Empty when the gate isn't active. */
@@ -190,7 +188,7 @@ export function buildPrompts(kind, key, chart, lang = DEFAULT_LANG) {
           ? `${FRAME}, para ${who(L, chart)}, ¿me explicas en detalle qué ` +
             `representa ${name} y qué aportan sus dos activaciones en esta ` +
             `carta: ${p.gate}.${p.line} (consciente, Personalidad) y ` +
-            `${d.gate}.${d.line} (inconsciente, Diseño)${TONE}?`
+            `${d.gate}.${d.line} (inconsciente, Diseño)?`
           : null
     };
   }
