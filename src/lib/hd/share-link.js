@@ -9,7 +9,8 @@
 // when the form was filled in — so the URL stays short.
 //
 // Param keys are terse on purpose: n=name, d=YYYYMMDD, t=HHMM, la/lo=coords,
-// p=short place label, ty=type (preview text only — the calc ignores it).
+// p=short place label (shown in the chart's birth subtitle and the export
+// filename; the calc itself only needs the coordinates).
 
 import { cityCountry } from '$lib/geo/place.js';
 import { timezoneFor } from '$lib/geo/timezone.js';
@@ -22,9 +23,8 @@ function shortCoord(n) {
 /**
  * Encode birth data into a URL query string (no leading "?").
  * @param {any} birth - the stored birthData object.
- * @param {string} [type] - the chart type, for the link-preview text only.
  */
-export function encodeBirth(birth, type) {
+export function encodeBirth(birth) {
   const p = new URLSearchParams();
   if (birth?.name) p.set('n', birth.name);
   if (birth?.date) p.set('d', String(birth.date).replace(/-/g, ''));
@@ -33,13 +33,12 @@ export function encodeBirth(birth, type) {
   if (birth?.longitude != null) p.set('lo', shortCoord(birth.longitude));
   const place = cityCountry(birth?.placeLabel);
   if (place) p.set('p', place);
-  if (type) p.set('ty', type);
   return p.toString();
 }
 
 /** Build the full absolute share URL for a chart. */
-export function buildShareUrl(birth, type, origin) {
-  return `${origin}/chart?${encodeBirth(birth, type)}`;
+export function buildShareUrl(birth, origin) {
+  return `${origin}/chart?${encodeBirth(birth)}`;
 }
 
 /** True when the query string looks like a shared-chart link. */

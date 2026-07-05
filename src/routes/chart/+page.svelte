@@ -546,7 +546,7 @@
   async function shareLink() {
     if (!birthData) return;
     shareError = null;
-    const url = buildShareUrl($state.snapshot(birthData), chart?.type, location.origin);
+    const url = buildShareUrl($state.snapshot(birthData), location.origin);
     try {
       if (navigator.share) {
         await navigator.share({ title: 'Carta de Human Design', url });

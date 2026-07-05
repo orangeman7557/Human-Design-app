@@ -10,14 +10,6 @@
 // Worker. The image stays the brand og-image.png — a per-chart image would need
 // server-side bodygraph rendering, which is out of scope.
 
-const TYPE_LABELS = {
-  generator: 'Generador',
-  'manifesting-generator': 'Generador Manifestante',
-  projector: 'Proyector',
-  manifestor: 'Manifestador',
-  reflector: 'Reflector'
-};
-
 /** Escape a string for use inside an HTML attribute / text node. */
 function esc(s) {
   return String(s)
@@ -28,15 +20,11 @@ function esc(s) {
 }
 
 function chartMeta(url) {
-  const p = url.searchParams;
-  const name = (p.get('n') || '').trim();
-  const typeLabel = TYPE_LABELS[p.get('ty') || ''] || '';
+  const name = (url.searchParams.get('n') || '').trim();
 
   const title = name ? `${name} · Carta de Human Design` : 'Carta de Human Design';
-  const cols = 'tipo, estrategia, autoridad, perfil, centros y canales';
-  const desc = typeLabel
-    ? `${typeLabel} · ${cols}. Mira esta carta de Human Design y explórala.`
-    : `${cols}. Mira esta carta de Human Design y explórala.`;
+  const desc =
+    'Tipo, estrategia, autoridad, perfil, centros y canales. Mira esta carta de Human Design y explórala.';
 
   const ogUrl = `${url.origin}${url.pathname}${url.search}`;
   const image = `${url.origin}/og-image.png`;

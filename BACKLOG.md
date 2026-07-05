@@ -449,6 +449,22 @@ corrected).
 
 ## Possible improvements (not scheduled, not part of Phase 5)
 
+- ⬜ **`hdchart.app` mark on the downloaded PNG and PDF (requested 2026-07-05).**
+  Stamp the site URL `hdchart.app` somewhere discreet (a footer line most
+  likely) on the **downloaded image** (the `html-to-image` capture in
+  `chart/+page.svelte`) and on the **downloaded PDF** (the report cover / page
+  footer in `report-pdf.js`), so a shared export carries an attribution / way
+  back to the app.
+
+- ⬜ **Share button in the initial report → link straight to the report
+  (requested 2026-07-05).** Add a **share button next to the "PDF" button** in
+  `InitialReport.svelte`'s header that shares the same encoded chart URL we
+  build for the chart page (`buildShareUrl` in `lib/hd/share-link.js`), but with
+  a flag that makes the recipient **land with the report already open**. Needs a
+  new param (e.g. `&r=1`) that `chart/+page.svelte` reads on arrival to set
+  `reportOpen = true` (mirror the existing `hd:openInfo` sessionStorage path).
+  The `og`/preview `hooks.server.js` can stay as-is (still `/chart`).
+
 - ⬜ **Clickable bodygraph — centres and gates open their drawers (requested
   2026-07-04).** In `Bodygraph.svelte`, make each **centre shape** and each
   **gate number** a click target that opens its element drawer (same

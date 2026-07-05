@@ -690,10 +690,13 @@
     width: 1.7rem;
     height: 1.7rem;
     display: block;
+    /* A subtle frame so the icon reads as an app tile (its own background is
+       the page colour, so without a border it looks like a floating glyph). */
+    border: 1px solid var(--border);
     border-radius: 7px;
   }
-  .app-icon:hover {
-    opacity: 0.85;
+  .app-icon:hover img {
+    border-color: var(--accent);
   }
   .tagline {
     color: var(--text-muted);
