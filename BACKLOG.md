@@ -178,6 +178,120 @@ Fixed in the second 2026-06-11 batch (Phase 5 close):
   checkbox centred on mobile; the checkbox sits below the time field
   there (top-right of the field label on desktop, as before).
 
+## Functional gap analysis 2026-07-06 (vs. reference HD apps)
+
+Functional/usage review of the app against the reference tools (myBodyGraph,
+HumDes, Jenna Zoe's Align/My Human Design, the Spanish-language calculators),
+focused on the app's two audiences: people new to Human Design and people who
+save charts. Headline: the app is **above the free-tool baseline in
+education** (initial report, drawers everywhere, own gate essences, AI
+handoff) — but **one standard chart datum is genuinely missing** (the
+incarnation cross). Items registered below in suggested priority order.
+
+- ⬜ **1. Incarnation cross (the essential missing datum).** The only
+  standard chart property the summary lacks — every reference calculator
+  shows it (even the free Spanish ones), and for beginners it's the "life
+  purpose" hook; the literature attributes ~70% of the chart's imprint to its
+  four activations. Calculation is already done: the cross is the Sun/Earth
+  gates of Personality and Design (in the activations table) plus the angle
+  (Right/Left/Juxtaposition), derived mechanically from the profile. Missing
+  pieces: the name mapping (192 named crosses, 768 variants), a summary row,
+  and an "i" drawer + prompt like every other element. Legal footing = same
+  as channel names (short titles not copyrightable, descriptive
+  noncommercial use; decision 2026-07-02).
+- ⬜ **2. Signature + not-self theme as named summary fields.** Standard
+  properties in the reference tools (satisfacción/frustración, paz/ira,
+  éxito/amargura, sorpresa/decepción). The content already exists inside the
+  type texts (the report's energy·trap·signals block); surface it as two more
+  summary rows with their own "i" drawers. For a beginner this is the most
+  *practical* tool in the system — the daily "am I in my signature or in my
+  not-self?" barometer.
+- ⬜ **3. "¿Qué es el Diseño Humano?" entry point on the home.** All the
+  educational material lives *after* calculating; someone landing on
+  hdchart.app without knowing the system sees only a form and no reason to
+  type their birth data. A discreet link/drawer on the home reusing existing
+  concept content (also feeds the prerendered home's SEO).
+- 🟡 **4. iOS local-data loss (CRITICAL — active).** See the dedicated
+  section below: "iOS storage eviction — investigation + mitigation plan".
+- ⬜ **5. "Puerta del día" (gate of the day).** The cheap 80/20 of Phase 9:
+  today's Sun gate + line, with the essence text and drawer the app already
+  has (the ephemeris already computes longitudes; it's one extra call for
+  "now"). The daily-transit angle is the most-cited beginner feature in app
+  reviews and the only recurring reason to reopen the app. The full transit
+  overlay stays Phase 9.
+- ⬜ **6. Note/label per saved chart.** The saved list shows only name +
+  type; with many charts (family, friends) a small free-text label ("madre",
+  "pareja") keeps it scannable. Composite (Phase 8) is confirmed as the
+  natural next feature for this audience (the "My People" pattern in other
+  apps: saving others' charts leads to comparing them).
+
+Consciously **not** added, validated against the app's scope: PHS/variables
+(precision constraint already documented above + advanced material),
+Dream Rave / Gene Keys / Penta / returns (other systems or audiences),
+accounts-first cloud (local-first is the differentiator; Phase 10 stays
+optional), and daily-tips/affirmations coaching content (the AI handoff
+covers depth better and without hosting cost).
+
+## iOS storage eviction — investigation + mitigation plan (2026-07-06)
+
+**The problem.** Safari/WebKit (ITP) deletes **all script-writable storage**
+(IndexedDB, localStorage, service worker registrations, Cache API) for a
+website after **7 days of Safari use without the user interacting with that
+site**. This applies to every website, not just trackers. The app's saved
+charts live in IndexedDB, so an iOS user who saves family charts and comes
+back a month later finds them silently gone. The counter advances only on
+days Safari is actually used, so real-world loss takes longer than a calendar
+week — but it is real, and it also wipes localStorage (AI preference,
+love-sender flag) and the SW registration. (WebKit blog "Full Third-Party
+Cookie Blocking and More", 2020.)
+
+**Escape hatches investigated (2026-07-06):**
+
+1. **`navigator.storage.persist()` — not a fix on iOS, still worth calling.**
+   WebKit grants it heuristically (e.g. when running as a Home Screen web
+   app) and it protects against *storage-pressure eviction*, but there is
+   **no official statement that it exempts a site from the ITP 7-day
+   deletion** (WebKit "Updates to Storage Policy", 2023; developer reports
+   are mixed). On Chromium/Android it genuinely hardens persistence. Cheap
+   insurance: call it once when the first chart is saved.
+2. **Add to Home Screen — the real exemption.** Installed web apps are "not
+   part of Safari": they keep their own days-of-use counter, which only
+   advances when the app itself is used — so the cap effectively never fires
+   for an installed app. Confirmed still available in the EU (Apple reversed
+   the iOS 17.4 DMA removal on 2024-03-01). **Critical catch: the installed
+   app's storage is ISOLATED from Safari's** — installing does NOT migrate
+   charts already saved in the browser. The safe flow is: export (or
+   re-save) → install → import inside the installed app.
+3. **Server-set cookie vault — survives, but rejected by default.** HTTP
+   cookies set via `Set-Cookie` are not script-writable storage and survive
+   the 7-day deletion; a Worker endpoint could echo the saved charts into a
+   long-lived, Path-scoped cookie (~4 KB ≈ 20-30 charts in share-link
+   encoding). But birth data would transit the server, and `/privacy`
+   explicitly promises "no cookies" — it contradicts the app's core stance
+   for a partial gain. Parked unless the author decides otherwise.
+
+**Mitigation plan (direction approved by the author 2026-07-06; implementation
+pending):**
+
+- ⬜ **(a) One-per-session save notice on iOS, browser context only.** After
+  saving a chart on iOS in the browser (not when running installed), show a
+  notice: the browser can wipe locally saved charts after ~7 days without
+  visits — install the app to keep them safe (CTA reusing the existing iOS
+  instructions dialog: share menu → "Añadir a pantalla de inicio") and/or
+  export a backup. Must account for the storage-isolation caveat (charts
+  saved in the browser don't appear in the installed app — export/import or
+  re-save there).
+- ⬜ **(b) Storage explainer under "las cartas se guardan solo en este
+  dispositivo."** A second line + a "saber más" affordance opening a modal
+  that explains: local-only storage, clearing browser data wipes the charts,
+  the iOS ~7-day eviction, export/import as backup, and install-as-app as the
+  safe mode.
+- ⬜ **(c) `navigator.storage.persist()` on first save** (ignore/log the
+  result; mainly benefits Android/Chromium, harmless elsewhere).
+- ⬜ **(d) Export nudge.** When the saved list has charts and the context is
+  iOS-in-browser, a discreet reminder to export a copy (frequency TBD — e.g.
+  once per session or when N charts and no recent export).
+
 ## Audit 2026-07-03 — full-app audit (triaged with the author)
 
 Second external-style audit pass (the first was 2026-06-15), covering concept,
