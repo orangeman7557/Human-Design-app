@@ -31,16 +31,17 @@
   // No square-tile emojis here (e.g. 🌠 renders as a framed picture on Apple).
   const FLYERS = ['🌟', '⭐', '✨', '🌈', '🦄', '💫', '💖', '🎉'];
   const BASE_LABEL = '¡Mándame amor!';
-  const MORE_LABEL = '¡Mándame más amor!';
+  // "MÁS" in caps + bold (rendered via {@html}) to invite another tap.
+  const MORE_LABEL = '¡Mándame <strong>MÁS</strong> amor!';
   // Escalating thank-yous: one step every 4 clicks so each stays readable,
   // more over-the-top the deeper into the spree.
   const THANKS = [
-    '¡gracias! ❤️',
-    '¡lo recibo! 💛',
-    '¡qué gusto! 💖',
-    '¡¡cuánto cariño!! 💗💗',
-    '¡¡ole ole ole!! ❤️💛💜',
-    '¡¡¡voy a explotar!!! 💥💖💥'
+    '¡Gracias! ❤️',
+    '¡Lo recibo! 💛',
+    '¡Qué gusto! 💖',
+    '¡¡Cuánto cariño!! 💗💗',
+    '¡¡Olé, olé, olé!! ❤️💛💜',
+    '¡¡¡Voy a explotar!!! 💥💖💥'
   ];
 
   /** @type {number | null} global click count; null = unknown → line hidden */
@@ -315,7 +316,7 @@
             />
           </svg>
         </span>
-        <span class="slabel">{heartLabel}</span>
+        <span class="slabel">{@html heartLabel}</span>
       </button>
 
       <a class="scard" href={COFFEE_URL} target="_blank" rel="noopener noreferrer">
@@ -473,6 +474,12 @@
   .scard:hover {
     border-color: #3f3f46;
     color: var(--text);
+  }
+  /* "MÁS" in the love label: {@html} content isn't scoped, so target it
+     globally — bold + accent so it pops and invites another tap. */
+  .slabel :global(strong) {
+    font-weight: 700;
+    color: var(--accent);
   }
   .icon {
     display: inline-flex;

@@ -223,6 +223,15 @@
     padding: 1rem 1.3rem 1.3rem;
     text-align: left;
   }
+  /* On phones the keyboard covers the lower half of the screen; pin the form
+     near the top so its fields stay visible while typing. */
+  @media (max-width: 560px) {
+    .modal {
+      top: 1.5rem;
+      transform: translateX(-50%);
+      max-height: calc(100vh - 3rem);
+    }
+  }
   header {
     display: flex;
     align-items: center;

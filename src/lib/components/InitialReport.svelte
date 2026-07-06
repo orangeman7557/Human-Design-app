@@ -18,10 +18,11 @@
    *   chart?: any,
    *   onclose: () => void,
    *   onnavigate?: (kind: string, key: string) => void,
-   *   ondownloadpdf?: (data: { sections: any[] }) => Promise<void> | void
+   *   ondownloadpdf?: (data: { sections: any[] }) => Promise<void> | void,
+   *   onshare?: () => void
    * }}
    */
-  let { open = false, chart = null, onclose, onnavigate, ondownloadpdf } = $props();
+  let { open = false, chart = null, onclose, onnavigate, ondownloadpdf, onshare } = $props();
 
   const sections = $derived(open && chart ? buildReport(chart) : []);
   const prompt = $derived(open && chart ? buildReportPrompt(chart) : '');
@@ -162,6 +163,18 @@
         <h2>Conoce tu diseño</h2>
       </div>
       <div class="head-actions">
+        <button
+          class="share-btn"
+          type="button"
+          onclick={() => onshare?.()}
+          title="Compartir enlace al informe"
+          aria-label="Compartir enlace al informe"
+        >
+          <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" />
+            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" /><line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+          </svg>
+        </button>
         <button
           class="pdf-btn"
           type="button"
@@ -361,7 +374,8 @@
   }
   /* Primary action in the header: a gold pill, matching the chart page's
      report button and the overlay's gold accents. */
-  .pdf-btn {
+  .pdf-btn,
+  .share-btn {
     display: inline-flex;
     align-items: center;
     gap: 0.35rem;
@@ -375,7 +389,11 @@
     font-weight: 500;
     cursor: pointer;
   }
-  .pdf-btn:hover:not(:disabled) {
+  .share-btn {
+    padding: 0.32rem 0.55rem;
+  }
+  .pdf-btn:hover:not(:disabled),
+  .share-btn:hover {
     background: var(--accent);
     color: #1a1408;
   }
@@ -383,7 +401,8 @@
     cursor: progress;
     opacity: 0.7;
   }
-  .pdf-btn .ic {
+  .pdf-btn .ic,
+  .share-btn .ic {
     width: 15px;
     height: 15px;
     flex: none;

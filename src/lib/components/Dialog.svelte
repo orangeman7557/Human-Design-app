@@ -131,6 +131,19 @@
     justify-content: center;
     padding: 1rem;
   }
+  /* On phones the on-screen keyboard covers the lower half of the viewport, so
+     a centred prompt (save / rename / delete name) ends up hidden behind it.
+     Pin the dialog near the top instead and let the scrim scroll, so it stays
+     visible — and can be slid all the way up — while typing. */
+  @media (max-width: 560px) {
+    .scrim {
+      align-items: flex-start;
+      justify-content: center;
+      padding: 1.5rem 1rem;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+  }
   .dialog {
     z-index: 71;
     width: 100%;

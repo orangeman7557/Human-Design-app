@@ -449,21 +449,27 @@ corrected).
 
 ## Possible improvements (not scheduled, not part of Phase 5)
 
-- ⬜ **`hdchart.app` mark on the downloaded PNG and PDF (requested 2026-07-05).**
-  Stamp the site URL `hdchart.app` somewhere discreet (a footer line most
-  likely) on the **downloaded image** (the `html-to-image` capture in
-  `chart/+page.svelte`) and on the **downloaded PDF** (the report cover / page
-  footer in `report-pdf.js`), so a shared export carries an attribution / way
-  back to the app.
+- ⬜ **PDF report on a white background instead of dark mode (requested
+  2026-07-06).** The initial-report PDF (`report-pdf.js`) currently mirrors the
+  app's dark theme (dark page + light text, and a dark cover image). Consider a
+  light variant — white page, dark text — which prints better and reads more
+  like a conventional document. Note the dependency: the cover image is captured
+  from the (dark) chart view, so a white PDF would also need a light capture (or
+  a reworked cover) to avoid a dark block on a white page. Not to implement now.
 
-- ⬜ **Share button in the initial report → link straight to the report
-  (requested 2026-07-05).** Add a **share button next to the "PDF" button** in
-  `InitialReport.svelte`'s header that shares the same encoded chart URL we
-  build for the chart page (`buildShareUrl` in `lib/hd/share-link.js`), but with
-  a flag that makes the recipient **land with the report already open**. Needs a
-  new param (e.g. `&r=1`) that `chart/+page.svelte` reads on arrival to set
-  `reportOpen = true` (mirror the existing `hd:openInfo` sessionStorage path).
-  The `og`/preview `hooks.server.js` can stay as-is (still `/chart`).
+- ✅ **`hdchart.app` mark on the downloaded PNG and PDF — DONE 2026-07-06.**
+  A discreet gold `hdchart.app` header sits at the very top of both exports. In
+  the **PNG** it's an export-only `.export-brand` line in `chart/+page.svelte`,
+  shown while `.capturing` but hidden under `.pdf-shot` (so it isn't baked into
+  the PDF cover twice). In the **PDF** it's a native header drawn centred at the
+  top of every page in `report-pdf.js`'s `paintBg`.
+
+- ✅ **Share button in the initial report → link straight to the report — DONE
+  2026-07-06.** A gold share button sits to the left of the "PDF" button in
+  `InitialReport.svelte`'s header (new `onshare` prop). It calls
+  `shareReportLink` in `chart/+page.svelte`, which shares the same
+  `buildShareUrl` link plus `&r=1`; on arrival `onMount` reads `r=1` and sets
+  `reportOpen = true`. `hooks.server.js` unchanged.
 
 - ⬜ **Clickable bodygraph — centres and gates open their drawers (requested
   2026-07-04).** In `Bodygraph.svelte`, make each **centre shape** and each

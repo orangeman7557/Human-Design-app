@@ -74,6 +74,12 @@ function makeLayout(doc) {
   const paintBg = () => {
     doc.setFillColor(...C.bg);
     doc.rect(0, 0, PAGE_W, PAGE_H, 'F');
+    // Discreet site attribution at the top of every page (sits above the
+    // content, which starts at MARGIN_TOP).
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(8);
+    doc.setTextColor(...C.accent);
+    doc.text('hdchart.app', PAGE_W / 2, 30, { align: 'center', charSpace: 0.8 });
   };
   const newPage = () => {
     doc.addPage();
