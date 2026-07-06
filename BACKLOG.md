@@ -621,12 +621,20 @@ corrected).
   prefix like "madr" now surfaces Madrid, "stuttg" Stuttgart. The earlier
   Photon revert was caused by sending `lang=es` (HTTP 400); that param is now
   omitted.
-- **Mobile date field: allow typing the numbers.** Besides the calendar
-  picker, some users find typing the digits more comfortable than
-  scrolling years in the calendar. **Deliberately deferred (2026-07-06
-  triage):** it means replacing/augmenting the native `type=date` input,
-  and that form's field sizing took several betatester rounds to get right
-  on real iOS — this wants its own careful pass, not a batch fix.
+- ✅ **Mobile date field: allow typing the numbers — DONE 2026-07-06 (own
+  pass, author's request).** The native `type=date` input (whose Android
+  picker leads with a ~100-year scroll) is replaced **on all viewports** by
+  `DateField.svelte`: three numeric segments **DD / MM / AAAA** inside one
+  field-looking container. Numeric keypad (`inputmode`), auto-advance when a
+  segment fills, `/`-key jumps, backspace walks back, single digits pad on
+  blur, impossible dates (31/02) mark the field red and block submit with a
+  Spanish error. Binds the same ISO string, so restore / share links / the
+  unknown-time band are untouched; cleared via the `{#key formEpoch}`
+  remount (same pattern as CityAutocomplete — half-typed segments compose to
+  the same '' as a cleared value). Segment order is markup-only → swappable
+  per locale in Phase M. Killed in passing: the mobile transparent-value
+  overlay hack for the date input (the time input keeps its own). **Check on
+  real Android/iOS after deploy** (keyboard type, autofill `bday-*` hints).
 - **Birth-place error messages placement.** Shown below the field they
   look cramped; consider showing them to the right of the "Lugar de
   nacimiento" label instead. **Deliberately deferred (2026-07-06 triage):

@@ -7,6 +7,7 @@
   // Injected by Vite's `define` from package.json (see vite.config.js).
   const version = __APP_VERSION__;
   import CityAutocomplete from '$lib/components/CityAutocomplete.svelte';
+  import DateField from '$lib/components/DateField.svelte';
   import About from '$lib/components/About.svelte';
   import ReportBug from '$lib/components/ReportBug.svelte';
   import { install, promptInstall } from '$lib/pwa/install.svelte.js';
@@ -244,6 +245,13 @@
     e.preventDefault();
     error = null;
 
+    // The DateField segments are `required` (empty blocks natively), but a
+    // filled-yet-impossible date (31/02) composes to '' — catch it here.
+    if (!date) {
+      error = 'Revisa la fecha de nacimiento: no es una fecha válida.';
+      return;
+    }
+
     if (!place) {
       error = 'Selecciona una ciudad de la lista de sugerencias.';
       return;
@@ -473,15 +481,18 @@
       <input type="text" bind:value={name} autocomplete="off" />
     </label>
 
-    <label>
-      <span>Fecha de nacimiento</span>
-      <span class="dtwrap">
-        <input type="date" bind:value={date} required />
-        <span class="dt-value" class:muted={!date} aria-hidden="true">
-          {date ? date.split('-').reverse().join('/') : 'dd/mm/aaaa'}
-        </span>
-      </span>
-    </label>
+    <!-- Own day/month/year entry (DateField) instead of the native date
+         input: Android's picker leads with a ~100-year scroll, and a birth
+         date is typed, not picked. -->
+    <div class="field">
+      <span class="field-head"><span>Fecha de nacimiento</span></span>
+      <!-- {#key}: same pattern as CityAutocomplete — half-typed segments
+           compose to the same '' as a cleared value, so clearing the form
+           remounts the field instead of trying to signal it. -->
+      {#key formEpoch}
+        <DateField bind:value={date} />
+      {/key}
+    </div>
 
     <label>
       <span>Lugar de nacimiento</span>

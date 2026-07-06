@@ -94,6 +94,7 @@ El usuario introduce su fecha, hora y lugar de nacimiento → la app calcula su 
         ├── markup.js         ← renderInline: **negrita**/*cursiva*/[enlaces] → HTML (compartido)
         └── components/
             ├── CityAutocomplete.svelte  ← campo de ciudad con sugerencias de Photon
+            ├── DateField.svelte         ← fecha como DD/MM/AAAA tecleables (sin picker nativo)
             ├── Bodygraph.svelte         ← SVG del bodygraph (centros, canales, marcadores)
             ├── Dialog.svelte            ← diálogos propios prompt/confirm/alert (vía dialog.svelte.js)
             ├── ElementInfo.svelte       ← panel "i" reutilizable (info + handoff IA)
