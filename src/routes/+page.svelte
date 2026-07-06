@@ -124,13 +124,21 @@
   // half-hour); unchecking leaves the slider's hour in the time field.
   let unknownTime = $state(false);
   let sliderVal = $state(24); // half-hours → 12:00
+  /** @type {HTMLInputElement | undefined} */
+  let timeEl = $state();
 
   // Reads the checkbox from the event: onchange fires before bind:checked
-  // has updated `unknownTime`.
+  // has updated `unknownTime`. The hour is read from the state AND from the
+  // live input as fallback: the browser's own form restoration (back/forward)
+  // can repopulate the field without input events, leaving `time` empty while
+  // the field visibly shows an hour (author repro, 2026-07-06). Single-digit
+  // hours and trailing seconds are tolerated.
   function seedSliderFromTime(e) {
     if (!e.currentTarget.checked) return;
-    const m = /^(\d{2}):(\d{2})$/.exec(time);
+    const raw = /^\d{1,2}:\d{2}/.test(time) ? time : timeEl?.value || '';
+    const m = /^(\d{1,2}):(\d{2})/.exec(raw);
     if (!m) return;
+    if (raw !== time) time = `${m[1].padStart(2, '0')}:${m[2]}`;
     sliderVal = Math.min(47, Number(m[1]) * 2 + Math.round(Number(m[2]) / 30));
   }
   /** @type {string | null} */
@@ -488,7 +496,7 @@
       </span>
       {#if !unknownTime}
         <span class="dtwrap">
-          <input type="time" bind:value={time} required aria-label="Hora local de nacimiento" />
+          <input type="time" bind:this={timeEl} bind:value={time} required aria-label="Hora local de nacimiento" />
           <span class="dt-value" class:muted={!time} aria-hidden="true">{time || '--:--'}</span>
         </span>
       {:else}

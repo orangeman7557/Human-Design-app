@@ -11,6 +11,7 @@
   import { buildReport, buildReportPrompt } from '$lib/hd/report.js';
   import { AIS, getPreferredAI, setPreferredAI, openAI } from '$lib/ai/handoff.js';
   import { focusTrap } from './focus-trap.js';
+  import { scrollLock } from './scroll-lock.js';
 
   /**
    * @type {{
@@ -156,7 +157,7 @@
 
 {#if open && chart}
   <div class="scrim" onclick={onclose} role="presentation" transition:fade={{ duration: 150 }}></div>
-  <aside class="report" role="dialog" aria-modal="true" aria-label="Tu informe inicial personalizado" use:focusTrap transition:fly={{ y: 30, duration: 220 }}>
+  <aside class="report" role="dialog" aria-modal="true" aria-label="Tu informe inicial personalizado" use:focusTrap use:scrollLock transition:fly={{ y: 30, duration: 220 }}>
     <header>
       <div>
         <div class="eyebrow">Tu informe inicial personalizado</div>

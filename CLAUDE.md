@@ -100,7 +100,9 @@ El usuario introduce su fecha, hora y lugar de nacimiento → la app calcula su 
             ├── InitialReport.svelte     ← overlay del informe inicial (Fase 7)
             ├── InfoDot.svelte           ← la "i" de información
             ├── About.svelte             ← modal "acerca de" (footer)
-            └── ReportBug.svelte         ← "notificar un fallo" → Web3Forms (footer)
+            ├── ReportBug.svelte         ← "notificar un fallo" → Web3Forms (footer)
+            ├── focus-trap.js            ← acción compartida: foco dentro del overlay + restore al cerrar
+            └── scroll-lock.js           ← acción compartida: body pinned con overlay abierto (fix scroll iOS)
 ```
 
 **Flujo de datos:** formulario → `sessionStorage` → `computeChart()` → SVG + texto. Sin backend, todo client-side.

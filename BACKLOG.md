@@ -48,38 +48,68 @@ without competing against a clone of the same code.
 **Files touched in this change:**
 `LICENSE`, `NOTICE` (new), `README.md`, `package.json`, `BACKLOG.md`.
 
-## Known bugs & pre-MVP tasks (updated 2026-07-02)
+## Known bugs & pre-MVP tasks (updated 2026-07-06)
 
-Open (added 2026-07-02, author's batch — unverified, not yet triaged):
+Open:
 
-- ⬜ **iOS: background scrolls behind the "acerca de" modal (betatester,
-  2026-07-03).** With the About popup open on iOS, scrolling "does odd
-  things": it scrolls the main page underneath instead of the popup
-  content. Classic iOS Safari scroll bleed-through — the fixed scrim
-  doesn't stop touchmove from reaching the page. Likely fix: lock body
-  scroll while any modal is open (e.g. `overflow: hidden` +
-  `position: fixed` on body, or `overscroll-behavior: contain` on the
-  modal). Applies to `About.svelte` and probably `ReportBug.svelte` /
-  `InitialReport.svelte` too — check all overlays.
-
-- ⬜ **PDF export title not centred.** In the export / PDF report, the title
-  isn't centre-aligned — looks like something in the PNG/canvas generation step.
-  (The PNG share export centres title+subtitle only in the export; check whether
-  the PDF path reuses or drops that treatment.)
-- ⬜ **Profile drawer: add the 6 profile-line descriptions.** The profile "i"
-  drawer should include a description for each of the 6 profiles (currently
-  absent).
-- ⬜ **Unknown-time checkbox resets the slider to 12:00.** Checking "Hora
-  desconocida" should seed the slider from the time already entered (nearest
-  half-hour), not reset to 12:00. (Seems to contradict the "Unknown-hour slider
-  should respect the current time — done" item under *Possible improvements*;
-  `seedSliderFromTime` exists in `+page.svelte` — likely only seeds when a time
-  is already present, or a regression. Verify.)
 - ⬜ **Install link missing on mobile Chrome (betatester).** "instalar como app"
   shows on Mac Chrome but not on the phone (both Chrome). Only shows when
   `install.mode` is set (`beforeinstallprompt`, Chromium). Investigate Android
   install-eligibility criteria / timing, and confirm it was tested on the
-  deployed HTTPS build (the SW isn't registered in dev).
+  deployed HTTPS build (the SW isn't registered in dev). **Not reproducible
+  locally — needs the deployed build + a real Android device.**
+
+Triaged / fixed in the 2026-07-06 cleanup batch:
+
+- ✅ **iOS: background scrolls behind the "acerca de" modal — FIXED
+  2026-07-06 (pending device confirmation).** Classic iOS Safari scroll
+  bleed-through. New shared Svelte action `scrollLock`
+  (`src/lib/components/scroll-lock.js`): pins the body (`position: fixed`,
+  preserving the scroll offset) while any overlay is open; ref-counted so
+  stacked overlays (a dialog over the report) lock once. Applied to all five
+  overlays: About, ReportBug, Dialog, InitialReport, ElementInfo. Module
+  logic verified in-browser (lock / stacked / restore); the actual iOS
+  bleed-through **needs confirmation on a real iPhone after deploy.**
+- ✅ **PNG/PDF export title not centred — FIXED 2026-07-06.** Root cause:
+  `html-to-image` copies each node's *computed width* into the clone, so
+  `.title-wrap` measured with the "Informe" button still inside stayed too
+  wide after the filter dropped the button from the clone — shifting the
+  title left of centre (the `hdchart.app` brand line centres with
+  `text-align` on a full-width block, so it was immune). Fix: `.capturing`
+  now also hides the chrome (`.back`, `.report-btn`, `.actions`,
+  `.img-actions`) in the live DOM during capture, so the copied widths are
+  measured without it. Applies to the PNG and the PDF cover (same capture).
+- ✅ **Profile drawer: 6 profile-line descriptions — was ALREADY DONE.**
+  The six line texts exist in `content/es.js` (`profile['1'..'6']`, título +
+  2 párrafos each) and `getProfileInfo` composes the profile drawer from
+  them. Stale backlog entry; closed on verification.
+- ✅ **PDF: stray gold paragraph at the end (author, 2026-07-06) — FIXED
+  2026-07-06.** Introduced with the `hdchart.app` PDF header (2026-07-06
+  batch): `paintBg` left the header's style (gold, 8pt) as jsPDF document
+  state, so any paragraph that triggered a page break mid-flow drew its
+  remaining words in gold — for the author's chart, the last "Vivir tu
+  diseño" paragraph landed alone on the final page fully gold. `paintBg`
+  now saves and restores font/size/colour around the header. Verified with
+  a Node-generated PDF dump (final paragraph back to body grey).
+- ✅ **PDF: bulleted lists were silently dropped — FIXED 2026-07-06.**
+  Found during the same diagnosis: the report's "Tu tipo" section carries
+  the five types as a `{ bullets }` paragraph, which the overlay renders as
+  a `<ul>` but the PDF section loop skipped (only strings and subheads were
+  handled). The PDF now renders bullets as indented lines with a gold dot.
+- ✅ **PDF: cover top-aligned (author request 2026-07-06).** The cover image
+  was vertically centred in the page, leaving a large empty band above the
+  chart name on page 1 whenever the cover was width-constrained. It now
+  sits top-aligned at 44pt, just under the `hdchart.app` page header.
+- ✅ **Unknown-time checkbox resets the slider to 12:00 — FIXED 2026-07-06.**
+  The normal path already seeded correctly (verified: back-from-chart →
+  09:00 → slider 18). The remaining hole: the browser's own form restoration
+  (back/forward) can repopulate the time *field* without input events,
+  leaving the `time` state empty while the field visibly shows an hour —
+  then checking the box found no state to seed from and left 12:00.
+  `seedSliderFromTime` now falls back to the live input's value (and
+  tolerates single-digit hours / trailing seconds), normalising it back into
+  the state. Both paths verified in-browser (state 09:00 → 18; stale-state
+  field 21:30 → 43).
 - ✅ **"instalar como app" inconsistent between home and chart (author,
   2026-07-03) — FIXED 2026-07-03.** Root cause: the chart page simply never
   rendered the footer install link — `install.mode` carries across SPA
@@ -471,14 +501,18 @@ corrected).
   `buildShareUrl` link plus `&r=1`; on arrival `onMount` reads `r=1` and sets
   `reportOpen = true`. `hooks.server.js` unchanged.
 
-- ⬜ **Clickable bodygraph — centres and gates open their drawers (requested
-  2026-07-04).** In `Bodygraph.svelte`, make each **centre shape** and each
-  **gate number** a click target that opens its element drawer (same
-  `openInfoFor('Centro','center',key)` / `('Puerta','gate',key)` the overlay
-  chips already call). Deliberately **not channels**: the integration channels
-  (10-20, 10-34, 10-57, 20-34, 20-57, 34-57) overlap visually, so a click on
-  that cluster can't be resolved to a single channel without extra UI — skip
-  them. Hover/tap affordance + keyboard access to match the existing chips.
+- 🟡 **Clickable bodygraph — centres DONE 2026-07-06, gates pending.**
+  Clicking a **centre shape** in the bodygraph now pins its highlight AND
+  opens its element drawer (`onSvgCenterClick` in `chart/+page.svelte` calls
+  `openInfoFor('Centro','center',key)`); verified in-browser (Throat →
+  "Garganta" drawer). **Pending: the gate numbers** as click targets opening
+  their gate drawers (author decision 2026-07-06: gates deferred for now),
+  plus hover/tap affordance + keyboard access to match the existing chips.
+  Deliberately **not channels**: the integration channels (10-20, 10-34,
+  10-57, 20-34, 20-57, 34-57) overlap visually, so a click on that cluster
+  can't be resolved to a single channel without extra UI — skip them.
+  (Consolidates the duplicate "Click a centre or gate…" entry from
+  2026-07-02, removed.)
 
 - ⬜ **Per gate.line texts (64×6 brief notes; requested 2026-07-04).** Clicking
   an activation's line number already opens the generic line (1-6) drawer
@@ -502,44 +536,33 @@ corrected).
   type chips. On mobile the selected (taller) type chip was vertically
   off-centre in its row — fixed with `align-items: center` on `.type-list`.
 
-- **KV namespaces: staging split + senders counters (requested 2026-07-04).**
+- **KV namespaces: staging split (requested 2026-07-04; still pending).**
   The staging environment (`env.staging` in `wrangler.jsonc`) temporarily binds
   the **production** `hd-love` namespace because the Cloudflare dashboard hung
   when creating namespaces on setup day — staging love-clicks currently land on
-  the real counter. Pending, once namespaces can be created again:
-  1. Create `hd-love-staging` and point `env.staging`'s LOVE binding at it.
-  2. Create `hd-love-senders` (and `hd-love-senders-staging`) for the unique
-     senders counter — see the "track unique senders" item below. Note when
-     implementing: a second **key** inside the existing namespaces (as that
-     item sketches) would also work without new namespaces; decide then.
+  the real counter. Pending, once namespaces can be created again: create
+  `hd-love-staging` and point `env.staging`'s LOVE binding at it. (The senders
+  counter needed **no new namespace** — it shipped 2026-07-06 as a second key,
+  `love-senders`, inside the existing `hd-love`; see next item.)
 
-- **Love counter: track unique senders, not just clicks (requested
-  2026-07-03).** Besides the ever-growing click total, keep a second KV
-  counter of **how many distinct people** have ever sent love. Backend-first:
-  it's for the author's occasional consultation; surfacing it in the About
-  modal is optional but already has approved wording — "Amores recibidos:
-  1.234 (de N humanos queridos)". Cheap approximate implementation (no
-  accounts, no personal data): the client keeps a "this device already sent
-  love" flag in `localStorage` and includes `first: true` in the first
-  batched POST; the endpoint (`src/routes/api/love/+server.js`) then also
-  increments a `love-senders` KV key (clamped to +1 per request, same
-  junk-proofing as `n`). Counts devices/browsers rather than true humans
-  (clearing storage or switching devices re-counts) — fine for its purpose.
-  GET returns both keys, so the front can show it whenever wanted.
+- ✅ **Love counter: track unique senders — DONE 2026-07-06.** Implemented as
+  sketched, inside the **existing `hd-love` namespace** (second key
+  `love-senders`, no new namespace needed): the client keeps a "this device
+  already sent love" flag in `localStorage` (`hd:love-sent`) and includes
+  `first: true` in its first batched POST; the endpoint increments the
+  senders key (clamped to +1 per request, same junk-proofing as `n`) and GET
+  returns both keys. The About modal line now reads **"1.234 amores
+  recibidos de 56 queridos humanos."** (singular-aware; falls back to
+  "N amores recibidos." while senders is 0/unknown). Approximate by design:
+  counts devices/browsers, not true humans. Verified in-browser with a
+  stubbed API; **check against real KV after deploy.**
 
-- **Click a centre or gate in the bodygraph to open its drawer (requested
-  2026-07-02).** Tapping/clicking a centre shape or a gate marker in the bodygraph
-  should open the same info drawer that the summary chips open. **Channels
-  excluded** — several overlap in the graph, so a channel click target would be
-  ambiguous.
-
-- **Gate drawers: list the associated channel(s) and harmonic gate(s) at the end
-  (requested 2026-07-02).** At the bottom of each gate drawer add two rows —
-  "Canal asociado: [channel chip]" and "Puerta armónica (completa el canal):
-  [gate chip]". When the gate belongs to more than one channel, show them in the
-  plural with several chips each. (The harmonic gate — the one that completes the
-  channel — is already named in the gate text via `getGateInfo`; this surfaces it
-  as a tappable chip.)
+- ✅ **Gate drawers: list the associated channel(s) and harmonic gate(s) —
+  was ALREADY DONE** (jul 2026 text-audit batch): the schematic `facts`
+  block in every gate drawer lists Centro / Canal(es) / Puerta(s)
+  armónica(s) as tappable chips, plural-aware (`gateFacts` in
+  `content/index.js`), and centre drawers likewise list their channels and
+  gates (`centerFacts`). Stale backlog entry; closed on verification.
 
 - **Centre labels on the bodygraph (requested 2026-07-01).** Make the link between
   the **Centros** chips and the graph explicit: either render each centre's name
@@ -594,10 +617,17 @@ corrected).
   omitted.
 - **Mobile date field: allow typing the numbers.** Besides the calendar
   picker, some users find typing the digits more comfortable than
-  scrolling years in the calendar.
+  scrolling years in the calendar. **Deliberately deferred (2026-07-06
+  triage):** it means replacing/augmenting the native `type=date` input,
+  and that form's field sizing took several betatester rounds to get right
+  on real iOS — this wants its own careful pass, not a batch fix.
 - **Birth-place error messages placement.** Shown below the field they
   look cramped; consider showing them to the right of the "Lugar de
-  nacimiento" label instead.
+  nacimiento" label instead. **Deliberately deferred (2026-07-06 triage):
+  needs a design decision first** — the network-failure message ("No se
+  pudo buscar. Revisa tu conexión…") is far too long to sit beside the
+  label at 375px, so "to the right of the label" only works for the short
+  messages; decide the treatment for long ones before touching it.
 - ~~Unknown-hour slider should respect the current time~~ — done
   2026-06-13 (checking seeds the slider from the entered hour, rounded
   to the nearest half-hour; unchecking keeps the slider's hour).
@@ -609,10 +639,11 @@ corrected).
   2026-06-24. Photon's `osm_tag=place:city/town/village/hamlet/municipality`
   filter keeps only settlements server-side, so regions, counties and the
   duplicated-label admin boundaries no longer appear.
-- **Invalid-data error message mixes languages.** A chart with broken
-  stored data shows "Fecha/hora inválida:" followed by Luxon's raw
-  English message ("the zone … is not supported"). Nearly unreachable
-  for real users; low priority.
+- ✅ **Invalid-data error message mixes languages — DONE 2026-07-06.**
+  `chart.js` no longer appends Luxon's English `invalidExplanation`; the
+  message is all-Spanish and names the offending stored values ("Los datos
+  de nacimiento guardados no son válidos (fecha …, hora …, zona horaria
+  …).") — more useful in a bug report than Luxon's prose anyway.
 - ~~**Back arrow on the chart page (mobile).**~~ — done 2026-06-24. Replaced
   the off-centre "←" text glyph with a flex-centred 18px SVG arrow (matching
   the share/download buttons); verified dx=dy=0 at 375px.

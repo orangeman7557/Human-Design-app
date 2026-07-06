@@ -61,7 +61,12 @@ export async function computeChart(birth) {
     zone: birth.timezone
   });
   if (!localDt.isValid) {
-    throw new Error(`Fecha/hora inválida: ${localDt.invalidExplanation}`);
+    // All-Spanish message (Luxon's invalidExplanation is English prose): name
+    // the offending stored values, which is what a bug report needs anyway.
+    throw new Error(
+      `Los datos de nacimiento guardados no son válidos ` +
+        `(fecha "${birth.date}", hora "${birth.time}", zona horaria "${birth.timezone}").`
+    );
   }
   const utcDate = localDt.toUTC().toJSDate();
 

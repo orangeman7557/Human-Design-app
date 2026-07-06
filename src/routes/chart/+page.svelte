@@ -270,9 +270,12 @@
   // lives in the Centres list (not on the graph), so we don't surface one
   // across the screen — we just clear any stale reveal so a previous chip's
   // "i" can't linger over the newly pinned centre.
+  // Clicking a centre shape on the bodygraph pins its highlight AND opens its
+  // drawer (author request 2026-07-06; gate markers stay non-clickable for now).
   function onSvgCenterClick(e, c) {
     pin(e, { kind: 'center', center: c, gates: [] });
     if (isTouch()) { innerReveal = null; cardReveal = null; }
+    openInfoFor('Centro', 'center', c);
   }
 
   // Hanging gates: active gates that don't complete any channel.
@@ -1451,7 +1454,18 @@
 
   /* Export-only layout: the back button and action buttons are filtered
      out of the PNG clone, so while capturing the title and the birth
-     line are centred to keep the image header balanced. */
+     line are centred to keep the image header balanced.
+
+     The chrome must ALSO be hidden in the live DOM: html-to-image copies each
+     node's computed width into the clone, so .title-wrap measured with the
+     "Informe" button inside stayed too wide after the filter dropped the
+     button, shifting the title left of centre (bug found 2026-07-06). */
+  main.capturing .back,
+  main.capturing .report-btn,
+  main.capturing .actions,
+  main.capturing .img-actions {
+    display: none;
+  }
   main.capturing header {
     justify-content: center;
   }

@@ -5,24 +5,24 @@ Design charts. Free for any noncommercial use. See [License](#license).
 
 ## Status
 
-**MVP complete and live in production.** From birth date, time, and place the
-app computes a full Human Design chart and renders an interactive SVG
-bodygraph alongside a textual summary: type, strategy, authority, profile,
-definition, defined centres, complete channels, hanging gates, and the
-planetary activations table. It also supports saving charts locally
-(IndexedDB), JSON export/import, an "unknown birth time" mode, and sharing the
-chart as a PNG.
+**Launched — live at [hdchart.app](https://hdchart.app/) since 2026-07-03
+(1.0.0).** From birth date, time, and place the app computes a full Human
+Design chart and renders an interactive SVG bodygraph alongside a textual
+summary: type, strategy, authority, profile, definition, defined centres,
+complete channels, hanging gates, and the planetary activations table.
+Around that core: saving charts locally (IndexedDB), JSON export/import, an
+"unknown birth time" mode, sharing the chart as a PNG or as a **link**
+(birth data encoded in the URL, recomputed locally on arrival), per-element
+info drawers with an **AI handoff** (chart-personalised prompts for the
+user's own AI), and a plain-language **initial report** with PDF export.
 
-Development continues beyond the MVP: the AI handoff with per-element
-explanatory text (Phase 6) is built and in review, with a plain-language
-first-timer report (Phase 7) next. [`TASKS.md`](./TASKS.md) is the canonical,
-up-to-date project state; [`BACKLOG.md`](./BACKLOG.md) holds deferred
-decisions and known debt.
+The app is **installable** as a PWA (own icons, service worker,
+add-to-home-screen link) and works **offline** in basic mode: the shell and
+assets are cached and the calculation is fully local; only the city search
+(Photon) needs network. A Play Store build via TWA remains an option.
 
-The app ships a web manifest. Making it **installable** (add-to-home-screen,
-and eventually a Play Store build via TWA) is a planned goal — it still needs
-app icons and a minimal service worker. Full **offline** support is an
-optional, not-yet-committed extra. See [`BACKLOG.md`](./BACKLOG.md).
+[`TASKS.md`](./TASKS.md) is the canonical, up-to-date project state;
+[`BACKLOG.md`](./BACKLOG.md) holds deferred decisions and known debt.
 
 ## About authorship
 
@@ -111,13 +111,15 @@ merits.
 4. **Phase 3** — Visual polish (classic-faithful style).
 5. **Phase 4** — "Unknown birth time" handling.
 6. **Phase 5** — Share chart as a PNG. *(MVP closes here.)*
-7. **Phase 6** — AI handoff + per-element explanatory text *(built; pending
-   the author's text review)*.
-8. **Phase 7 (next)** — Initial report: a plain-language HD primer for
-   first-timers.
-9. **Phase 8 (planned)** — Composite chart.
-10. **Phase 9 (planned)** — Transits.
-11. **Phase 10 (planned)** — Optional online sync.
+7. **Phase 6** — AI handoff + per-element explanatory text.
+8. **Phase 7** — Initial report: a plain-language HD primer for
+   first-timers, with PDF export.
+9. **Phase L** — Launch: installability (PWA), SEO, custom domain
+   [hdchart.app](https://hdchart.app/), privacy policy, bug reporting.
+   *(1.0.0 shipped 2026-07-03.)*
+10. **Phase 8 (planned)** — Composite chart.
+11. **Phase 9 (planned)** — Transits.
+12. **Phase 10 (planned)** — Optional online sync.
 
 Live status in [`TASKS.md`](./TASKS.md); deferred decisions and known debt in
 [`BACKLOG.md`](./BACKLOG.md).
