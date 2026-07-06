@@ -11,14 +11,23 @@ const KEY = 'love-clicks';
 const SENDERS_KEY = 'love-senders';
 const MAX_PER_POST = 50;
 
-async function readCount(kv, key = KEY) {
+// Staging shares the production namespace but with its own keys: its worker
+// env sets LOVE_KEY_SUFFIX="-staging" (wrangler.jsonc), so staging clicks
+// never touch the real counters.
+function keys(platform) {
+  const suffix = platform?.env?.LOVE_KEY_SUFFIX || '';
+  return { key: KEY + suffix, sendersKey: SENDERS_KEY + suffix };
+}
+
+async function readCount(kv, key) {
   return Number(await kv.get(key)) || 0;
 }
 
 export async function GET({ platform }) {
   const kv = platform?.env?.LOVE;
   if (!kv) return json({ count: null, senders: null });
-  const [count, senders] = await Promise.all([readCount(kv), readCount(kv, SENDERS_KEY)]);
+  const { key, sendersKey } = keys(platform);
+  const [count, senders] = await Promise.all([readCount(kv, key), readCount(kv, sendersKey)]);
   return json({ count, senders });
 }
 
@@ -30,6 +39,7 @@ export async function GET({ platform }) {
 export async function POST({ request, platform }) {
   const kv = platform?.env?.LOVE;
   if (!kv) return json({ count: null, senders: null });
+  const { key, sendersKey } = keys(platform);
   let n = 0;
   let first = false;
   try {
@@ -39,14 +49,14 @@ export async function POST({ request, platform }) {
   } catch {
     n = 0;
   }
-  let senders = await readCount(kv, SENDERS_KEY);
-  if (!Number.isFinite(n) || n < 1) return json({ count: await readCount(kv), senders });
+  let senders = await readCount(kv, sendersKey);
+  if (!Number.isFinite(n) || n < 1) return json({ count: await readCount(kv, key), senders });
   if (n > MAX_PER_POST) n = MAX_PER_POST;
-  const count = (await readCount(kv)) + n;
-  await kv.put(KEY, String(count));
+  const count = (await readCount(kv, key)) + n;
+  await kv.put(key, String(count));
   if (first) {
     senders += 1;
-    await kv.put(SENDERS_KEY, String(senders));
+    await kv.put(sendersKey, String(senders));
   }
   return json({ count, senders });
 }

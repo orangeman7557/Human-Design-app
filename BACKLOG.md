@@ -365,8 +365,12 @@ corrected).
   - For the browser's "Install" prompt (and a quality TWA / Play build) a
     **minimal service worker** with a `fetch` handler is required — there is
     none today (verified: no service worker anywhere in the repo).
-  - Open decision: a dedicated "installability / packaging" phase, or fold it
-    into an existing later phase.
+  - ~~Open decision: a dedicated "installability / packaging" phase, or fold it
+    into an existing later phase.~~ Resolved: installability shipped with
+    Phase L (1.0.0); Google Play via TWA is now its own **Fase P** (decided
+    2026-07-06, after the multilingual Fase M). The Apple App Store is
+    deliberately deferred — the author won't pay the ~99 €/year developer fee
+    unless the app proves traction.
 
 ### Optional / potential
 
@@ -536,14 +540,16 @@ corrected).
   type chips. On mobile the selected (taller) type chip was vertically
   off-centre in its row — fixed with `align-items: center` on `.type-list`.
 
-- **KV namespaces: staging split (requested 2026-07-04; still pending).**
-  The staging environment (`env.staging` in `wrangler.jsonc`) temporarily binds
-  the **production** `hd-love` namespace because the Cloudflare dashboard hung
-  when creating namespaces on setup day — staging love-clicks currently land on
-  the real counter. Pending, once namespaces can be created again: create
-  `hd-love-staging` and point `env.staging`'s LOVE binding at it. (The senders
-  counter needed **no new namespace** — it shipped 2026-07-06 as a second key,
-  `love-senders`, inside the existing `hd-love`; see next item.)
+- ✅ **KV: staging counters split from production — DONE 2026-07-06 (via key
+  suffix, no new namespace).** Originally planned as a separate
+  `hd-love-staging` namespace (blocked: the dashboard hung when creating
+  namespaces). Resolved differently: `env.staging` in `wrangler.jsonc` sets
+  `LOVE_KEY_SUFFIX="-staging"`, and `/api/love` appends it to both keys — so
+  staging reads/writes `love-clicks-staging` / `love-senders-staging` inside
+  the **same** `hd-love` namespace and never touches the real counters.
+  Creating a separate namespace is no longer needed. Not verifiable locally
+  (no platform bindings in dev) — **check on staging.hdchart.app after
+  deploy** (its About counter should start from 0).
 
 - ✅ **Love counter: track unique senders — DONE 2026-07-06.** Implemented as
   sketched, inside the **existing `hd-love` namespace** (second key

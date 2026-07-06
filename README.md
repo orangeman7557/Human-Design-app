@@ -19,7 +19,7 @@ user's own AI), and a plain-language **initial report** with PDF export.
 The app is **installable** as a PWA (own icons, service worker,
 add-to-home-screen link) and works **offline** in basic mode: the shell and
 assets are cached and the calculation is fully local; only the city search
-(Photon) needs network. A Play Store build via TWA remains an option.
+(Photon) needs network. A Play Store build via TWA is planned (Phase P).
 
 [`TASKS.md`](./TASKS.md) is the canonical, up-to-date project state;
 [`BACKLOG.md`](./BACKLOG.md) holds deferred decisions and known debt.
@@ -117,9 +117,14 @@ merits.
 9. **Phase L** — Launch: installability (PWA), SEO, custom domain
    [hdchart.app](https://hdchart.app/), privacy policy, bug reporting.
    *(1.0.0 shipped 2026-07-03.)*
-10. **Phase 8 (planned)** — Composite chart.
-11. **Phase 9 (planned)** — Transits.
-12. **Phase 10 (planned)** — Optional online sync.
+10. **Phase M (next)** — Multilingual: i18n infrastructure with **English
+    first**; Spanish stays as the already-written second language.
+11. **Phase P (planned)** — Google Play distribution via TWA. The Apple App
+    Store is deliberately deferred (yearly developer fee; only if the app
+    proves traction).
+12. **Phase 8 (planned)** — Composite chart.
+13. **Phase 9 (planned)** — Transits.
+14. **Phase 10 (planned)** — Optional online sync.
 
 Live status in [`TASKS.md`](./TASKS.md); deferred decisions and known debt in
 [`BACKLOG.md`](./BACKLOG.md).
