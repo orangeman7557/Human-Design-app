@@ -268,7 +268,12 @@ Cookie Blocking and More", 2020.)
    long-lived, Path-scoped cookie (~4 KB ≈ 20-30 charts in share-link
    encoding). But birth data would transit the server, and `/privacy`
    explicitly promises "no cookies" — it contradicts the app's core stance
-   for a partial gain. Parked unless the author decides otherwise.
+   for a partial gain. → **ACCEPTED by the author 2026-07-07**: losing saved
+   charts after 7 days is not acceptable; implement the cookie vault
+   (Path-scoped, server stores nothing, auto-restore on load when the local
+   DB is empty) and update `/privacy` honestly. Mitigation copy must warn
+   that clearing cookies/site data also deletes the charts, and keep JSON
+   export as the manual backup.
 
 **Mitigation plan (direction approved by the author 2026-07-06; implementation
 pending):**
