@@ -46,6 +46,8 @@
   let inflight = null;
   /** @type {ReturnType<typeof setTimeout> | null} */
   let debounce = null;
+  /** @type {HTMLInputElement | undefined} */
+  let inputEl = $state();
 
   // Easter egg tied to the "Nuevayol" placeholder joke: typing it exactly offers
   // the two homes of the word — San Juan (where the Caribbean slang for New York
@@ -140,11 +142,24 @@
       focused = false;
     }, 120);
   }
+
+  // Clear button (shown while editing): wipe the field and any confirmed
+  // place, then keep focus so the user can type a fresh search.
+  function clear() {
+    query = '';
+    value = null;
+    results = [];
+    searchError = false;
+    activeIndex = -1;
+    if (inflight) inflight.abort();
+    inputEl?.focus();
+  }
 </script>
 
 <div class="autocomplete">
   <input
     type="text"
+    bind:this={inputEl}
     bind:value={query}
     use:selectOnFocus
     oninput={onInput}
@@ -161,7 +176,22 @@
     aria-activedescendant={activeIndex >= 0 ? `city-opt-${activeIndex}` : undefined}
   />
 
-  {#if value}
+  {#if focused && query.length > 0}
+    <!-- Clear button while editing: mousedown is swallowed so pressing it
+         doesn't blur the input before the click clears + refocuses. -->
+    <button
+      type="button"
+      class="clear-btn"
+      onmousedown={(e) => e.preventDefault()}
+      onclick={clear}
+      aria-label="Borrar lugar"
+    >
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+        <line x1="6" y1="6" x2="18" y2="18" />
+        <line x1="18" y1="6" x2="6" y2="18" />
+      </svg>
+    </button>
+  {:else if value}
     <svg
       class="ok-icon"
       width="16"
@@ -236,6 +266,29 @@
     top: 0.95rem;
     pointer-events: none;
     opacity: 0.85;
+  }
+  /* Clear button, in the same right-hand slot as the check. */
+  .clear-btn {
+    position: absolute;
+    right: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    padding: 0;
+    border: none;
+    background: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-radius: 50%;
+  }
+  .clear-btn:hover,
+  .clear-btn:focus-visible {
+    color: var(--text);
+    outline: none;
   }
   /* Absolutely positioned so the empty state doesn't add extra spacing
      between this field and the next one. */
