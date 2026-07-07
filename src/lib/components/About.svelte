@@ -6,6 +6,7 @@
 <script>
   import { fade, fly } from 'svelte/transition';
   import { focusTrap } from './focus-trap.js';
+  import { scrollLock } from './scroll-lock.js';
 
   /**
    * @type {{
@@ -31,20 +32,26 @@
   // No square-tile emojis here (e.g. 🌠 renders as a framed picture on Apple).
   const FLYERS = ['🌟', '⭐', '✨', '🌈', '🦄', '💫', '💖', '🎉'];
   const BASE_LABEL = '¡Mándame amor!';
-  const MORE_LABEL = '¡Mándame más amor!';
+  // "MÁS" in caps + bold (rendered via {@html}) to invite another tap.
+  const MORE_LABEL = '¡Mándame <strong>MÁS</strong> amor!';
   // Escalating thank-yous: one step every 4 clicks so each stays readable,
   // more over-the-top the deeper into the spree.
   const THANKS = [
-    '¡gracias! ❤️',
-    '¡lo recibo! 💛',
-    '¡qué gusto! 💖',
-    '¡¡cuánto cariño!! 💗💗',
-    '¡¡ole ole ole!! ❤️💛💜',
-    '¡¡¡voy a explotar!!! 💥💖💥'
+    '¡Gracias! ❤️',
+    '¡Lo recibo! 💛',
+    '¡Qué gusto! 💖',
+    '¡¡Cuánto cariño!! 💗💗',
+    '¡¡Olé, olé, olé!! ❤️💛💜',
+    '¡¡¡Voy a explotar!!! 💥💖💥'
   ];
 
   /** @type {number | null} global click count; null = unknown → line hidden */
   let loveCount = $state(null);
+  /** @type {number | null} distinct senders (approx., per device); null/0 hides the phrase tail */
+  let loveSenders = $state(null);
+  // "This device already sent love" flag — powers the approximate senders
+  // counter (first batched POST carries first: true).
+  const SENT_FLAG = 'hd:love-sent';
   let heartColor = $state('');
   let heartLabel = $state(BASE_LABEL);
   let clicks = 0;
@@ -68,6 +75,7 @@
       const res = await fetch('/api/love');
       const data = await res.json();
       if (typeof data.count === 'number') loveCount = data.count;
+      if (typeof data.senders === 'number') loveSenders = data.senders;
     } catch {
       // offline or counter not provisioned — the heart still works
     }
@@ -80,14 +88,28 @@
       const n = pending;
       pending = 0;
       if (n < 1) return;
+      let first = false;
+      try {
+        first = !localStorage.getItem(SENT_FLAG);
+      } catch {
+        // storage unavailable — just don't count this device
+      }
       try {
         const res = await fetch('/api/love', {
           method: 'POST',
           headers: { 'content-type': 'application/json' },
-          body: JSON.stringify({ n })
+          body: JSON.stringify(first ? { n, first } : { n })
         });
         const data = await res.json();
         if (typeof data.count === 'number' && data.count > (loveCount ?? 0)) loveCount = data.count;
+        if (typeof data.senders === 'number') loveSenders = data.senders;
+        if (first && data.count !== null) {
+          try {
+            localStorage.setItem(SENT_FLAG, '1');
+          } catch {
+            // ignore — worst case this device counts again another day
+          }
+        }
       } catch {
         // keep the optimistic local count
       }
@@ -286,7 +308,7 @@
 
 {#if open}
   <div class="scrim" onclick={() => (open = false)} role="presentation" transition:fade={{ duration: 120 }}></div>
-  <div class="modal" role="dialog" aria-modal="true" aria-label="Acerca de" use:focusTrap transition:fly={{ y: 12, duration: 180 }}>
+  <div class="modal" role="dialog" aria-modal="true" aria-label="Acerca de" use:focusTrap use:scrollLock transition:fly={{ y: 12, duration: 180 }}>
     <header>
       <h2>Acerca de</h2>
       <button class="close" type="button" onclick={() => (open = false)} aria-label="Cerrar">✕</button>
@@ -299,7 +321,7 @@
         ánimo de nada, la creé porque me dio la gana, como buen
         {#if onElement}<button type="button" class="tlink" onclick={() => openElement('type', 'manifestor')}>Manifestador</button>{:else}Manifestador{/if} que soy :)
       </p>
-      <p>Ojalá que te sea útil, ¡y que vivas bien y feliz con tu diseño, querido humano!</p>
+      <p>Ojalá que te sea útil, ¡y que vivas feliz con tu diseño, querido humano!</p>
     </div>
 
     <div class="support">
@@ -315,7 +337,7 @@
             />
           </svg>
         </span>
-        <span class="slabel">{heartLabel}</span>
+        <span class="slabel">{@html heartLabel}</span>
       </button>
 
       <a class="scard" href={COFFEE_URL} target="_blank" rel="noopener noreferrer">
@@ -332,8 +354,9 @@
 
     {#if loveCount !== null}
       <p class="lovecount">
-        Amores recibidos:
         <span class="num" bind:this={numEl} style:color={heartColor || null}>{loveCount.toLocaleString('es')}</span>
+        {(loveCount === 1 ? 'amor recibido' : 'amores recibidos') +
+          (loveSenders ? ` de ${loveSenders.toLocaleString('es')} ${loveSenders === 1 ? 'querido humano' : 'queridos humanos'}` : '')}.
       </p>
     {/if}
 
@@ -473,6 +496,12 @@
   .scard:hover {
     border-color: #3f3f46;
     color: var(--text);
+  }
+  /* "MÁS" in the love label: {@html} content isn't scoped, so target it
+     globally — bold + accent so it pops and invites another tap. */
+  .slabel :global(strong) {
+    font-weight: 700;
+    color: var(--accent);
   }
   .icon {
     display: inline-flex;

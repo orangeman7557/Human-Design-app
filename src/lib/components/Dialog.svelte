@@ -6,6 +6,7 @@
   import { fade, scale } from 'svelte/transition';
   import { dialog } from './dialog.svelte.js';
   import { focusTrap } from './focus-trap.js';
+  import { scrollLock } from './scroll-lock.js';
 
   let inputValue = $state('');
   /** @type {HTMLInputElement | null} */
@@ -80,6 +81,7 @@
       aria-modal="true"
       aria-label={a.title || a.message || 'Diálogo'}
       use:focusTrap
+      use:scrollLock
       transition:scale={{ duration: 130, start: 0.96, opacity: 0 }}
     >
       {#if a.title}<h2>{a.title}</h2>{/if}
@@ -130,6 +132,19 @@
     align-items: center;
     justify-content: center;
     padding: 1rem;
+  }
+  /* On phones the on-screen keyboard covers the lower half of the viewport, so
+     a centred prompt (save / rename / delete name) ends up hidden behind it.
+     Pin the dialog near the top instead and let the scrim scroll, so it stays
+     visible — and can be slid all the way up — while typing. */
+  @media (max-width: 560px) {
+    .scrim {
+      align-items: flex-start;
+      justify-content: center;
+      padding: 1.5rem 1rem;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
   }
   .dialog {
     z-index: 71;

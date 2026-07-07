@@ -7,6 +7,7 @@
   // Injected by Vite's `define` from package.json (see vite.config.js).
   const version = __APP_VERSION__;
   import CityAutocomplete from '$lib/components/CityAutocomplete.svelte';
+  import DateField from '$lib/components/DateField.svelte';
   import About from '$lib/components/About.svelte';
   import ReportBug from '$lib/components/ReportBug.svelte';
   import { install, promptInstall } from '$lib/pwa/install.svelte.js';
@@ -126,13 +127,21 @@
   // half-hour); unchecking leaves the slider's hour in the time field.
   let unknownTime = $state(false);
   let sliderVal = $state(24); // half-hours → 12:00
+  /** @type {HTMLInputElement | undefined} */
+  let timeEl = $state();
 
   // Reads the checkbox from the event: onchange fires before bind:checked
-  // has updated `unknownTime`.
+  // has updated `unknownTime`. The hour is read from the state AND from the
+  // live input as fallback: the browser's own form restoration (back/forward)
+  // can repopulate the field without input events, leaving `time` empty while
+  // the field visibly shows an hour (author repro, 2026-07-06). Single-digit
+  // hours and trailing seconds are tolerated.
   function seedSliderFromTime(e) {
     if (!e.currentTarget.checked) return;
-    const m = /^(\d{2}):(\d{2})$/.exec(time);
+    const raw = /^\d{1,2}:\d{2}/.test(time) ? time : timeEl?.value || '';
+    const m = /^(\d{1,2}):(\d{2})/.exec(raw);
     if (!m) return;
+    if (raw !== time) time = `${m[1].padStart(2, '0')}:${m[2]}`;
     sliderVal = Math.min(47, Number(m[1]) * 2 + Math.round(Number(m[2]) / 30));
   }
   /** @type {string | null} */
@@ -237,6 +246,13 @@
   function submit(e) {
     e.preventDefault();
     error = null;
+
+    // The DateField segments are `required` (empty blocks natively), but a
+    // filled-yet-impossible date (31/02) composes to '' — catch it here.
+    if (!date) {
+      error = 'Revisa la fecha de nacimiento: no es una fecha válida.';
+      return;
+    }
 
     if (!place) {
       error = 'Selecciona una ciudad de la lista de sugerencias.';
@@ -470,15 +486,18 @@
       <input type="text" bind:value={name} autocomplete="off" />
     </label>
 
-    <label>
-      <span>Fecha de nacimiento</span>
-      <span class="dtwrap">
-        <input type="date" bind:value={date} required />
-        <span class="dt-value" class:muted={!date} aria-hidden="true">
-          {date ? date.split('-').reverse().join('/') : 'dd/mm/aaaa'}
-        </span>
-      </span>
-    </label>
+    <!-- Own day/month/year entry (DateField) instead of the native date
+         input: Android's picker leads with a ~100-year scroll, and a birth
+         date is typed, not picked. -->
+    <div class="field">
+      <span class="field-head"><span>Fecha de nacimiento</span></span>
+      <!-- {#key}: same pattern as CityAutocomplete — half-typed segments
+           compose to the same '' as a cleared value, so clearing the form
+           remounts the field instead of trying to signal it. -->
+      {#key formEpoch}
+        <DateField bind:value={date} />
+      {/key}
+    </div>
 
     <label>
       <span>Lugar de nacimiento</span>
@@ -493,7 +512,7 @@
       </span>
       {#if !unknownTime}
         <span class="dtwrap">
-          <input type="time" bind:value={time} required aria-label="Hora local de nacimiento" />
+          <input type="time" bind:this={timeEl} bind:value={time} required aria-label="Hora local de nacimiento" />
           <span class="dt-value" class:muted={!time} aria-hidden="true">{time || '--:--'}</span>
         </span>
       {:else}

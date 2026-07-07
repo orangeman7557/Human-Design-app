@@ -6,6 +6,7 @@
 <script>
   import { fade, fly } from 'svelte/transition';
   import { focusTrap } from './focus-trap.js';
+  import { scrollLock } from './scroll-lock.js';
 
   /** @type {{ version?: string }} */
   let { version = '' } = $props();
@@ -103,7 +104,7 @@
 
 {#if open}
   <div class="scrim" onclick={close} role="presentation" transition:fade={{ duration: 120 }}></div>
-  <div class="modal" role="dialog" aria-modal="true" aria-label="Notificar un fallo o sugerencia" use:focusTrap transition:fly={{ y: 12, duration: 180 }}>
+  <div class="modal" role="dialog" aria-modal="true" aria-label="Notificar un fallo o sugerencia" use:focusTrap use:scrollLock transition:fly={{ y: 12, duration: 180 }}>
     <header>
       <h2>Notificar un fallo o enviar una sugerencia</h2>
       <button class="close" type="button" onclick={close} aria-label="Cerrar">✕</button>
@@ -222,6 +223,15 @@
     border-radius: 14px;
     padding: 1rem 1.3rem 1.3rem;
     text-align: left;
+  }
+  /* On phones the keyboard covers the lower half of the screen; pin the form
+     near the top so its fields stay visible while typing. */
+  @media (max-width: 560px) {
+    .modal {
+      top: 1.5rem;
+      transform: translateX(-50%);
+      max-height: calc(100vh - 3rem);
+    }
   }
   header {
     display: flex;

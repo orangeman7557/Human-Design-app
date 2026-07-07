@@ -6,6 +6,7 @@
 <script>
   import { fade, fly } from 'svelte/transition';
   import { focusTrap } from './focus-trap.js';
+  import { scrollLock } from './scroll-lock.js';
 
   let open = $state(false);
 
@@ -26,6 +27,7 @@
     aria-modal="true"
     aria-label="Cómo se guardan las cartas"
     use:focusTrap
+    use:scrollLock
     transition:fly={{ y: 12, duration: 180 }}
   >
     <header>

@@ -74,6 +74,21 @@ function makeLayout(doc) {
   const paintBg = () => {
     doc.setFillColor(...C.bg);
     doc.rect(0, 0, PAGE_W, PAGE_H, 'F');
+    // Discreet site attribution at the top of every page (sits above the
+    // content, which starts at MARGIN_TOP). Font/size/colour are document
+    // state that must be restored: paintBg also runs on mid-paragraph page
+    // breaks, and leaking the header style painted the rest of the paragraph
+    // gold at 8pt (bug found 2026-07-06).
+    const font = doc.getFont();
+    const size = doc.getFontSize();
+    const color = doc.getTextColor();
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(8);
+    doc.setTextColor(...C.accent);
+    doc.text('hdchart.app', PAGE_W / 2, 30, { align: 'center', charSpace: 0.8 });
+    doc.setFont(font.fontName, font.fontStyle);
+    doc.setFontSize(size);
+    doc.setTextColor(color);
   };
   const newPage = () => {
     doc.addPage();
@@ -150,13 +165,16 @@ function makeLayout(doc) {
 /** Place the cover image fit to the content box, preserving aspect; returns nothing. */
 function drawCover(doc, L, image) {
   if (!image?.dataUrl || !image.width || !image.height) return;
+  // Top-aligned just under the hdchart.app header (not vertically centred):
+  // a wide cover left a big empty band above the chart's name.
+  const coverTop = 44;
   const maxW = CONTENT_W;
-  const maxH = Y_MAX - MARGIN_TOP;
+  const maxH = Y_MAX - coverTop;
   const scale = Math.min(maxW / image.width, maxH / image.height);
   const w = image.width * scale;
   const h = image.height * scale;
   const x = MARGIN_X + (maxW - w) / 2;
-  const yTop = MARGIN_TOP + Math.max(0, (maxH - h) / 2);
+  const yTop = coverTop;
   doc.addImage(image.dataUrl, 'PNG', x, yTop, w, h, undefined, 'FAST');
   // Subtle frame so the dark image reads as a contained figure.
   doc.setDrawColor(...C.border);
@@ -247,6 +265,19 @@ export async function buildReportPdf({ image = null, sections = [] }) {
     for (const p of s.paragraphs ?? []) {
       if (typeof p === 'string') {
         L.richText(parseRuns(p), { size: 10.5, color: C.body, lineHeight: 15.5 });
+        L.gap(3);
+      } else if (p && p.bullets) {
+        // Bulleted list (the five types in "Tu tipo") — the overlay renders it
+        // as <ul>; here each bullet is an indented paragraph with a gold dot.
+        for (const b of p.bullets) {
+          L.ensure(15.5);
+          doc.setFont('helvetica', 'normal');
+          doc.setFontSize(10.5);
+          doc.setTextColor(...C.accent);
+          doc.text('•', MARGIN_X + 4, L.y);
+          L.richText(parseRuns(b), { size: 10.5, color: C.body, lineHeight: 15.5, x: MARGIN_X + 16, maxW: CONTENT_W - 16 });
+          L.gap(2);
+        }
         L.gap(3);
       } else if (p && p.subhead) {
         L.gap(6);

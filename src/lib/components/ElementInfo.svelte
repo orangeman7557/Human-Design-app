@@ -23,6 +23,7 @@
   } from '$lib/ai/handoff.js';
   import { renderInline } from '$lib/markup.js';
   import { focusTrap } from './focus-trap.js';
+  import { scrollLock } from './scroll-lock.js';
 
   /**
    * @type {{
@@ -215,6 +216,7 @@
     aria-modal="true"
     aria-label={info.title}
     use:focusTrap
+    use:scrollLock
     transition:fly={{ x: wide ? 460 : 0, y: wide ? 0 : 60, duration: 240, opacity: 1 }}
   >
     <div class="grabber" aria-hidden="true"></div>

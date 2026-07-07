@@ -270,9 +270,12 @@
   // lives in the Centres list (not on the graph), so we don't surface one
   // across the screen — we just clear any stale reveal so a previous chip's
   // "i" can't linger over the newly pinned centre.
+  // Clicking a centre shape on the bodygraph pins its highlight AND opens its
+  // drawer (author request 2026-07-06; gate markers stay non-clickable for now).
   function onSvgCenterClick(e, c) {
     pin(e, { kind: 'center', center: c, gates: [] });
     if (isTouch()) { innerReveal = null; cardReveal = null; }
+    openInfoFor('Centro', 'center', c);
   }
 
   // Hanging gates: active gates that don't complete any channel.
@@ -543,10 +546,7 @@
   let linkCopied = $state(false);
   /** @type {ReturnType<typeof setTimeout> | undefined} */
   let copiedTimer;
-  async function shareLink() {
-    if (!birthData) return;
-    shareError = null;
-    const url = buildShareUrl($state.snapshot(birthData), location.origin);
+  async function doShareUrl(url) {
     try {
       if (navigator.share) {
         await navigator.share({ title: 'Carta de Human Design', url });
@@ -563,6 +563,17 @@
         shareError = `No se pudo compartir el enlace: ${e instanceof Error ? e.message : String(e)}`;
       }
     }
+  }
+  async function shareLink() {
+    if (!birthData) return;
+    shareError = null;
+    await doShareUrl(buildShareUrl($state.snapshot(birthData), location.origin));
+  }
+  // Same link, but with `r=1` so the recipient lands with the report open.
+  async function shareReportLink() {
+    if (!birthData) return;
+    shareError = null;
+    await doShareUrl(buildShareUrl($state.snapshot(birthData), location.origin) + '&r=1');
   }
 
   async function download() {
@@ -712,6 +723,9 @@
       }
       birthData = birth;
       chart = await computeChart(birth);
+      // A shared "report" link (…&r=1) asks us to land with the initial report
+      // already open.
+      if (params.get('r') === '1') reportOpen = true;
       // A link elsewhere (e.g. the "Manifestor" word in the About modal on the
       // home page) can ask us to open an element drawer on arrival.
       const openInfo = sessionStorage.getItem('hd:openInfo');
@@ -789,6 +803,9 @@
 <!-- While sharing, .capturing applies the export-only layout (centred
      title and birth line) that the PNG clone picks up. -->
 <main bind:this={captureEl} class:capturing={sharing} class:pdf-shot={pdfShot}>
+  <!-- Export-only brand line: shows in the shared/downloaded PNG (not the PDF
+       cover, which gets a native header in report-pdf.js). -->
+  <div class="export-brand" aria-hidden="true">hdchart.app</div>
   <header
     bind:this={headerEl}
     class:hdr-full={hdrMode === 'full'}
@@ -1262,6 +1279,7 @@
   {chart}
   onnavigate={(kind, key) => openInfoFor(CATEGORY_BY_KIND[kind] ?? '', kind, key)}
   ondownloadpdf={downloadReportPdf}
+  onshare={shareReportLink}
   onclose={() => (reportOpen = false)}
 />
 
@@ -1419,9 +1437,35 @@
     margin: -0.15rem 0 1.5rem 3.25rem;
   }
 
+  /* Discreet site attribution, shown only in the downloaded PNG (the PDF cover
+     is captured with .pdf-shot and gets its own native header instead). */
+  .export-brand {
+    display: none;
+  }
+  main.capturing:not(.pdf-shot) .export-brand {
+    display: block;
+    text-align: center;
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    margin-bottom: 0.6rem;
+  }
+
   /* Export-only layout: the back button and action buttons are filtered
      out of the PNG clone, so while capturing the title and the birth
-     line are centred to keep the image header balanced. */
+     line are centred to keep the image header balanced.
+
+     The chrome must ALSO be hidden in the live DOM: html-to-image copies each
+     node's computed width into the clone, so .title-wrap measured with the
+     "Informe" button inside stayed too wide after the filter dropped the
+     button, shifting the title left of centre (bug found 2026-07-06). */
+  main.capturing .back,
+  main.capturing .report-btn,
+  main.capturing .actions,
+  main.capturing .img-actions {
+    display: none;
+  }
   main.capturing header {
     justify-content: center;
   }

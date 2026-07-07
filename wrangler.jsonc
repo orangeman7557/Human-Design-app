@@ -33,9 +33,12 @@
       "routes": [
         { "pattern": "staging.hdchart.app", "custom_domain": true }
       ],
-      // TEMPORARY: shares the production hd-love namespace (staging clicks
-      // land on the real counter). Switch to hd-love-staging once the
-      // namespace can be created — see BACKLOG "KV namespaces" note.
+      // Shares the production hd-love namespace, but with its own keys:
+      // KEY_SUFFIX makes /api/love read/write love-clicks-staging and
+      // love-senders-staging, so staging never touches the real counters
+      // (2026-07-06; replaces the old plan of a separate namespace, whose
+      // creation hung in the dashboard).
+      "vars": { "LOVE_KEY_SUFFIX": "-staging" },
       "kv_namespaces": [
         { "binding": "LOVE", "id": "93a9c82535d44143bd16b10147ddde29" }
       ]
