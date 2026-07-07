@@ -623,8 +623,7 @@
 
     <div class="saved-foot">
       <div class="local-note">
-        <p>Las cartas se guardan solo en este dispositivo.</p>
-        <p>Con copia de seguridad automática en este navegador. <StorageInfo /></p>
+        <p>Las cartas se guardan en este dispositivo. <StorageInfo /></p>
       </div>
       <div class="io">
         <button

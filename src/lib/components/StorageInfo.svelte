@@ -41,6 +41,10 @@
         del navegador. No hay cuentas ni nube: nadie más puede verlas.
       </p>
       <p>
+        Para tener una copia manual, o para llevar las cartas a otro navegador o
+        dispositivo, usa los botones de exportar e importar junto a esta nota.
+      </p>
+      <p>
         Algunos navegadores limpian ese almacenamiento de vez en cuando — Safari
         en iPhone y iPad, por ejemplo, borra los datos de las webs que llevan
         unos días sin visitarse. Para que eso no se lleve las cartas, la app
@@ -52,15 +56,6 @@
       <p>
         Lo que sí las borra del todo: <strong>limpiar las cookies o los datos de
         este sitio</strong> en el navegador (desaparecen las cartas y su copia).
-      </p>
-      <p>
-        Para una copia manual, o para pasar las cartas a otro navegador o
-        dispositivo, usa los botones de exportar e importar junto a esta nota.
-      </p>
-      <p>
-        En iPhone y iPad, instalar la app en la pantalla de inicio también
-        protege los datos. Eso sí: la app instalada guarda sus propias cartas,
-        separadas de las del navegador — pásalas con exportar/importar.
       </p>
     </div>
   </div>
