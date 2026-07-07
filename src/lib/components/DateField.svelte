@@ -180,10 +180,13 @@
   }
   /* Segments size to their content (2 or 4 digits) instead of stretching, so
      the date reads as one compact "13 / 03 / 1984": left-aligned on desktop,
-     centred on mobile like the rest of the form. */
+     centred on mobile like the rest of the form. Widths carry a little slack
+     beyond the digits so the "dd"/"mm" placeholders (whose letters are wider
+     than the digits) fit; the year box slack is matched to the short boxes so
+     the gap after each "/" is even. */
   .seg {
     flex: none;
-    width: 2.6ch;
+    width: 3.4ch;
     height: 100%;
     background: none;
     border: none;
@@ -203,7 +206,7 @@
     opacity: 0.7;
   }
   .seg.year {
-    width: 4.6ch;
+    width: 4.1ch;
   }
   .sep {
     color: var(--text-muted);
