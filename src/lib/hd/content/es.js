@@ -661,7 +661,7 @@ export default {
     // personalised section.
     leadIn: {
       strategy: 'Tu estrategia es tu forma natural e ideal de actuar y comprometerte con las cosas sin forzarlas.',
-      authority: 'Tu autoridad es tu manera correcta de tomar decisiones en la vida, de acuerdo con tu diseño y no contra él. Si la estrategia te dice *cómo y cuándo actuar*, **la autoridad te dice** *cómo y cuándo decidir* cada sí y cada no. La mente sirve para informarte, navegar las decisiones tomadas y aconsejar a otros, pero **la mente no es de fiar para decidir** sobre tu propia vida: las decisiones deben tomarse desde una fuente más corporal y fiable. Esto es la *autoridad*.',
+      authority: 'Tu autoridad es tu manera correcta de tomar decisiones en la vida, de acuerdo con tu diseño y no contra él. Si la estrategia te dice *cómo y cuándo actuar*, **la autoridad te dice cómo y cuándo decidir** cada sí y cada no. La mente sirve para informarte, navegar las decisiones tomadas y aconsejar a otros, pero **la mente no es de fiar para decidir** sobre tu propia vida: las decisiones deben tomarse desde una fuente más corporal y fiable. Esto es la *autoridad*.',
       definition: 'La definición describe cómo se agrupan entre sí tus centros definidos: si forman un solo bloque o varios grupos separados.',
       practice: 'Si te tuvieras que quedar con una sola cosa de todo Human Design, que sea esta: **vivir tu diseño es, sobre todo, entrar en acción según [tu estrategia](section:strategy) y decidir desde [tu autoridad](section:authority)**. Lo demás matiza y afina; pero estas dos cosas son lo que de verdad cambia el día a día de tu vida.',
       centers: 'Los nueve centros en tu carta:'
