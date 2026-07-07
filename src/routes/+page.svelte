@@ -131,19 +131,24 @@
   /** @type {HTMLInputElement | undefined} */
   let timeEl = $state();
 
-  // Reads the checkbox from the event: onchange fires before bind:checked
-  // has updated `unknownTime`. The hour is read from the state AND from the
-  // live input as fallback: the browser's own form restoration (back/forward)
-  // can repopulate the field without input events, leaving `time` empty while
-  // the field visibly shows an hour (author repro, 2026-07-06). Single-digit
-  // hours and trailing seconds are tolerated.
-  function seedSliderFromTime(e) {
-    if (!e.currentTarget.checked) return;
-    const raw = /^\d{1,2}:\d{2}/.test(time) ? time : timeEl?.value || '';
-    const m = /^(\d{1,2}):(\d{2})/.exec(raw);
-    if (!m) return;
-    if (raw !== time) time = `${m[1].padStart(2, '0')}:${m[2]}`;
-    sliderVal = Math.min(47, Number(m[1]) * 2 + Math.round(Number(m[2]) / 30));
+  // Toggling "unknown time": when checking the box, seed the slider from the
+  // hour already entered (nearest half-hour) BEFORE flipping `unknownTime` —
+  // the `time = sliderTime` sync effect below runs the instant `unknownTime`
+  // becomes true and would otherwise clobber the entered hour with the
+  // slider's default (12:00). `unknownTime` is set manually (not `bind:checked`)
+  // so the seed is guaranteed to run first. The hour is read from the state
+  // AND from the live input as fallback: the browser's own form restoration
+  // (back/forward) can repopulate the field without input events, leaving
+  // `time` empty while the field visibly shows an hour (author repro,
+  // 2026-07-06). Single-digit hours and trailing seconds are tolerated.
+  function toggleUnknownTime(e) {
+    const checked = e.currentTarget.checked;
+    if (checked) {
+      const raw = /^\d{1,2}:\d{2}/.test(time) ? time : timeEl?.value || '';
+      const m = /^(\d{1,2}):(\d{2})/.exec(raw);
+      if (m) sliderVal = Math.min(47, Number(m[1]) * 2 + Math.round(Number(m[2]) / 30));
+    }
+    unknownTime = checked;
   }
   /** @type {string | null} */
   let previewType = $state(null);
@@ -561,7 +566,7 @@
         </div>
       {/if}
       <label class="check">
-        <input type="checkbox" bind:checked={unknownTime} onchange={seedSliderFromTime} />
+        <input type="checkbox" checked={unknownTime} onchange={toggleUnknownTime} />
         Hora desconocida
       </label>
     </div>

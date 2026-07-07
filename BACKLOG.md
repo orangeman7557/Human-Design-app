@@ -100,16 +100,21 @@ Triaged / fixed in the 2026-07-06 cleanup batch:
   was vertically centred in the page, leaving a large empty band above the
   chart name on page 1 whenever the cover was width-constrained. It now
   sits top-aligned at 44pt, just under the `hdchart.app` page header.
-- ✅ **Unknown-time checkbox resets the slider to 12:00 — FIXED 2026-07-06.**
-  The normal path already seeded correctly (verified: back-from-chart →
-  09:00 → slider 18). The remaining hole: the browser's own form restoration
-  (back/forward) can repopulate the time *field* without input events,
-  leaving the `time` state empty while the field visibly shows an hour —
-  then checking the box found no state to seed from and left 12:00.
-  `seedSliderFromTime` now falls back to the live input's value (and
-  tolerates single-digit hours / trailing seconds), normalising it back into
-  the state. Both paths verified in-browser (state 09:00 → 18; stale-state
-  field 21:30 → 43).
+- ✅ **Unknown-time checkbox resets the slider to 12:00 — FIXED 2026-07-07.**
+  The 2026-07-06 pass only closed a secondary hole (browser back/forward form
+  restoration repopulating the time *field* without input events, leaving the
+  `time` state empty — the seed now falls back to the live input's value and
+  tolerates single-digit hours / trailing seconds). The **primary case was
+  still broken** (author repro 2026-07-07: enter 09:30, check the box → 12:00).
+  Root cause found with in-browser logs: the `$effect(() => { if (unknownTime)
+  time = sliderTime })` overwrites `time` with the slider's default (12:00) the
+  instant `unknownTime` becomes true, and with `bind:checked` that effect ran
+  *before* the `onchange` seed, so the seed read "12:00". Fix: the checkbox is
+  now `checked={unknownTime}` + a manual `toggleUnknownTime` handler that seeds
+  `sliderVal` from the entered hour BEFORE flipping `unknownTime`, so the sync
+  effect finds `sliderTime` already pointing at the seeded hour. Verified
+  in-browser: 09:30→09:30 (exact), 09:10→09:00, 09:20→09:30, 14:45→15:00,
+  23:59→23:30 (no 24h overflow).
 - ✅ **"instalar como app" inconsistent between home and chart (author,
   2026-07-03) — FIXED 2026-07-03.** Root cause: the chart page simply never
   rendered the footer install link — `install.mode` carries across SPA
