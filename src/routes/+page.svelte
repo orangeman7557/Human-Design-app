@@ -19,8 +19,10 @@
     exportCharts,
     importCharts,
     reorderCharts,
-    setChartType
+    setChartType,
+    ensureBackupRestored
   } from '$lib/db/charts.js';
+  import StorageInfo from '$lib/components/StorageInfo.svelte';
   import { computeChart } from '$lib/hd/chart.js';
 
   // ── SEO (Phase L, step 2) ─────────────────────────────────────────────
@@ -296,6 +298,9 @@
 
   async function refreshList() {
     try {
+      // If the browser purged the local DB, the cookie-vault restore must
+      // land before listing (charts.js) — a no-op after the first await.
+      await ensureBackupRestored();
       savedCharts = await listCharts();
       backfillTypes();
     } catch (e) {
@@ -598,7 +603,10 @@
     {/if}
 
     <div class="saved-foot">
-      <p class="local-note">Las cartas se guardan solo en este dispositivo.</p>
+      <div class="local-note">
+        <p>Las cartas se guardan solo en este dispositivo.</p>
+        <p>Con copia de seguridad automática en este navegador. <StorageInfo /></p>
+      </div>
       <div class="io">
         <button
           class="io-btn"
@@ -1044,9 +1052,13 @@
     margin-top: 0.9rem;
   }
   .local-note {
-    color: var(--text-muted);
+    /* Dim colour instead of opacity: the StorageInfo modal renders inside
+       this container, and opacity would bleed into the whole subtree. */
+    color: #6f6f76;
     font-size: 0.75rem;
-    opacity: 0.65;
+    margin: 0;
+  }
+  .local-note p {
     margin: 0;
   }
   .saved-head {

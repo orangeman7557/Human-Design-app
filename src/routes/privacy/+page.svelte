@@ -43,9 +43,19 @@
       astronómico ocurre en tu propio dispositivo.
     </p>
     <p>
+      Para que una limpieza automática del navegador no borre tus cartas
+      guardadas (algunos navegadores, como Safari en iPhone o iPad, vacían el
+      almacenamiento de las webs que llevan días sin visitarse), la app guarda
+      además una copia de seguridad de esas cartas en una
+      <strong>cookie técnica propia</strong>. Esa cookie vive también en tu
+      navegador, contiene únicamente los datos de tus cartas guardadas y no se
+      usa para identificarte ni para seguirte.
+    </p>
+    <p>
       Puedes borrarlos cuando quieras: elimina cada carta guardada desde la
-      propia app, o borra los datos del sitio en los ajustes de tu navegador. Al
-      hacerlo desaparecen por completo.
+      propia app, o borra los datos del sitio (incluidas las cookies) en los
+      ajustes de tu navegador. Al hacerlo desaparecen por completo, copia de
+      seguridad incluida.
     </p>
   </section>
 
@@ -72,6 +82,14 @@
         con un texto de tu carta ya preparado. A partir de ahí tus datos se
         rigen por la política de privacidad de ese servicio, no por esta.
       </li>
+      <li>
+        <strong>Copia de seguridad de tus cartas.</strong> Al crearse o
+        restaurarse la copia descrita arriba, tus cartas guardadas viajan
+        cifradas hasta nuestro servidor, que las devuelve convertidas en la
+        cookie y <strong>no las almacena</strong>: no hay ninguna base de datos
+        ni registro de tus cartas en el servidor. Fuera de esos dos momentos,
+        la cookie con tus cartas no se envía al navegar por la app.
+      </li>
     </ul>
   </section>
 
@@ -88,7 +106,8 @@
   <section>
     <h2>Lo que no hacemos</h2>
     <p>
-      No usamos cookies de seguimiento, ni analítica, ni publicidad. No hay
+      No usamos cookies de seguimiento, ni analítica, ni publicidad — la única
+      cookie de la app es la copia de seguridad técnica descrita arriba. No hay
       cuentas de usuario. No vendemos ni cedemos tus datos a terceros.
     </p>
   </section>
@@ -107,7 +126,7 @@
     <p class="resp">Responsable: Javi G.O., autor de la app.</p>
   </section>
 
-  <p class="updated">Última actualización: 3 de julio de 2026.</p>
+  <p class="updated">Última actualización: 7 de julio de 2026.</p>
 
   <footer>
     <a class="foot-link" href="/">inicio</a>

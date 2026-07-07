@@ -1,4 +1,5 @@
-// Local persistence for saved charts (Phase 2; sortOrder + type in 3.E).
+// Local persistence for saved charts (Phase 2; sortOrder + type in 3.E;
+// cookie-vault backup 2026-07-07).
 //
 // Stores only the birth input data, not the computed chart: the chart is
 // recomputed on load, so stored records stay valid if the calculation
@@ -7,6 +8,7 @@
 // backfilled lazily by the home page. IndexedDB via Dexie, all client-side.
 
 import Dexie from 'dexie';
+import { encodeCharts, decodeCharts, backupMarkerPresent } from './backup.js';
 
 const db = new Dexie('human-design-charts');
 
@@ -37,6 +39,83 @@ db.version(2)
  * @property {string} [type] HD type id, e.g. 'generator'
  */
 
+// --- Cookie-vault backup (2026-07-07) ---
+// WebKit's ITP wipes IndexedDB & friends after ~7 days of Safari use without
+// visiting the site, so the saved list is mirrored into first-party cookies
+// via /api/backup (server-set cookies survive the purge; the server stores
+// nothing). Every mutation schedules a debounced sync; restore runs once per
+// app load when the local DB turns up empty but the marker cookie says a
+// backup exists — after a purge the charts just come back.
+
+let syncTimer;
+let persistRequested = false;
+/** @type {Promise<boolean> | null} */
+let restorePromise = null;
+
+/**
+ * Boot-time check, kicked from the layout (and awaited by the home before
+ * listing): repopulate an empty local DB from the cookie vault, or seed the
+ * vault for pre-vault users who already have local charts but no backup yet.
+ * Singleton — safe to call from anywhere, runs at most once per load.
+ * @returns {Promise<boolean>} true when charts were restored
+ */
+export function ensureBackupRestored() {
+  if (!restorePromise) {
+    restorePromise = (async () => {
+      try {
+        if (typeof document === 'undefined') return false;
+        const marker = backupMarkerPresent();
+        if ((await db.charts.count()) > 0) {
+          if (!marker) scheduleBackupSync();
+          return false;
+        }
+        if (!marker) return false;
+        const res = await fetch('/api/backup');
+        if (!res.ok) return false;
+        const { payload } = await res.json();
+        if (!payload) return false;
+        const records = await decodeCharts(payload);
+        if (!records.length) return false;
+        await db.charts.bulkAdd(records);
+        return true;
+      } catch {
+        // offline or corrupt payload — leave local data alone
+        return false;
+      }
+    })();
+  }
+  return restorePromise;
+}
+
+function scheduleBackupSync() {
+  if (typeof fetch === 'undefined') return;
+  clearTimeout(syncTimer);
+  syncTimer = setTimeout(runBackupSync, 800);
+}
+
+async function runBackupSync() {
+  try {
+    // Never overwrite a fuller backup from a not-yet-restored empty DB
+    // (e.g. purged storage + landing straight on a share link and saving).
+    await ensureBackupRestored();
+    const charts = await db.charts.orderBy('sortOrder').toArray();
+    if (charts.length && !persistRequested) {
+      persistRequested = true;
+      // Best-effort hardening against storage-pressure eviction (it does not
+      // exempt from the ITP purge — that's what the vault is for).
+      navigator.storage?.persist?.()?.catch(() => {});
+    }
+    const payload = charts.length ? await encodeCharts(charts) : '';
+    await fetch('/api/backup', {
+      method: 'POST',
+      headers: { 'content-type': 'text/plain' },
+      body: payload
+    });
+  } catch {
+    // best-effort: the backup stays stale until the next mutation or load
+  }
+}
+
 /**
  * @param {string} name
  * @param {Object} birth
@@ -44,13 +123,15 @@ db.version(2)
  * @returns {Promise<number>} new id
  */
 export async function saveChart(name, birth, type) {
-  return db.charts.add({
+  const id = await db.charts.add({
     name,
     createdAt: new Date().toISOString(),
     sortOrder: Date.now(),
     birth,
     type
   });
+  scheduleBackupSync();
+  return id;
 }
 
 /** @returns {Promise<SavedChart[]>} in user-defined order */
@@ -61,11 +142,13 @@ export async function listCharts() {
 /** @param {number} id @param {string} name */
 export async function renameChart(id, name) {
   await db.charts.update(id, { name });
+  scheduleBackupSync();
 }
 
 /** Backfill the denormalised type of an existing record. */
 export async function setChartType(id, type) {
   await db.charts.update(id, { type });
+  scheduleBackupSync();
 }
 
 /** Persist a new list order. @param {number[]} ids in display order */
@@ -75,11 +158,13 @@ export async function reorderCharts(ids) {
       await db.charts.update(ids[i], { sortOrder: i });
     }
   });
+  scheduleBackupSync();
 }
 
 /** @param {number} id */
 export async function deleteChart(id) {
   await db.charts.delete(id);
+  scheduleBackupSync();
 }
 
 /** Serialize all saved charts to a JSON string for download. */
@@ -135,5 +220,6 @@ export async function importCharts(json) {
     });
     imported++;
   }
+  if (imported) scheduleBackupSync();
   return { imported, duplicates, invalid };
 }

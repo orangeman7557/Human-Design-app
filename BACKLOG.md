@@ -211,8 +211,10 @@ incarnation cross). Items registered below in suggested priority order.
   hdchart.app without knowing the system sees only a form and no reason to
   type their birth data. A discreet link/drawer on the home reusing existing
   concept content (also feeds the prerendered home's SEO).
-- 🟡 **4. iOS local-data loss (CRITICAL — active).** See the dedicated
-  section below: "iOS storage eviction — investigation + mitigation plan".
+- ✅ **4. iOS local-data loss (CRITICAL) — RESOLVED 2026-07-07.** Cookie
+  vault + silent restore shipped; see the dedicated section below ("iOS
+  storage eviction — investigation + mitigation plan"). Real-iPhone check
+  pending after deploy.
 - ⬜ **5. "Puerta del día" (gate of the day).** The cheap 80/20 of Phase 9:
   today's Sun gate + line, with the essence text and drawer the app already
   has (the ephemeris already computes longitudes; it's one extra call for
@@ -275,27 +277,36 @@ Cookie Blocking and More", 2020.)
    that clearing cookies/site data also deletes the charts, and keep JSON
    export as the manual backup.
 
-**Mitigation plan (direction approved by the author 2026-07-06; implementation
-pending):**
+**Mitigation plan — IMPLEMENTED 2026-07-07 (cookie vault as the primary fix;
+full detail in TASKS):**
 
-- ⬜ **(a) One-per-session save notice on iOS, browser context only.** After
-  saving a chart on iOS in the browser (not when running installed), show a
-  notice: the browser can wipe locally saved charts after ~7 days without
-  visits — install the app to keep them safe (CTA reusing the existing iOS
-  instructions dialog: share menu → "Añadir a pantalla de inicio") and/or
-  export a backup. Must account for the storage-isolation caveat (charts
-  saved in the browser don't appear in the installed app — export/import or
-  re-save there).
-- ⬜ **(b) Storage explainer under "las cartas se guardan solo en este
-  dispositivo."** A second line + a "saber más" affordance opening a modal
-  that explains: local-only storage, clearing browser data wipes the charts,
-  the iOS ~7-day eviction, export/import as backup, and install-as-app as the
-  safe mode.
-- ⬜ **(c) `navigator.storage.persist()` on first save** (ignore/log the
-  result; mainly benefits Android/Chromium, harmless elsewhere).
-- ⬜ **(d) Export nudge.** When the saved list has charts and the context is
-  iOS-in-browser, a discreet reminder to export a copy (frequency TBD — e.g.
-  once per session or when N charts and no recent export).
+- ✅ **Cookie vault + silent restore (the fix, 2026-07-07).**
+  `lib/db/backup.js` (deflate+base64url wire format) + `/api/backup`
+  (`hdb1..hdb3` HttpOnly data cookies path-scoped to the endpoint so charts
+  never travel with normal navigation; tiny `hdb` marker on `/`; 400-day
+  Max-Age refreshed on every sync; empty POST clears; server stores nothing).
+  Every chart mutation schedules a debounced sync; `ensureBackupRestored()`
+  (kicked from the layout at boot) repopulates an empty DB from the vault and
+  seeds the backup for pre-vault users. Capacity ≈ 3 cookies (~11 KB
+  compressed, comfortably >100 charts); beyond that the POST answers 413 and
+  the backup just goes stale (console warning only).
+- ✅ **(b) Storage explainer — DONE 2026-07-07.** Second line under "las
+  cartas se guardan solo en este dispositivo." + "saber más" modal
+  (`StorageInfo.svelte`): local storage, the technical cookie + auto-restore,
+  clearing cookies/site data deletes charts and copy, export/import as manual
+  backup, install-as-app on iOS with the isolation caveat.
+- ✅ **(c) `navigator.storage.persist()` on first save — DONE 2026-07-07.**
+- ✖ **(a) One-per-session iOS save notice — DROPPED 2026-07-07 (author).**
+  The silent restore makes a recurring warning noise; install promotion
+  lives in the modal and the existing footer link.
+- ✖ **(d) Export nudge — folded into the modal (2026-07-07).** No periodic
+  nudge for now; the modal points at export/import.
+- `/privacy` updated the same day: the app now sets exactly one first-party
+  technical cookie; charts transit the server only on backup/restore and are
+  never stored there.
+- ⬜ **Post-deploy check on a real iPhone:** Secure cookie set on
+  hdchart.app, marker visible, restore after clearing website data (keep
+  cookies) — and the staging banner flow.
 
 ## Audit 2026-07-03 — full-app audit (triaged with the author)
 

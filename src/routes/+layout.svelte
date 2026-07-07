@@ -1,13 +1,22 @@
 <script>
   import '../app.css';
+  import { onMount } from 'svelte';
   import { browser } from '$app/environment';
   import Dialog from '$lib/components/Dialog.svelte';
+  import { ensureBackupRestored } from '$lib/db/charts.js';
   let { children } = $props();
 
   // Environment badge driven by the hostname at runtime, not by a build flag:
   // the same code ships everywhere and only lights up on staging hosts
   // (staging.hdchart.app or the *-staging.workers.dev fallback URL).
   const staging = browser && /^staging\.|-staging\./.test(location.hostname);
+
+  // Kick the cookie-vault restore at boot, whatever the entry route: if the
+  // browser purged the local DB (iOS ~7-day rule) the charts come back before
+  // the user can act. The home additionally awaits it before listing.
+  onMount(() => {
+    ensureBackupRestored();
+  });
 </script>
 
 {#if staging}
