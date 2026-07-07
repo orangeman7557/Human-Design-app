@@ -9,6 +9,7 @@
      ready to swap for locales that write month first (Phase M). -->
 <script>
   import { untrack } from 'svelte';
+  import { selectOnFocus } from './select-on-focus.js';
 
   /** @type {{ value?: string }} value: ISO YYYY-MM-DD, '' when incomplete */
   let { value = $bindable('') } = $props();
@@ -103,6 +104,7 @@
 <div class="datefield" class:invalid role="group" aria-label="Fecha de nacimiento (día, mes y año)">
   <input
     bind:this={els[0]}
+    use:selectOnFocus
     value={day}
     oninput={(e) => onInput(e, 0)}
     onkeydown={(e) => onKeydown(e, 0)}
@@ -120,6 +122,7 @@
   <span class="sep" aria-hidden="true">/</span>
   <input
     bind:this={els[1]}
+    use:selectOnFocus
     value={month}
     oninput={(e) => onInput(e, 1)}
     onkeydown={(e) => onKeydown(e, 1)}
@@ -137,6 +140,7 @@
   <span class="sep" aria-hidden="true">/</span>
   <input
     bind:this={els[2]}
+    use:selectOnFocus
     value={year}
     oninput={(e) => onInput(e, 2)}
     onkeydown={(e) => onKeydown(e, 2)}
@@ -174,9 +178,12 @@
   .datefield.invalid {
     border-color: var(--danger);
   }
+  /* Segments size to their content (2 or 4 digits) instead of stretching, so
+     the date reads as one compact "13 / 03 / 1984": left-aligned on desktop,
+     centred on mobile like the rest of the form. */
   .seg {
-    flex: 1;
-    min-width: 0;
+    flex: none;
+    width: 2.6ch;
     height: 100%;
     background: none;
     border: none;
@@ -196,12 +203,17 @@
     opacity: 0.7;
   }
   .seg.year {
-    flex: 1.6;
+    width: 4.6ch;
   }
   .sep {
     color: var(--text-muted);
     opacity: 0.6;
     flex: none;
-    padding: 0 0.15rem;
+    padding: 0 0.2rem;
+  }
+  @media (max-width: 520px) {
+    .datefield {
+      justify-content: center;
+    }
   }
 </style>

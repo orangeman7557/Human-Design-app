@@ -8,6 +8,7 @@
 
   import { searchPlaces } from '$lib/geo/geocoder.js';
   import { timezoneFor } from '$lib/geo/timezone.js';
+  import { selectOnFocus } from './select-on-focus.js';
 
   /**
    * @typedef {Object} ResolvedPlace
@@ -145,6 +146,7 @@
   <input
     type="text"
     bind:value={query}
+    use:selectOnFocus
     oninput={onInput}
     onkeydown={onKeydown}
     onfocus={() => (focused = true)}

@@ -8,6 +8,7 @@
   const version = __APP_VERSION__;
   import CityAutocomplete from '$lib/components/CityAutocomplete.svelte';
   import DateField from '$lib/components/DateField.svelte';
+  import { selectOnFocus } from '$lib/components/select-on-focus.js';
   import About from '$lib/components/About.svelte';
   import ReportBug from '$lib/components/ReportBug.svelte';
   import { install, promptInstall } from '$lib/pwa/install.svelte.js';
@@ -478,7 +479,7 @@
   <form onsubmit={submit}>
     <label>
       <span>Nombre</span>
-      <input type="text" bind:value={name} autocomplete="off" />
+      <input type="text" bind:value={name} autocomplete="off" use:selectOnFocus />
     </label>
 
     <!-- Own day/month/year entry (DateField) instead of the native date
