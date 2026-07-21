@@ -125,6 +125,14 @@
   /** @type {string | null} */
   let error = $state(null);
 
+  // Clear a submit error as soon as the user fixes what it complained about.
+  // Otherwise "select a city from the list" stayed on screen, in red, next to
+  // a field already showing its green confirmation tick, until the next
+  // submit — the form looked broken after the user had done the right thing.
+  $effect(() => {
+    if (date && place) error = null;
+  });
+
   // ── Unknown birth time (Phase 4) ──────────────────────────────────────
   // Checking the box disables manual time entry and reveals a 0-24h
   // slider (half-hour steps). The slider hour is written into `time`, so
@@ -418,7 +426,12 @@
       if (invalid) parts.push(tr('dialog.importInvalid', { n: invalid }));
       await dialog.alert({ message: parts.join(' ') });
     } catch (err) {
-      listError = err instanceof Error ? err.message : String(err);
+      listError =
+        err?.code === 'BAD_FORMAT'
+          ? tr('dialog.importBadFormat')
+          : err instanceof Error
+            ? err.message
+            : String(err);
     } finally {
       e.target.value = '';
     }

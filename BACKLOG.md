@@ -1651,11 +1651,6 @@ subir de versión.
 
 ## Known tech debt
 
-- Channel **30-41** (half-channel edge case) still pending verification
-  against a reference tool. Partial check 2026-06-13: the chart
-  19/11/1984, 12:00, Madrid has 30-41 as a complete channel with Solar
-  Plexus and Root defined and the channel painted — structurally
-  consistent, but not yet contrasted with a reference chart.
 - A handful of older source files still carry Spanish code comments from
   Phase 0/1.1. They get translated to English as they're touched.
 - (Obsolete 2026-06-24 — the geocoder is now Photon, not Nominatim.) Photon's

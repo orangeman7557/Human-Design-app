@@ -36,12 +36,17 @@ const ask = (T, subject) => fillTpl(T.ask, { frame: T.frame, subject });
 
 /** Impersonal descriptor of the chart, e.g. "un Generador, perfil 3/5, …". */
 function who(T, L, chart) {
+  // Every field is optional: some call sites (concept prompts) can reach here
+  // before a chart exists, and a missing one should thin the sentence out, not
+  // throw. `??` on each lookup mirrors the `definedCenters` guard that was
+  // already here.
+  const c = chart ?? {};
   return fillTpl(T.who, {
-    type: L.type[chart.type] ?? chart.type,
-    profile: chart.profile,
-    authority: L.authority[chart.authority] ?? chart.authority,
-    definition: L.definition[chart.definition] ?? chart.definition,
-    centers: (chart.definedCenters ?? []).map((c) => L.center[c] ?? c).join(', ') || T.none
+    type: L.type[c.type] ?? c.type ?? '',
+    profile: c.profile ?? '',
+    authority: L.authority[c.authority] ?? c.authority ?? '',
+    definition: L.definition[c.definition] ?? c.definition ?? '',
+    centers: (c.definedCenters ?? []).map((x) => L.center[x] ?? x).join(', ') || T.none
   });
 }
 

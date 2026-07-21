@@ -218,7 +218,6 @@ Colores de centros definidos: Head/G amarillo `#e5cf3d`, Ajna verde `#6cb46c`, T
 
 ### Deuda técnica conocida
 
-- Canal **30-41** (caso edge de medio canal) pendiente de verificar en B2.
 - El geocoder usa la instancia pública de **Photon** (komoot); válido para bajo tráfico, a revisar (mirror propio) si crece.
 - Algunos comentarios de código aún en español (legado de fases 0/1.1) — se migran al inglés cuando se toca el archivo.
 

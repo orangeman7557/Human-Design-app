@@ -91,7 +91,7 @@ export default {
     gate: {
       title: 'Las puertas',
       paragraphs: [
-        'Las **puertas** son las 64 activaciones posibles del bodygraph, una por cada hexagrama del I Ching. Cada puerta vive en un centro concreto y aporta un matiz específico de energía o carácter; en el nacimiento, los planetas "encienden" un conjunto de ellas.',
+        'Las **puertas** son las 64 posiciones del bodygraph que un planeta puede encender, una por cada hexagrama del I Ching. Cada puerta vive en un centro concreto y aporta un matiz específico de energía o carácter; en el nacimiento, los planetas "encienden" un conjunto de ellas.',
         'Una puerta activa que no encuentra a su pareja —la del otro extremo de su canal— queda **colgante**: aporta su tema pero busca completarse, a menudo a través de otra persona que tenga la puerta complementaria. Cuando las dos puertas de un canal están activas, el canal se forma y define sus dos centros.',
         'Para profundizar en una puerta concreta —su matiz, su hexagrama del I Ching y cómo se vive— puedes utilizar la opción de "saber más usando IA".'
       ]
@@ -112,7 +112,7 @@ export default {
     generator: {
       title: 'Generador',
       paragraphs: [
-        'Tipo mayoritario, Generador *puro*: alrededor del **37 % de la población**. Su rasgo definitorio es el [centro Sacral](center:sacral) definido: la fuente de energía vital del sistema, generativa y de carácter renovable. Su energía generadora y constructora, cuando está bien alineado, es continuada y abundante.',
+        'Tipo mayoritario, Generador *puro*: alrededor del **~37% de la población**. Su rasgo definitorio es el [centro Sacral](center:sacral) definido: la fuente de energía vital del sistema, generativa y de carácter renovable. Su energía generadora y constructora, cuando está bien alineado, es continuada y abundante.',
         'Opera por respuesta: **reacciona a lo que la vida le presenta** en lugar de iniciar desde la mente y lo racional. Cuando compromete su energía con lo correcto, aparece la *satisfacción*; si no se escucha bien y fuerza su energía donde no toca, aparece la *frustración*.',
         'En la práctica, su centro Sacral responde antes que su mente: ante algo concreto —una propuesta, una pregunta, una situación— surge una reacción visceral de atracción o rechazo. **Seguir esa señal del cuerpo**, en vez de decidir desde el pensamiento y la razón, es lo que mantiene su energía bien empleada.'
       ]
@@ -120,7 +120,7 @@ export default {
     'manifesting-generator': {
       title: 'Generador Manifestante',
       paragraphs: [
-        'Una variante del [Generador](type:generator) —los Generadores Manifestantes suponen un 33 % de la población, y junto al resto de Generadores, cerca del 70 %—: un GM tiene el [Sacral](center:sacral) definido, y lo que lo diferencia de otros Generadores es que tiene el Sacral conectado, directa o indirectamente, con la [Garganta](center:throat). Eso le da la energía generadora propia de los Generadores y, además, capacidad de manifestar y materializar con rapidez.',
+        'Una variante del [Generador](type:generator) —los Generadores Manifestantes suponen un ~33% de la población, y junto al resto de Generadores, cerca del 70 %—: un Generador Manifestante tiene el [Sacral](center:sacral) definido, y lo que lo diferencia de otros Generadores es que además tiene la [Garganta](center:throat) conectada a un centro motor. Eso le da la energía generadora propia de los Generadores y, además, capacidad de manifestar y materializar con rapidez.',
         'Su estrategia es **responder y luego informar**: primero espera la respuesta sacral —el sí o el no del cuerpo— y, una vez la tiene, avisa a quienes se verán afectados antes de lanzarse. Tiende a ser polifacético, veloz y no lineal: salta pasos, hace varias cosas a la vez y a veces vuelve atrás a rematar lo que se saltó.',
         'La clave para gestionar su energía es no dispersarse iniciando sin haber escuchado la respuesta de su cuerpo: cuando se compromete con lo que de verdad le enciende (cuando su cuerpo dice sí), avanza rápido y siente *satisfacción* y *paz*; pero cuando fuerza empujado por la mente y las ideas, acumula *frustración*, *enfado* y trabajo a medias.'
       ]
@@ -128,7 +128,7 @@ export default {
     projector: {
       title: 'Proyector',
       paragraphs: [
-        'Cerca del **20 % de la población**. No tiene el [Sacral](center:sacral) definido, así que **no está diseñado para un trabajo constante** ni para sostener la misma energía que un [Generador](type:generator): debe cuidarse de intentar rendir de manera continuada y sin descanso. Su don es otro: ver a los demás con enorme profundidad y saber guiar y orientar la energía ajena.',
+        'Cerca del **~20% de la población**. No tiene el [Sacral](center:sacral) definido, así que **no está diseñado para un trabajo constante** ni para sostener la misma energía que un [Generador](type:generator): debe cuidarse de intentar rendir de manera continuada y sin descanso. Su don es otro: ver a los demás con enorme profundidad y saber guiar y orientar la energía ajena.',
         'Su estrategia es **esperar la invitación** para lo importante —el trabajo, el amor, el lugar donde vivir—. Necesita ser reconocido e invitado para que su sabiduría y su esfuerzo sean bien recibidos; cuando se ofrece o se mete sin que se lo pidan, lo normal es que encuentre resistencia y rechazo. Cuando en su vida aparecen el *reconocimiento* y el *éxito*, son la pista de que va por buen camino. En cambio, el síntoma que aparece cuando no vive alineado es la *amargura*.',
         'En la gestión de su energía, su tarea es **descansar y dosificarse**: no compite en resistencia física, sino en profundidad y maestría. Su bienestar se fundamenta en dormir y soltar antes de quedar agotado, y en elegir bien a quién entrega su atención y esfuerzo: aprender a decir que sí o que no cuando toca (porque no toda invitación significa que tenga que decir que sí).'
       ]
@@ -136,7 +136,7 @@ export default {
     manifestor: {
       title: 'Manifestador',
       paragraphs: [
-        'El tipo más independiente, alrededor del **9 % de la población**. Tiene al menos un centro motor (Corazón, Plexo solar, Bazo) conectado a la [Garganta](center:throat), pero el [Sacral](center:sacral) sin definir, así que su energía no es constante: llega a impulsos, que utiliza para iniciar y poner cosas en marcha, y luego necesita reposo, bastante reposo.',
+        'El tipo más independiente, alrededor del **~9% de la población**. Tiene al menos un centro motor (el Corazón o el Plexo solar) conectado a la [Garganta](center:throat), pero el [Sacral](center:sacral) sin definir, así que su energía no es constante: llega a impulsos, que utiliza para iniciar y poner cosas en marcha, y luego necesita reposo, bastante reposo.',
         'Su estrategia es **informar antes de actuar**. No se trata de pedir permiso, sino de avisar a quienes su impacto va a alcanzar: al hacerlo, reduce la resistencia y el rechazo que de otro modo encuentra a su alrededor. Actuar de manera alineada con su estrategia le trae *paz*; y si no lo hace, siente oposición y crece en él el *enfado*.',
         'El Manifestador está aquí para **iniciar e impactar**, no para ejecutar de forma sostenida. Gestionar su energía pasa por respetar sus ciclos de empuje y descanso, y por proteger su autonomía sin aislarse de quienes le rodean.'
       ]
@@ -144,7 +144,7 @@ export default {
     reflector: {
       title: 'Reflector',
       paragraphs: [
-        'El tipo más infrecuente: apenas el **1 % de la población**. No tiene ningún centro definido: todo su bodygraph está abierto. Eso lo convierte en un espejo extraordinariamente sensible de la gente y los lugares que lo rodean, capaz de percibir la salud de una comunidad.',
+        'El tipo más infrecuente: apenas el **~1% de la población**. No tiene ningún centro definido: todo su bodygraph está abierto. Eso lo convierte en un espejo extraordinariamente sensible de la gente y los lugares que lo rodean, capaz de percibir la salud de una comunidad.',
         'Como muestrea constantemente la energía ajena, **el entorno y las compañías le afectan muchísimo**: con quién y dónde está cambia profundamente su experiencia. Su estrategia es **esperar un ciclo lunar** —unos 28 días— antes de las decisiones importantes, dejando que el asunto se vea desde muchos ángulos antes de cerrarlo.',
         'Su mayor cuidado en la gestión de la energía es elegir bien los entornos y no identificarse con lo que solo está reflejando. Cuando vive alineado con su diseño, viviendo en el lugar y con las personas adecuadas, aparecen en él la *sorpresa* y el *deleite*. Si por el contrario no vive alineado, el síntoma que aparece en él es la *decepción*.'
       ]
@@ -335,13 +335,13 @@ export default {
   center: {
     head: {
       title: 'Cabeza',
-      fn: 'Es un centro de **presión mental**: la fuerza que nos empuja a pensar, preguntar e inspirarnos. Genera las preguntas y la curiosidad, pero no las responde —eso es tarea del [Ajna](center:ajna)—.',
+      fn: 'Es un centro de **presión mental**: la fuerza que empuja a pensar, preguntar e inspirarse. Genera las preguntas y la curiosidad, pero no las responde —eso es tarea del [Ajna](center:ajna)—.',
       defined: '**Definido**, aporta una forma constante de inspirarse y de sentir la presión por entender.',
       open: '**Indefinido**, amplifica las preguntas y la inquietud mental de los demás: aquí conviene no dejarse arrastrar a resolver dudas que en realidad no son propias ni importan para la propia vida.'
     },
     ajna: {
       title: 'Ajna',
-      fn: 'Es el centro de la **mente y la conceptualización**: procesa la información, forma ideas y da estructura a lo que pensamos, trabajando con la presión que le llega de la [Cabeza](center:head).',
+      fn: 'Es el centro de la **mente y la conceptualización**: procesa la información, forma ideas y da estructura al pensamiento, trabajando con la presión que le llega de la [Cabeza](center:head).',
       defined: '**Definido**, da una manera fija y fiable de pensar, con opiniones y certezas estables.',
       open: '**Indefinido**, ofrece una mente **flexible y abierta**, capaz de ver muchas perspectivas; su trampa es la presión por aparentar seguridad o aferrarse a una certeza prestada. Su don es no necesitar tener siempre una respuesta fija.'
     },
@@ -383,7 +383,7 @@ export default {
     },
     root: {
       title: 'Raíz',
-      fn: 'Es un centro de **presión y adrenalina**: el empuje que nos pone en marcha y el estrés que nos urge a actuar para liberarnos de esa presión. Da el pulso para arrancar las cosas.',
+      fn: 'Es un centro de **presión y adrenalina**: el empuje que pone en marcha y el estrés que urge a actuar para liberarse de esa presión. Da el pulso para arrancar las cosas.',
       defined: '**Definido**, aporta una forma constante de manejar la presión y el estrés.',
       open: '**Indefinido**, **amplifica la prisa** y la sensación de tener que quitarse cuanto antes lo pendiente de encima; su aprendizaje es no dejarse empujar a decisiones apresuradas solo para aliviar una presión que, en buena parte, es prestada.'
     }
@@ -420,7 +420,7 @@ export default {
     sun: {
       title: 'Sol',
       paragraphs: [
-        'El **Sol** es la activación más importante de la carta: marca la **expresión esencial**, la energía que la persona irradia y el propósito que encarna. Junto con la Tierra, concentra la mayor parte del significado (~70 %).',
+        'El **Sol** es la activación más importante de la carta: marca la **expresión esencial**, la energía que la persona irradia y el propósito que encarna. Junto con la Tierra, concentra la mayor parte del significado (~70%).',
         'Su puerta de personalidad suele leerse como la nota dominante de la identidad consciente.'
       ]
     },
@@ -609,9 +609,9 @@ export default {
   // assembles everything in order.
   report: {
     intro: {
-      title: 'Qué es Human Design',
+      title: 'Qué es el Diseño Humano',
       paragraphs: [
-        'Human Design es un sistema de autoconocimiento que combina astrología, el *I Ching*, el árbol de la vida cabalístico, los chakras y algo de lenguaje físico-cuántico. A partir de tu fecha, hora y lugar de nacimiento genera una "carta" (el gráfico o [*bodygraph*](section:chart)) que describe cómo está diseñada tu energía: cómo tomas decisiones bien, cómo gastas y recuperas energía, y cómo interactúas mejor con el mundo. No se considera ciencia —conviene decirlo claro— sino un marco simbólico; su valor está en si te resulta útil como espejo, no en que sea demostrable.'
+        'El Diseño Humano es un sistema de autoconocimiento que combina astrología, el *I Ching*, el árbol de la vida cabalístico, los chakras y algo de lenguaje físico-cuántico. A partir de tu fecha, hora y lugar de nacimiento genera una "carta" (el gráfico o [*bodygraph*](section:chart)) que describe cómo está diseñada tu energía: cómo tomas decisiones bien, cómo gastas y recuperas energía, y cómo interactúas mejor con el mundo. No se considera ciencia —conviene decirlo claro— sino un marco simbólico; su valor está en si te resulta útil como espejo, no en que sea demostrable.'
       ]
     },
     ants: {
@@ -636,7 +636,7 @@ export default {
       ]
     },
     experiment: {
-      title: 'Human Design como experimento vital',
+      title: 'El Diseño Humano como experimento vital',
       paragraphs: [
         'El Diseño Humano no se presenta necesariamente como una verdad en la que creer ciegamente, sino como un **experimento para probar**: en lugar de adoptarlo como dogma, la propuesta es que vivas según tu diseño y observes, en tu propia vida, si las cosas fluyen mejor.',
         'El experimento es fácil de enunciar (aunque lleve su tiempo ponerlo en práctica): **tomar tus decisiones según [tu estrategia](section:strategy) y [tu autoridad](section:authority)** —las dos herramientas que verás más adelante— en vez de dejarte llevar por lo que se espera de ti, por la prisa, por la cabeza o por los mecanismos y patrones que llevas aplicando toda tu vida. Poco a poco, esto te devuelve a tu manera natural de funcionar. A este proceso se le llama **desacondicionamiento**, y es, en el fondo, de lo que va todo lo demás.'
@@ -652,7 +652,7 @@ export default {
         '**Generadores (~37%) y Generadores Manifestantes (~33%)**: suponen cerca del 70% de la población. Son los constructores, con energía vital sostenida cuando hacen lo que de verdad les enciende. Son el motor que mueve el mundo humano.',
         '**Proyectores (~20%)**: no tienen esa energía constante; su don es ver, guiar y orientar a los demás. Brillan cuando se les reconoce e invita, no forzándose al ritmo de un Generador.',
         '**Manifestadores (~9%)**: son los iniciadores, capaces de arrancar cosas de la nada y causar impacto, sin esperar a nadie. Su clave es informar a quienes su acción salpica y gestionar su energía inconstante.',
-        '**Reflectores (~1%)**: los más infrecuentes, son un espejo del entorno que muestrea la salud del grupo y del lugar en que vive.'
+        '**Reflectores (~1%)**: los más infrecuentes, son un espejo del entorno: reflejan la salud del grupo y del lugar en que viven.'
       ],
       outro:
         'El error más común es medirse con el diseño de otro: que un Proyector se exija la resistencia de un Generador, o que un Generador se frustre por no iniciar como un Manifestador.'
@@ -663,7 +663,7 @@ export default {
       strategy: 'Tu estrategia es tu forma natural e ideal de actuar y comprometerte con las cosas sin forzarlas.',
       authority: 'Tu autoridad es tu manera correcta de tomar decisiones en la vida, de acuerdo con tu diseño y no contra él. Si la estrategia te dice *cómo y cuándo actuar*, **la autoridad te dice cómo y cuándo decidir** cada sí y cada no. La mente sirve para informarte, navegar las decisiones tomadas y aconsejar a otros, pero **la mente no es de fiar para decidir** sobre tu propia vida: las decisiones deben tomarse desde una fuente más corporal y fiable. Esto es la *autoridad*.',
       definition: 'La definición describe cómo se agrupan entre sí tus centros definidos: si forman un solo bloque o varios grupos separados.',
-      practice: 'Si te tuvieras que quedar con una sola cosa de todo Human Design, que sea esta: **vivir tu diseño es, sobre todo, entrar en acción según [tu estrategia](section:strategy) y decidir desde [tu autoridad](section:authority)**. Lo demás matiza y afina; pero estas dos cosas son lo que de verdad cambia el día a día de tu vida.',
+      practice: 'Si te tuvieras que quedar con una sola cosa de todo el Diseño Humano, que sea esta: **vivir tu diseño es, sobre todo, entrar en acción según [tu estrategia](section:strategy) y decidir desde [tu autoridad](section:authority)**. Lo demás matiza y afina; pero estas dos cosas son lo que de verdad cambia el día a día de tu vida.',
       centers: 'Los nueve centros en tu carta:'
     },
 
@@ -676,27 +676,27 @@ export default {
     // section title + lead-in already set the frame). ──
     type: {
       generator: [
-        'Eres el tipo mayoritario, Generador *puro*, que sois alrededor del **37 % de la población**. Tu rasgo definitorio es el [centro Sacral](center:sacral) definido: la fuente de energía vital del sistema, generativa y de carácter renovable. Tu energía generadora y constructora, cuando estás bien alineado, es continuada y abundante.',
+        'Eres el tipo mayoritario, Generador *puro*: los Generadores sois alrededor del **~37%** de la población. Tu rasgo definitorio es el [centro Sacral](center:sacral) definido: la fuente de energía vital del sistema, generativa y de carácter renovable. Tu energía generadora y constructora, cuando estás bien alineado, es continuada y abundante.',
         'Operas por respuesta: **reaccionas a lo que la vida te presenta** en lugar de iniciar desde la mente y lo racional. Cuando comprometes tu energía con lo correcto, aparece la *satisfacción*; si no te escuchas bien y fuerzas tu energía donde no toca, aparece la *frustración*.',
         'En la práctica, tu centro Sacral responde antes que tu mente: ante algo concreto —una propuesta, una pregunta, una situación— surge una reacción visceral de atracción o rechazo. **Seguir esa señal del cuerpo**, en vez de decidir desde el pensamiento y la razón, es lo que mantiene tu energía bien empleada.'
       ],
       'manifesting-generator': [
-        'Eres un tipo concreto de [Generador](type:generator) —los Generadores Manifestantes sois un 33 % de la población, y junto al resto de Generadores, sumáis cerca del 70 %—: tienes el [Sacral](center:sacral) definido, y lo que te diferencia de otros Generadores es que tienes el Sacral conectado, directa o indirectamente, con la [Garganta](center:throat). Eso te da la energía generadora propia de los Generadores y, además, capacidad de manifestar y materializar con rapidez.',
+        'Eres un tipo concreto de [Generador](type:generator) —los Generadores Manifestantes sois un ~33% de la población, y junto al resto de Generadores, sumáis cerca del 70 %—: tienes el [Sacral](center:sacral) definido, y lo que te diferencia de otros Generadores es que además tienes la [Garganta](center:throat) conectada a un centro motor. Eso te da la energía generadora propia de los Generadores y, además, capacidad de manifestar y materializar con rapidez.',
         'Tu estrategia es **responder y luego informar**: primero esperas la respuesta sacral —el sí o el no del cuerpo— y, una vez la tienes, avisas a quienes se verán afectados antes de lanzarte. Tiendes a ser polifacético, veloz y no lineal: saltas pasos, haces varias cosas a la vez y a veces vuelves atrás a rematar lo que te saltaste.',
         'La clave para gestionar tu energía es no dispersarte iniciando sin haber escuchado la respuesta de tu cuerpo: cuando te comprometes con lo que de verdad te enciende (cuando tu cuerpo dice sí), avanzas rápido y sientes *satisfacción* y *paz*; pero cuando fuerzas empujado por la mente y las ideas, acumulas *frustración*, *enfado* y trabajo a medias.'
       ],
       projector: [
-        'Los Proyectores sois cerca del **20 % de la población**. No tienes el [Sacral](center:sacral) definido, así que **no estás diseñado para un trabajo constante** ni para sostener la misma energía que un [Generador](type:generator); por eso, cuidado con intentar rendir de manera continuada y sin descanso. Tu don es otro: ver a los demás con enorme profundidad y saber guiar y orientar la energía ajena.',
+        'Los Proyectores sois cerca del **~20% de la población**. No tienes el [Sacral](center:sacral) definido, así que **no estás diseñado para un trabajo constante** ni para sostener la misma energía que un [Generador](type:generator); por eso, cuidado con intentar rendir de manera continuada y sin descanso. Tu don es otro: ver a los demás con enorme profundidad y saber guiar y orientar la energía ajena.',
         'Tu estrategia es **esperar la invitación** para lo importante —el trabajo, el amor, el lugar donde vivir—. Necesitas ser invitado para que tu sabiduría y esfuerzo sean bien recibidos; cuando te ofreces o te metes sin que te lo pidan, lo normal es que encuentres resistencia y rechazo. Cuando en tu vida aparecen el *reconocimiento* y el *éxito*, son la pista de que vas por buen camino. En cambio, el síntoma que aparece cuando no estás viviendo alineado es la *amargura*.',
         'En la gestión de tu energía, tu tarea es **descansar y dosificarte**: no compites en resistencia física, sino en profundidad y maestría. Tu bienestar se fundamenta en dormir y soltar antes de quedar agotado, y elegir bien a quién entregas tu atención y esfuerzo: aprender a decir que sí o que no cuando toca (porque no toda invitación significa que tengas que decir que sí).'
       ],
       manifestor: [
-        'Eres el tipo más independiente, alrededor del **9 % de la población**. Tienes al menos un centro motor (Corazón, Plexo solar, Bazo) conectado a la [Garganta](center:throat), pero el [Sacral](center:sacral) sin definir, así que tu energía no es constante: llega a impulsos, que utilizas para iniciar y poner cosas en marcha, y luego necesitas reposo, bastante reposo.',
+        'Eres el tipo más independiente, alrededor del **~9% de la población**. Tienes al menos un centro motor (el Corazón o el Plexo solar) conectado a la [Garganta](center:throat), pero el [Sacral](center:sacral) sin definir, así que tu energía no es constante: llega a impulsos, que utilizas para iniciar y poner cosas en marcha, y luego necesitas reposo, bastante reposo.',
         'Tu estrategia es **informar antes de actuar**. No se trata de pedir permiso, sino de avisar a quienes tu impacto va a alcanzar: al hacerlo, reduces la resistencia y el rechazo que de otro modo encuentras a tu alrededor. Actuar de manera alineada con tu estrategia te trae *paz*; y si no lo haces, sientes oposición y crece en ti el *enfado*.',
         'Estás aquí para **iniciar e impactar**, no para ejecutar de forma sostenida. Gestionar tu energía pasa por respetar tus ciclos de empuje y descanso, y por proteger tu autonomía sin aislarte de quienes te rodean.'
       ],
       reflector: [
-        'Eres el tipo más infrecuente: los Reflectores sois apenas el **1 % de la población**. No tienes ningún centro definido: todo tu bodygraph está abierto. Eso te convierte en un espejo extraordinariamente sensible de la gente y los lugares que te rodean, capaz de percibir la salud de una comunidad.',
+        'Eres el tipo más infrecuente: los Reflectores sois apenas el **~1% de la población**. No tienes ningún centro definido: todo tu bodygraph está abierto. Eso te convierte en un espejo extraordinariamente sensible de la gente y los lugares que te rodean, capaz de percibir la salud de una comunidad.',
         'Como muestreas constantemente la energía ajena, **el entorno y las compañías te afectan muchísimo**: con quién y dónde estás cambia profundamente tu experiencia. Tu estrategia es **esperar un ciclo lunar** —unos 28 días— antes de las decisiones importantes, dejando que el asunto se vea desde muchos ángulos antes de cerrarlo.',
         'Tu mayor cuidado en la gestión de la energía es elegir bien los entornos y no identificarte con lo que solo estás reflejando. Cuando vives alineado con tu diseño, viviendo en el lugar y con las personas adecuadas, aparecen en ti la *sorpresa* y el *deleite*. Si por el contrario no vives alineado, el síntoma que aparece en ti es la *decepción*.'
       ]
@@ -719,7 +719,7 @@ export default {
         'No es pasividad: sigues viviendo y preparándote, pero reservas tu sabiduría para quien la valora y la solicita. **La invitación correcta abre la puerta** a que tu don sea bien recibido; insistir sin ella suele traerte resistencia, amargura y rechazo. El reconocimiento y el éxito son la señal de que la espera ha valido la pena.'
       ],
       'wait-lunar-cycle': [
-        'Antes de una decisión importante, tu diseño te pide **dejar pasar un ciclo lunar completo** —unos 28 días— en lugar de resolver de golpe.',
+        'Antes de una decisión importante, tu diseño te pide **dejar pasar un ciclo lunar completo** en lugar de resolver de golpe: no es demorarse por prudencia, es el tiempo que necesitas para que el asunto se te muestre desde todos sus ángulos.',
         'Durante ese tiempo, **conversas, muestreas distintos entornos y observas cómo cambia tu percepción** del asunto día a día. Como tu carta está completamente abierta, necesitas ese recorrido para distinguir lo que es tuyo de lo que solo estás reflejando. La claridad te llega por acumulación, por ver el asunto desde diferentes perspectivas, no por impulso.'
       ]
     },
@@ -749,7 +749,7 @@ export default {
         'Tu práctica consiste en **hablar el asunto con personas de confianza y en el entorno adecuado**, no para que decidan por ti, sino para escucharte pensar en voz alta. El lugar y la compañía correctos son aquí parte del método: la decisión se va decantando con el tiempo y la conversación.'
       ],
       lunar: [
-        'Como Reflector, no tienes ningún centro definido, así que no hay en ti una fuente interna fija: tu guía es el **tiempo**, un ciclo lunar completo —unos 28 días— antes de las decisiones importantes.',
+        'Como Reflector, no tienes ningún centro definido, así que no hay en ti una fuente interna fija que decida. Tu autoridad no está dentro: es el **tiempo**. Lo que en otros diseños resuelve el cuerpo, en el tuyo lo resuelve la claridad que se va posando a lo largo del ciclo.',
         'Durante ese ciclo, **muestreas distintos estados, entornos y conversaciones**, y observas cómo evoluciona tu percepción del asunto. Tu claridad llega por **maduración** y acumulación de perspectivas, no por impulso: lo que sigue resonando tras recorrer el ciclo entero es lo fiable.'
       ]
     },
@@ -788,7 +788,7 @@ export default {
       ],
       single: [
         'Todos tus centros definidos están **conectados en un solo bloque**. Tu energía fluye internamente sin interrupciones, lo que te da una sensación de **autosuficiencia**: accedes a tu propia consistencia sin depender de otros para "completarte".',
-        'Tu reto suele ser el opuesto al de las definiciones divididas: como funcionas bien por ti mismo, puedes ensimismarte o costarte abrirte a la influencia ajena. Reconocer cuándo te conviene salir de tu propia burbuja es parte de tu aprendizaje.'
+        'Tu reto suele ser el opuesto al de las definiciones divididas: como funcionas bien por ti mismo, puedes ensimismarte, y abrirte a la influencia ajena puede costarte. Reconocer cuándo te conviene salir de tu propia burbuja es parte de tu aprendizaje.'
       ],
       split: [
         'Tus centros definidos forman **dos grupos separados**, sin un canal que los una por dentro. Por eso sueles experimentar una **búsqueda de conexión**: algo que tienda el puente entre tus dos partes.',
@@ -869,7 +869,7 @@ export default {
       senales: '**Señales de que vas por buen camino** — La **paz** frente al enfado. Cuando informas y te mueves con libertad, encuentras calma a tu alrededor; cuando todo se llena de resistencia y conflicto, suele ser señal de que actuaste sin avisar o de que estás forzando un ritmo continuo que no te corresponde.'
     },
     reflector: {
-      energia: '**Gestión de tu energía** — No tienes **ningún centro definido**: muestreas constantemente la energía de la gente y los lugares, así que **el entorno te afecta muchísimo** y tu energía varía mucho de un día a otro. Lo más importante para ti es **elegir bien dónde estás y con quién**, y no exigirte una constancia que no es propia de tu diseño. Para las decisiones importantes, date un **ciclo lunar** —unos 28 días— antes de cerrarlas.',
+      energia: '**Gestión de tu energía** — No tienes **ningún centro definido**: muestreas constantemente la energía de la gente y los lugares, así que **el entorno te afecta muchísimo** y tu energía varía mucho de un día a otro. Lo más importante para ti es **elegir bien dónde estás y con quién**, y no exigirte una constancia que no es propia de tu diseño. Y no cierres en caliente lo que importa: date el ciclo entero.',
       trampa: '**La trampa de tu tipo** — Decidir con prisa, quedarte en entornos que no te sientan bien e **identificarte con lo que solo estás reflejando**: tomar por tuyos estados de ánimo o presiones que en realidad son del grupo. **Forzarte a ser siempre igual** va contra tu naturaleza cambiante.',
       senales: '**Señales de que vas por buen camino** — La **sorpresa y el deleite** frente a la decepción. Cuando los entornos y las compañías son los correctos, la vida te sorprende gratamente; cuando predomina la decepción, suele ser señal de que estás en el lugar o con la gente equivocados, o de que has decidido demasiado rápido.'
     }
@@ -1015,11 +1015,11 @@ export default {
     type: {
       heading: 'Los cinco tipos en el colectivo humano',
       items: {
-        generator: { label: 'Generador', note: 'construye con energía sostenida', pct: '~37 %' },
-        'manifesting-generator': { label: 'Generador Manifestante', note: 'construye rápido y polifacético', pct: '~33 %' },
-        projector: { label: 'Proyector', note: 've, guía y orienta la energía ajena', pct: '~20 %' },
-        manifestor: { label: 'Manifestador', note: 'inicia e impacta con independencia', pct: '~9 %' },
-        reflector: { label: 'Reflector', note: 'refleja y muestrea el entorno', pct: '~1 %' }
+        generator: { label: 'Generador', note: 'construye con energía sostenida', pct: '~37%' },
+        'manifesting-generator': { label: 'Generador Manifestante', note: 'construye rápido y polifacético', pct: '~33%' },
+        projector: { label: 'Proyector', note: 've, guía y orienta la energía ajena', pct: '~20%' },
+        manifestor: { label: 'Manifestador', note: 'inicia e impacta con independencia', pct: '~9%' },
+        reflector: { label: 'Reflector', note: 'refleja y muestrea el entorno', pct: '~1%' }
       }
     },
     strategy: {
@@ -1204,7 +1204,7 @@ export default {
   // other text instead of touching code. `{…}` are filled by the callers.
 
   promptTemplates: {
-    frame: 'En el marco de Human Design',
+    frame: 'En el marco del Diseño Humano',
     ask: '{frame}, ¿me explicas en detalle {subject}?',
     askChart: '{frame}, para {who}, ¿me explicas en detalle {subject}?',
     who: 'un {type}, perfil {profile}, autoridad {authority}, {definition}, centros definidos {centers}',

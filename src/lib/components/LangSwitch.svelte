@@ -14,6 +14,7 @@
   import { page } from '$app/stores';
   import { goto } from '$app/navigation';
   import { LOCALES, getLocale } from '$lib/i18n/index.svelte.js';
+  import { routeT } from '$lib/i18n/route-t.svelte.js';
 
   /** Width of the host page's content column, in px. */
   let { contentMax = 720 } = $props();
@@ -27,6 +28,7 @@
   // hydration). See docs/fase-m-multilingue.md, "la regla de oro del SSR".
   // Falls back to the module locale for any route without a language segment.
   const current = $derived($page.params.lang ?? getLocale());
+  const t = routeT();
 
   /** Same path/query/hash, with the language segment swapped to `code`. */
   function urlFor(code) {
@@ -59,7 +61,7 @@
         class="tag"
         aria-haspopup="menu"
         aria-expanded={open}
-        aria-label="Language"
+        aria-label={t('lang.menu')}
         onclick={(e) => {
           e.stopPropagation();
           open = !open;

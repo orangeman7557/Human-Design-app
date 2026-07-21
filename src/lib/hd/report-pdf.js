@@ -239,11 +239,14 @@ function drawCentre(doc, L, c, COVER) {
 export async function buildReportPdf({ image = null, sections = [], labels = {} }) {
   // Cover wording comes from the caller (Phase M) so this module stays free of
   // app imports and testable in plain Node.
+  // Defaults are in the default locale (English), never Spanish: the caller
+  // always passes translated `labels`, so these only ever surface if a call
+  // site forgets one — and then it should fall back like the rest of i18n does.
   const COVER = {
-    eyebrow: 'TU INFORME INICIAL PERSONALIZADO',
-    title: 'Conoce tu diseño',
-    defined: 'DEFINIDO',
-    open: 'ABIERTO',
+    eyebrow: 'YOUR PERSONALISED INITIAL REPORT',
+    title: 'Know Your Design',
+    defined: 'DEFINED',
+    open: 'OPEN',
     ...labels
   };
   const { jsPDF } = await import('jspdf');

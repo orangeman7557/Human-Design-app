@@ -95,8 +95,22 @@
       editedPrompt = prompts?.[angle] ?? '';
       // Each stacked element starts scrolled to the top.
       if (bodyEl) bodyEl.scrollTop = 0;
+      // The new text has a different length — recheck the "more below" cue
+      // once it has been laid out.
+      requestAnimationFrame(updateHasMore);
     });
   });
+
+  // "There is more text below" cue. macOS hides overlay scrollbars until the
+  // pointer moves, so the drawer looked like it ended at the fold and the
+  // tables underneath (the five types, the centre index) went unnoticed. A
+  // fade at the bottom edge says it without depending on OS scrollbar
+  // settings; it disappears once you reach the end.
+  let hasMore = $state(false);
+  function updateHasMore() {
+    if (!bodyEl) return;
+    hasMore = bodyEl.scrollHeight - bodyEl.scrollTop - bodyEl.clientHeight > 4;
+  }
 
   // Keep the textarea sized to its content — also when switching angle
   // swaps the text under it.
@@ -237,7 +251,15 @@
       </div>
     </header>
 
-    <div class="info-body" bind:this={bodyEl} role="presentation" onclick={onContentClick} onkeydown={onContentKeydown}>
+    <div class="info-scroll" class:more={hasMore}>
+    <div
+      class="info-body"
+      bind:this={bodyEl}
+      role="presentation"
+      onscroll={updateHasMore}
+      onclick={onContentClick}
+      onkeydown={onContentKeydown}
+    >
       {#each info.paragraphs as p}
         <p class="para">{@html renderInline(p)}</p>
       {/each}
@@ -318,6 +340,7 @@
           </div>
         {/if}
       {/if}
+    </div>
     </div>
 
     <div class="sep"></div>
@@ -512,13 +535,49 @@
   }
   /* The info text gets its own scroll area, capped so the IA section below
      stays visible. ~3 paragraphs on mobile, ~4 on desktop. */
+  /* Holds the bottom fade over the scroll box (see `hasMore`). */
+  .info-scroll {
+    position: relative;
+  }
+  .info-scroll::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 2.5rem;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 140ms;
+    background: linear-gradient(to bottom, transparent, var(--surface) 85%);
+  }
+  .info-scroll.more::after {
+    opacity: 1;
+  }
   .info-body {
     /* The margin (not padding) keeps a constant gap below the header even
        when the body is scrolled — the scroll box starts below the header. */
     margin-top: 0.85rem;
     max-height: 24rem;
-    overflow-y: auto;
+    overflow-y: scroll;
     overscroll-behavior: contain;
+    /* `scroll`, not `auto`, plus a permanently visible thumb: the overlay
+       scrollbar Chromium/macOS hide until you move the pointer meant the
+       drawer looked like it ended at the fold, and the tables underneath
+       (the five types, the centre index) went unnoticed. A reserved track
+       also stops the text reflowing when the bar appears. */
+    scrollbar-width: thin;
+    scrollbar-color: #4a4a54 transparent;
+  }
+  .info-body::-webkit-scrollbar {
+    width: 8px;
+  }
+  .info-body::-webkit-scrollbar-thumb {
+    background: #4a4a54;
+    border-radius: 4px;
+  }
+  .info-body::-webkit-scrollbar-track {
+    background: transparent;
   }
   @media (min-width: 680px) {
     .info-body {

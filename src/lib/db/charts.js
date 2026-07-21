@@ -187,7 +187,12 @@ export async function exportCharts() {
 export async function importCharts(json) {
   const data = JSON.parse(json);
   if (!data || !Array.isArray(data.charts)) {
-    throw new Error('El archivo no tiene el formato esperado.');
+    // Coded, not worded: this layer has no locale. The caller translates from
+    // `code`; the message is only a last-resort fallback (default locale).
+    const err = new Error('The file is not in the expected format.');
+    // @ts-expect-error — augmenting Error with a stable code
+    err.code = 'BAD_FORMAT';
+    throw err;
   }
   const validBirth = (b) =>
     b && typeof b === 'object' &&

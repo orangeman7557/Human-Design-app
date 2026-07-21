@@ -4,7 +4,8 @@
 <!-- "Reportar un fallo" lives in its own footer link; the support row (send -->
 <!-- love + buy me a coffee) was added closing Phase L (jul 2026). -->
 <script>
-  import { t, getLocale } from '$lib/i18n/index.svelte.js';
+  import { getLocale } from '$lib/i18n/index.svelte.js';
+  import { routeT } from '$lib/i18n/route-t.svelte.js';
   import { fade, fly } from 'svelte/transition';
   import { focusTrap } from './focus-trap.js';
   import { scrollLock } from './scroll-lock.js';
@@ -19,6 +20,10 @@
    * the word renders as plain text.
    */
   let { onElement, version = '' } = $props();
+
+  // Route-bound: the footer link renders inside the PRERENDERED home, where the
+  // shared module locale races between /en and /es (see route-t.svelte.js).
+  const t = routeT();
 
   let open = $state(false);
 
@@ -442,22 +447,19 @@
   .facts strong {
     font-weight: 600;
   }
-  /* "Manifestador" link → opens the type drawer (chart page only). Subtle
-     underline, like the in-text links elsewhere. */
+  /* "Manifestador" → opens the author's own chart (chart page only). A hidden
+     easter egg on purpose (author, jul 2026): it reads as plain body text —
+     no underline, no colour, no pointer cursor — so only someone who happens
+     to click the word finds it. Keyboard focus still shows a ring, so it is
+     not invisible to assistive tech. */
   .tlink {
     background: none;
     border: none;
     padding: 0;
     font: inherit;
     color: inherit;
-    cursor: pointer;
-    text-decoration: underline;
-    text-decoration-color: #6a6a72;
-    text-underline-offset: 2px;
-  }
-  .tlink:hover {
-    color: var(--text);
-    text-decoration-color: var(--accent);
+    cursor: inherit;
+    text-decoration: none;
   }
   /* Support row: two sober cards; the heart deliberately breaks the sobriety
      when clicked (colour + full-screen party), the coffee card links to BMC. */

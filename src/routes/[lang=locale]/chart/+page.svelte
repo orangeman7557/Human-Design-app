@@ -133,9 +133,25 @@
   }
 
   // Open from a chip/title: a fresh stack.
+  // One-off "the elements are clickable" hint (see the markup). Shown until
+  // the user dismisses it or opens any drawer — at that point they've found
+  // the mechanic and the line has done its job.
+  const INFO_HINT_KEY = 'hd:info-hint-seen';
+  let showInfoHint = $state(false);
+  function dismissInfoHint() {
+    if (!showInfoHint) return;
+    showInfoHint = false;
+    try {
+      localStorage.setItem(INFO_HINT_KEY, '1');
+    } catch {
+      // Private mode / storage disabled: the hint just shows again next time.
+    }
+  }
+
   function openInfoFor(category, kind, key) {
     const entry = buildEntry(category, kind, key);
     if (entry) infoStack = [entry];
+    dismissInfoHint();
   }
   // Follow an in-text link: push onto the current stack (or open fresh).
   function navigateInfo(kind, key) {
@@ -563,7 +579,7 @@
     try {
       downloadBlob(await captureBlob());
     } catch (e) {
-      shareError = `No se pudo descargar la imagen: ${e instanceof Error ? e.message : String(e)}`;
+      shareError = tr('chart.errDownload', { msg: e instanceof Error ? e.message : String(e) });
     } finally {
       sharing = false;
     }
@@ -616,7 +632,7 @@
       });
       downloadBlob(pdf, imageFileName().replace(/\.png$/i, '.pdf'));
     } catch (e) {
-      shareError = `No se pudo generar el PDF: ${e instanceof Error ? e.message : String(e)}`;
+      shareError = tr('chart.errPdf', { msg: e instanceof Error ? e.message : String(e) });
     } finally {
       sharing = false;
       pdfShot = false;
@@ -691,6 +707,11 @@
   });
 
   onMount(async () => {
+    try {
+      showInfoHint = localStorage.getItem(INFO_HINT_KEY) !== '1';
+    } catch {
+      showInfoHint = false;
+    }
     try {
       // A shared link (/chart?…) carries the birth data in the URL; otherwise
       // we read what the form left in sessionStorage. A decoded link is also
@@ -856,6 +877,20 @@
   {:else if chart}
     {#if birthData}
       <p class="birth">{formatBirth(birthData)}</p>
+    {/if}
+
+    <!-- Every element on this page has an explanation behind an "i" that only
+         appears on hover (or on tap). That is deliberate — the page stays
+         quiet — but it also means a first-time visitor has no reason to
+         suspect the drawers exist. This one-off line points at them once and
+         then never again (dismissed on close, or the first time a drawer is
+         actually opened). -->
+    {#if showInfoHint}
+      <p class="info-hint">
+        <span class="dot" aria-hidden="true">i</span>
+        {tr('chart.infoHint')}
+        <button type="button" onclick={dismissInfoHint} aria-label={tr('bug.close')}>✕</button>
+      </p>
     {/if}
 
     <div class="graph" bind:this={graphEl}>
@@ -1426,6 +1461,51 @@
     margin: -0.15rem 0 1.5rem 3.25rem;
   }
 
+  /* One-off discoverability line for the "i" drawers. Muted on purpose: it is
+     a nudge, not a banner. Hidden from the PNG/PDF export like the rest of the
+     interactive chrome (see .capturing below). */
+  .info-hint {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: -1rem 0 1.4rem 3.25rem;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+  }
+  .info-hint .dot {
+    flex: none;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    border: 1px solid #4a4a54;
+    background: var(--surface-2);
+    color: var(--text);
+    font-family: Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 10px;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .info-hint button {
+    background: none;
+    border: none;
+    padding: 0 0.2rem;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    cursor: pointer;
+    line-height: 1;
+  }
+  .info-hint button:hover {
+    color: var(--text);
+  }
+  @media (max-width: 680px) {
+    .info-hint {
+      margin-left: 0;
+    }
+  }
+
   /* Discreet site attribution, shown only in the downloaded PNG (the PDF cover
      is captured with .pdf-shot and gets its own native header instead). */
   .export-brand {
@@ -1452,7 +1532,8 @@
   main.capturing .back,
   main.capturing .report-btn,
   main.capturing .actions,
-  main.capturing .img-actions {
+  main.capturing .img-actions,
+  main.capturing .info-hint {
     display: none;
   }
   main.capturing header {
@@ -1579,6 +1660,12 @@
     text-align: left;
     pointer-events: none;
     z-index: 40;
+  }
+  /* The header actions sit against the top of the page, where a tip drawn
+     above gets clipped by the viewport edge — those flip below the button. */
+  .img-btn[data-tip]:hover::after {
+    bottom: auto;
+    top: calc(100% + 7px);
   }
 
   .card {

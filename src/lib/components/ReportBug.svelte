@@ -4,13 +4,17 @@
 <!-- automatically so the reporter never has to describe their setup. Covers both bugs -->
 <!-- and suggestions via a small type toggle. Modal chrome mirrors About.svelte. -->
 <script>
-  import { t } from '$lib/i18n/index.svelte.js';
+  import { routeT } from '$lib/i18n/route-t.svelte.js';
   import { fade, fly } from 'svelte/transition';
   import { focusTrap } from './focus-trap.js';
   import { scrollLock } from './scroll-lock.js';
 
   /** @type {{ version?: string }} */
   let { version = '' } = $props();
+
+  // Route-bound: the footer link renders inside the PRERENDERED home and
+  // privacy pages, where the shared module locale races (see route-t.svelte.js).
+  const t = routeT();
 
   const ACCESS_KEY = 'fb633af3-659b-4e93-acb8-9ba3417132fa';
   const ENDPOINT = 'https://api.web3forms.com/submit';

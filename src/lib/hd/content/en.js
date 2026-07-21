@@ -335,7 +335,7 @@ const overrides = {
     gate: {
       title: 'The Gates',
       paragraphs: [
-        'The **gates** are the 64 possible activations of the bodygraph, one per I Ching hexagram. Each lives in a specific center and adds its own flavor of energy or character. At birth, the planets switch on a set of them.',
+        'The **gates** are the 64 positions of the bodygraph a planet can switch on, one per I Ching hexagram. Each lives in a specific center and adds its own flavor of energy or character. At birth, the planets switch on a set of them.',
         'An active gate whose partner — the gate at the other end of its channel — is missing is left **hanging**. Its theme is there, but it looks to be completed, often through someone who carries the other half. When both gates are active the channel forms and defines its two centers.',
         'To go deeper into a particular gate — its flavor, its hexagram, how it plays out — use the "learn more using AI" option.'
       ]
@@ -364,7 +364,7 @@ const overrides = {
     'manifesting-generator': {
       title: 'Manifesting Generator',
       paragraphs: [
-        'A variant of the [Generator](type:generator) — about 33% of people, which puts all Generators together at close to 70%. An MG has a defined [Sacral](center:sacral) like any Generator, but its Sacral connects, directly or not, to the [Throat](center:throat). That adds the ability to make things happen fast.',
+        'A variant of the [Generator](type:generator) — about 33% of people, which puts all Generators together at close to 70%. A Manifesting Generator has a defined [Sacral](center:sacral) like any Generator, but it also has the [Throat](center:throat) connected to a motor center. That adds the ability to make things happen fast.',
         'The strategy is to **respond and then inform**: wait for the sacral answer — the body\u2019s yes or no — and, once you have it, tell the people it will affect before you set off. MGs tend to be many-sided, quick and non-linear: skipping steps, running several things at once, and doubling back later to finish what was skipped.',
         'The trick is not to scatter. Starting things the body never said yes to is what drains an MG. When the yes is real, it moves fast and feels *satisfaction* and *peace*; when the mind pushes instead, what piles up is *frustration*, *anger* and half-finished work.'
       ]
@@ -380,7 +380,7 @@ const overrides = {
     manifestor: {
       title: 'Manifestor',
       paragraphs: [
-        'The most independent type, around **9% of people**. At least one motor center (Heart, Solar Plexus, Spleen) connects to the [Throat](center:throat), but the [Sacral](center:sacral) is undefined — so the energy is not constant. It arrives in bursts, good for starting things, and then it needs rest. Quite a lot of rest.',
+        'The most independent type, around **9% of people**. At least one motor center (the Heart or the Solar Plexus) connects to the [Throat](center:throat), but the [Sacral](center:sacral) is undefined — so the energy is not constant. It arrives in bursts, good for starting things, and then it needs rest. Quite a lot of rest.',
         'The strategy is to **inform before acting**. Not asking permission — simply telling the people your impact will reach. It takes most of the resistance out of the room. Acting in line with it brings *peace*; skipping it brings opposition, and *anger* builds.',
         'A Manifestor is here to **start things and make an impact**, not to keep them running. Managing the energy means respecting the cycle of push and rest, and protecting your independence without cutting yourself off.'
       ]
@@ -882,7 +882,7 @@ const overrides = {
         'In practice, your Sacral center responds before your mind does: faced with something concrete — a proposal, a question, a situation — a gut reaction of attraction or rejection arises. **Following that bodily signal**, rather than deciding from thought and reason, is what keeps your energy well spent.'
       ],
       'manifesting-generator': [
-        'You are a specific kind of [Generator](type:generator) — Manifesting Generators are 33% of the population, and together with the other Generators you add up to close to 70%: you have a defined [Sacral](center:sacral), and what sets you apart from other Generators is that your Sacral is connected, directly or indirectly, to the [Throat](center:throat). That gives you the generating energy typical of Generators plus the ability to manifest and make things happen quickly.',
+        'You are a specific kind of [Generator](type:generator) — Manifesting Generators are 33% of the population, and together with the other Generators you add up to close to 70%: you have a defined [Sacral](center:sacral), and what sets you apart from other Generators is that you also have the [Throat](center:throat) connected to a motor center. That gives you the generating energy typical of Generators plus the ability to manifest and make things happen quickly.',
         'Your strategy is to **respond and then inform**: first you wait for the sacral response — your body’s yes or no — and, once you have it, you let those who will be affected know before setting off. You tend to be multi-talented, fast and non-linear: you skip steps, do several things at once, and sometimes double back to finish what you skipped.',
         'The key to managing your energy is not to scatter yourself by initiating without having listened to your body’s response: when you commit to what genuinely lights you up (when your body says yes), you move fast and feel *satisfaction* and *peace*; but when you force things driven by the mind and by ideas, you accumulate *frustration*, *anger* and half-finished work.'
       ],
@@ -892,7 +892,7 @@ const overrides = {
         'In managing your energy, your task is to **rest and pace yourself**: you don’t compete on physical stamina, but on depth and mastery. Your wellbeing rests on sleeping and letting go before you are exhausted, and on choosing carefully who you give your attention and effort to: learning to say yes or no when it matters (because not every invitation means you have to say yes).'
       ],
       manifestor: [
-        'You are the most independent type, around **9% of the population**. You have at least one motor center (Heart, Solar Plexus, Spleen) connected to the [Throat](center:throat), but an undefined [Sacral](center:sacral), so your energy is not constant: it comes in bursts, which you use to initiate and set things in motion, and then you need rest — quite a lot of rest.',
+        'You are the most independent type, around **9% of the population**. You have at least one motor center (the Heart or the Solar Plexus) connected to the [Throat](center:throat), but an undefined [Sacral](center:sacral), so your energy is not constant: it comes in bursts, which you use to initiate and set things in motion, and then you need rest — quite a lot of rest.',
         'Your strategy is to **inform before acting**. This is not about asking permission, but about letting those your impact will reach know: by doing so, you reduce the resistance and rejection you otherwise meet around you. Acting in line with your strategy brings you *peace*; if you don’t, you feel opposition and *anger* grows in you.',
         'You are here to **initiate and make an impact**, not to execute in a sustained way. Managing your energy means respecting your cycles of push and rest, and protecting your autonomy without isolating yourself from those around you.'
       ],
@@ -920,7 +920,7 @@ const overrides = {
         'That is not passivity. You keep living and preparing, but you save what you see for people who value it and ask. **The right invitation is what lets your gift land**; pushing without one usually brings resistance, bitterness and rejection. Recognition and success are the sign the wait was worth it.'
       ],
       'wait-lunar-cycle': [
-        'Before an important decision, your design asks you to **let a full lunar cycle pass** — around 28 days — instead of settling it in one go.',
+        'Before an important decision, your design asks you to **let a full lunar cycle pass** instead of settling it in one go: this is not caution or delay, it is the time you need for the matter to show you every one of its angles.',
         'Over that time you **talk it through, spend time in different places, and watch how your view of it shifts** day by day. Your chart is completely open, so that journey is what separates what is yours from what you are simply reflecting. Clarity arrives by accumulation, never on impulse.'
       ]
     },
@@ -950,7 +950,7 @@ const overrides = {
         'Your practice is to **talk things through with people you trust, in surroundings that suit you** — not so they decide for you, but so you can think out loud. Place and company are part of the method: the decision settles gradually, with time and talking.'
       ],
       lunar: [
-        'As a Reflector you have no defined center, so there is no fixed inner source to consult. Your guide is **time**: a full lunar cycle, around 28 days, before anything important.',
+        'As a Reflector you have no defined center, so there is no fixed inner source to decide for you. Your authority is not inside you: it is **time**. What the body settles in other designs, in yours is settled by the clarity that gathers across the cycle.',
         'Across that cycle you **pass through different states, places and conversations**, watching how your view of the question changes. Your clarity comes by **ripening**, from perspectives piling up rather than from impulse. Whatever still rings true after the whole cycle is what you can trust.'
       ]
     },
@@ -1078,7 +1078,7 @@ const overrides = {
     },
     reflector: {
       energia:
-        '**Managing your energy** — With **no defined center**, you are constantly sampling the energy of people and places. **Your surroundings affect you enormously** and your energy swings a lot from day to day. The single most important thing for you is **choosing where you are and who you are with** — and not demanding a consistency your design does not have. For the big decisions, give yourself a **lunar cycle**, about 28 days.',
+        '**Managing your energy** — With **no defined center**, you are constantly sampling the energy of people and places. **Your surroundings affect you enormously** and your energy swings a lot from day to day. The single most important thing for you is **choosing where you are and who you are with** — and not demanding a consistency your design does not have. And do not close anything that matters while it is still hot: give it the whole cycle.',
       trampa:
         '**The trap for your type** — Deciding in a hurry, staying in places that do not suit you, and **taking what you are reflecting for your own**: moods and pressures that actually belong to the group. **Forcing yourself to be the same every day** goes against how you work.',
       senales:

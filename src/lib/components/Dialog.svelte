@@ -79,7 +79,7 @@
       class="dialog"
       role={a.mode === 'alert' ? 'alertdialog' : 'dialog'}
       aria-modal="true"
-      aria-label={a.title || a.message || 'Diálogo'}
+      aria-label={a.title || a.message || 'Dialog'}
       use:focusTrap
       use:scrollLock
       transition:scale={{ duration: 130, start: 0.96, opacity: 0 }}
@@ -94,6 +94,7 @@
           bind:value={inputValue}
           type="text"
           placeholder={a.placeholder}
+          maxlength={a.maxLength}
           spellcheck="false"
           autocomplete="off"
           onkeydown={(e) => {

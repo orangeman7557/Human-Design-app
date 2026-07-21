@@ -91,7 +91,8 @@ export default {
     // Import result: parts joined with a space. "(s)" keeps it plural-agnostic.
     importImported: '{n} carta(s) importada(s).',
     importDuplicates: '{n} omitida(s) por estar ya guardada(s).',
-    importInvalid: '{n} descartada(s) por datos incompletos.'
+    importInvalid: '{n} descartada(s) por datos incompletos.',
+    importBadFormat: 'El archivo no tiene el formato esperado.'
   },
 
   footer: {
@@ -111,6 +112,8 @@ export default {
     errImageGen: 'No se pudo generar la imagen.',
     errSave: 'No se pudo guardar: {msg}',
     errShare: 'No se pudo compartir el enlace: {msg}',
+    errDownload: 'No se pudo descargar la imagen: {msg}',
+    errPdf: 'No se pudo generar el PDF: {msg}',
     // Header / actions
     back: 'Volver',
     report: 'Informe',
@@ -168,7 +171,8 @@ export default {
     moreStrategy: 'Más información sobre esta estrategia',
     moreAuthority: 'Más información sobre esta autoridad',
     moreProfile: 'Más información sobre este perfil',
-    moreDefinition: 'Más información sobre esta definición'
+    moreDefinition: 'Más información sobre esta definición',
+    infoHint: 'Pasa el cursor (o toca) cualquier elemento de la carta para ver su «i» y abrir su explicación.'
   },
 
   storage: {
@@ -257,7 +261,7 @@ export default {
     openAi: 'Abrir IA',
     copyPrompt: 'Copiar prompt',
     copied: 'Copiado',
-    showPrompt: 'Ver/editar el prompt generado',
+    showPrompt: 'Ver/editar el prompt',
     hidePrompt: 'Ocultar prompt',
     otherNote: 'Para otras IA, usa "Copiar prompt" y pégalo donde quieras.'
   },
@@ -270,7 +274,7 @@ export default {
     pdfAria: 'Descargar el informe en PDF',
     pdfBusy: 'Generando PDF…',
     toc: {
-      intro: 'Qué es Human Design',
+      intro: 'Qué es el Diseño Humano',
       experiment: 'Un experimento vital',
       chart: 'Bodygraph',
       type: 'Tu tipo',
@@ -290,7 +294,7 @@ export default {
     pdfDefined: 'DEFINIDO',
     pdfOpen: 'INDEFINIDO',
     showPrompt: 'Ver/editar el prompt',
-    hidePrompt: 'Ocultar el prompt'
+    hidePrompt: 'Ocultar prompt'
   },
 
   // Small category label above an element drawer's title.

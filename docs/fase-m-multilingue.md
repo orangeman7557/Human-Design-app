@@ -65,10 +65,23 @@ Por eso:
 - En **páginas prerenderizadas** (home, privacy) el idioma se toma del
   **parámetro de ruta** (`$page.params.lang`) y se pasa explícito:
   `const tr = (k, p) => t(k, p, lang)`. Nunca `t()` a secas.
-- En **páginas y componentes de cliente** (chart, modales, diálogos) `t()` sin
-  locale explícito es correcto y suficiente.
+- En **componentes que puedan renderizarse dentro de una página
+  prerenderizada** — aunque el componente en sí sea "de cliente" — la regla es
+  la misma. Usan el helper `routeT()` de `lib/i18n/route-t.svelte.js`:
+  `const t = routeT();` y ya queda atado a la ruta desde donde se monten.
+- Solo en componentes que **jamás** se montan durante el prerender (los de la
+  ruta `chart`, que es SPA pura) `t()` a secas es suficiente.
 
-Si algún día una página nueva se prerenderiza, **debe** usar el patrón `tr`.
+> **Cómo se descubrió (jul 2026).** La versión inicial de esta regla decía
+> "páginas usan `tr`, componentes usan `t`" — y era falsa. `About`,
+> `ReportBug` y `StorageInfo` son modales, pero su *disparador* se pinta en el
+> pie de la home prerenderizada, así que leían el locale compartido y perdían
+> la carrera: `/es` se publicó con "report a bug · privacidad · about" y
+> "learn more". Se autocorregía al hidratar, por eso **nunca se veía en dev**,
+> solo en el build — y los crawlers veían la versión rota.
+
+Si algún día una página nueva se prerenderiza, **debe** usar el patrón `tr`, y
+todo componente que pinte texto dentro de ella, `routeT()`.
 
 ---
 

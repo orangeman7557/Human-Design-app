@@ -82,7 +82,8 @@ export default {
     },
     importImported: '{n} chart(s) imported.',
     importDuplicates: '{n} skipped (already saved).',
-    importInvalid: '{n} discarded (incomplete data).'
+    importInvalid: '{n} discarded (incomplete data).',
+    importBadFormat: 'The file is not in the expected format.'
   },
 
   footer: {
@@ -102,6 +103,8 @@ export default {
     errImageGen: 'Could not generate the image.',
     errSave: 'Could not save: {msg}',
     errShare: 'Could not share the link: {msg}',
+    errDownload: 'Could not download the image: {msg}',
+    errPdf: 'Could not generate the PDF: {msg}',
     back: 'Back',
     report: 'Report',
     reportAria: 'Initial Report',
@@ -154,7 +157,8 @@ export default {
     moreStrategy: 'More about this strategy',
     moreAuthority: 'More about this authority',
     moreProfile: 'More about this profile',
-    moreDefinition: 'More about this definition'
+    moreDefinition: 'More about this definition',
+    infoHint: 'Hover over (or tap) any element of the chart to reveal its "i" and open its explanation.'
   },
 
   storage: {
@@ -206,10 +210,13 @@ export default {
     licenseA: 'Source-available project, ',
     licenseB: 'free for non-commercial use',
     licenseC: '. (PolyForm Noncommercial 1.0.0)',
-    madeA: 'App made by Javi G.O. with AI assistance, non-profit and with no agenda at all — I made it because I felt like it, like the good ',
+    // Not a literal rendering of the Spanish: that line's joke is a pun on
+    // "sin ánimo de lucro" stretched to "sin ánimo de nada", which dies in
+    // translation. This keeps the shrug, not the words.
+    madeA: 'App made by Javi G.O., with a little help from AI. Non-profit — and non-anything-else, really: I built it because I felt like it, like the textbook ',
     madeType: 'Manifestor',
-    madeB: ' that I am :)',
-    wish: 'I hope you find it useful, and may you live happily with your design, dear human!',
+    madeB: ' I am :)',
+    wish: 'I hope it serves you well, and may you live happily with your design, dear human!',
     disclaimer: 'An independent project with no affiliation to any organization. Any trademarks belong to their respective owners. All content presented is informational and does not replace professional advice.',
     coffee: 'Buy Me a Coffee',
     loveBase: 'Send Me Love!',
@@ -242,7 +249,7 @@ export default {
     openAi: 'Open AI',
     copyPrompt: 'Copy Prompt',
     copied: 'Copied',
-    showPrompt: 'View/Edit the Generated Prompt',
+    showPrompt: 'View/Edit the Prompt',
     hidePrompt: 'Hide Prompt',
     otherNote: 'For other AIs, use "Copy prompt" and paste it wherever you like.'
   },
@@ -273,8 +280,8 @@ export default {
       'This report is a first impression. To go deeper into whatever interests you most, take your chart to your AI: the prompt already carries your essential data; complete it with whatever you want to explore.',
     pdfDefined: 'DEFINED',
     pdfOpen: 'UNDEFINED',
-    showPrompt: 'View/edit the prompt',
-    hidePrompt: 'Hide the prompt'
+    showPrompt: 'View/Edit the Prompt',
+    hidePrompt: 'Hide Prompt'
   },
 
   privacy: {

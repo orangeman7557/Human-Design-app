@@ -11,7 +11,10 @@
    *   onclick: (e: MouseEvent) => void
    * }}
    */
-  let { active = false, label = 'Más información', onclick } = $props();
+  // Every call site passes a translated `label`; the default is default-locale
+  // English so a missed one degrades like the rest of i18n instead of leaking
+  // Spanish into another language.
+  let { active = false, label = 'More information', onclick } = $props();
 </script>
 
 <button

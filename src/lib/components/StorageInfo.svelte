@@ -4,10 +4,14 @@
 <!-- live, how the automatic cookie backup protects them, what does delete -->
 <!-- them, and the manual export/install routes. -->
 <script>
-  import { t } from '$lib/i18n/index.svelte.js';
+  import { routeT } from '$lib/i18n/route-t.svelte.js';
   import { fade, fly } from 'svelte/transition';
   import { focusTrap } from './focus-trap.js';
   import { scrollLock } from './scroll-lock.js';
+
+  // Route-bound: the "saber más" trigger renders inside the PRERENDERED home,
+  // where the shared module locale races (see route-t.svelte.js).
+  const t = routeT();
 
   let open = $state(false);
 
