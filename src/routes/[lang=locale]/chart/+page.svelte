@@ -879,18 +879,16 @@
       <p class="birth">{formatBirth(birthData)}</p>
     {/if}
 
-    <!-- Every element on this page has an explanation behind an "i" that only
-         appears on hover (or on tap). That is deliberate — the page stays
-         quiet — but it also means a first-time visitor has no reason to
-         suspect the drawers exist. This one-off line points at them once and
-         then never again (dismissed on close, or the first time a drawer is
-         actually opened). -->
+    <!-- Every element on this page has an explanation behind an "i". On
+         desktop you find it by moving the pointer around, so the hint is
+         MOBILE-ONLY (hidden by CSS below): on touch there is no hover to
+         stumble into, and nothing suggests the drawers exist. Shown once —
+         dismissed on close, or the first time a drawer is actually opened. -->
     {#if showInfoHint}
-      <p class="info-hint">
-        <span class="dot" aria-hidden="true">i</span>
-        {tr('chart.infoHint')}
+      <div class="info-hint">
+        <p>{tr('chart.infoHint')}</p>
         <button type="button" onclick={dismissInfoHint} aria-label={tr('bug.close')}>✕</button>
-      </p>
+      </div>
     {/if}
 
     <div class="graph" bind:this={graphEl}>
@@ -1461,48 +1459,44 @@
     margin: -0.15rem 0 1.5rem 3.25rem;
   }
 
-  /* One-off discoverability line for the "i" drawers. Muted on purpose: it is
-     a nudge, not a banner. Hidden from the PNG/PDF export like the rest of the
+  /* One-off discoverability notice for the "i" drawers. A card with a touch of
+     the accent so it reads as a notice and not as body copy — but only a
+     touch: it sits above the chart and must not compete with it.
+     MOBILE ONLY (see the media query): on desktop the "i" appears under the
+     pointer on its own. Hidden from the PNG/PDF export like the rest of the
      interactive chrome (see .capturing below). */
   .info-hint {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin: -1rem 0 1.4rem 3.25rem;
-    font-size: 0.78rem;
-    color: var(--text-muted);
+    display: none;
+    align-items: flex-start;
+    gap: 0.6rem;
+    margin: -0.6rem 0 1.4rem;
+    padding: 0.6rem 0.7rem;
+    border: 1px solid var(--accent-soft);
+    border-left: 3px solid var(--accent);
+    border-radius: var(--radius);
+    background: var(--accent-soft);
   }
-  .info-hint .dot {
-    flex: none;
-    width: 15px;
-    height: 15px;
-    border-radius: 50%;
-    border: 1px solid #4a4a54;
-    background: var(--surface-2);
+  .info-hint p {
+    margin: 0;
+    flex: 1;
+    font-size: 0.82rem;
+    line-height: 1.45;
     color: var(--text);
-    font-family: Georgia, 'Times New Roman', serif;
-    font-style: italic;
-    font-size: 10px;
-    line-height: 1;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
   }
   .info-hint button {
+    flex: none;
     background: none;
     border: none;
-    padding: 0 0.2rem;
-    color: var(--text-muted);
-    font-size: 0.8rem;
+    padding: 0 0.1rem;
+    margin: -0.1rem 0 0;
+    color: var(--accent);
+    font-size: 0.85rem;
     cursor: pointer;
-    line-height: 1;
-  }
-  .info-hint button:hover {
-    color: var(--text);
+    line-height: 1.4;
   }
   @media (max-width: 680px) {
     .info-hint {
-      margin-left: 0;
+      display: flex;
     }
   }
 

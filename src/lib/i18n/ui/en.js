@@ -158,7 +158,7 @@ export default {
     moreAuthority: 'More about this authority',
     moreProfile: 'More about this profile',
     moreDefinition: 'More about this definition',
-    infoHint: 'Hover over (or tap) any element of the chart to reveal its "i" and open its explanation.'
+    infoHint: 'Tap any element of the chart for more information (i)'
   },
 
   storage: {
@@ -175,32 +175,36 @@ export default {
   },
 
   bug: {
+    // Deliberately NOT a literal rendering of ui/es.js: the Spanish is chatty
+    // and first-person, and translated word-for-word it came out stiff. Same
+    // voice, English phrasing. Sentence case in the title (author, jul 2026):
+    // it is a sentence, not a label.
     link: 'report a bug',
-    introBug: 'Describe the problem in as much detail as you can. The clearer you are, the better the chance I can understand and fix it. (Your device and browser details are included automatically — no need to type them.)',
-    introIdea: 'Describe your suggestion in as much detail as you can. The clearer you are, the better the chance I can understand and build it. (Your device and browser details are included automatically — no need to type them.)',
+    introBug: 'The more detail the better — the clearer it is, the likelier I can reproduce it and fix it. (Your device and browser come attached automatically, so don\u2019t bother typing them.)',
+    introIdea: 'Tell me what you have in mind, in as much detail as you like. The clearer it is, the likelier I can actually build it. (Your device and browser come attached automatically, so don\u2019t bother typing them.)',
     labelBug: 'What happened?',
     phIdeaInput: 'Tell me :)',
-    aria: 'Report a Bug or Send a Suggestion',
-    title: 'Report a Bug or Send a Suggestion',
-    thanks: 'Thank you! I got it.',
-    thanksNote: 'I’ll take a look as soon as I can. There is no automatic reply, so don’t worry if you don’t hear back.',
+    aria: 'Report a bug or send a suggestion',
+    title: 'Report a bug or Send a suggestion',
+    thanks: 'Got it \u2014 thank you!',
+    thanksNote: 'I\u2019ll look at it as soon as I can. There\u2019s no auto-reply, so don\u2019t worry if nothing comes back.',
     close: 'Close',
-    what: 'What is it about?',
+    what: 'What\u2019s this about?',
     kindAria: 'Report type',
-    kindBug: 'Report a Bug',
-    kindIdea: 'Send a Suggestion/Message',
-    phIdea: 'Write your suggestion',
-    phBug: 'What you were doing, what you expected, what happened, and how to repeat it if you know…',
-    name: 'Name (Optional)',
-    email: 'Email (Optional)',
+    kindBug: 'Report a bug',
+    kindIdea: 'Send a suggestion/message',
+    phIdea: 'What\u2019s on your mind',
+    phBug: 'What you were doing, what you expected, what actually happened \u2014 and how to trigger it again, if you know…',
+    name: 'Name (optional)',
+    email: 'Email (optional)',
     send: 'Send',
     sending: 'Sending…',
-    errEmpty: 'Tell me what happened before sending.',
-    errSend: 'Could not send. Please try again in a moment.',
-    errNet: 'No connection, or the send failed. Please try again in a moment.',
+    errEmpty: 'Tell me what happened first.',
+    errSend: 'That didn\u2019t send. Give it another go in a moment.',
+    errNet: 'No connection, or the send failed. Try again in a moment.',
     subjectBug: 'Bug',
     subjectIdea: 'Suggestion',
-    subjectPrefix: 'Human Design Chart · reports'
+    subjectPrefix: 'Human Design Chart \u00b7 reports'
   },
 
   about: {

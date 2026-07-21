@@ -29,7 +29,7 @@ export default {
   },
 
   home: {
-    tagline: 'Calcula tu carta de Diseño Humano — gratis y sin registro.'
+    tagline: 'Calcula tu carta de Diseño Humano — gratis, sin registro.'
   },
 
   form: {
@@ -172,7 +172,7 @@ export default {
     moreAuthority: 'Más información sobre esta autoridad',
     moreProfile: 'Más información sobre este perfil',
     moreDefinition: 'Más información sobre esta definición',
-    infoHint: 'Pasa el cursor (o toca) cualquier elemento de la carta para ver su «i» y abrir su explicación.'
+    infoHint: 'Toca cualquier elemento de la carta para obtener más información (i)'
   },
 
   storage: {

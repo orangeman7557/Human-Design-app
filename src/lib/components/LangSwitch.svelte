@@ -94,9 +94,13 @@
   /* Full-width strip so the inner row can be centred like the page content;
      it must not eat clicks anywhere except on the control itself.
      z-index sits BELOW every overlay (drawers 40/60, report 50, dialogs 70) so
-     the selector never floats on top of an open panel. */
+     the selector never floats on top of an open panel.
+
+     `absolute`, not `fixed` (author, jul 2026): the tab belongs to the top of
+     the page, not to the viewport — it scrolls away with the header instead of
+     riding along over the content. */
   .lang-switch {
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     right: 0;
