@@ -680,7 +680,7 @@ corrected).
     `<link rel="alternate" type="application/json">`, an HTTP header, or just
     the prompt's URL text.
 
-- ⬜ **Review the English translation for naturalness (author, 2026-07-21).**
+- 🟡 **Review the English translation for naturalness (author, 2026-07-21) — FIRST PASS DONE 2026-07-21.**
   The Phase M translation is complete and accurate, but the author flagged that
   parts read as *translated* rather than *written in English* — grammatically
   fine, yet not how an English speaker would put it. Example given:
@@ -701,10 +701,22 @@ corrected).
   Highest value first: the report's Part A (intro, ants, experiment, collective),
   which is what a newcomer reads first. Best done as a **rewrite in English from
   the meaning**, not a diff against the Spanish.
-  Two terminology calls also left open: **"Complete channels"** (HD also says
-  "defined channels" — both are in use; pick one and keep ES/EN in sync) and
-  whether center names should follow HD's usual title case ("Solar Plexus")
-  instead of the project-wide sentence case.
+  **Done in the first pass (2026-07-21):** the report's Part A (intro, ants,
+  bodygraph, conditioning, experiment), the collective comparison and its
+  lead-ins, the ten concept drawers, the five type drawers and the per-type
+  practical block were **rewritten from the meaning** rather than edited against
+  the Spanish. The author's example paragraph now reads "Back to the ants. …".
+  Capitalisation was also settled: English uses Title Case (see
+  docs/fase-m-multilingue.md); "Solar Plexus" and friends are fixed.
+
+  **Still on the literal side, for a later pass:** the second-person bodies of
+  strategy / authority / profile / definition / center inside `report`, the
+  strategy / authority / profile / definition / center drawers, the 64 gate
+  essences and the 36 channel essences. These are shorter and more formulaic, so
+  they read acceptably, but they were translated close to the Spanish.
+
+  One terminology call still open: **"Complete Channels"** — HD also says
+  "defined channels"; both are in use. Pick one and keep ES/EN in sync.
 
 - ⬜ **PDF report on a white background instead of dark mode (requested
   2026-07-06).** The initial-report PDF (`report-pdf.js`) currently mirrors the

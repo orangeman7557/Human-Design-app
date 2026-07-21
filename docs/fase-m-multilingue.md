@@ -109,7 +109,15 @@ Lo único **manual** que queda fuera de esa derivación:
   mes-primero (se decide con `navigator.language`, no con el idioma de la app:
   Reino Unido, Australia y Canadá siguen en día-primero).
 - **Voz**: el informe inicial habla en 2ª persona; todo lo demás es impersonal
-  ("esta carta", nunca "tu carta"). Los títulos van en *sentence case*.
+  ("esta carta", nunca "tu carta").
+- **Capitalización — depende del idioma**, no del proyecto. Español: *sentence
+  case*. Inglés: **Title Case** en nombres y encabezados ("Solar Plexus",
+  "Complete Channels"), y los nombres propios de HD en mayúscula también dentro
+  de frase. La prosa y los mensajes de error van en sentence case en ambos.
+- **Traducir ≠ calcar.** El pase debe *reescribir desde el significado*, no
+  seguir la estructura de la frase española: frases más cortas, idioma natural.
+  Lo contrario produjo textos "gramaticalmente correctos pero no ingleses"
+  (revisión del autor, 2026-07-21).
 - **I Ching (⚠️ legal)**: los nombres de hexagrama en inglés **no** pueden
   reutilizar la traducción Wilhelm/Baynes (tiene copyright). Usar redacción
   propia o la de Legge (1882, dominio público) — igual que se hizo en español.
@@ -145,6 +153,20 @@ Hecho:
   *data controller* en vez de *responsable*, los derechos del RGPD enumerados
   como se hace en inglés — *access, rectify, erase, object, restrict,
   portability* — y fecha en formato británico).
+
+### ⚠️ Al editar los packs con scripts
+
+Dos veces se destrozó el fichero inglés por anclar mal un reemplazo por bloques:
+
+1. Buscar `  concept: {` casó primero con el **`concept` anidado** dentro de
+   `promptTemplates` y arrasó `drawer` y `reportShell`.
+2. Reemplazar hasta un comentario que estaba **varios bloques más abajo** se
+   llevó por delante `iching` y `channel`.
+
+Si hay que editar por script: anclar en cadenas **únicas y con su indentación**,
+y después comprobar (a) el balance de llaves y (b) que el test de paridad sigue
+verde — es justo lo que detectó la pérdida (`catalog.test.js` avisó de un 19,6 %
+cayendo al español).
 
 ### Dos trampas de esa página, por si se replica
 

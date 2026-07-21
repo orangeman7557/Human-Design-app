@@ -35,27 +35,27 @@ const overrides = {
       reflector: 'Reflector'
     },
     strategy: {
-      'inform-before-acting': 'Inform before acting',
+      'inform-before-acting': 'Inform Before Acting',
       respond: 'Respond',
-      'respond-then-inform': 'Respond, then inform',
-      'wait-for-invitation': 'Wait for the invitation',
-      'wait-lunar-cycle': 'Wait a lunar cycle'
+      'respond-then-inform': 'Respond, Then Inform',
+      'wait-for-invitation': 'Wait for the Invitation',
+      'wait-lunar-cycle': 'Wait a Lunar Cycle'
     },
     authority: {
-      emotional: 'Emotional (Solar plexus)',
+      emotional: 'Emotional (Solar Plexus)',
       sacral: 'Sacral',
       splenic: 'Splenic (Spleen)',
       ego: 'Ego (Heart)',
-      'self-projected': 'Self-projected (G–Throat)',
-      mental: 'Mental/environmental',
+      'self-projected': 'Self-Projected (G–Throat)',
+      mental: 'Mental/Environmental',
       lunar: 'Lunar'
     },
     definition: {
-      'no-definition': 'No definition',
-      single: 'Single definition',
-      split: 'Split definition',
-      'triple-split': 'Triple split definition',
-      'quad-split': 'Quadruple split definition'
+      'no-definition': 'No Definition',
+      single: 'Single Definition',
+      split: 'Split Definition',
+      'triple-split': 'Triple Split Definition',
+      'quad-split': 'Quadruple Split Definition'
     },
     center: {
       head: 'Head',
@@ -65,7 +65,7 @@ const overrides = {
       heart: 'Heart',
       sacral: 'Sacral',
       spleen: 'Spleen',
-      solarPlexus: 'Solar plexus',
+      solarPlexus: 'Solar Plexus',
       root: 'Root'
     },
     planet: {
@@ -95,7 +95,7 @@ const overrides = {
       reflector: 'Reflector'
     },
     authority: {
-      emotional: 'emotional (Solar plexus)',
+      emotional: 'emotional (Solar Plexus)',
       sacral: 'sacral',
       splenic: 'splenic (Spleen)',
       ego: 'ego (Heart)',
@@ -125,7 +125,7 @@ const overrides = {
       heart: 'Heart (Ego)',
       sacral: 'Sacral',
       spleen: 'Spleen',
-      solarPlexus: 'Solar plexus',
+      solarPlexus: 'Solar Plexus',
       root: 'Root'
     },
     planet: {
@@ -203,7 +203,6 @@ const overrides = {
     }
   },
 
-  // ── Element-drawer scaffolding ───────────────────────────────────────────
   drawer: {
     factCenter: 'Center',
     factCenters: 'Centers',
@@ -211,8 +210,8 @@ const overrides = {
     factChannels: 'Channels',
     factGate: 'Gate',
     factGates: 'Gates',
-    factHarmonic: 'Harmonic gate',
-    factHarmonics: 'Harmonic gates',
+    factHarmonic: 'Harmonic Gate',
+    factHarmonics: 'Harmonic Gates',
     tipHarmonic: 'the gate that completes the channel',
     tipHarmonics: 'the gates that complete its channels',
     sidePersonality: 'Personality',
@@ -247,18 +246,17 @@ const overrides = {
       'Profile {profile} combines two lines: the {a}, conscious, and the {b}, unconscious. Each adds its own nuance, and together they describe a way of learning, of relating and of unfolding one’s purpose.'
   },
 
-  // ── Initial-report scaffolding (second person) ───────────────────────────
   reportShell: {
-    typeTitle: 'Your type: {type}',
+    typeTitle: 'Your Type: {type}',
     typeSubhead: 'You are a {type}',
-    centersTitle: 'Your centers and your conditioning',
-    strategyTitle: 'Your strategy: {strategy}',
-    authorityTitle: 'Your authority: {authority}',
-    profileTitle: 'Your {profile} profile',
-    definitionTitle: 'Your definition: {definition}',
-    definitionTitleNone: 'Your definition',
+    centersTitle: 'Your Centers and Your Conditioning',
+    strategyTitle: 'Your Strategy: {strategy}',
+    authorityTitle: 'Your Authority: {authority}',
+    profileTitle: 'Your {profile} Profile',
+    definitionTitle: 'Your Definition: {definition}',
+    definitionTitleNone: 'Your Definition',
     definitionPrefix: '^Definition\\s+',
-    practiceTitle: 'Living your design',
+    practiceTitle: 'Living Your Design',
     profileHeading: 'Profile {profile}',
     profileIntro:
       'Your {profile} profile combines two lines: the {a}, conscious, and the {b}, unconscious. Each adds its own nuance, and together they describe your way of learning, relating and unfolding your purpose.',
@@ -267,89 +265,88 @@ const overrides = {
     noCenters: 'none'
   },
 
-  // ── Concept level (what each category is) ────────────────────────────────
   concept: {
     bodygraph: {
-      title: 'The bodygraph',
+      title: 'The Bodygraph',
       paragraphs: [
-        'The **bodygraph** is the diagram of the body on which the chart is drawn: the nine geometric shapes are the [centers](concept:center) and the lines connecting them are the [channels](concept:channel), which run from one gate to another. Each center governs a specific function and, together, they map how energy flows.',
-        'What makes every chart unique is which of those [centers](concept:center), [channels](concept:channel) and [gates](concept:gate) are active: type, authority and a person’s way of working all come out of that combination.',
-        'The key distinction is whether each center is **defined** or **undefined** (open). A **defined** center — colored in on the bodygraph — works in a fixed, reliable way: a consistent energy, one’s own and constant. An **undefined** center — shown empty — is not a flaw: it is an open area where the energy of others and of the environment is taken in and amplified; it is where most is learned, but also where it is easy to be conditioned and to mistake what is borrowed for what is one’s own.'
+        'The **bodygraph** is the body diagram a chart is drawn on. The nine shapes are the [centers](concept:center); the lines joining them are the [channels](concept:channel), each running from one gate to another. Every center governs a particular function, and together they map how energy moves.',
+        'What makes each chart unique is which of those [centers](concept:center), [channels](concept:channel) and [gates](concept:gate) are switched on. Type, authority and a person\u2019s whole way of working fall out of that combination.',
+        'The key distinction is whether a center is **defined** or **undefined** (open). A **defined** center — colored in — works the same way every day: a consistent energy, always there. An **undefined** center — shown empty — is not a flaw. It is an open area that takes in and amplifies the energy of other people and of the surroundings. It is where you learn the most, and also where it is easiest to be conditioned and to mistake what is borrowed for what is yours.'
       ]
     },
     type: {
-      title: 'The types',
+      title: 'The Types',
       paragraphs: [
-        '**Type** is the first and most important distinction in a chart: it describes how a person’s energy is designed to interact with the world. There are five — [Generator](type:generator), [Manifesting Generator](type:manifesting-generator), [Projector](type:projector), [Manifestor](type:manifestor) and [Reflector](type:reflector) — and they are determined by which centers are defined and how they connect to the [Throat](center:throat).',
-        'Knowing your type matters above all for one practical reason: each one has its own healthy way of **managing energy and making decisions**. Living according to your own design — instead of imitating other types — is what the system associates with less resistance and less wear.',
-        'It is not a personality label or a horoscope, but a mechanical description of how each person’s energy works. The value is in using it as a mirror: noticing whether your own way of moving through life matches the one the chart suggests.'
+        '**Type** is the first and most important thing a chart tells you: how a person\u2019s energy is built to meet the world. There are five — [Generator](type:generator), [Manifesting Generator](type:manifesting-generator), [Projector](type:projector), [Manifestor](type:manifestor) and [Reflector](type:reflector) — decided by which centers are defined and how they connect to the [Throat](center:throat).',
+        'Type matters for one very practical reason: each one has its own healthy way of **spending energy and making decisions**. Living by your own design instead of copying another type is what the system links to less friction and less exhaustion.',
+        'It is not a personality label or a horoscope. It is a mechanical description of how energy works in a given person. Use it as a mirror: notice whether the way you move through life matches the way the chart says you are built.'
       ]
     },
     strategy: {
       title: 'Strategy',
       paragraphs: [
-        '**Strategy** is the correct way for each type to act in order to live in alignment. It answers a very concrete question: how do you commit to something — a job, a relationship, a decision — without forcing the situation? Each type has its own.',
-        'The five are: the Generator *responds* to what life puts in front of them; the Manifesting Generator *responds and then informs*; the Manifestor *informs before acting*; the Projector *waits for the invitation*; and the Reflector *waits a lunar cycle*. They all share one idea: **stop initiating from the mind** and trust the signal of your own body and of life.',
-        '**Following your strategy is, in practice, the central experiment of Human Design.** The system suggests observing the difference between decisions made in line with your strategy and those made against it, and using that experience — not the theory — as your guide.'
+        '**Strategy** is how each type is meant to engage with life. It answers a very concrete question: how do you commit to something — a job, a relationship, a decision — without forcing it? Each type has its own answer.',
+        'The five: a Generator *responds* to what life puts in front of them; a Manifesting Generator *responds, then informs*; a Manifestor *informs before acting*; a Projector *waits for the invitation*; a Reflector *waits a lunar cycle*. They all point the same way: **stop initiating from your head** and trust the signal your body and your life are already giving you.',
+        '**Following your strategy is the central experiment of Human Design.** Watch the difference between the decisions you make with it and the ones you make against it, and let that experience — not the theory — be your guide.'
       ]
     },
     authority: {
       title: 'Authority',
       paragraphs: [
-        '**Authority** tells you where to make a decision from reliably: which part of you has the final word. In Human Design the mind is there to process information and advise others, but **the mind is not to be trusted for decisions about your own life**; authority always comes from a more bodily source.',
-        'There are seven: emotional (Solar plexus), sacral, splenic (Spleen), ego (Heart), self-projected (G), mental/environmental and lunar. They are determined by a hierarchy based on the defined centers. Some operate **in the moment** (sacral and splenic) and others need **time** (emotional, which asks you to ride out the emotional wave before clarity arrives).',
-        'Authority is the most practical tool in the chart: it turns strategy into a concrete method for everyday decisions. Before an important yes or no, it tells you which inner signal to listen to.'
+        '**Authority** is where a reliable decision comes from — which part of you gets the last word. In Human Design the mind is there to take in information and advise other people, but **it is not to be trusted for decisions about your own life**. Authority always comes from somewhere more bodily.',
+        'There are seven: emotional (Solar Plexus), sacral, splenic (Spleen), ego (Heart), self-projected (G), mental/environmental and lunar. Which one you have follows a hierarchy based on your defined centers. Some work **in the moment** (sacral and splenic); others need **time** — emotional authority asks you to ride out the wave before clarity shows up.',
+        'Authority is the most practical thing in the chart. It turns strategy into something you can actually use: before an important yes or no, it tells you which inner signal to listen for.'
       ]
     },
     profile: {
-      title: 'The profile',
+      title: 'The Profile',
       paragraphs: [
-        'The **profile** describes the "how" of each person’s path: the style in which they learn, relate and fulfill their purpose. It is made of two numbers (3/5, for example), taken from lines 1 to 6 of the I Ching: the first comes from the Sun/Earth of *personality* and the second from the Sun/Earth of *design*.',
-        'Each line adds a nuance: 1- foundation and research, 2- natural talent, 3- trial and error, 4- bonds and network, 5- projection and practical leadership, 6- example and maturity. The combination of the **two lines** describes a recognizable way of moving through life — more inward or more relational, more experimental or more solid.',
-        'While type and authority answer *how to decide*, the profile answers *how experience unfolds*. It is one of the most revealing layers for self-knowledge, because it usually describes patterns a person already recognizes in their own history. Of the two lines, the first is lived more consciously and the second more unconsciously. The unconscious line is generally more visible to others than to oneself.'
+        'The **profile** is the "how" of your path: the way you learn, relate and grow into what you are here for. It is two numbers — 3/5, for instance — taken from lines 1 to 6 of the I Ching. The first comes from the Sun/Earth of *personality*, the second from the Sun/Earth of *design*.',
+        'Each line brings its own flavor: 1- foundation and research, 2- natural talent, 3- trial and error, 4- bonds and network, 5- projection and practical leadership, 6- example and maturity. Put **two lines** together and you get a recognizable way of moving through life — more inward or more relational, more experimental or more solid.',
+        'Type and authority answer *how to decide*. The profile answers *how your experience unfolds*. It tends to be the layer people recognize fastest, because it describes patterns already visible in their own history. Of the two lines, you live the first consciously and the second unconsciously — and other people usually see that second one more clearly than you do.'
       ]
     },
     definition: {
       title: 'Definition',
       paragraphs: [
-        '**Definition** describes how the defined centers of a chart are connected to each other: whether they form a single block of energy or several separate groups. It speaks of inner consistency — which parts of a person are always "switched on" and linked — and of how that energy is integrated.',
-        'The variants are: no definition ([Reflector](type:reflector), no center defined), single (everything connected in one group), split (two groups), triple split (three) and quadruple split (four). Single definition tends to feel **self-sufficient**; split definitions usually experience a **search for connection**, often through other people or through specific gates that bridge the groups.',
-        'In practice, definition helps you understand what kind of company or environment completes you. Having more or fewer splits is neither better nor worse: each describes a different way of functioning and of relating.'
+        '**Definition** describes how your defined centers connect to each other: whether they form one block of energy or several separate groups. It is about inner consistency — which parts of you are always switched on and wired together.',
+        'The variants: no definition ([Reflector](type:reflector), nothing defined), single (all one group), split (two groups), triple split (three) and quadruple split (four). Single definition tends to feel **self-sufficient**; the split ones usually bring a **search for connection**, often through other people, or through the particular gates that bridge the gap.',
+        'In practice, definition tells you what kind of company and surroundings complete you. More splits is not worse, and fewer is not better: each describes a different way of working and of relating.'
       ]
     },
     center: {
-      title: 'The centers',
+      title: 'The Centers',
       paragraphs: [
-        'The **centers** are the nine energy hubs of the bodygraph, each tied to a specific function. They inherit the idea of the chakras, but here what matters is whether each center is **defined** or **undefined** (open). The nine centers and their functions are:'
+        'The **centers** are the nine energy hubs of the bodygraph, each tied to a particular function. The idea comes from the chakras, but here what matters is whether a center is **defined** or **undefined** (open). The nine centers and what they do:'
       ],
       after: [
-        'A **defined** center works in a fixed, reliable way: a consistent energy that is always contributed, one’s own and constant. An **undefined** center is not a flaw: it is an open area where the energy of others and of the environment is taken in and amplified; it is where most is learned, but also where it is easy to be conditioned and to mistake what is borrowed for what is one’s own.',
-        'Looking at the centers is one of the most practical keys to **managing energy**: the defined ones mark what you offer steadily, and the undefined ones mark where it is wise not to make decisions under borrowed pressure.'
+        'A **defined** center works the same way every day: a consistent energy you always bring, your own and reliable. An **undefined** center is not a flaw. It is an open area that takes in and amplifies the energy of other people and of the surroundings. It is where you learn the most, and also where it is easiest to be conditioned and to mistake what is borrowed for what is yours.',
+        'Reading the centers is one of the most practical things you can do for **managing your energy**: the defined ones show what you reliably offer, and the undefined ones show where it pays not to decide under borrowed pressure.'
       ]
     },
     channel: {
-      title: 'The channels',
+      title: 'The Channels',
       paragraphs: [
-        'The **channels** are the 36 connections of the bodygraph: each joins two gates sitting in different centers. A **complete** channel — with both of its gates active — links those two centers, defines them, and creates a steady, reliable current of energy between them.',
-        'Taken together, the channels are what determine **type, definition and which centers are defined**. That makes them the mechanical backbone of the chart: they don’t describe an isolated trait, but a constant way in which two areas of energy work together.',
-        'Each channel combines the themes of its two gates (and of their I Ching hexagrams). For a detailed reading of a specific channel, you can use the "learn more using AI" option.'
+        'The **channels** are the 36 connections of the bodygraph. Each one joins two gates sitting in different centers. When both of its gates are active the channel is **complete**: it links those two centers, defines them, and creates a steady, dependable current between them.',
+        'Between them, the channels decide **your type, your definition and which centers are defined**. That makes them the mechanical backbone of the chart: a channel is not an isolated trait but a constant way two areas of your energy work together.',
+        'Each channel blends the themes of its two gates (and of their I Ching hexagrams). For a close reading of a particular channel, use the "learn more using AI" option.'
       ]
     },
     gate: {
-      title: 'The gates',
+      title: 'The Gates',
       paragraphs: [
-        'The **gates** are the 64 possible activations of the bodygraph, one for each I Ching hexagram. Each gate lives in a specific center and adds a particular nuance of energy or character; at birth, the planets "switch on" a set of them.',
-        'An active gate that doesn’t find its partner — the one at the other end of its channel — is left **hanging**: it contributes its theme but seeks completion, often through another person who has the complementary gate. When both gates of a channel are active, the channel forms and defines its two centers.',
-        'To go deeper into a specific gate — its nuance, its I Ching hexagram and how it is lived — you can use the "learn more using AI" option.'
+        'The **gates** are the 64 possible activations of the bodygraph, one per I Ching hexagram. Each lives in a specific center and adds its own flavor of energy or character. At birth, the planets switch on a set of them.',
+        'An active gate whose partner — the gate at the other end of its channel — is missing is left **hanging**. Its theme is there, but it looks to be completed, often through someone who carries the other half. When both gates are active the channel forms and defines its two centers.',
+        'To go deeper into a particular gate — its flavor, its hexagram, how it plays out — use the "learn more using AI" option.'
       ]
     },
     activation: {
-      title: 'The activations',
+      title: 'The Activations',
       paragraphs: [
-        '**Activations** are the positions of the planets at the moment of birth, translated into Human Design gates and lines. Each body "switches on" a specific gate (and its line), and the set of all of them is what builds the chart: centers, channels, type, authority and profile.',
-        'They are calculated at **two moments**, hence the two columns: *Personality* uses the position at the instant of birth (the conscious side); *Design* uses the position about 88 days earlier — 88° of solar arc — (the unconscious side). That is why there are two activations per planet.',
-        'Each activation is written as **gate.line**: the gate (1 to 64) and, within it, the line (1 to 6). For example, a **30.3 on the Sun** means the Sun activates **gate 30 in its line 3** — the theme of gate 30 read with the nuance line 3 brings. It is the basic unit the whole chart is built from.',
-        'They don’t all carry the same weight: the **Sun and Earth** concentrate most of the meaning and the rest add nuance; the *Weight* column summarizes that relative influence. Tap an activation to open the corresponding gate. And to see the lines, look at the possible lines in the [profile](concept:profile).'
+        '**Activations** are the positions of the planets at your birth, translated into Human Design gates and lines. Each body switches on one gate (and one line within it), and the whole set is what builds the chart: centers, channels, type, authority and profile.',
+        'They are worked out at **two moments**, which is why there are two columns. *Personality* uses the position at the instant of birth — the conscious side. *Design* uses the position about 88 days earlier, 88\u00b0 of solar arc — the unconscious side. Hence two activations per planet.',
+        'Each one is written **gate.line**: the gate (1 to 64) and, inside it, the line (1 to 6). A **30.3 on the Sun** means the Sun switches on **gate 30 in its line 3** — the theme of gate 30, read with the flavor line 3 brings. That is the basic unit the whole chart is built from.',
+        'They do not all count equally: the **Sun and Earth** carry most of the meaning and the rest add nuance, which is what the *Weight* column summarizes. Tap an activation to open its gate, and see the [profile](concept:profile) for what the lines mean.'
       ]
     }
   },
@@ -359,41 +356,41 @@ const overrides = {
     generator: {
       title: 'Generator',
       paragraphs: [
-        'The majority type, the *pure* Generator: around **37% of the population**. Its defining feature is the defined [Sacral center](center:sacral): the life-force engine of the system, generative and renewable in character. Its generating, building energy, when well aligned, is sustained and abundant.',
-        'It operates by responding: it **reacts to what life puts in front of it** instead of initiating from the mind and from reasoning. When it commits its energy to the right thing, *satisfaction* appears; if it doesn’t listen well and forces its energy where it doesn’t belong, *frustration* appears.',
-        'In practice, its Sacral center responds before its mind does: faced with something concrete — a proposal, a question, a situation — a gut reaction of attraction or rejection arises. **Following that bodily signal**, rather than deciding from thought and reason, is what keeps its energy well spent.'
+        'The most common type, and the *pure* Generator: around **37% of people**. What defines it is a defined [Sacral Center](center:sacral) — the life-force engine of the system, generative and renewable. Well aligned, that building energy is steady and plentiful.',
+        'A Generator works by responding. It **reacts to what life puts in front of it** rather than starting things from the head. Commit that energy to the right thing and *satisfaction* shows up; push it where it does not belong and *frustration* does instead.',
+        'In practice the Sacral answers before the mind does. Faced with something concrete — a proposal, a question, a situation — there is a gut pull toward it or away from it. **Trusting that signal**, rather than reasoning your way to an answer, is what keeps the energy well spent.'
       ]
     },
     'manifesting-generator': {
       title: 'Manifesting Generator',
       paragraphs: [
-        'A variant of the [Generator](type:generator) — Manifesting Generators are about 33% of the population, and together with the other Generators, close to 70%: an MG has a defined [Sacral](center:sacral), and what sets it apart from other Generators is that its Sacral is connected, directly or indirectly, to the [Throat](center:throat). That gives it the generating energy typical of Generators plus the ability to manifest and make things happen quickly.',
-        'Its strategy is to **respond and then inform**: first it waits for the sacral response — the body’s yes or no — and, once it has it, it lets those who will be affected know before setting off. It tends to be multi-talented, fast and non-linear: it skips steps, does several things at once, and sometimes doubles back to finish what it skipped.',
-        'The key to managing its energy is not to scatter itself by initiating without having listened to its body’s response: when it commits to what genuinely lights it up (when its body says yes), it moves fast and feels *satisfaction* and *peace*; but when it forces things driven by the mind and by ideas, it accumulates *frustration*, *anger* and half-finished work.'
+        'A variant of the [Generator](type:generator) — about 33% of people, which puts all Generators together at close to 70%. An MG has a defined [Sacral](center:sacral) like any Generator, but its Sacral connects, directly or not, to the [Throat](center:throat). That adds the ability to make things happen fast.',
+        'The strategy is to **respond and then inform**: wait for the sacral answer — the body\u2019s yes or no — and, once you have it, tell the people it will affect before you set off. MGs tend to be many-sided, quick and non-linear: skipping steps, running several things at once, and doubling back later to finish what was skipped.',
+        'The trick is not to scatter. Starting things the body never said yes to is what drains an MG. When the yes is real, it moves fast and feels *satisfaction* and *peace*; when the mind pushes instead, what piles up is *frustration*, *anger* and half-finished work.'
       ]
     },
     projector: {
       title: 'Projector',
       paragraphs: [
-        'Close to **20% of the population**. It does not have a defined [Sacral](center:sacral), so it is **not designed for constant work** nor to sustain the same energy as a [Generator](type:generator): it must be careful about trying to perform continuously and without rest. Its gift is a different one: seeing others with enormous depth and knowing how to guide and direct other people’s energy.',
-        'Its strategy is to **wait for the invitation** for the important things — work, love, where to live. It needs to be recognized and invited for its wisdom and its effort to be well received; when it offers itself or steps in unasked, it usually meets resistance and rejection. When *recognition* and *success* show up in its life, they are the clue that it is on the right track. The symptom that appears when it isn’t living in alignment is *bitterness*.',
-        'In managing its energy, its task is to **rest and pace itself**: it doesn’t compete on physical stamina, but on depth and mastery. Its wellbeing rests on sleeping and letting go before it is exhausted, and on choosing carefully who it gives its attention and effort to: learning to say yes or no when it matters (because not every invitation means it has to say yes).'
+        'Around **20% of people**. With no defined [Sacral](center:sacral), a Projector is **not built for constant work** and cannot hold a [Generator](type:generator)\u2019s pace — so beware of trying to keep going without rest. The gift lies elsewhere: seeing other people with real depth, and knowing how to guide their energy.',
+        'The strategy is to **wait for the invitation** on the things that matter — work, love, where to live. Recognition is what lets the insight land; offering it unasked usually meets resistance. When *recognition* and *success* turn up, that is the sign of being on track. When things are off, the tell is *bitterness*.',
+        'Managing the energy means **resting and pacing**: the competition is not stamina, it is depth and mastery. Sleep and let go before you are empty, and choose carefully who gets your attention — learning to say yes or no when it counts, because not every invitation deserves a yes.'
       ]
     },
     manifestor: {
       title: 'Manifestor',
       paragraphs: [
-        'The most independent type, around **9% of the population**. It has at least one motor center (Heart, Solar plexus, Spleen) connected to the [Throat](center:throat), but an undefined [Sacral](center:sacral), so its energy is not constant: it comes in bursts, which it uses to initiate and set things in motion, and then it needs rest — quite a lot of rest.',
-        'Its strategy is to **inform before acting**. This is not about asking permission, but about letting those its impact will reach know: doing so reduces the resistance and rejection it otherwise meets around it. Acting in line with its strategy brings it *peace*; failing to do so brings opposition and a growing *anger*.',
-        'The Manifestor is here to **initiate and make an impact**, not to execute in a sustained way. Managing its energy means respecting its cycles of push and rest, and protecting its autonomy without isolating itself from the people around it.'
+        'The most independent type, around **9% of people**. At least one motor center (Heart, Solar Plexus, Spleen) connects to the [Throat](center:throat), but the [Sacral](center:sacral) is undefined — so the energy is not constant. It arrives in bursts, good for starting things, and then it needs rest. Quite a lot of rest.',
+        'The strategy is to **inform before acting**. Not asking permission — simply telling the people your impact will reach. It takes most of the resistance out of the room. Acting in line with it brings *peace*; skipping it brings opposition, and *anger* builds.',
+        'A Manifestor is here to **start things and make an impact**, not to keep them running. Managing the energy means respecting the cycle of push and rest, and protecting your independence without cutting yourself off.'
       ]
     },
     reflector: {
       title: 'Reflector',
       paragraphs: [
-        'The rarest type: barely **1% of the population**. It has no defined center at all: its whole bodygraph is open. That makes it an extraordinarily sensitive mirror of the people and places around it, able to sense the health of a community.',
-        'Because it constantly samples other people’s energy, **the environment and the company affect it enormously**: who it is with and where it is changes its experience profoundly. Its strategy is to **wait a lunar cycle** — about 28 days — before important decisions, letting the matter be seen from many angles before settling it.',
-        'Its greatest care in managing energy is choosing environments well and not identifying with what it is merely reflecting. When it lives in alignment with its design, in the right place and with the right people, *surprise* and *delight* appear. If it doesn’t live in alignment, the symptom that shows up is *disappointment*.'
+        'The rarest type: barely **1% of people**. No center is defined — the whole bodygraph is open. That makes a Reflector an unusually sensitive mirror of the people and places around them, able to read the health of a community.',
+        'Because they are constantly sampling other people\u2019s energy, **surroundings matter enormously**: who they are with and where they are changes the experience completely. The strategy is to **wait a lunar cycle** — about 28 days — before big decisions, letting the thing be seen from every angle first.',
+        'The main care is choosing environments well and not mistaking what is being reflected for what is theirs. In the right place with the right people, *surprise* and *delight* show up. When things are off, the tell is *disappointment*.'
       ]
     }
   },
@@ -408,28 +405,28 @@ const overrides = {
       ]
     },
     'respond-then-inform': {
-      title: 'Respond, then inform',
+      title: 'Respond, Then Inform',
       paragraphs: [
         'The Manifesting Generator’s strategy, combining the two strategies of responding and informing. First of all, like any Generator, it responds — that is, it **waits for the sacral response**, the body’s yes or no to something concrete; it does not initiate from the mind.',
         'Once it has that response and is about to act, it **informs those who will be affected** before setting off. Because of its ability to manifest quickly, letting people know reduces friction with the environment and stops its speed from generating resistance. Skipping either of the two steps — responding and informing — is the usual source of its exhaustion.'
       ]
     },
     'inform-before-acting': {
-      title: 'Inform before acting',
+      title: 'Inform Before Acting',
       paragraphs: [
         'The Manifestor’s strategy. Because its energy initiates and makes an impact without warning, the design asks it to **let the people it is going to affect know before setting off**. This is not about asking permission or justifying itself: it is simply communicating what it is about to do.',
         'The effect is very practical: informing dissolves much of the resistance it meets when it acts by surprise. In fact, informing can even bring it allies who smooth the way. Doing it brings peace to those around it; skipping it provokes the anger and opposition that, without it noticing, end up obstructing its own movement.'
       ]
     },
     'wait-for-invitation': {
-      title: 'Wait for the invitation',
+      title: 'Wait for the Invitation',
       paragraphs: [
         'The Projector’s strategy. For the important things — a job, a relationship, a big commitment — the design asks it to **wait to be recognized and invited** instead of offering itself unasked.',
         'This is not passivity: the Projector keeps living and preparing, but saves its wisdom for those who value it and ask for it. **The right invitation opens the door** for its gift to be well received; insisting without one usually brings resistance, bitterness and rejection. Recognition and success are the sign that the wait was worth it.'
       ]
     },
     'wait-lunar-cycle': {
-      title: 'Wait a lunar cycle',
+      title: 'Wait a Lunar Cycle',
       paragraphs: [
         'The Reflector’s strategy. Before an important decision, the design asks it to **let a full lunar cycle pass** — about 28 days — instead of settling things all at once.',
         'During that time, the Reflector **talks it over, samples different environments and observes how its perception of the matter changes** day by day. Because its chart is completely open, it needs that journey to tell what is its own from what it is merely reflecting. Clarity comes by accumulation, by seeing the matter from different perspectives, not by impulse.'
@@ -440,49 +437,49 @@ const overrides = {
   // ── Authority (the value "i") ────────────────────────────────────────────
   authority: {
     emotional: {
-      title: 'Emotional authority',
+      title: 'Emotional Authority',
       paragraphs: [
-        'The most widespread authority. Whoever has it has a **defined [Solar plexus](center:solarPlexus)**, which works in waves: mood rises and falls over time, not because of the facts of the moment. The golden rule is clear: **there is no truth in the now**.',
+        'The most widespread authority. Whoever has it has a **defined [Solar Plexus](center:solarPlexus)**, which works in waves: mood rises and falls over time, not because of the facts of the moment. The golden rule is clear: **there is no truth in the now**.',
         'To decide well, the design asks you to **wait until you have ridden out the emotional wave** — sleep on it, let time pass, come back to the matter in different moods — before committing. Clarity is not an instant flash, but what remains once the emotion has settled. Haste is its main enemy.'
       ]
     },
     sacral: {
-      title: 'Sacral authority',
+      title: 'Sacral Authority',
       paragraphs: [
         'The authority of most Generators. It lives in the **[Sacral center](center:sacral)**, which responds **in the moment** with a sound or a gut impulse — a kind of "uh-huh" of attraction or an "mm-mm" of rejection — to something concrete: the body *says* yes or no.',
         'It is an **immediate, bodily** authority: it doesn’t reason, it reacts. It works best with yes/no questions and clouds over when the mind tries to argue the decision. Learning to catch and trust that instant response from the belly is the central practice for whoever has it.'
       ]
     },
     splenic: {
-      title: 'Splenic authority',
+      title: 'Splenic Authority',
       paragraphs: [
         'It lives in the **[Spleen](center:spleen)**, the oldest center of awareness, tied to survival, health and instinct. It speaks **in the present and only once**: a sudden, quiet, spontaneous knowing, with no repetition and no argument.',
         'It is the most **subtle and fleeting** authority: it doesn’t insist or argue, so it is easy to overlook or to rationalize away afterwards. Whoever has it learns to **trust that first instinctive impulse** — that calm bodily "yes" or "no" — the instant it appears, because it usually doesn’t speak twice.'
       ]
     },
     ego: {
-      title: 'Ego authority',
+      title: 'Ego Authority',
       paragraphs: [
         'It lives in the **[Heart center (Ego)](center:heart)**, the engine of willpower and desire. Here the right decision is recognized through an honest question: **do I really want this? what’s in it for me?** This is not selfishness, but honoring what you actually want.',
         'It is an authority of **will and impulse**, not of prolonged reflection. It works when the person listens to what they truly desire and is able to commit to it; it gets lost when they accept things out of duty or pressure that their heart doesn’t back.'
       ]
     },
     'self-projected': {
-      title: 'Self-projected authority',
+      title: 'Self-Projected Authority',
       paragraphs: [
         'Particular to certain Projectors. Truth arrives through the **voice**: by talking the matter through out loud, the person **hears themselves** and recognizes what is consistent with their identity and their direction.',
         'What matters is not the listener’s opinion, but the act of **expressing and hearing yourself**. So it helps to be surrounded by trusted people who let you talk without steering you, and to pay attention to the tone and the words that come out: the guidance is there, more than in the reasoning.'
       ]
     },
     mental: {
-      title: 'Mental/environmental authority',
+      title: 'Mental/Environmental Authority',
       paragraphs: [
         'Also called environmental authority or "sounding board", particular to some Projectors with no inner centers defined for deciding. There is no fixed inner bodily authority: clarity doesn’t arrive from within all at once, **clarity comes from dialogue**.',
         'The practice consists of **talking the matter through with trusted people and in the right environment**, not so they decide for you, but so you can hear yourself think out loud. The right place and company are part of the method here: the decision settles gradually, with time and conversation.'
       ]
     },
     lunar: {
-      title: 'Lunar authority',
+      title: 'Lunar Authority',
       paragraphs: [
         'The Reflector’s authority, the only type with no defined center at all. With no fixed inner source, the guide is **time**: a full lunar cycle, about 28 days, before important decisions.',
         'Over that cycle, the person **samples different states, environments and conversations**, and observes how their perception of the matter evolves. Clarity comes through **maturation** and an accumulation of perspectives, not through impulse: what still resonates after the whole cycle is what can be trusted.'
@@ -493,42 +490,42 @@ const overrides = {
   // ── Profile (the six lines) ──────────────────────────────────────────────
   profile: {
     '1': {
-      title: 'Line 1 — the foundation',
+      title: 'Line 1 — The Foundation',
       paragraphs: [
         'The first line seeks **security through knowledge**. It needs to investigate, to understand the fundamentals and to know the ground beneath it is solid before acting; without that base, it feels uneasy.',
         'It is an **introspective, studious** energy: it goes deep until it feels expert, and that solidity reassures others. Its challenge is not to wait indefinitely to know "everything" before taking the step.'
       ]
     },
     '2': {
-      title: 'Line 2 — natural talent',
+      title: 'Line 2 — Natural Talent',
       paragraphs: [
         'The second line has **natural gifts** it exercises almost effortlessly, often without being fully aware of them. It needs **time alone** for that talent to ripen at its own pace.',
         'Its dynamic is to be **called from outside**: others see in it something the person themselves can’t quite name, and invite them to bring it out. The balance lies between respecting its need for retreat and answering those calls when they are the right ones.'
       ]
     },
     '3': {
-      title: 'Line 3 — trial and error',
+      title: 'Line 3 — Trial and Error',
       paragraphs: [
         'The third line learns **by trying**: through direct contact with life, through attempts, discoveries and stumbles too. Every "mistake" is information, not failure.',
         'It is an **experimental, resilient** energy: it discovers what works by ruling out what doesn’t. Its wisdom is very practical, and it is essential that it doesn’t read its stumbles as personal flaws, but as the very method it is designed to learn by.'
       ]
     },
     '4': {
-      title: 'Line 4 — the network',
+      title: 'Line 4 — The Network',
       paragraphs: [
         'The fourth line works through **bonds and community**. Opportunities — work, love, changes — usually reach it through people it already knows, not through strangers or cold outreach.',
         'It is a **warm, relational** energy that needs solidity in its attachments. Its classic practical advice is not to let go of one base — a job, a situation — until the next is secured through its network: transitions work better for it that way.'
       ]
     },
     '5': {
-      title: 'Line 5 — projection',
+      title: 'Line 5 — Projection',
       paragraphs: [
         'The fifth line lives under a **field of projection**: others place expectations on it, hoping for practical solutions. They do so because they see it as someone able to fix things, almost in the manner of a saviour.',
         'That gives it influence and a natural role of **useful leadership**, but it also exposes it and demands a lot: if it doesn’t deliver what was projected, the same force can turn against it. Its challenge is to manage its **reputation** well and to clarify others’ expectations as far as possible, taking care to promise only what it can genuinely deliver.'
       ]
     },
     '6': {
-      title: 'Line 6 — the role model',
+      title: 'Line 6 — The Role Model',
       paragraphs: [
         'The sixth line goes through **three life phases**: (1) until around the age of 30 it lives like a line 3, trying, stumbling and even collapsing; then (2) it lives a second stage in which it withdraws energetically to observe and process — the "on the roof" stage; and (3) from around 50 onwards it emerges as an **example and a point of reference**.',
         'Its underlying orientation is **objectivity and maturity**: it aspires to live by what it considers right and true, and to become a model for others. Understanding which phase it is in helps it not to judge itself: the observation of the middle stage is not disconnection, but preparation.'
@@ -539,35 +536,35 @@ const overrides = {
   // ── Definition (the value "i") ───────────────────────────────────────────
   definition: {
     'no-definition': {
-      title: 'No definition',
+      title: 'No Definition',
       paragraphs: [
         'Unique to the Reflector: **no center is defined**, the whole bodygraph stays open. There is no fixed energy of its own; instead, the person takes in, amplifies and reflects the energy of those around them.',
         'This makes them **extraordinarily sensitive to their environment**: who they are with and where they are changes their experience completely. Their wisdom is born precisely from that total openness, as long as they learn not to confuse what they are merely reflecting with what is their own.'
       ]
     },
     single: {
-      title: 'Single definition',
+      title: 'Single Definition',
       paragraphs: [
         'All the defined centers are **connected in a single block**. Energy flows internally without interruption, which gives a sense of **self-sufficiency**: the person has access to their own consistency without depending on others to "complete" them.',
         'Their challenge tends to be the opposite of the split definitions’: because they work well on their own, they can become self-absorbed or find it hard to open up to outside influence. Recognizing when it is worth stepping out of their own bubble is part of their learning.'
       ]
     },
     split: {
-      title: 'Split definition',
+      title: 'Split Definition',
       paragraphs: [
         'The defined centers form **two separate groups**, with no channel joining them internally. The person usually experiences a **search for connection**: something to bridge their two parts.',
         'That bridge often arrives through other people — whose energy completes the missing channel — or through planetary transits that activate the in-between gate. This split is not a lack: it is about understanding that there is company and there are environments that make them feel integrated, and that this happens naturally.'
       ]
     },
     'triple-split': {
-      title: 'Triple split definition',
+      title: 'Triple Split Definition',
       paragraphs: [
         'The defined centers are spread across **three separate groups**. The internal wiring is more complex and the person often needs **more variety of stimulation and of people** to feel their inner parts connect.',
         'They usually do well in diverse environments and with a certain amount of movement; too much stillness can leave them feeling that something isn’t quite coming together. Knowing this structure helps them not to read that need for variety as scatteredness.'
       ]
     },
     'quad-split': {
-      title: 'Quadruple split definition',
+      title: 'Quadruple Split Definition',
       paragraphs: [
         'The rarest: the defined centers form **four separate groups**. It is a highly fragmented wiring that, paradoxically, usually calls for **more structure, space and calm** in order to integrate.',
         'Far from being a problem, it describes a very particular way of processing life. The person benefits from **giving themselves time** and from not pressuring themselves to resolve everything at once: their many parts settle at their own pace.'
@@ -620,7 +617,7 @@ const overrides = {
       open: '**Undefined**, it **amplifies other people’s fears** and tends to hold on to what isn’t good for it — relationships, habits, situations — out of fear of letting go; its learning is not to decide from fear and to discover what actually suits its body.'
     },
     solarPlexus: {
-      title: 'Solar plexus',
+      title: 'Solar Plexus',
       fn: 'The center of **emotions, feelings and moods**, which works in **waves** that rise and fall over time. When it is defined, it sets an emotional authority: **there is no truth in the moment**.',
       defined: '**Defined**, it lives its own emotional waves and needs time to reach clarity.',
       open: '**Undefined**, it **absorbs and amplifies the emotions of its surroundings** — it picks up the mood of a room — and tends to avoid confrontation; its challenge is not to take ownership of moods it has actually picked up from outside.'
@@ -636,21 +633,21 @@ const overrides = {
   // ── Activations: the table's column headers ──────────────────────────────
   activationCol: {
     personality: {
-      title: 'Personality (conscious)',
+      title: 'Personality (Conscious)',
       paragraphs: [
         'The **Personality** column represents the **conscious** side: what the person recognizes as "me", their mind and their personality. It is calculated from the position of the planets at the **exact instant of birth**.',
         'It is the part of the chart you identify with and are usually aware of. On the bodygraph it is drawn in white.'
       ]
     },
     design: {
-      title: 'Design (unconscious)',
+      title: 'Design (Unconscious)',
       paragraphs: [
         'The **Design** column represents the **unconscious** side: the body, what is inherited, what operates without conscious control and what others usually see before you do. It is calculated about **88 days before birth** (88° of solar arc).',
         'It is the more bodily part, less accessible to the mind; it tends to express itself automatically. On the bodygraph it is drawn in red.'
       ]
     },
     weight: {
-      title: 'Weight of the activation',
+      title: 'Weight of the Activation',
       paragraphs: [
         'Not all activations carry the same influence. The most widespread teaching in Human Design places the **Sun and Earth** as the most decisive — they are usually credited with around **70%** of the chart’s meaning; the **Nodes** describe above all the environment and life direction; and the remaining planets **add nuance**.',
         'The *Weight* column summarizes that relative influence as a rough guide (**high / medium / low**). It is an approximation, not an official figure of the system: use it to know where to start reading the chart — always with the Sun and the Earth.'
@@ -755,127 +752,127 @@ const overrides = {
 
   // ── The 64 gates: short theme + own-voice essence with a gift/shadow polarity ──
   gate: {
-    1: { theme: 'creative expression', text: 'Gate 1 is the energy of **creating from one’s own identity**: an original expression that imitates no one. At its best it inspires others; in its shadow, it withdraws into melancholy when it can’t find a way out into the world.' },
-    2: { theme: 'receptive direction', text: 'Gate 2 is **receptive direction**: knowing where to go without forcing it, letting the course emerge instead of imposing it. Its gift is a natural orientation that gives movement meaning; its shadow, feeling lost when it tries to steer by sheer will.' },
-    3: { theme: 'order in the new', text: 'Gate 3 is the energy of **bringing order to the new**: starting something out of the chaos of the beginning, when there is no form yet. Its gift is knowing how to initiate and structure what is starting; its shadow, the frustration and the block when it wants to go faster than the process allows.' },
-    4: { theme: 'mental answers', text: 'Gate 4 is the mind that **looks for answers and formulas** to open questions. Its gift is conceptualising logical solutions; its shadow, the pressure to have an answer already, mistaking a hypothesis for a certainty.' },
-    5: { theme: 'fixed rhythms', text: 'Gate 5 is **fixed rhythms and habits**: the energy that sustains steady routines and a beat of its own. Its gift is the reliability of a natural rhythm that anchors the day; its shadow, the anxiety when that rhythm is broken.' },
-    6: { theme: 'intimacy and friction', text: 'Gate 6 regulates **intimacy and emotional friction**: when to open and when to close, the boundary of the intimate. Its gift is an emotionality that creates deep closeness; its shadow, conflict and reactivity when that boundary is managed from the emotion of the moment.' },
-    7: { theme: 'leadership and direction', text: 'Gate 7 is the **guiding role toward the future**: the capacity to give direction and to lead, often from the background. Its gift is a natural authority others want to follow; its shadow, the need to control the course or to impose itself.' },
-    8: { theme: 'contribution', text: 'Gate 8 is **contribution**: bringing something of one’s own that makes a difference and giving voice to what matters. Its gift is an authentic expression that invites others to join; its shadow, contributing in search of recognition and being left empty.' },
-    9: { theme: 'focus on detail', text: 'Gate 9 is the energy of **focus and concentration** on the details needed to carry something through. Its gift is a sustained attention that completes; its shadow, getting lost in the small or scattering.' },
-    10: { theme: 'self-love', text: 'Gate 10 is **self-love and fidelity to oneself**: behaving in accordance with who one is. Its gift is an authenticity that doesn’t betray itself; its shadow, self-criticism or contorting oneself to fit in.' },
-    11: { theme: 'ideas', text: 'Gate 11 is the mind **full of ideas** to share and to give meaning to experience. Its gift is a stimulating conceptual richness; its shadow, the pressure to turn every idea into action, when ideas are there to be shared rather than executed.' },
-    12: { theme: 'cautious expression', text: 'Gate 12 is **cautious expression**: speaking when the mood and the moment are right. Its gift is a word that moves and touches at exactly the right instant; its shadow, speaking out of tune or staying silent out of reticence.' },
-    13: { theme: 'listening', text: 'Gate 13 is **listening and memory**: gathering other people’s stories and secrets and giving them meaning. Its gift is an ear that invites trust and orients; its shadow, carrying what others deposit.' },
-    14: { theme: 'power for resources', text: 'Gate 14 is the **energy to generate and direct resources**: the drive that gives power to one’s own work. Its gift is a generating force that prospers; its shadow, working without a why or without values to guide it.' },
-    15: { theme: 'love of diversity', text: 'Gate 15 is the **love of humanity and its extremes**: an attraction to the diversity of rhythms and ways of living. Its gift is welcoming what is different and finding the right flow; its shadow, an erratic rhythm or judging other people’s pace.' },
-    16: { theme: 'enthusiasm and skill', text: 'Gate 16 is **enthusiasm and skill**: the talent that is expressed and refined through practice. Its gift is a contagious enthusiasm and mastery; its shadow, empty enthusiasm with no depth or preparation.' },
-    17: { theme: 'opinions', text: 'Gate 17 is the mind that **forms opinions** and anticipates in order to organize. Its gift is useful opinions that give structure; its shadow, presenting as facts what are only views.' },
-    18: { theme: 'correction', text: 'Gate 18 is the instinct to **correct and improve** what has gone crooked. Its gift is a sharp eye that perfects and protects; its shadow, incessant criticism and perfectionism.' },
-    19: { theme: 'sensitivity to needs', text: 'Gate 19 is **sensitivity to needs**: sensing what people and the community need, materially and emotionally too. Its gift is a fine attunement to what is missing; its shadow, excessive neediness or hypersensitivity.' },
-    20: { theme: 'the now', text: 'Gate 20 is **the now**: awareness and expression of the present moment. Its gift is a spontaneous, on-target action in the instant; its shadow, busyness or speaking without presence.' },
-    21: { theme: 'control', text: 'Gate 21 is the **will to control** one’s own resources and territory. Its gift is a legitimate authority over what is its own; its shadow, wanting to control everything or feeling controlled.' },
-    22: { theme: 'grace', text: 'Gate 22 is **grace and emotional openness**: the social charm that knows how to listen and open up. Its gift is an emotionality that attracts and connects; its shadow, withdrawal when the mood isn’t there.' },
-    23: { theme: 'assimilation', text: 'Gate 23 is **assimilation**: translating individual knowing into something simple and understandable. Its gift is making the complex clear, those "clicks" others get; its shadow, speaking at the wrong time and not being understood.' },
-    24: { theme: 'rationalization', text: 'Gate 24 is the mind that **returns again and again to a thought** until it makes sense of it. Its gift is the revelation born of revisiting; its shadow, the obsessive loop there is no way out of.' },
-    25: { theme: 'universal love', text: 'Gate 25 is **innocence and universal love**: a pure loving that expects nothing in return. Its gift is a clean, selfless devotion; its shadow, losing that innocence through wounding or through ego.' },
-    26: { theme: 'persuasive transmission', text: 'Gate 26 is **persuasive transmission**: the will to communicate and add value, to "sell" an idea. Its gift is a power of conviction that moves people; its shadow, manipulation and half-truths.' },
-    27: { theme: 'care', text: 'Gate 27 is **care and nourishment**: the energy of taking charge and supporting others. Its gift is a care that genuinely nourishes; its shadow, over-protecting or giving until exhausted.' },
-    28: { theme: 'the search for meaning', text: 'Gate 28 is the **search for meaning**: the game of risking oneself for something worthwhile. Its gift is finding a purpose worth fighting for; its shadow, struggle for struggle’s sake and the fear of a meaningless life.' },
-    29: { theme: 'commitment', text: 'Gate 29 is **commitment**: the energy to say yes and persevere to the end. Its gift is a devotion that delivers what it starts; its shadow, over-committing or saying yes where it shouldn’t have.' },
-    30: { theme: 'desire', text: 'Gate 30 is **desire and longing**: the fire of expectation that drives one to live experiences. Its gift is a passion that fuels life; its shadow, being consumed by cravings that are never satisfied.' },
-    31: { theme: 'leadership through the voice', text: 'Gate 31 is **leadership through the voice**: the influence of the one who speaks for a group and represents it. Its gift is a leadership others choose to follow; its shadow, leading without a real mandate or out of mere ambition.' },
-    32: { theme: 'continuity', text: 'Gate 32 is the instinct for **continuity**: sniffing out what endures and what must be adapted to last. Its gift is an instinct for lasting value; its shadow, a fear of failure and of change that paralyses.' },
-    33: { theme: 'retreat and the telling', text: 'Gate 33 is **retreat and the telling**: withdrawing in order to later recount what was lived. Its gift is a wisdom shared after reflection; its shadow, not honoring the need to withdraw, or telling too much or too little.' },
-    34: { theme: 'power', text: 'Gate 34 is **raw power**: an independent force, always busy doing. Its gift is an enormous productive potency; its shadow, busyness for its own sake, setting off without having responded.' },
-    35: { theme: 'hunger for experience', text: 'Gate 35 is the **hunger for experience and progress**: the drive to try everything and move forward. Its gift is an appetite for living that pushes onward; its shadow, the restlessness of never being satisfied.' },
-    36: { theme: 'crisis and the new', text: 'Gate 36 is **emotional crisis and the new**: the swing that leads to unprecedented experiences. Its gift is growing through emotional intensity; its shadow, throwing itself into drama or crisis unprepared.' },
-    37: { theme: 'friendship and agreements', text: 'Gate 37 is **friendship and community**: the warmth that unites through pacts and agreements. Its gift is an affection that creates family and belonging; its shadow, dependency or broken agreements.' },
-    38: { theme: 'struggle with meaning', text: 'Gate 38 is the **struggle for what is worthwhile**: the tenacity to stand up for a cause. Its gift is a perseverance with purpose; its shadow, fighting for the sake of fighting, or stubbornness.' },
-    39: { theme: 'provocation', text: 'Gate 39 is **provocation**: stirring other people’s emotion to bring out what really matters. Its gift is provoking in order to reveal spirit; its shadow, gratuitous provocation or moodiness.' },
-    40: { theme: 'giving and rest', text: 'Gate 40 is **giving and solitude**: working and providing in order to then withdraw and recover. Its gift is a generosity that also knows how to rest; its shadow, overwork without pause, or refusing to give.' },
-    41: { theme: 'the imagination that starts desire', text: 'Gate 41 is the **imagination that starts desire**: the beginning of every new experience, dreamt before it is lived. Its gift is a fantasy that opens new experiences; its shadow, an imagination disconnected from reality, or the pressure of an unsatisfied longing.' },
-    42: { theme: 'completion', text: 'Gate 42 is **completion**: the energy to close cycles and carry things through to the end. Its gift is the ability to finish what was started; its shadow, starting without finishing, or the fear of endings.' },
-    43: { theme: 'mental intuition', text: 'Gate 43 is **mental intuition**: an individual knowing that arrives as a flash, ahead of everyone else. Its gift is an original, revealing idea; its shadow, insisting on saying it at the wrong time and not being understood.' },
-    44: { theme: 'the instinct for the past', text: 'Gate 44 is the **instinct that reads the past**: an alertness for recognizing patterns, people and opportunities. Its gift is a nose for people and timing; its shadow, the fear that the past will repeat itself.' },
-    45: { theme: 'the voice of resources', text: 'Gate 45 is the **voice that gathers and distributes resources**: the "I have" of whoever administers what is shared. Its gift is a generous stewardship that looks after the group; its shadow, hoarding or a sense of entitlement.' },
-    46: { theme: 'love of the body', text: 'Gate 46 is **love of the body and being well**: the determination to inhabit the body and to be in the right place. Its gift is a serendipity that puts one in the right spot at the right moment; its shadow, neglecting or forcing the body.' },
-    47: { theme: 'mental realization', text: 'Gate 47 is **realization**: the mental pressure to make sense of confusion until the "aha" arrives. Its gift is resolving the confusing into clear understanding; its shadow, getting trapped in a sense of oppression or meaninglessness.' },
-    48: { theme: 'depth', text: 'Gate 48 is **depth**: a well of talent and wisdom to draw solutions from. Its gift is a depth that supplies what is missing; its shadow, the fear of not being enough or not being ready.' },
-    49: { theme: 'principles', text: 'Gate 49 is **principles and revolution**: accepting or rejecting according to deep values. Its gift is transforming bonds from clear principles; its shadow, rigid rejection or revolution without sensitivity.' },
-    50: { theme: 'values', text: 'Gate 50 is **values and responsibility**: the guardianship of the norms that protect the group’s wellbeing. Its gift is a keeping of values that supports others; its shadow, over-responsibility and the fear of failing the group.' },
-    51: { theme: 'impulse and shock', text: 'Gate 51 is the **impulse to be first**: the initiative that shakes and awakens. Its gift is a courage that wakes others up; its shadow, competitiveness or recklessness.' },
-    52: { theme: 'stillness and focus', text: 'Gate 52 is **stillness and concentration**: the pressure to stop in order to focus and see the whole. Its gift is a calm that makes concentration possible; its shadow, inertia or the restlessness of not knowing how to be still.' },
-    53: { theme: 'beginnings', text: 'Gate 53 is **beginnings**: the pressure and the energy to start new cycles. Its gift is the drive to get the new under way; its shadow, starting without pause and never completing.' },
-    54: { theme: 'ambition', text: 'Gate 54 is **ambition**: the drive to rise, materially and spiritually. Its gift is an ambition that elevates; its shadow, chasing advancement for other people’s approval, or overstepping.' },
-    55: { theme: 'abundance of spirit', text: 'Gate 55 is **spirit and emotional abundance**: the richness of moods and of faith. Its gift is an emotional depth and a faith that sustain; its shadow, letting melancholy or the swing of mood make the decisions.' },
-    56: { theme: 'the stimulating story', text: 'Gate 56 is the **story that stimulates**: telling ideas and experiences that hook people. Its gift is a captivating narration that opens horizons; its shadow, embellishing too much, or wandering attention.' },
-    57: { theme: 'intuition in the now', text: 'Gate 57 is **sharp intuition in the now**: an instinctive clarity that penetrates the present. Its gift is a subtle, unerring knowing in the instant; its shadow, a fear of the future that paralyses.' },
-    58: { theme: 'vitality and improvement', text: 'Gate 58 is **vitality and the joy of living**: the energy that pushes to make things better. Its gift is a vital delight that fuels correction; its shadow, restlessness or criticism without joy.' },
-    59: { theme: 'intimacy', text: 'Gate 59 is **intimacy**: the energy to break barriers and create a bond, sexual too. Its gift is the power to generate closeness and union; its shadow, putting up walls or intruding on intimacy.' },
-    60: { theme: 'accepting the limit', text: 'Gate 60 is **accepting the limit**: turning restriction into the seed of the new. Its gift is transforming limits into possibility; its shadow, getting stuck in limitation and melancholy.' },
-    61: { theme: 'inner truth', text: 'Gate 61 is **inner truth and mystery**: the pressure to know what cannot be fully known. Its gift is an inspiration that seeks the bottom of things; its shadow, the mental pressure of wanting to know it all.' },
-    62: { theme: 'detail and order', text: 'Gate 62 is **detail and organization**: naming and ordering things in order to express them precisely. Its gift is a clear, orderly expression; its shadow, getting lost in detail or over-explaining.' },
-    63: { theme: 'doubt', text: 'Gate 63 is **doubt**: the pressure that pushes to question and verify. Its gift is a healthy doubt that puts things to the test; its shadow, corrosive suspicion and anxiety.' },
-    64: { theme: 'fertile confusion', text: 'Gate 64 is the **confusion that seeks meaning**: a pressure of unprocessed images striving to arrange themselves. Its gift is a richness of images that ends in understanding; its shadow, the overwhelm of trying to resolve the confusion too soon.' }
+    1: { theme: 'Creative Expression', text: 'Gate 1 is the energy of **creating from one’s own identity**: an original expression that imitates no one. At its best it inspires others; in its shadow, it withdraws into melancholy when it can’t find a way out into the world.' },
+    2: { theme: 'Receptive Direction', text: 'Gate 2 is **receptive direction**: knowing where to go without forcing it, letting the course emerge instead of imposing it. Its gift is a natural orientation that gives movement meaning; its shadow, feeling lost when it tries to steer by sheer will.' },
+    3: { theme: 'Order in the New', text: 'Gate 3 is the energy of **bringing order to the new**: starting something out of the chaos of the beginning, when there is no form yet. Its gift is knowing how to initiate and structure what is starting; its shadow, the frustration and the block when it wants to go faster than the process allows.' },
+    4: { theme: 'Mental Answers', text: 'Gate 4 is the mind that **looks for answers and formulas** to open questions. Its gift is conceptualising logical solutions; its shadow, the pressure to have an answer already, mistaking a hypothesis for a certainty.' },
+    5: { theme: 'Fixed Rhythms', text: 'Gate 5 is **fixed rhythms and habits**: the energy that sustains steady routines and a beat of its own. Its gift is the reliability of a natural rhythm that anchors the day; its shadow, the anxiety when that rhythm is broken.' },
+    6: { theme: 'Intimacy and Friction', text: 'Gate 6 regulates **intimacy and emotional friction**: when to open and when to close, the boundary of the intimate. Its gift is an emotionality that creates deep closeness; its shadow, conflict and reactivity when that boundary is managed from the emotion of the moment.' },
+    7: { theme: 'Leadership and Direction', text: 'Gate 7 is the **guiding role toward the future**: the capacity to give direction and to lead, often from the background. Its gift is a natural authority others want to follow; its shadow, the need to control the course or to impose itself.' },
+    8: { theme: 'Contribution', text: 'Gate 8 is **contribution**: bringing something of one’s own that makes a difference and giving voice to what matters. Its gift is an authentic expression that invites others to join; its shadow, contributing in search of recognition and being left empty.' },
+    9: { theme: 'Focus on Detail', text: 'Gate 9 is the energy of **focus and concentration** on the details needed to carry something through. Its gift is a sustained attention that completes; its shadow, getting lost in the small or scattering.' },
+    10: { theme: 'Self-love', text: 'Gate 10 is **self-love and fidelity to oneself**: behaving in accordance with who one is. Its gift is an authenticity that doesn’t betray itself; its shadow, self-criticism or contorting oneself to fit in.' },
+    11: { theme: 'Ideas', text: 'Gate 11 is the mind **full of ideas** to share and to give meaning to experience. Its gift is a stimulating conceptual richness; its shadow, the pressure to turn every idea into action, when ideas are there to be shared rather than executed.' },
+    12: { theme: 'Cautious Expression', text: 'Gate 12 is **cautious expression**: speaking when the mood and the moment are right. Its gift is a word that moves and touches at exactly the right instant; its shadow, speaking out of tune or staying silent out of reticence.' },
+    13: { theme: 'Listening', text: 'Gate 13 is **listening and memory**: gathering other people’s stories and secrets and giving them meaning. Its gift is an ear that invites trust and orients; its shadow, carrying what others deposit.' },
+    14: { theme: 'Power for Resources', text: 'Gate 14 is the **energy to generate and direct resources**: the drive that gives power to one’s own work. Its gift is a generating force that prospers; its shadow, working without a why or without values to guide it.' },
+    15: { theme: 'Love of Diversity', text: 'Gate 15 is the **love of humanity and its extremes**: an attraction to the diversity of rhythms and ways of living. Its gift is welcoming what is different and finding the right flow; its shadow, an erratic rhythm or judging other people’s pace.' },
+    16: { theme: 'Enthusiasm and Skill', text: 'Gate 16 is **enthusiasm and skill**: the talent that is expressed and refined through practice. Its gift is a contagious enthusiasm and mastery; its shadow, empty enthusiasm with no depth or preparation.' },
+    17: { theme: 'Opinions', text: 'Gate 17 is the mind that **forms opinions** and anticipates in order to organize. Its gift is useful opinions that give structure; its shadow, presenting as facts what are only views.' },
+    18: { theme: 'Correction', text: 'Gate 18 is the instinct to **correct and improve** what has gone crooked. Its gift is a sharp eye that perfects and protects; its shadow, incessant criticism and perfectionism.' },
+    19: { theme: 'Sensitivity to Needs', text: 'Gate 19 is **sensitivity to needs**: sensing what people and the community need, materially and emotionally too. Its gift is a fine attunement to what is missing; its shadow, excessive neediness or hypersensitivity.' },
+    20: { theme: 'The Now', text: 'Gate 20 is **the now**: awareness and expression of the present moment. Its gift is a spontaneous, on-target action in the instant; its shadow, busyness or speaking without presence.' },
+    21: { theme: 'Control', text: 'Gate 21 is the **will to control** one’s own resources and territory. Its gift is a legitimate authority over what is its own; its shadow, wanting to control everything or feeling controlled.' },
+    22: { theme: 'Grace', text: 'Gate 22 is **grace and emotional openness**: the social charm that knows how to listen and open up. Its gift is an emotionality that attracts and connects; its shadow, withdrawal when the mood isn’t there.' },
+    23: { theme: 'Assimilation', text: 'Gate 23 is **assimilation**: translating individual knowing into something simple and understandable. Its gift is making the complex clear, those "clicks" others get; its shadow, speaking at the wrong time and not being understood.' },
+    24: { theme: 'Rationalization', text: 'Gate 24 is the mind that **returns again and again to a thought** until it makes sense of it. Its gift is the revelation born of revisiting; its shadow, the obsessive loop there is no way out of.' },
+    25: { theme: 'Universal Love', text: 'Gate 25 is **innocence and universal love**: a pure loving that expects nothing in return. Its gift is a clean, selfless devotion; its shadow, losing that innocence through wounding or through ego.' },
+    26: { theme: 'Persuasive Transmission', text: 'Gate 26 is **persuasive transmission**: the will to communicate and add value, to "sell" an idea. Its gift is a power of conviction that moves people; its shadow, manipulation and half-truths.' },
+    27: { theme: 'Care', text: 'Gate 27 is **care and nourishment**: the energy of taking charge and supporting others. Its gift is a care that genuinely nourishes; its shadow, over-protecting or giving until exhausted.' },
+    28: { theme: 'The Search for Meaning', text: 'Gate 28 is the **search for meaning**: the game of risking oneself for something worthwhile. Its gift is finding a purpose worth fighting for; its shadow, struggle for struggle’s sake and the fear of a meaningless life.' },
+    29: { theme: 'Commitment', text: 'Gate 29 is **commitment**: the energy to say yes and persevere to the end. Its gift is a devotion that delivers what it starts; its shadow, over-committing or saying yes where it shouldn’t have.' },
+    30: { theme: 'Desire', text: 'Gate 30 is **desire and longing**: the fire of expectation that drives one to live experiences. Its gift is a passion that fuels life; its shadow, being consumed by cravings that are never satisfied.' },
+    31: { theme: 'Leadership Through the Voice', text: 'Gate 31 is **leadership through the voice**: the influence of the one who speaks for a group and represents it. Its gift is a leadership others choose to follow; its shadow, leading without a real mandate or out of mere ambition.' },
+    32: { theme: 'Continuity', text: 'Gate 32 is the instinct for **continuity**: sniffing out what endures and what must be adapted to last. Its gift is an instinct for lasting value; its shadow, a fear of failure and of change that paralyses.' },
+    33: { theme: 'Retreat and the Telling', text: 'Gate 33 is **retreat and the telling**: withdrawing in order to later recount what was lived. Its gift is a wisdom shared after reflection; its shadow, not honoring the need to withdraw, or telling too much or too little.' },
+    34: { theme: 'Power', text: 'Gate 34 is **raw power**: an independent force, always busy doing. Its gift is an enormous productive potency; its shadow, busyness for its own sake, setting off without having responded.' },
+    35: { theme: 'Hunger for Experience', text: 'Gate 35 is the **hunger for experience and progress**: the drive to try everything and move forward. Its gift is an appetite for living that pushes onward; its shadow, the restlessness of never being satisfied.' },
+    36: { theme: 'Crisis and the New', text: 'Gate 36 is **emotional crisis and the new**: the swing that leads to unprecedented experiences. Its gift is growing through emotional intensity; its shadow, throwing itself into drama or crisis unprepared.' },
+    37: { theme: 'Friendship and Agreements', text: 'Gate 37 is **friendship and community**: the warmth that unites through pacts and agreements. Its gift is an affection that creates family and belonging; its shadow, dependency or broken agreements.' },
+    38: { theme: 'Struggle with Meaning', text: 'Gate 38 is the **struggle for what is worthwhile**: the tenacity to stand up for a cause. Its gift is a perseverance with purpose; its shadow, fighting for the sake of fighting, or stubbornness.' },
+    39: { theme: 'Provocation', text: 'Gate 39 is **provocation**: stirring other people’s emotion to bring out what really matters. Its gift is provoking in order to reveal spirit; its shadow, gratuitous provocation or moodiness.' },
+    40: { theme: 'Giving and Rest', text: 'Gate 40 is **giving and solitude**: working and providing in order to then withdraw and recover. Its gift is a generosity that also knows how to rest; its shadow, overwork without pause, or refusing to give.' },
+    41: { theme: 'The Imagination That Starts Desire', text: 'Gate 41 is the **imagination that starts desire**: the beginning of every new experience, dreamt before it is lived. Its gift is a fantasy that opens new experiences; its shadow, an imagination disconnected from reality, or the pressure of an unsatisfied longing.' },
+    42: { theme: 'Completion', text: 'Gate 42 is **completion**: the energy to close cycles and carry things through to the end. Its gift is the ability to finish what was started; its shadow, starting without finishing, or the fear of endings.' },
+    43: { theme: 'Mental Intuition', text: 'Gate 43 is **mental intuition**: an individual knowing that arrives as a flash, ahead of everyone else. Its gift is an original, revealing idea; its shadow, insisting on saying it at the wrong time and not being understood.' },
+    44: { theme: 'The Instinct for the Past', text: 'Gate 44 is the **instinct that reads the past**: an alertness for recognizing patterns, people and opportunities. Its gift is a nose for people and timing; its shadow, the fear that the past will repeat itself.' },
+    45: { theme: 'The Voice of Resources', text: 'Gate 45 is the **voice that gathers and distributes resources**: the "I have" of whoever administers what is shared. Its gift is a generous stewardship that looks after the group; its shadow, hoarding or a sense of entitlement.' },
+    46: { theme: 'Love of the Body', text: 'Gate 46 is **love of the body and being well**: the determination to inhabit the body and to be in the right place. Its gift is a serendipity that puts one in the right spot at the right moment; its shadow, neglecting or forcing the body.' },
+    47: { theme: 'Mental Realization', text: 'Gate 47 is **realization**: the mental pressure to make sense of confusion until the "aha" arrives. Its gift is resolving the confusing into clear understanding; its shadow, getting trapped in a sense of oppression or meaninglessness.' },
+    48: { theme: 'Depth', text: 'Gate 48 is **depth**: a well of talent and wisdom to draw solutions from. Its gift is a depth that supplies what is missing; its shadow, the fear of not being enough or not being ready.' },
+    49: { theme: 'Principles', text: 'Gate 49 is **principles and revolution**: accepting or rejecting according to deep values. Its gift is transforming bonds from clear principles; its shadow, rigid rejection or revolution without sensitivity.' },
+    50: { theme: 'Values', text: 'Gate 50 is **values and responsibility**: the guardianship of the norms that protect the group’s wellbeing. Its gift is a keeping of values that supports others; its shadow, over-responsibility and the fear of failing the group.' },
+    51: { theme: 'Impulse and Shock', text: 'Gate 51 is the **impulse to be first**: the initiative that shakes and awakens. Its gift is a courage that wakes others up; its shadow, competitiveness or recklessness.' },
+    52: { theme: 'Stillness and Focus', text: 'Gate 52 is **stillness and concentration**: the pressure to stop in order to focus and see the whole. Its gift is a calm that makes concentration possible; its shadow, inertia or the restlessness of not knowing how to be still.' },
+    53: { theme: 'Beginnings', text: 'Gate 53 is **beginnings**: the pressure and the energy to start new cycles. Its gift is the drive to get the new under way; its shadow, starting without pause and never completing.' },
+    54: { theme: 'Ambition', text: 'Gate 54 is **ambition**: the drive to rise, materially and spiritually. Its gift is an ambition that elevates; its shadow, chasing advancement for other people’s approval, or overstepping.' },
+    55: { theme: 'Abundance of Spirit', text: 'Gate 55 is **spirit and emotional abundance**: the richness of moods and of faith. Its gift is an emotional depth and a faith that sustain; its shadow, letting melancholy or the swing of mood make the decisions.' },
+    56: { theme: 'The Stimulating Story', text: 'Gate 56 is the **story that stimulates**: telling ideas and experiences that hook people. Its gift is a captivating narration that opens horizons; its shadow, embellishing too much, or wandering attention.' },
+    57: { theme: 'Intuition in the Now', text: 'Gate 57 is **sharp intuition in the now**: an instinctive clarity that penetrates the present. Its gift is a subtle, unerring knowing in the instant; its shadow, a fear of the future that paralyses.' },
+    58: { theme: 'Vitality and Improvement', text: 'Gate 58 is **vitality and the joy of living**: the energy that pushes to make things better. Its gift is a vital delight that fuels correction; its shadow, restlessness or criticism without joy.' },
+    59: { theme: 'Intimacy', text: 'Gate 59 is **intimacy**: the energy to break barriers and create a bond, sexual too. Its gift is the power to generate closeness and union; its shadow, putting up walls or intruding on intimacy.' },
+    60: { theme: 'Accepting the Limit', text: 'Gate 60 is **accepting the limit**: turning restriction into the seed of the new. Its gift is transforming limits into possibility; its shadow, getting stuck in limitation and melancholy.' },
+    61: { theme: 'Inner Truth', text: 'Gate 61 is **inner truth and mystery**: the pressure to know what cannot be fully known. Its gift is an inspiration that seeks the bottom of things; its shadow, the mental pressure of wanting to know it all.' },
+    62: { theme: 'Detail and Order', text: 'Gate 62 is **detail and organization**: naming and ordering things in order to express them precisely. Its gift is a clear, orderly expression; its shadow, getting lost in detail or over-explaining.' },
+    63: { theme: 'Doubt', text: 'Gate 63 is **doubt**: the pressure that pushes to question and verify. Its gift is a healthy doubt that puts things to the test; its shadow, corrosive suspicion and anxiety.' },
+    64: { theme: 'Fertile Confusion', text: 'Gate 64 is the **confusion that seeks meaning**: a pressure of unprocessed images striving to arrange themselves. Its gift is a richness of images that ends in understanding; its shadow, the overwhelm of trying to resolve the confusion too soon.' }
   },
 
   // ── Initial report (second person, addressed to the chart's owner) ───────
   report: {
     intro: {
-      title: 'What Human Design is',
+      title: 'What Human Design Is',
       paragraphs: [
-        'Human Design is a self-knowledge system that combines astrology, the *I Ching*, the kabbalistic tree of life, the chakras and a little quantum-physics language. From your date, time and place of birth it generates a "chart" (the diagram, or [*bodygraph*](section:chart)) describing how your energy is designed: how you make good decisions, how you spend and recover energy, and how you best interact with the world. It is not considered science — worth saying plainly — but a symbolic framework; its value lies in whether you find it useful as a mirror, not in it being provable.'
+        'Human Design is a system for getting to know yourself. It borrows from astrology, the *I Ching*, the kabbalistic tree of life, the chakras, and a little quantum-physics vocabulary. Give it your date, time and place of birth and it draws a "chart" — the [*bodygraph*](section:chart) — describing how your energy is wired: how you make good decisions, how you spend and recover energy, and how you work best with the world around you. It isn\u2019t science, and that\u2019s worth saying plainly. It\u2019s a symbolic framework, and its worth lies in whether you find it useful as a mirror, not in whether it can be proven.'
       ]
     },
     ants: {
-      title: 'The ant analogy',
+      title: 'The Ant Analogy',
       paragraphs: [
-        'In a way, we can use ants as a simile: in an ant colony there is no "generic ant" — there are scouts that go out to explore, soldiers built to defend, workers that maintain the nest, and a queen whose function is something else entirely. None is better; each is made to operate in a different way, and the colony works precisely because they are not all the same. Asking a scout to do a soldier’s job is to exhaust it doing something it wasn’t designed for.',
-        'Something similar happens with people: we have different ways of acting and relating depending on our own energy and design. The usual mistake is to assume we should all perform, decide or get started in the same way. Human Design proposes the opposite, and it calls those different ways [types](section:type). The valuable thing about the framework is exactly that shift in view: **stop measuring yourself by another design’s yardstick**.'
+        'Think of an ant colony. There is no such thing as a generic ant: there are scouts that go out and explore, soldiers built to defend, workers that keep the nest running, and a queen doing something else entirely. None of them is better than the others. Each is built to work in a particular way, and the colony runs precisely because they are not all the same. Ask a scout to do a soldier\u2019s job and you will wear it out doing something it was never built for.',
+        'People are not so different. We each have our own way of acting and relating, shaped by how our energy is put together. The common mistake is assuming we should all perform, decide and get started the same way. Human Design says the opposite, and it calls those different ways [types](section:type). That shift in perspective is the useful part: **stop measuring yourself against someone else\u2019s design.**'
       ]
     },
     chart: {
-      title: 'The bodygraph',
+      title: 'The Bodygraph',
       paragraphs: [
-        'Your chart is drawn on a diagram of the body called the **bodygraph**: the nine geometric shapes are the centers and the lines connecting them are the channels, which run from one gate to another (there are 64 gates). Each center governs a specific function and, together, they map how your energy flows.',
-        'What makes your chart unique is which of those centers, channels and gates are active: the colored centers are defined and the ones that look empty are open. Your type, your authority and your way of functioning all come out of that combination, and that is what we will unpack next.'
+        'Your chart is drawn on a diagram of the body called the **bodygraph**. The nine shapes are the centers; the lines joining them are the channels, each running from one gate to another (there are 64 gates). Every center governs a particular function, and together they show how your energy moves.',
+        'What makes the chart yours is which of those centers, channels and gates are switched on: colored centers are defined, empty ones are open. Your type, your authority and the way you work all fall out of that combination — and that is what the rest of this report unpacks.'
       ]
     },
     conditioning: {
-      title: 'Defined, undefined and conditioning',
+      title: 'Defined, Undefined, and Conditioning',
       paragraphs: [
-        'A defined center works in a fixed, reliable way: it is an energy of yours, constant, that you always contribute and that doesn’t depend on who is beside you. An undefined (open) center is not a flaw: it is an area where you don’t have that fixed energy and where, instead, you absorb and amplify other people’s and the environment’s.',
-        'Human Design calls everything that pulls us away from living according to our design **conditioning**: the layers we accumulate — through upbringing, culture, fears or what is expected of us — that lead us to act as we are not. Your open centers are the main entry point for that conditioning. Recognizing it is the first step of the [deconditioning](section:experiment) we mentioned earlier: gradually letting go of what is borrowed in order to come back to yourself, paying particular attention to no longer comparing yourself with how other people and other designs work.'
+        'A defined center works the same way every day. It is an energy of your own: consistent, always there, and it does not change depending on who is in the room. An undefined (open) center is not a flaw — it simply means you do not carry that energy yourself. Instead you pick it up from the people and places around you, and amplify it.',
+        'Human Design has a word for everything that pulls you away from living as you are built: **conditioning**. These are the layers we take on from upbringing, culture, fear, or what others expect of us, and that end up making us act like someone we are not. Your open centers are the main door it comes in through. Noticing that is the first step of the [deconditioning](section:experiment) mentioned earlier: letting go of what was borrowed until you are back to yourself — and above all, dropping the habit of measuring yourself against how other people work.'
       ]
     },
     experiment: {
-      title: 'Human Design as a life experiment',
+      title: 'Human Design as an Experiment',
       paragraphs: [
-        'Human Design isn’t necessarily presented as a truth to believe blindly, but as an **experiment to try**: rather than adopting it as dogma, the proposal is that you live according to your design and observe, in your own life, whether things flow better.',
-        'The experiment is easy to state (even if it takes time to put into practice): **make your decisions according to [your strategy](section:strategy) and [your authority](section:authority)** — the two tools you’ll see further on — instead of being carried along by what is expected of you, by haste, by your head, or by the mechanisms and patterns you have been applying all your life. Little by little, this returns you to your natural way of functioning. That process is called **deconditioning**, and it is, at bottom, what everything else is about.'
+        'Human Design is not asking you to believe it. It is asking you to **try it**. Rather than taking it as doctrine, the invitation is to live according to your design and watch what happens in your own life — whether things run with less friction.',
+        'The experiment is simple to describe, even if it takes a while to live: **make your decisions with [your strategy](section:strategy) and [your authority](section:authority)** — the two tools coming up — instead of going along with what is expected of you, or with haste, or with your head, or with the patterns you have been running for years. Bit by bit it brings you back to your natural way of working. That process is called **deconditioning**, and everything else here is in service of it.'
       ]
     },
     collective: {
-      title: 'Your place in the collective',
+      title: 'Your Place in the Collective',
       intro:
-        'As in [the ant simile](section:intro), the Human Design types describe **the different ways of being designed to use energy**. None is better, and the whole works precisely because we are not all the same. Just as the colony works because every role exists, the human collective needs all the different kinds of person.',
+        'Back to [the ants](section:intro). The Human Design types describe **the different ways a person can be built to use energy**. No type is better than another, and the whole thing works precisely because we are not all alike — a world of nothing but Generators, or nothing but Projectors, would not work at all.',
       bullets: [
-        '**Generators (~37%) and Manifesting Generators (~33%)**: together they are close to 70% of the population. They are the builders, with sustained life-force energy when they do what genuinely lights them up. They are the engine that moves the human world.',
-        '**Projectors (~20%)**: they don’t have that constant energy; their gift is to see, guide and direct others. They shine when they are recognized and invited, not by forcing themselves to a Generator’s pace.',
-        '**Manifestors (~9%)**: they are the initiators, able to start things from nothing and make an impact without waiting for anyone. Their key is informing those their action splashes onto, and managing their inconstant energy.',
-        '**Reflectors (~1%)**: the rarest, a mirror of their surroundings that samples the health of the group and of the place they live in.'
+        '**Generators (~37%) and Manifesting Generators (~33%)** — together, close to 70% of everyone. They are the builders, with life-force energy that keeps going when they are doing what genuinely lights them up. They are the engine of the human world.',
+        '**Projectors (~20%)** — no constant energy of that kind. Their gift is seeing, guiding and directing other people. They shine when they are recognized and invited, not when they are pushing themselves to keep a Generator\u2019s pace.',
+        '**Manifestors (~9%)** — the initiators. They start things from nothing and make an impact without waiting for anyone. Their job is to tell the people their actions will touch, and to manage energy that comes and goes.',
+        '**Reflectors (~1%)** — the rarest of all. A mirror for their surroundings, sampling the health of the group and of the place they live in.'
       ],
       outro:
-        'The most common mistake is measuring yourself against someone else’s design: a Projector demanding a Generator’s stamina of themselves, or a Generator getting frustrated for not initiating like a Manifestor.'
+        'The most common mistake is holding yourself to someone else\u2019s design: a Projector demanding a Generator\u2019s stamina of themselves, or a Generator frustrated that they do not launch things like a Manifestor.'
     },
     leadIn: {
-      strategy: 'Your strategy is your natural, ideal way of acting and committing to things without forcing them.',
-      authority: 'Your authority is your correct way of making life decisions, in accordance with your design and not against it. If strategy tells you *how and when to act*, **authority tells you how and when to decide** each yes and each no. The mind is there to inform you, to navigate decisions already made and to advise others, but **the mind is not to be trusted for deciding** about your own life: decisions should be made from a more bodily, more reliable source. That is *authority*.',
-      definition: 'Definition describes how your defined centers group together: whether they form a single block or several separate groups.',
-      practice: 'If you had to keep just one thing from all of Human Design, let it be this: **living your design is, above all, taking action according to [your strategy](section:strategy) and deciding from [your authority](section:authority)**. Everything else nuances and fine-tunes; but these two are what really changes your day-to-day life.',
-      centers: 'The nine centers in your chart:'
+      strategy: 'Your strategy is your natural way of getting involved in things — of committing to them without forcing them.',
+      authority: 'Your authority is how you are built to make decisions. If strategy tells you *how and when to act*, **authority tells you how and when to decide** — every yes and every no. Your mind is good at gathering information, working through a decision already made, and advising other people. But **your mind is not a reliable place to decide from** when it comes to your own life. Those decisions belong to something more bodily. That is *authority*.',
+      definition: 'Definition describes how your defined centers group together: one connected block, or several separate ones.',
+      practice: 'If you take one thing away from all of Human Design, take this: **living your design means acting on [your strategy](section:strategy) and deciding from [your authority](section:authority)**. Everything else adds nuance. These two are what actually change your day.',
+      centers: 'Here are the nine centers in your chart:'
     },
 
     type: {
@@ -895,7 +892,7 @@ const overrides = {
         'In managing your energy, your task is to **rest and pace yourself**: you don’t compete on physical stamina, but on depth and mastery. Your wellbeing rests on sleeping and letting go before you are exhausted, and on choosing carefully who you give your attention and effort to: learning to say yes or no when it matters (because not every invitation means you have to say yes).'
       ],
       manifestor: [
-        'You are the most independent type, around **9% of the population**. You have at least one motor center (Heart, Solar plexus, Spleen) connected to the [Throat](center:throat), but an undefined [Sacral](center:sacral), so your energy is not constant: it comes in bursts, which you use to initiate and set things in motion, and then you need rest — quite a lot of rest.',
+        'You are the most independent type, around **9% of the population**. You have at least one motor center (Heart, Solar Plexus, Spleen) connected to the [Throat](center:throat), but an undefined [Sacral](center:sacral), so your energy is not constant: it comes in bursts, which you use to initiate and set things in motion, and then you need rest — quite a lot of rest.',
         'Your strategy is to **inform before acting**. This is not about asking permission, but about letting those your impact will reach know: by doing so, you reduce the resistance and rejection you otherwise meet around you. Acting in line with your strategy brings you *peace*; if you don’t, you feel opposition and *anger* grows in you.',
         'You are here to **initiate and make an impact**, not to execute in a sustained way. Managing your energy means respecting your cycles of push and rest, and protecting your autonomy without isolating yourself from those around you.'
       ],
@@ -929,7 +926,7 @@ const overrides = {
     },
     authority: {
       emotional: [
-        'You have a **defined [Solar plexus](center:solarPlexus)**, which works in waves: your mood rises and falls over time, not because of the facts of the moment. Your golden rule is clear: **there is no truth in the now**.',
+        'You have a **defined [Solar Plexus](center:solarPlexus)**, which works in waves: your mood rises and falls over time, not because of the facts of the moment. Your golden rule is clear: **there is no truth in the now**.',
         'To decide well, your design asks you to **wait until you have ridden out the emotional wave** — sleep on it, let time pass, come back to the matter in different moods — before committing. Your clarity is not an instant flash, but what remains once the emotion has settled. Haste is your main enemy.'
       ],
       sacral: [
@@ -1049,157 +1046,150 @@ const overrides = {
   typeReport: {
     generator: {
       energia:
-        '**Managing your energy** — You have a defined [Sacral center](center:sacral): a **sustainable, renewable** working energy, made to be spent fully each day on the right things and healthily emptied by nightfall. The key is not to save it, but to **spend it on what your body genuinely responds to**: then the tiredness is satisfying and the next day the charge comes back. Forcing yourself into what doesn’t light you up drains you without filling you.',
+        '**Managing your energy** — You have a defined [Sacral Center](center:sacral): a **renewable** working energy, built to be spent fully each day on the right things and emptied out healthily by bedtime. The point is not to conserve it — it is to **spend it on what your body actually responds to**. Then the tiredness feels good and the charge comes back tomorrow. Push through things that do not light you up and it drains you without ever satisfying you.',
       trampa:
-        '**Your type’s trap** — Your greatest wear comes from **initiating from the mind** instead of waiting for something to respond to: saying yes out of obligation, out of logic, or out of fear of missing the opportunity. When you get into something your energy hadn’t backed, frustration appears — the classic signal of a Generator living against their design — along with the feeling of being stuck in things that never quite fulfill.',
+        '**The trap for your type** — What wears you down is **starting from your head** instead of waiting for something to respond to: saying yes out of obligation, out of logic, or out of fear of missing out. Get into something your energy never backed and frustration turns up — the classic Generator signal — along with the sense of being stuck in things that never quite land.',
       senales:
-        '**Signs that you are on the right track** — Your compass is **satisfaction versus frustration**. If at the end of the day you feel a good tiredness and the sense of having spent your energy well, you are on track. If what dominates is frustration and weariness, it usually signals that you committed to things your body hadn’t said yes to.'
+        '**Signs you are on track** — Your compass is **satisfaction versus frustration**. End the day pleasantly tired, with the sense that your energy went somewhere real, and you are on track. If frustration and weariness are what you mostly feel, you have probably said yes to things your body did not.'
     },
     'manifesting-generator': {
       energia:
-        '**Managing your energy** — As a Generator, you have a defined [Sacral](center:sacral): a **sustainable, renewable** working energy. But it is connected to the [Throat](center:throat), which makes you **fast, many-sided and non-linear**: you skip steps, do several things at once and move at great speed when something genuinely lights you up. You perform at your best if you first wait for your **body’s response** and then **inform** those around you before setting off.',
+        '**Managing your energy** — Like any Generator you have a defined [Sacral](center:sacral): a **renewable** working energy. But yours connects to the [Throat](center:throat), which makes you **fast, many-sided and non-linear**. You skip steps, run several things at once, and move quickly when something genuinely grabs you. You are at your best when you wait for your **body\u2019s answer** first, then **tell** the people around you before you set off.',
       trampa:
-        '**Your type’s trap** — **Scattering yourself**: committing to too many things your body hadn’t said yes to, or skipping the heads-up to others and running into their resistance. When you initiate from the mind instead of responding, you accumulate frustration — and often some anger — and half-finished projects.',
+        '**The trap for your type** — **Scattering.** Taking on too much your body never said yes to, or skipping the heads-up and running straight into other people\u2019s resistance. Start from the head instead of responding and you collect frustration, a bit of anger, and a trail of half-finished projects.',
       senales:
-        '**Signs that you are on the right track** — **Satisfaction**, and a certain peace around you, versus frustration and anger. If you move fast on what lights you up and leave things finished, you are on track; if you feel scattered and surrounded by friction, it usually means you said yes where the body wasn’t on board, or that you didn’t inform.'
+        '**Signs you are on track** — **Satisfaction**, and a certain calm around you, versus frustration and friction. Moving fast on what lights you up and actually finishing things means you are on track. Feeling scattered and meeting resistance everywhere usually means you said yes without your body, or you forgot to tell people.'
     },
     projector: {
       energia:
-        '**Managing your energy** — You don’t have a defined [Sacral](center:sacral), so **you are not designed for constant work** nor to sustain a Generator’s pace: your energy is irregular and runs out sooner. Nor are you designed to initiate from scratch — unlike the Manifestor, you have no motor connected to the [Throat](center:throat). That is why your gift lies neither in stamina nor in initiation; your gift is to **see, guide and direct** where you are invited. Managing yourself well means **resting and pacing yourself** — sleeping and letting go before you are exhausted — and saving your attention for those who genuinely value it: **knowing when to say yes and when to say no**.',
+        '**Managing your energy** — With no defined [Sacral](center:sacral) you are **not built for constant work**, and you cannot hold a Generator\u2019s pace: your energy is uneven and runs out sooner. You are not built to start from scratch either — unlike a Manifestor, you have no motor wired to the [Throat](center:throat). Your gift is neither stamina nor initiation. It is to **see, guide and direct**, where you are invited to. So: **rest and pace yourself** — sleep and let go before you are empty — and save your attention for people who value it. **Know when to say yes and when to say no.**',
       trampa:
-        '**Your type’s trap** — **Forcing yourself to other people’s pace** and **offering your vision and effort unasked**. Working to exhaustion to prove your worth, or insisting without being invited, brings resistance, rejection and bitterness — the signal of a Projector living against their design.',
+        '**The trap for your type** — **Keeping up with everyone else**, and **offering your insight where nobody asked for it**. Working yourself flat to prove your worth, or pushing in without an invitation, brings resistance, rejection and bitterness — the signal of a Projector living against their design.',
       senales:
-        '**Signs that you are on the right track** — **Recognition and success** versus bitterness. When you are seen, invited, and your vision is well received, you are on track; when you feel invisible, exhausted and resentful, it usually signals that you are offering yourself where you weren’t called, or demanding of yourself an energy you don’t have.'
+        '**Signs you are on track** — **Recognition and success**, versus bitterness. Being seen, being invited, having your view actually land: that is the track. Feeling invisible, drained and resentful usually means you are offering yourself where you were not called, or demanding an energy you do not have.'
     },
     manifestor: {
       energia:
-        '**Managing your energy** — You have a motor connected to the [Throat](center:throat) but an undefined [Sacral](center:sacral): your energy is **not constant, it comes in bursts** to initiate and set things in motion, and then it needs rest. You are made to **start things and make an impact**, not to execute in a sustained way. Managing yourself well means respecting those cycles of push and rest (sometimes quite a lot of rest), and protecting your autonomy without isolating yourself.',
+        '**Managing your energy** — You have a motor wired to the [Throat](center:throat) but an undefined [Sacral](center:sacral): your energy is **not constant, it comes in bursts** for starting things, and then it needs rest. You are made to **get things moving and make an impact**, not to keep them running. So respect the cycle of push and rest — sometimes a lot of rest — and protect your independence without cutting yourself off.',
       trampa:
-        '**Your type’s trap** — Acting by surprise **without informing** those your impact will reach: that provokes resistance, opposition and anger around you, which ends up making things harder for you. The other big trap is **demanding of yourself a consistency** that isn’t yours, to the point of burning out, without accepting your great need for rest.',
+        '**The trap for your type** — Moving without **telling** the people your impact will reach. That is what fills the room with resistance and anger, and it ends up making everything harder for you. The other trap is **demanding a consistency that is not yours**, right up to burnout, instead of accepting how much rest you actually need.',
       senales:
-        '**Signs that you are on the right track** — **Peace** versus anger. When you inform and move freely, you find calm around you; when everything fills with resistance and conflict, it usually signals that you acted without warning or that you are forcing a continuous pace that isn’t yours.'
+        '**Signs you are on track** — **Peace**, versus anger. Inform people and move freely and things go quiet around you. When everything turns into friction and conflict, you probably moved without warning, or you are forcing a steady pace that was never yours.'
     },
     reflector: {
       energia:
-        '**Managing your energy** — You have **no defined center**: you constantly sample the energy of people and places, so **the environment affects you enormously** and your energy varies a great deal from one day to the next. The most important thing for you is to **choose well where you are and who you are with**, and not to demand of yourself a consistency that isn’t native to your design. For important decisions, give yourself a **lunar cycle** — about 28 days — before settling them.',
+        '**Managing your energy** — With **no defined center**, you are constantly sampling the energy of people and places. **Your surroundings affect you enormously** and your energy swings a lot from day to day. The single most important thing for you is **choosing where you are and who you are with** — and not demanding a consistency your design does not have. For the big decisions, give yourself a **lunar cycle**, about 28 days.',
       trampa:
-        '**Your type’s trap** — Deciding in a hurry, staying in environments that don’t suit you, and **identifying with what you are merely reflecting**: taking as your own the moods or pressures that actually belong to the group. **Forcing yourself to always be the same** goes against your changing nature.',
+        '**The trap for your type** — Deciding in a hurry, staying in places that do not suit you, and **taking what you are reflecting for your own**: moods and pressures that actually belong to the group. **Forcing yourself to be the same every day** goes against how you work.',
       senales:
-        '**Signs that you are on the right track** — **Surprise and delight** versus disappointment. When the environments and the company are right, life surprises you pleasantly; when disappointment dominates, it usually signals that you are in the wrong place or with the wrong people, or that you decided too quickly.'
+        '**Signs you are on track** — **Surprise and delight**, versus disappointment. Get the place and the people right and life keeps surprising you pleasantly. When disappointment is the main note, you are usually somewhere wrong, with the wrong people, or you decided too fast.'
     }
   },
 
-  // ── I Ching hexagram names ──────────────────────────────────────────────
-  // LEGAL: these are OWN plain-sense renderings of the King Wen hexagram names,
-  // deliberately NOT the Wilhelm/Baynes English (still under copyright). Where a
-  // hexagram is conventionally rendered several ways, the wording chosen here is
-  // descriptive of the classical Chinese title rather than a translation of any
-  // one edition. Same rule as the Spanish list, which follows Wilhelm/Vogelmann.
   iching: {
-    1: 'The creative force',
-    2: 'The receptive field',
-    3: 'Difficulty at the start',
+    1: 'The Creative Force',
+    2: 'The Receptive Field',
+    3: 'Difficulty at the Start',
     4: 'Inexperience',
     5: 'Waiting',
     6: 'Conflict',
-    7: 'The army',
-    8: 'Holding together',
-    9: 'Taming by the small',
+    7: 'The Army',
+    8: 'Holding Together',
+    9: 'Taming by the Small',
     10: 'Treading',
     11: 'Peace',
     12: 'Standstill',
     13: 'Fellowship',
-    14: 'Great holdings',
+    14: 'Great Holdings',
     15: 'Modesty',
     16: 'Enthusiasm',
     17: 'Following',
-    18: 'Repairing what was spoiled',
-    19: 'Drawing near',
+    18: 'Repairing What Was Spoiled',
+    19: 'Drawing Near',
     20: 'Contemplation',
-    21: 'Biting through',
+    21: 'Biting Through',
     22: 'Grace',
-    23: 'Falling apart',
-    24: 'The return',
+    23: 'Falling Apart',
+    24: 'The Return',
     25: 'Innocence',
-    26: 'Taming by the great',
+    26: 'Taming by the Great',
     27: 'Nourishment',
-    28: 'Excess of the great',
-    29: 'The abyss (water)',
-    30: 'The clinging (fire)',
+    28: 'Excess of the Great',
+    29: 'The Abyss (Water)',
+    30: 'The Clinging (Fire)',
     31: 'Influence',
     32: 'Duration',
     33: 'Retreat',
-    34: 'The power of the great',
+    34: 'The Power of the Great',
     35: 'Progress',
-    36: 'The darkening of the light',
-    37: 'The family',
+    36: 'The Darkening of the Light',
+    37: 'The Family',
     38: 'Opposition',
     39: 'Obstruction',
     40: 'Release',
     41: 'Decrease',
     42: 'Increase',
     43: 'Breakthrough',
-    44: 'Coming to meet',
-    45: 'Gathering together',
-    46: 'Pushing upward',
+    44: 'Coming to Meet',
+    45: 'Gathering Together',
+    46: 'Pushing Upward',
     47: 'Oppression',
-    48: 'The well',
+    48: 'The Well',
     49: 'Revolution',
-    50: 'The cauldron',
-    51: 'The arousing (shock)',
-    52: 'Keeping still (the mountain)',
-    53: 'Gradual development',
-    54: 'The marrying maiden',
+    50: 'The Cauldron',
+    51: 'The Arousing (Shock)',
+    52: 'Keeping Still (the Mountain)',
+    53: 'Gradual Development',
+    54: 'The Marrying Maiden',
     55: 'Abundance',
-    56: 'The wanderer',
-    57: 'The gentle (wind)',
-    58: 'The joyous (lake)',
+    56: 'The Wanderer',
+    57: 'The Gentle (Wind)',
+    58: 'The Joyous (Lake)',
     59: 'Dispersion',
     60: 'Limitation',
-    61: 'Inner truth',
-    62: 'Excess of the small',
-    63: 'After completion',
-    64: 'Before completion'
+    61: 'Inner Truth',
+    62: 'Excess of the Small',
+    63: 'After Completion',
+    64: 'Before Completion'
   },
 
-  // ── The 36 channels: own-voice name + essence ───────────────────────────
   channel: {
-    '1-8': { name: 'channel of inspiration', essence: 'the creativity of one’s own identity, which needs a voice in order to inspire others by being a role model.' },
-    '2-14': { name: 'channel of the beat', essence: 'an inner direction that orients where to aim one’s life force and resources.' },
-    '3-60': { name: 'channel of mutation', essence: 'the pulse of change, turning limitation into the beginning of something new.' },
-    '4-63': { name: 'channel of logic', essence: 'the mind that starts from doubt to look for answers and formulas that resolve it.' },
-    '5-15': { name: 'channel of rhythm', essence: 'a natural rhythm of one’s own that, open to diversity, tunes in to the flow of life.' },
-    '6-59': { name: 'channel of intimacy', essence: 'the energy of breaking barriers and creating a bond, managing when to open up and when to close.' },
-    '7-31': { name: 'channel of leadership', essence: 'the guiding role that gives direction to the future and finds the voice to lead a group.' },
-    '9-52': { name: 'channel of concentration', essence: 'the stillness that allows energy to be focused on detail until something is carried through.' },
-    '10-20': { name: 'channel of awakening', essence: 'self-love expressed in the present, being true to oneself here and now.' },
-    '10-34': { name: 'channel of exploration', essence: 'the strength to act on one’s own convictions, being true to oneself.' },
-    '10-57': { name: 'channel of survival', essence: 'intuition in the service of wellbeing and of the right way to inhabit the body.' },
-    '11-56': { name: 'channel of curiosity', essence: 'the mind full of ideas that seeks to tell them as stories that stimulate and give meaning.' },
-    '12-22': { name: 'channel of openness', essence: 'the emotional expression that opens up and moves people when the mood and the moment are right.' },
-    '13-33': { name: 'channel of the prodigal', essence: 'gathering what has been lived and, after retreat, sharing it as a witness for others.' },
-    '16-48': { name: 'channel of talent', essence: 'the deep talent that, with enthusiasm and practice, ripens into mastery.' },
-    '17-62': { name: 'channel of acceptance', essence: 'opinions that arrange themselves into data and detail in order to organize and anticipate.' },
-    '18-58': { name: 'channel of judgement', essence: 'the vitality that pushes to correct and perfect what has gone crooked.' },
-    '19-49': { name: 'channel of synthesis', essence: 'the sensitivity to needs that decides bonds from deep principles.' },
-    '20-34': { name: 'channel of charisma', essence: 'power that turns into action in the present, thinking and doing without delay.' },
-    '20-57': { name: 'channel of the brain wave', essence: 'the sharp intuition that catches and voices the sure knowing of the instant.' },
-    '21-45': { name: 'channel of money', essence: 'the will to control resources and the voice that administers them for the group.' },
-    '23-43': { name: 'channel of structuring', essence: 'individual knowing translated into clear ideas others can understand.' },
-    '24-61': { name: 'channel of awareness', essence: 'the pressure to know the mystery, turning it over until it reveals its meaning.' },
-    '25-51': { name: 'channel of initiation', essence: 'the impulse that initiates and shakes, moved by a pure love that awakens the spirit.' },
-    '26-44': { name: 'channel of surrender', essence: 'the instinct that reads the past and transmits it with the power to convince.' },
-    '27-50': { name: 'channel of preservation', essence: 'the care that sustains others, guided by the values that protect the group.' },
-    '28-38': { name: 'channel of struggle', essence: 'the tenacity to fight and take risks for a life worth living.' },
-    '29-46': { name: 'channel of discovery', essence: 'committed devotion that, put into the body, thrives where others fail.' },
-    '30-41': { name: 'channel of recognition', essence: 'the imagination and longing that kindle the desire to live new experiences.' },
-    '32-54': { name: 'channel of transformation', essence: 'the ambition to rise, guided by an instinct for what endures.' },
-    '34-57': { name: 'channel of power', essence: 'raw strength in the service of instinct, a power that is presence in the moment.' },
-    '35-36': { name: 'channel of transience', essence: 'the hunger for experience that, through emotional ups and downs, pushes to try everything and move on.' },
-    '37-40': { name: 'channel of community', essence: 'the warmth that creates community through agreements, giving of itself and knowing when to withdraw and recover.' },
-    '39-55': { name: 'channel of emotion', essence: 'the provocation that stirs the mood and its abundance in order to bring spirit to the surface.' },
-    '42-53': { name: 'channel of maturation', essence: 'the energy of cycles: starting and carrying through to the end in order to mature with experience.' },
-    '47-64': { name: 'channel of abstraction', essence: 'the pressure of confused images striving to arrange themselves until understanding arrives.' }
+    '1-8': { name: 'Channel of Inspiration', essence: 'the creativity of one’s own identity, which needs a voice in order to inspire others by being a role model.' },
+    '2-14': { name: 'Channel of the Beat', essence: 'an inner direction that orients where to aim one’s life force and resources.' },
+    '3-60': { name: 'Channel of Mutation', essence: 'the pulse of change, turning limitation into the beginning of something new.' },
+    '4-63': { name: 'Channel of Logic', essence: 'the mind that starts from doubt to look for answers and formulas that resolve it.' },
+    '5-15': { name: 'Channel of Rhythm', essence: 'a natural rhythm of one’s own that, open to diversity, tunes in to the flow of life.' },
+    '6-59': { name: 'Channel of Intimacy', essence: 'the energy of breaking barriers and creating a bond, managing when to open up and when to close.' },
+    '7-31': { name: 'Channel of Leadership', essence: 'the guiding role that gives direction to the future and finds the voice to lead a group.' },
+    '9-52': { name: 'Channel of Concentration', essence: 'the stillness that allows energy to be focused on detail until something is carried through.' },
+    '10-20': { name: 'Channel of Awakening', essence: 'self-love expressed in the present, being true to oneself here and now.' },
+    '10-34': { name: 'Channel of Exploration', essence: 'the strength to act on one’s own convictions, being true to oneself.' },
+    '10-57': { name: 'Channel of Survival', essence: 'intuition in the service of wellbeing and of the right way to inhabit the body.' },
+    '11-56': { name: 'Channel of Curiosity', essence: 'the mind full of ideas that seeks to tell them as stories that stimulate and give meaning.' },
+    '12-22': { name: 'Channel of Openness', essence: 'the emotional expression that opens up and moves people when the mood and the moment are right.' },
+    '13-33': { name: 'Channel of the Prodigal', essence: 'gathering what has been lived and, after retreat, sharing it as a witness for others.' },
+    '16-48': { name: 'Channel of Talent', essence: 'the deep talent that, with enthusiasm and practice, ripens into mastery.' },
+    '17-62': { name: 'Channel of Acceptance', essence: 'opinions that arrange themselves into data and detail in order to organize and anticipate.' },
+    '18-58': { name: 'Channel of Judgement', essence: 'the vitality that pushes to correct and perfect what has gone crooked.' },
+    '19-49': { name: 'Channel of Synthesis', essence: 'the sensitivity to needs that decides bonds from deep principles.' },
+    '20-34': { name: 'Channel of Charisma', essence: 'power that turns into action in the present, thinking and doing without delay.' },
+    '20-57': { name: 'Channel of the Brain Wave', essence: 'the sharp intuition that catches and voices the sure knowing of the instant.' },
+    '21-45': { name: 'Channel of Money', essence: 'the will to control resources and the voice that administers them for the group.' },
+    '23-43': { name: 'Channel of Structuring', essence: 'individual knowing translated into clear ideas others can understand.' },
+    '24-61': { name: 'Channel of Awareness', essence: 'the pressure to know the mystery, turning it over until it reveals its meaning.' },
+    '25-51': { name: 'Channel of Initiation', essence: 'the impulse that initiates and shakes, moved by a pure love that awakens the spirit.' },
+    '26-44': { name: 'Channel of Surrender', essence: 'the instinct that reads the past and transmits it with the power to convince.' },
+    '27-50': { name: 'Channel of Preservation', essence: 'the care that sustains others, guided by the values that protect the group.' },
+    '28-38': { name: 'Channel of Struggle', essence: 'the tenacity to fight and take risks for a life worth living.' },
+    '29-46': { name: 'Channel of Discovery', essence: 'committed devotion that, put into the body, thrives where others fail.' },
+    '30-41': { name: 'Channel of Recognition', essence: 'the imagination and longing that kindle the desire to live new experiences.' },
+    '32-54': { name: 'Channel of Transformation', essence: 'the ambition to rise, guided by an instinct for what endures.' },
+    '34-57': { name: 'Channel of Power', essence: 'raw strength in the service of instinct, a power that is presence in the moment.' },
+    '35-36': { name: 'Channel of Transience', essence: 'the hunger for experience that, through emotional ups and downs, pushes to try everything and move on.' },
+    '37-40': { name: 'Channel of Community', essence: 'the warmth that creates community through agreements, giving of itself and knowing when to withdraw and recover.' },
+    '39-55': { name: 'Channel of Emotion', essence: 'the provocation that stirs the mood and its abundance in order to bring spirit to the surface.' },
+    '42-53': { name: 'Channel of Maturation', essence: 'the energy of cycles: starting and carrying through to the end in order to mature with experience.' },
+    '47-64': { name: 'Channel of Abstraction', essence: 'the pressure of confused images striving to arrange themselves until understanding arrives.' }
   },
 
   // Short keynote per center, shown next to the chips in the centers drawer.
@@ -1218,7 +1208,7 @@ const overrides = {
   // Closed-set index appended to each value drawer.
   relatedIndex: {
     type: {
-      heading: 'The five types in the human collective',
+      heading: 'The Five Types in the Human Collective',
       items: {
         generator: { label: 'Generator', note: 'builds with sustained energy', pct: '~37%' },
         'manifesting-generator': { label: 'Manifesting Generator', note: 'builds fast and many-sided', pct: '~33%' },
@@ -1228,39 +1218,39 @@ const overrides = {
       }
     },
     strategy: {
-      heading: 'The five strategies',
+      heading: 'The Five Strategies',
       items: {
         respond: { label: 'Respond', note: 'the Generator’s' },
-        'respond-then-inform': { label: 'Respond, then inform', note: 'the Manifesting Generator’s' },
-        'inform-before-acting': { label: 'Inform before acting', note: 'the Manifestor’s' },
-        'wait-for-invitation': { label: 'Wait for the invitation', note: 'the Projector’s' },
-        'wait-lunar-cycle': { label: 'Wait a lunar cycle', note: 'the Reflector’s' }
+        'respond-then-inform': { label: 'Respond, Then Inform', note: 'the Manifesting Generator’s' },
+        'inform-before-acting': { label: 'Inform Before Acting', note: 'the Manifestor’s' },
+        'wait-for-invitation': { label: 'Wait for the Invitation', note: 'the Projector’s' },
+        'wait-lunar-cycle': { label: 'Wait a Lunar Cycle', note: 'the Reflector’s' }
       }
     },
     authority: {
-      heading: 'The seven authorities',
+      heading: 'The Seven Authorities',
       items: {
         emotional: { label: 'Emotional', note: 'clarity over time, riding out the emotional wave' },
         sacral: { label: 'Sacral', note: 'the gut yes or no of the moment' },
         splenic: { label: 'Splenic', note: 'the instinct that speaks only once' },
         ego: { label: 'Ego', note: 'what you genuinely want' },
-        'self-projected': { label: 'Self-projected', note: 'hearing yourself speak out loud to recognize yourself' },
-        mental: { label: 'Mental/environmental', note: 'the clarity that comes from dialogue' },
+        'self-projected': { label: 'Self-Projected', note: 'hearing yourself speak out loud to recognize yourself' },
+        mental: { label: 'Mental/Environmental', note: 'the clarity that comes from dialogue' },
         lunar: { label: 'Lunar', note: 'a lunar cycle of perspective' }
       }
     },
     definition: {
-      heading: 'The five definitions',
+      heading: 'The Five Definitions',
       items: {
-        'no-definition': { label: 'No definition', note: 'no center defined (Reflector)' },
+        'no-definition': { label: 'No Definition', note: 'no center defined (Reflector)' },
         single: { label: 'Single', note: 'everything connected in one block' },
         split: { label: 'Split', note: 'two separate groups' },
-        'triple-split': { label: 'Triple split', note: 'three separate groups' },
-        'quad-split': { label: 'Quadruple split', note: 'four separate groups' }
+        'triple-split': { label: 'Triple Split', note: 'three separate groups' },
+        'quad-split': { label: 'Quadruple Split', note: 'four separate groups' }
       }
     },
     profile: {
-      heading: 'The six lines',
+      heading: 'The Six Lines',
       items: {
         '1': { label: 'Line 1', note: 'the foundation: research and settle the base' },
         '2': { label: 'Line 2', note: 'the natural talent others call out from outside' },
