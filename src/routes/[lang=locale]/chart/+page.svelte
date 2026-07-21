@@ -578,7 +578,17 @@
     try {
       const cover = await blobToImage(await captureBlob({ summaryOnly: true }));
       const { buildReportPdf } = await import('$lib/hd/report-pdf.js');
-      const pdf = await buildReportPdf({ image: cover, sections });
+      // Cover wording is passed in so report-pdf.js stays free of app imports.
+      const pdf = await buildReportPdf({
+        image: cover,
+        sections,
+        labels: {
+          eyebrow: tr('reportUi.eyebrow').toUpperCase(),
+          title: tr('reportUi.title'),
+          defined: tr('reportUi.pdfDefined'),
+          open: tr('reportUi.pdfOpen')
+        }
+      });
       downloadBlob(pdf, imageFileName().replace(/\.png$/i, '.pdf'));
     } catch (e) {
       shareError = `No se pudo generar el PDF: ${e instanceof Error ? e.message : String(e)}`;

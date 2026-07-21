@@ -183,7 +183,7 @@ function drawCover(doc, L, image) {
 }
 
 /** Render a centre walk-through card (name chip + state tag + two lines). */
-function drawCentre(doc, L, c) {
+function drawCentre(doc, L, c, COVER) {
   L.ensure(40);
   L.gap(6);
   const x = MARGIN_X;
@@ -197,7 +197,7 @@ function drawCentre(doc, L, c) {
   doc.setFontSize(7.5);
   doc.setFont('helvetica', 'normal');
   doc.setTextColor(...(c.defined ? C.accent : C.muted));
-  doc.text((c.defined ? 'DEFINIDO' : 'ABIERTO'), x + 10 + nameW + 8, L.y, { charSpace: 0.5 });
+  doc.text(c.defined ? COVER.defined : COVER.open, x + 10 + nameW + 8, L.y, { charSpace: 0.5 });
   L.y += 14;
   L.richText(parseRuns(c.fn), { size: 9.5, color: C.body, lineHeight: 13, x: x + 10, maxW: CONTENT_W - 10 });
   L.richText(parseRuns(c.state), { size: 9.5, color: C.body, lineHeight: 13, x: x + 10, maxW: CONTENT_W - 10 });
@@ -215,7 +215,16 @@ function drawCentre(doc, L, c) {
  * }} args
  * @returns {Promise<Blob>}
  */
-export async function buildReportPdf({ image = null, sections = [] }) {
+export async function buildReportPdf({ image = null, sections = [], labels = {} }) {
+  // Cover wording comes from the caller (Phase M) so this module stays free of
+  // app imports and testable in plain Node.
+  const COVER = {
+    eyebrow: 'TU INFORME INICIAL PERSONALIZADO',
+    title: 'Conoce tu diseño',
+    defined: 'DEFINIDO',
+    open: 'ABIERTO',
+    ...labels
+  };
   const { jsPDF } = await import('jspdf');
   // compress: zlib-deflate the content streams (off by default) — the cover
   // image plus the word-by-word text would otherwise bloat the file.
@@ -235,12 +244,12 @@ export async function buildReportPdf({ image = null, sections = [] }) {
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(8.5);
   doc.setTextColor(...C.accent);
-  doc.text('TU INFORME INICIAL PERSONALIZADO', MARGIN_X, L.y, { charSpace: 1 });
+  doc.text(COVER.eyebrow, MARGIN_X, L.y, { charSpace: 1 });
   L.y += 22;
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(20);
   doc.setTextColor(...C.text);
-  doc.text('Conoce tu diseño', MARGIN_X, L.y);
+  doc.text(COVER.title, MARGIN_X, L.y);
   L.y += 14;
   L.divider();
 
@@ -291,7 +300,7 @@ export async function buildReportPdf({ image = null, sections = [] }) {
     }
 
     if (s.items?.length) {
-      for (const c of s.items) drawCentre(doc, L, c);
+      for (const c of s.items) drawCentre(doc, L, c, COVER);
     }
 
     L.divider();

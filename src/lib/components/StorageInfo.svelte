@@ -4,6 +4,7 @@
 <!-- live, how the automatic cookie backup protects them, what does delete -->
 <!-- them, and the manual export/install routes. -->
 <script>
+  import { t } from '$lib/i18n/index.svelte.js';
   import { fade, fly } from 'svelte/transition';
   import { focusTrap } from './focus-trap.js';
   import { scrollLock } from './scroll-lock.js';
@@ -17,7 +18,7 @@
 
 <svelte:window {onkeydown} />
 
-<button class="link" type="button" onclick={() => (open = true)}>saber más</button>
+<button class="link" type="button" onclick={() => (open = true)}>{t('storage.link')}</button>
 
 {#if open}
   <div class="scrim" onclick={() => (open = false)} role="presentation" transition:fade={{ duration: 120 }}></div>
@@ -25,38 +26,21 @@
     class="modal"
     role="dialog"
     aria-modal="true"
-    aria-label="Cómo se guardan las cartas"
+    aria-label={t('storage.title')}
     use:focusTrap
     use:scrollLock
     transition:fly={{ y: 12, duration: 180 }}
   >
     <header>
-      <h2>Cómo se guardan las cartas</h2>
-      <button class="close" type="button" onclick={() => (open = false)} aria-label="Cerrar">✕</button>
+      <h2>{t('storage.title')}</h2>
+      <button class="close" type="button" onclick={() => (open = false)} aria-label={t('bug.close')}>✕</button>
     </header>
 
     <div class="body">
-      <p>
-        Las cartas guardadas viven en este dispositivo, dentro del almacenamiento
-        del navegador. No hay cuentas ni nube: nadie más puede verlas.
-      </p>
-      <p>
-        Para tener una copia manual, o para llevar las cartas a otro navegador o
-        dispositivo, usa los botones de exportar e importar junto a esta nota.
-      </p>
-      <p>
-        Algunos navegadores limpian ese almacenamiento de vez en cuando — Safari
-        en iPhone y iPad, por ejemplo, borra los datos de las webs que llevan
-        unos días sin visitarse. Para que eso no se lleve las cartas, la app
-        guarda una copia de seguridad en una <strong>cookie técnica propia</strong>
-        (sin rastreo ni terceros) y las restaura sola si el navegador las borra.
-        La copia solo viaja, cifrada, al crearse o restaurarse, y el servidor no
-        la almacena.
-      </p>
-      <p>
-        Lo que sí las borra del todo: <strong>limpiar las cookies o los datos de
-        este sitio</strong> en el navegador (desaparecen las cartas y su copia).
-      </p>
+      <p>{t('storage.p1')}</p>
+      <p>{t('storage.p2')}</p>
+      <p>{t('storage.p3a')}<strong>{t('storage.p3b')}</strong>{t('storage.p3c')}</p>
+      <p>{t('storage.p4a')}<strong>{t('storage.p4b')}</strong>{t('storage.p4c')}</p>
     </div>
   </div>
 {/if}

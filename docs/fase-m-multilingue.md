@@ -4,7 +4,8 @@ Cómo está montado el multiidioma de la app y **qué hay que tocar para añadir
 idioma nuevo** (respuesta corta: sus dos ficheros de textos y una línea en una
 constante; nada más).
 
-Estado: **turno 1 (estructura) cerrado**. Turno 2 = traducción del contenido HD.
+Estado: **turnos 1 (estructura) y 2 (traducción) cerrados**. La app funciona en
+inglés y español; queda solo el cuerpo legal de `/privacy` (ver §5).
 
 ---
 
@@ -115,21 +116,38 @@ Lo único **manual** que queda fuera de esa derivación:
 
 ---
 
-## 5. Qué queda para el turno 2 (traducción)
+## 5. Turno 2 — traducción (cerrado)
 
-Además de los ~600 textos de contenido (`content/en.js` → `overrides`), quedan
-**sin extraer** estos componentes, a propósito: su texto es prosa larga muy
-pegada al contenido HD, así que se traduce en el mismo pase.
+Hecho:
 
-- `About.svelte`, `ReportBug.svelte`, `StorageInfo.svelte`
-- `ElementInfo.svelte` y `InitialReport.svelte` (el chrome de drawers e informe)
-- El cuerpo de `routes/[lang=locale]/privacy/+page.svelte`
-- Los "andamios" en español todavía incrustados en código:
-  `content/index.js` (codas de estado, títulos compuestos, etiquetas de fichas),
-  `report.js` (títulos de sección) y `prompts.js` (el marco "En el marco de
-  Human Design…"). **Hay que moverlos al pack** para que el turno 2 sea solo
-  texto.
-- Los atributos `data-info-cat` de la página de carta (categoría del drawer).
+- **Andamios movidos del código al pack.** Todo el texto conectivo que estaba
+  incrustado en `prompts.js`, `report.js` y `content/index.js` vive ahora en el
+  pack como plantillas (`promptTemplates`, `drawer`, `reportShell`) con
+  marcadores `{…}`, porque es texto **atado a la gramática** (artículos, género,
+  orden de palabras). Ya no queda español en el código de `lib/hd/`.
+- **Contenido traducido al inglés**: conceptos, 5 tipos, 5 estrategias, 7
+  autoridades, 6 líneas de perfil, 5 definiciones, 9 centros, 13 planetas, 36
+  canales, 64 puertas, 64 nombres de hexagrama, el informe inicial completo y el
+  bloque práctico por tipo. **875 hojas de texto, 96 % traducidas**; el 4 %
+  restante son palabras idénticas en ambos idiomas (Reflector, Ajna, Sacral,
+  Venus…) y valores neutros (`tier`).
+- **Chrome de los componentes de prosa**: `ElementInfo`, `InitialReport` (índice
+  incluido), `About`, `ReportBug`, `StorageInfo` y la portada del PDF.
+- **Test de paridad** (`src/lib/i18n/catalog.test.js`): vigila que los catálogos
+  de chrome tengan las mismas claves en todos los idiomas, que los packs de
+  contenido resuelvan todas, que el inglés no sea un *fallback* masivo, y la
+  negociación de la raíz.
 
-Mientras tanto la app es coherente: con la UI en inglés, ese contenido cae al
-español por el *deep merge* (nunca queda vacío).
+### Pendiente (única pieza)
+
+- **El cuerpo de `routes/[lang=locale]/privacy/+page.svelte`** sigue en español.
+  Se dejó a propósito: es texto **legal** (RGPD, normativa española y europea) y
+  merece una redacción revisada por el autor, no una traducción automática. El
+  resto de la página (enlaces, canonical, hreflang) ya es por idioma.
+
+### Nota de estilo heredada
+
+El título de autoridad del informe usa `promptLabels` (minúscula: "Your
+authority: emotional (Solar plexus)"), igual que en español ("Tu autoridad:
+emocional (Plexo solar)"). Es coherente con el original; si algún día se quiere
+en mayúscula, hay que cambiarlo **en los dos idiomas** a la vez.

@@ -1,4 +1,4 @@
-// Prompt builder — Phase 6 (prompts cleaned up 2026-06-22).
+// Prompt builder — Phase 6 (prompts cleaned up 2026-06-22; templated Phase M).
 //
 // Turns an element + the user's chart into a ready-made, *clean* prompt the
 // user takes to their own AI. The app never calls an AI; it only composes the
@@ -7,75 +7,78 @@
 //   - chart:   the element read together with the rest of this chart.
 //
 // House style (kept deliberately short so the AI isn't boxed in):
-//   general → "En el marco de Human Design, ¿me explicas en detalle <X>?"
-//   chart   → "En el marco de Human Design, para <quién>, ¿me explicas en
-//              detalle <X>?"
+//   general → "<frame>, ¿me explicas en detalle <X>?"
+//   chart   → "<frame>, para <quién>, ¿me explicas en detalle <X>?"
 // where <quién> = "un Generador, perfil 3/5, autoridad Sacral, centros
 // definidos …". Prompts stay impersonal (no first person): the chart on screen
 // may belong to someone else (a saved chart).
+//
+// Every one of those sentence fragments is grammar-bound (articles, gender,
+// word order), so they live in the language pack as templates
+// (`promptTemplates`) rather than here — see docs/fase-m-multilingue.md.
 //
 // `chart` is null when the angle doesn't apply (most concepts are abstract). A
 // gate/channel chart angle always applies when there's a chart, and its prompt
 // names how that element sits in it (a gate: complete / hanging / inactive; a
 // channel: complete / half / none).
 
-import { getPromptLabels, gateState, channelState, getLocale } from './content/index.js';
+import {
+  getPromptLabels,
+  getPromptTemplates,
+  fillTpl,
+  gateState,
+  channelState,
+  getLocale
+} from './content/index.js';
 
-const FRAME = 'En el marco de Human Design';
+/** General angle. */
+const ask = (T, subject) => fillTpl(T.ask, { frame: T.frame, subject });
 
-/** General angle: "En el marco de Human Design, ¿me explicas en detalle <subject>?" */
-const ask = (subject) => `${FRAME}, ¿me explicas en detalle ${subject}?`;
-
-/** Impersonal descriptor of the chart, e.g. "un Generador, perfil 3/5, autoridad Sacral, definición split, centros definidos …". */
-function who(L, chart) {
-  const type = L.type[chart.type] ?? chart.type;
-  const authority = L.authority[chart.authority] ?? chart.authority;
-  const definition = L.definition[chart.definition] ?? chart.definition;
-  const centers = (chart.definedCenters ?? [])
-    .map((c) => L.center[c] ?? c)
-    .join(', ');
-  return (
-    `un ${type}, perfil ${chart.profile}, autoridad ${authority}, ` +
-    `${definition}, centros definidos ${centers || 'ninguno'}`
-  );
+/** Impersonal descriptor of the chart, e.g. "un Generador, perfil 3/5, …". */
+function who(T, L, chart) {
+  return fillTpl(T.who, {
+    type: L.type[chart.type] ?? chart.type,
+    profile: chart.profile,
+    authority: L.authority[chart.authority] ?? chart.authority,
+    definition: L.definition[chart.definition] ?? chart.definition,
+    centers: (chart.definedCenters ?? []).map((c) => L.center[c] ?? c).join(', ') || T.none
+  });
 }
 
 /** Chart angle: same as `ask` but prefixed with the chart descriptor. */
-const askChart = (L, chart, subject) =>
-  `${FRAME}, para ${who(L, chart)}, ¿me explicas en detalle ${subject}?`;
+const askChart = (T, L, chart, subject) =>
+  fillTpl(T.askChart, { frame: T.frame, who: who(T, L, chart), subject });
 
-/** The planets whose Personality/Design activations light up gate `g`, e.g.
- *  "el Sol en Personalidad (línea 3)". Empty when the gate isn't active. */
-function gateActivations(L, chart, g) {
+/** The planets whose Personality/Design activations light up gate `g`. */
+function gateActivations(T, L, chart, g) {
   const parts = [];
-  for (const [side, label] of [['personality', 'Personalidad'], ['design', 'Diseño']]) {
+  for (const side of ['personality', 'design']) {
     for (const [planet, act] of Object.entries(chart?.[side] ?? {})) {
-      if (act?.gate === g) parts.push(`${L.planet?.[planet] ?? planet} en ${label} (línea ${act.line})`);
+      if (act?.gate === g) {
+        parts.push(
+          fillTpl(T.activation, {
+            planet: L.planet?.[planet] ?? planet,
+            side: T.side[side],
+            line: act.line
+          })
+        );
+      }
     }
   }
   return parts;
 }
 
-/** Gate chart-angle subject, naming the gate's state (and activations) in the chart. */
-function gateChartSubject(L, chart, g, state) {
-  const acts = gateActivations(L, chart, g);
-  const by = acts.length ? ` está activada por ${acts.join(' y ')} y` : '';
-  const tail = {
-    complete: `, que en esta carta${by} forma parte de un canal completo`,
-    hanging: `, que en esta carta${by} está colgante (sin la otra mitad de su canal)`,
-    inactive: ', que en esta carta no está activa'
-  }[state] ?? '';
-  return `la puerta ${g}${tail}`;
+/** Gate chart-angle subject, naming the gate's state (and activations). */
+function gateChartSubject(T, L, chart, g, state) {
+  const acts = gateActivations(T, L, chart, g);
+  const by = acts.length ? fillTpl(T.gate.by, { acts: acts.join(T.activationJoin) }) : '';
+  const tail = fillTpl(T.gate[state] ?? '', { by });
+  return fillTpl(T.gate.subject, { g }) + tail;
 }
 
 /** Channel chart-angle subject, naming the channel's state in the chart. */
-function channelChartSubject(a, b, state) {
-  const tail = {
-    complete: ', que en esta carta está completo (define sus dos centros)',
-    half: ', del que en esta carta solo está activa una de sus dos puertas (medio canal)',
-    none: ', que en esta carta no está activo'
-  }[state] ?? '';
-  return `el canal ${a}-${b}${tail}`;
+function channelChartSubject(T, a, b, state) {
+  return fillTpl(T.channel.subject, { a, b }) + (T.channel[state] ?? '');
 }
 
 /**
@@ -87,61 +90,51 @@ function channelChartSubject(a, b, state) {
  */
 export function buildPrompts(kind, key, chart, lang = getLocale()) {
   const L = getPromptLabels(lang);
+  const T = getPromptTemplates(lang);
+  const S = T.subject;
 
-  if (kind === 'concept') return conceptPrompts(L, key, chart);
+  if (kind === 'concept') return conceptPrompts(T, L, key, chart);
 
   if (kind === 'type') {
-    const type = L.type[key] ?? key;
-    const isOwn = key === chart.type;
+    const subject = fillTpl(S.type, { name: L.type[key] ?? key });
     // The chart angle only makes sense for the chart's own type.
     return {
-      general: ask(`el tipo ${type}`),
-      chart: isOwn ? askChart(L, chart, `el tipo ${type}`) : null
+      general: ask(T, subject),
+      chart: key === chart.type ? askChart(T, L, chart, subject) : null
     };
   }
 
   if (kind === 'strategy') {
-    const s = L.strategy[key] ?? key;
-    return {
-      general: ask(`la estrategia de "${s}"`),
-      chart: askChart(L, chart, `la estrategia de "${s}"`)
-    };
+    const subject = fillTpl(S.strategy, { name: L.strategy[key] ?? key });
+    return { general: ask(T, subject), chart: askChart(T, L, chart, subject) };
   }
 
   if (kind === 'authority') {
-    const a = L.authority[key] ?? key;
-    return {
-      general: ask(`la autoridad ${a}`),
-      chart: askChart(L, chart, `la autoridad ${a}`)
-    };
+    const subject = fillTpl(S.authority, { name: L.authority[key] ?? key });
+    return { general: ask(T, subject), chart: askChart(T, L, chart, subject) };
   }
 
   if (kind === 'profile') {
     // key is the "3/5" string, or a single line ("3") from the lines schema.
     const isLine = !String(key).includes('/');
-    const subject = isLine ? `la línea ${key} del perfil` : `el perfil ${key}`;
+    const subject = isLine ? fillTpl(S.profileLine, { n: key }) : fillTpl(S.profile, { n: key });
     return {
-      general: ask(subject),
-      chart: isLine ? null : askChart(L, chart, subject)
+      general: ask(T, subject),
+      chart: isLine ? null : askChart(T, L, chart, subject)
     };
   }
 
   if (kind === 'definition') {
-    const d = L.definition[key] ?? key;
-    // "sin definición" doesn't read as "la sin definición"; phrase it apart.
     const subject =
       key === 'no-definition'
-        ? 'qué significa no tener definición (una carta sin definición)'
-        : `la ${d}`;
-    return { general: ask(subject), chart: askChart(L, chart, subject) };
+        ? S.noDefinition
+        : fillTpl(S.definition, { name: L.definition[key] ?? key });
+    return { general: ask(T, subject), chart: askChart(T, L, chart, subject) };
   }
 
   if (kind === 'center') {
-    const c = L.center[key] ?? key;
-    return {
-      general: ask(`el centro "${c}"`),
-      chart: askChart(L, chart, `el centro "${c}"`)
-    };
+    const subject = fillTpl(S.center, { name: L.center[key] ?? key });
+    return { general: ask(T, subject), chart: askChart(T, L, chart, subject) };
   }
 
   if (kind === 'gate') {
@@ -150,8 +143,8 @@ export function buildPrompts(kind, key, chart, lang = getLocale()) {
     // index that isn't active) and names its state: complete / hanging / inactive.
     const state = gateState(g, chart);
     return {
-      general: ask(`la puerta ${g}`),
-      chart: state ? askChart(L, chart, gateChartSubject(L, chart, g, state)) : null
+      general: ask(T, fillTpl(T.gate.subject, { g })),
+      chart: state ? askChart(T, L, chart, gateChartSubject(T, L, chart, g, state)) : null
     };
   }
 
@@ -160,20 +153,13 @@ export function buildPrompts(kind, key, chart, lang = getLocale()) {
     // Same for channels, naming the state: complete / half / none.
     const state = channelState(a, b, chart);
     return {
-      general: ask(`el canal ${a}-${b}`),
-      chart: state ? askChart(L, chart, channelChartSubject(a, b, state)) : null
+      general: ask(T, fillTpl(T.channel.subject, { a, b })),
+      chart: state ? askChart(T, L, chart, channelChartSubject(T, a, b, state)) : null
     };
   }
 
   if (kind === 'activationCol') {
-    const subject = {
-      personality:
-        'la parte consciente (Personalidad) de una carta, calculada en el momento del nacimiento',
-      design:
-        'la parte inconsciente (Diseño) de una carta, calculada unos 88 días antes del nacimiento',
-      weight: 'el peso o influencia relativa de cada activación planetaria'
-    };
-    return { general: ask(subject[key] ?? key), chart: null };
+    return { general: ask(T, T.activationCol[key] ?? key), chart: null };
   }
 
   if (kind === 'planet') {
@@ -182,13 +168,18 @@ export function buildPrompts(kind, key, chart, lang = getLocale()) {
     const d = chart?.design?.[key];
     // The chart angle names this planet's two activations in the chart.
     return {
-      general: ask(`qué representa ${name}`),
+      general: ask(T, fillTpl(S.planet, { name })),
       chart:
         p && d
-          ? `${FRAME}, para ${who(L, chart)}, ¿me explicas en detalle qué ` +
-            `representa ${name} y qué aportan sus dos activaciones en esta ` +
-            `carta: ${p.gate}.${p.line} (consciente, Personalidad) y ` +
-            `${d.gate}.${d.line} (inconsciente, Diseño)?`
+          ? fillTpl(T.planetChart, {
+              frame: T.frame,
+              who: who(T, L, chart),
+              name,
+              pg: p.gate,
+              pl: p.line,
+              dg: d.gate,
+              dl: d.line
+            })
           : null
     };
   }
@@ -196,35 +187,16 @@ export function buildPrompts(kind, key, chart, lang = getLocale()) {
   return { general: '', chart: null };
 }
 
-/** Concept-level prompts (the card / section-title "i"). Only `center` has a chart angle. */
-function conceptPrompts(L, key, chart) {
+/** Concept-level prompts (the card / section-title "i"). Only `bodygraph` and
+ *  `center` have a chart angle. */
+function conceptPrompts(T, L, key, chart) {
+  const C = T.concept;
   if (key === 'bodygraph') {
-    return {
-      general: ask('qué es el bodygraph de Diseño Humano y cómo se lee'),
-      chart: askChart(L, chart, 'cómo se lee este bodygraph en concreto')
-    };
+    return { general: ask(T, C.bodygraph), chart: askChart(T, L, chart, C.bodygraphChart) };
   }
   if (key === 'center') {
-    return {
-      general: ask(
-        'qué son los nueve centros y qué diferencia hay entre tenerlos definidos o indefinidos'
-      ),
-      chart: askChart(
-        L,
-        chart,
-        'qué implica la combinación de centros definidos e indefinidos de esta carta'
-      )
-    };
+    return { general: ask(T, C.centerGeneral), chart: askChart(T, L, chart, C.centerChart) };
   }
-  const subject = {
-    type: 'qué son los tipos',
-    strategy: 'qué es la estrategia',
-    authority: 'qué es la autoridad',
-    profile: 'qué es el perfil',
-    definition: 'qué es la definición',
-    channel: 'qué son los canales',
-    gate: 'qué son las puertas',
-    activation: 'qué son las activaciones planetarias'
-  }[key];
-  return { general: subject ? ask(subject) : '', chart: null };
+  const subject = C[key];
+  return { general: subject ? ask(T, subject) : '', chart: null };
 }

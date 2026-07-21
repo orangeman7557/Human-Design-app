@@ -16,6 +16,8 @@ import {
   getTypeReport,
   getCenterReport,
   getPromptLabels,
+  getReportShell,
+  fillTpl,
   getLocale
 } from './content/index.js';
 
@@ -24,9 +26,10 @@ import {
  */
 
 /** "Tu definición: split" (or just "Tu definición" for a Reflector). */
-function definitionTitle(key, fullTitle) {
-  if (key === 'no-definition') return 'Tu definición';
-  return `Tu definición: ${String(fullTitle).replace(/^Definición\s+/i, '')}`;
+function definitionTitle(R, key, fullTitle) {
+  if (key === 'no-definition') return R.definitionTitleNone;
+  const bare = String(fullTitle).replace(new RegExp(R.definitionPrefix, 'i'), '');
+  return fillTpl(R.definitionTitle, { definition: bare });
 }
 
 /**
@@ -38,6 +41,7 @@ function definitionTitle(key, fullTitle) {
 export function buildReport(chart, lang = getLocale()) {
   if (!chart) return [];
   const L = getPromptLabels(lang);
+  const R = getReportShell(lang);
   /** @type {ReportSection[]} */
   const sections = [];
 
@@ -66,11 +70,11 @@ export function buildReport(chart, lang = getLocale()) {
     const typeLabel = L.type?.[chart.type] ?? chart.type;
     // The collective comparison reads as intro + a bulleted list of the five
     // types + outro; then a sub-heading marks the jump to this chart's own type.
-    add('type', `Tu tipo: ${typeLabel}`, [
+    add('type', fillTpl(R.typeTitle, { type: typeLabel }), [
       coll?.intro,
       coll?.bullets ? { bullets: coll.bullets } : null,
       coll?.outro,
-      { subhead: `Tú eres un ${typeLabel}` },
+      { subhead: fillTpl(R.typeSubhead, { type: typeLabel }) },
       ...typeBody
     ]);
   }
@@ -85,28 +89,28 @@ export function buildReport(chart, lang = getLocale()) {
   }).filter(Boolean);
   add(
     'centers',
-    'Tus centros y tus condicionamientos',
+    R.centersTitle,
     [...(cond?.paragraphs ?? []), getReportLeadIn('centers', lang)],
     { items }
   );
 
   const strat = getElementInfo('strategy', chart.strategy, lang);
   const stratBody = getReportBody('strategy', chart.strategy, lang);
-  if (strat && stratBody) add('strategy', `Tu estrategia: ${strat.title}`, [getReportLeadIn('strategy', lang), ...stratBody]);
+  if (strat && stratBody) add('strategy', fillTpl(R.strategyTitle, { strategy: strat.title }), [getReportLeadIn('strategy', lang), ...stratBody]);
 
   const auth = getElementInfo('authority', chart.authority, lang);
   const authBody = getReportBody('authority', chart.authority, lang);
-  if (auth && authBody) add('authority', `Tu autoridad: ${L.authority?.[chart.authority] ?? auth.title}`, [getReportLeadIn('authority', lang), ...authBody]);
+  if (auth && authBody) add('authority', fillTpl(R.authorityTitle, { authority: L.authority?.[chart.authority] ?? auth.title }), [getReportLeadIn('authority', lang), ...authBody]);
 
   const prof = getReportProfile(chart.profile, lang);
-  if (prof) add('profile', `Tu perfil ${chart.profile}`, prof.paragraphs);
+  if (prof) add('profile', fillTpl(R.profileTitle, { profile: chart.profile }), prof.paragraphs);
 
   const def = getElementInfo('definition', chart.definition, lang);
   const defBody = getReportBody('definition', chart.definition, lang);
-  if (def && defBody) add('definition', definitionTitle(chart.definition, def.title), [getReportLeadIn('definition', lang), ...defBody]);
+  if (def && defBody) add('definition', definitionTitle(R, chart.definition, def.title), [getReportLeadIn('definition', lang), ...defBody]);
 
   const tr = getTypeReport(chart.type, lang);
-  if (tr) add('practice', 'Vivir tu diseño', [getReportLeadIn('practice', lang), tr.energia, tr.trampa, tr.senales]);
+  if (tr) add('practice', R.practiceTitle, [getReportLeadIn('practice', lang), tr.energia, tr.trampa, tr.senales]);
 
   return sections;
 }
@@ -121,14 +125,14 @@ export function buildReport(chart, lang = getLocale()) {
  */
 export function buildReportPrompt(chart, lang = getLocale()) {
   const L = getPromptLabels(lang);
-  const type = L.type?.[chart.type] ?? chart.type;
-  const authority = L.authority?.[chart.authority] ?? chart.authority;
-  const strategy = L.strategy?.[chart.strategy] ?? chart.strategy;
-  const definition = L.definition?.[chart.definition] ?? chart.definition;
+  const R = getReportShell(lang);
   const centers = (chart.definedCenters ?? []).map((c) => L.center?.[c] ?? c).join(', ');
-  return (
-    `Según el Diseño Humano soy un ${type}, con perfil ${chart.profile}, ` +
-    `autoridad ${authority}, estrategia "${strategy}" y ${definition}; tengo ` +
-    `definidos los centros: ${centers || 'ninguno'}. Me gustaría saber más sobre...`
-  );
+  return fillTpl(R.closingPrompt, {
+    type: L.type?.[chart.type] ?? chart.type,
+    profile: chart.profile,
+    authority: L.authority?.[chart.authority] ?? chart.authority,
+    strategy: L.strategy?.[chart.strategy] ?? chart.strategy,
+    definition: L.definition?.[chart.definition] ?? chart.definition,
+    centers: centers || R.noCenters
+  });
 }

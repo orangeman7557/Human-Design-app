@@ -157,6 +157,120 @@ export default {
     moreDefinition: 'More about this definition'
   },
 
+  storage: {
+    link: 'learn more',
+    title: 'How charts are stored',
+    p1: 'Saved charts live on this device, inside the browser’s storage. There are no accounts and no cloud: nobody else can see them.',
+    p2: 'To keep a manual copy, or to move your charts to another browser or device, use the export and import buttons next to this note.',
+    p3a: 'Some browsers clear that storage from time to time — Safari on iPhone and iPad, for example, deletes data from sites that haven’t been visited for a few days. So that this doesn’t take your charts with it, the app keeps a backup in a ',
+    p3b: 'first-party technical cookie',
+    p3c: ' (no tracking, no third parties) and restores them by itself if the browser deletes them. The backup only travels, encrypted, when it is created or restored, and the server does not store it.',
+    p4a: 'What does delete them for good: ',
+    p4b: 'clearing the cookies or the site data',
+    p4c: ' in your browser (the charts and their backup both disappear).'
+  },
+
+  bug: {
+    link: 'report a bug',
+    aria: 'Report a bug or send a suggestion',
+    title: 'Report a bug or send a suggestion',
+    thanks: 'Thank you! I got it.',
+    thanksNote: 'I’ll take a look as soon as I can. There is no automatic reply, so don’t worry if you don’t hear back.',
+    close: 'Close',
+    what: 'What is it about?',
+    kindAria: 'Report type',
+    kindBug: 'Report a bug',
+    kindIdea: 'Send a suggestion/message',
+    phIdea: 'Write your suggestion',
+    phBug: 'What you were doing, what you expected, what happened, and how to repeat it if you know…',
+    name: 'Name (optional)',
+    email: 'Email (optional)',
+    send: 'Send',
+    sending: 'Sending…',
+    errEmpty: 'Tell me what happened before sending.',
+    errSend: 'Could not send. Please try again in a moment.',
+    errNet: 'No connection, or the send failed. Please try again in a moment.',
+    subjectBug: 'Bug',
+    subjectIdea: 'Suggestion',
+    subjectPrefix: 'Human Design Chart · reports'
+  },
+
+  about: {
+    link: 'about',
+    aria: 'About',
+    title: 'About',
+    licenseA: 'Source-available project, ',
+    licenseB: 'free for non-commercial use',
+    licenseC: '. (PolyForm Noncommercial 1.0.0)',
+    madeA: 'App made by Javi G.O. with AI assistance, non-profit and with no agenda at all — I made it because I felt like it, like the good ',
+    madeType: 'Manifestor',
+    madeB: ' that I am :)',
+    wish: 'I hope you find it useful, and may you live happily with your design, dear human!',
+    disclaimer: 'An independent project with no affiliation to any organisation. Any trademarks belong to their respective owners. All content presented is informational and does not replace professional advice.',
+    coffee: 'Buy me a coffee',
+    loveBase: 'Send me love!',
+    loveMore: 'Send me <strong>MORE</strong> love!',
+    thanks: [
+      'Thank you! \u2764\ufe0f',
+      'I receive it! \ud83d\udc9b',
+      'What a treat! \ud83d\udc96',
+      'So much affection!! \ud83d\udc97\ud83d\udc97',
+      'Olé, olé, olé!! \u2764\ufe0f\ud83d\udc9b\ud83d\udc9c',
+      'I’m going to burst!!! \ud83d\udca5\ud83d\udc96\ud83d\udca5'
+    ],
+    loveOne: 'love received',
+    loveMany: 'loves received',
+    senderOne: 'dear human',
+    senderMany: 'dear humans',
+    fromWord: ' from '
+  },
+
+  drawerUi: {
+    back: 'Back',
+    close: 'Close'
+  },
+  ai: {
+    heading: 'Learn more using AI',
+    angleChart: 'About this chart',
+    angleGeneral: 'General info',
+    angleHint: 'This selection determines the prompt that is used.',
+    switchAi: 'Change AI',
+    openAi: 'Open AI',
+    copyPrompt: 'Copy prompt',
+    copied: 'Copied',
+    showPrompt: 'View/edit the generated prompt',
+    hidePrompt: 'Hide prompt',
+    otherNote: 'For other AIs, use "Copy prompt" and paste it wherever you like.'
+  },
+
+  reportUi: {
+    eyebrow: 'Your personalised initial report',
+    title: 'Get to know your design',
+    shareAria: 'Share a link to the report',
+    pdfAria: 'Download the report as PDF',
+    pdfBusy: 'Generating PDF…',
+    toc: {
+      intro: 'What Human Design is',
+      experiment: 'A life experiment',
+      chart: 'Bodygraph',
+      type: 'Your type',
+      centers: 'Your centres',
+      strategy: 'Your strategy',
+      authority: 'Your authority',
+      profile: 'Your profile',
+      definition: 'Your definition',
+      practice: 'Living your design'
+    },
+    sectionsAria: 'Report sections',
+    learnMore: 'Learn more',
+    closingNote:
+      'This report is a first impression. To go deeper into whatever interests you most, take your chart to your AI: the prompt already carries your essential data; complete it with whatever you want to explore.',
+    pdfDefined: 'DEFINED',
+    pdfOpen: 'OPEN',
+    showPrompt: 'View/edit the prompt',
+    hidePrompt: 'Hide the prompt'
+  },
+
   category: {
     type: 'Type',
     strategy: 'Strategy',

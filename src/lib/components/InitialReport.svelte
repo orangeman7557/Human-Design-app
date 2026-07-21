@@ -5,6 +5,7 @@
 <!-- AI-handoff (modelled on the drawers' IA section) whose prompt is pre-filled -->
 <!-- with the chart's essentials and left open-ended for the user to complete. -->
 <script>
+  import { t } from '$lib/i18n/index.svelte.js';
   import { untrack } from 'svelte';
   import { fly, fade } from 'svelte/transition';
   import { renderInline } from '$lib/markup.js';
@@ -29,11 +30,7 @@
   const prompt = $derived(open && chart ? buildReportPrompt(chart) : '');
 
   // Short labels for the table of contents (section titles are longer).
-  const TOC = {
-    intro: 'Qué es Human Design', experiment: 'Un experimento vital', chart: 'Bodygraph',
-    type: 'Tu tipo', centers: 'Tus centros', strategy: 'Tu estrategia', authority: 'Tu autoridad',
-    profile: 'Tu perfil', definition: 'Tu definición', practice: 'Vivir tu diseño'
-  };
+  const TOC = $derived(t('reportUi.toc'));
 
   /** @type {HTMLDivElement | undefined} */
   let bodyEl = $state();
@@ -157,11 +154,11 @@
 
 {#if open && chart}
   <div class="scrim" onclick={onclose} role="presentation" transition:fade={{ duration: 150 }}></div>
-  <aside class="report" role="dialog" aria-modal="true" aria-label="Tu informe inicial personalizado" use:focusTrap use:scrollLock transition:fly={{ y: 30, duration: 220 }}>
+  <aside class="report" role="dialog" aria-modal="true" aria-label={t('reportUi.eyebrow')} use:focusTrap use:scrollLock transition:fly={{ y: 30, duration: 220 }}>
     <header>
       <div>
-        <div class="eyebrow">Tu informe inicial personalizado</div>
-        <h2>Conoce tu diseño</h2>
+        <div class="eyebrow">{t('reportUi.eyebrow')}</div>
+        <h2>{t('reportUi.title')}</h2>
       </div>
       <div class="head-actions">
         <button
@@ -169,7 +166,7 @@
           type="button"
           onclick={() => onshare?.()}
           title="Compartir enlace al informe"
-          aria-label="Compartir enlace al informe"
+          aria-label={t('reportUi.shareAria')}
         >
           <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" />
@@ -181,8 +178,8 @@
           type="button"
           onclick={downloadPdf}
           disabled={pdfBusy}
-          title={pdfBusy ? 'Generando PDF…' : 'Descargar el informe en PDF'}
-          aria-label="Descargar el informe en PDF"
+          title={pdfBusy ? t('reportUi.pdfBusy') : t('reportUi.pdfAria')}
+          aria-label={t('reportUi.pdfAria')}
         >
           {#if pdfBusy}
             <svg class="ic spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
@@ -195,15 +192,15 @@
           {/if}
           <span class="pdf-lbl">PDF</span>
         </button>
-        <button class="close" type="button" onclick={onclose} aria-label="Cerrar">✕</button>
+        <button class="close" type="button" onclick={onclose} aria-label={t('drawerUi.close')}>✕</button>
       </div>
     </header>
 
-    <nav class="toc" aria-label="Secciones del informe">
+    <nav class="toc" aria-label={t('reportUi.sectionsAria')}>
       {#each sections as s}
         <button class="toc-chip" type="button" onclick={() => scrollTo(s.id)}>{TOC[s.id] ?? s.title}</button>
       {/each}
-      <button class="toc-chip" type="button" onclick={() => scrollTo('handoff')}>Saber más</button>
+      <button class="toc-chip" type="button" onclick={() => scrollTo('handoff')}>{t('reportUi.learnMore')}</button>
     </nav>
 
     <div class="body" bind:this={bodyEl} role="presentation" onclick={navFromEvent} onkeydown={onContentKeydown}>
@@ -240,13 +237,13 @@
 
       <!-- Closing handoff, styled like the drawers' "Saber más usando IA". -->
       <section id="report-handoff" class="handoff">
-        <h3>Saber más</h3>
-        <p>Este informe es una primera impresión. Para profundizar en lo que más te interese, lleva tu carta a tu IA: el prompt ya lleva tus datos esenciales; complétalo con lo que quieras explorar.</p>
+        <h3>{t('reportUi.learnMore')}</h3>
+        <p>{t('reportUi.closingNote')}</p>
 
         <div class="menu-head">
-          <span class="ia-label">Saber más usando IA</span>
+          <span class="ia-label">{t('ai.heading')}</span>
           <span class="ia-dash" aria-hidden="true">—</span>
-          <span class="ia-angle">Sobre esta carta</span>
+          <span class="ia-angle">{t('ai.angleChart')}</span>
         </div>
 
         <div class="menu">
@@ -259,7 +256,7 @@
                 {preferred.label}
                 <svg class="ai-logo" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d={preferred.icon} /></svg>
               </button>
-              <button class="split-toggle" type="button" onclick={() => (aiOpen = !aiOpen)} aria-label="Cambiar IA">
+              <button class="split-toggle" type="button" onclick={() => (aiOpen = !aiOpen)} aria-label={t('ai.switchAi')}>
                 <svg class="chev" class:up={aiOpen} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
               </button>
             </div>
@@ -290,13 +287,13 @@
                 </button>
               </li>
             {/each}
-            <li class="note">Para otras IA, usa "Copiar prompt" y pégalo donde quieras.</li>
+            <li class="note">{t('ai.otherNote')}</li>
           </ul>
         {/if}
 
         <div class="subrow">
           <button class="vedit" type="button" onclick={() => (showPrompt = !showPrompt)} aria-expanded={showPrompt}>
-            {showPrompt ? 'Ocultar el prompt' : 'Ver/editar el prompt'}
+            {showPrompt ? t('reportUi.hidePrompt') : t('reportUi.showPrompt')}
           </button>
           {#if copied}
             <span class="copied" transition:fade={{ duration: 120 }}>

@@ -13,6 +13,7 @@
 <script>
   import { untrack } from 'svelte';
   import { fly, fade } from 'svelte/transition';
+  import { t } from '$lib/i18n/index.svelte.js';
   import {
     AIS,
     getPreferredAI,
@@ -228,11 +229,11 @@
       </div>
       <div class="head-actions">
         {#if canBack}
-          <button class="hbtn" type="button" onclick={onback} aria-label="Atrás">
+          <button class="hbtn" type="button" onclick={onback} aria-label={t('drawerUi.back')}>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6" /></svg>
           </button>
         {/if}
-        <button class="hbtn close" type="button" onclick={onclose} aria-label="Cerrar">✕</button>
+        <button class="hbtn close" type="button" onclick={onclose} aria-label={t('drawerUi.close')}>✕</button>
       </div>
     </header>
 
@@ -322,21 +323,21 @@
     <div class="sep"></div>
 
     <div class="menu-head">
-      <span class="eyebrow">Saber más usando IA</span>
+      <span class="eyebrow">{t('ai.heading')}</span>
       {#if hasAngles}
         <span class="eyebrow dash" aria-hidden="true">—</span>
         <span class="angle-wrap">
           <button class="angle" type="button" onclick={() => (angleOpen = !angleOpen)} aria-expanded={angleOpen}>
-            {angle === 'chart' ? 'Sobre esta carta' : 'Info general'}
+            {angle === 'chart' ? t('ai.angleChart') : t('ai.angleGeneral')}
             <svg class="chev" class:up={angleOpen} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="m6 9 6 6 6-6" />
             </svg>
           </button>
           {#if angleOpen}
             <ul class="angle-dd">
-              <li class="dd-hint">Esta selección determina el prompt que se usa.</li>
-              <li><button type="button" class:on={angle === 'chart'} onclick={() => setAngle('chart')}>Sobre esta carta</button></li>
-              <li><button type="button" class:on={angle === 'general'} onclick={() => setAngle('general')}>Info general</button></li>
+              <li class="dd-hint">{t('ai.angleHint')}</li>
+              <li><button type="button" class:on={angle === 'chart'} onclick={() => setAngle('chart')}>{t('ai.angleChart')}</button></li>
+              <li><button type="button" class:on={angle === 'general'} onclick={() => setAngle('general')}>{t('ai.angleGeneral')}</button></li>
             </ul>
           {/if}
         </span>
@@ -355,7 +356,7 @@
               <path d={preferred.icon} />
             </svg>
           </button>
-          <button class="split-toggle" type="button" onclick={toggleAiList} aria-label="Cambiar IA">
+          <button class="split-toggle" type="button" onclick={toggleAiList} aria-label={t('ai.switchAi')}>
             <svg class="chev" class:up={aiOpen} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="m6 9 6 6 6-6" />
             </svg>
@@ -366,7 +367,7 @@
           <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" /><path d="M15 3h6v6" /><path d="M10 14 21 3" />
           </svg>
-          Abrir IA
+          {t('ai.openAi')}
           <svg class="chev" class:up={aiOpen} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="m6 9 6 6 6-6" />
           </svg>
@@ -376,7 +377,7 @@
         <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <rect x="9" y="9" width="13" height="13" rx="2" /><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
         </svg>
-        Copiar prompt
+        {t('ai.copyPrompt')}
       </button>
     </div>
 
@@ -392,18 +393,18 @@
             </button>
           </li>
         {/each}
-        <li class="note">Para otras IA, usa "Copiar prompt" y pégalo donde quieras.</li>
+        <li class="note">{t('ai.otherNote')}</li>
       </ul>
     {/if}
 
     <div class="subrow">
       <button class="vedit" type="button" onclick={toggleShowPrompt} aria-expanded={showPrompt}>
-        {showPrompt ? 'Ocultar prompt' : 'Ver/editar el prompt generado'}
+        {showPrompt ? t('ai.hidePrompt') : t('ai.showPrompt')}
       </button>
       {#if copied}
         <span class="copied" transition:fade={{ duration: 120 }}>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 6" /></svg>
-          Copiado
+          {t('ai.copied')}
         </span>
       {/if}
     </div>

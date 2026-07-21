@@ -24,6 +24,33 @@ function pack(lang) {
 const cap = (s) => (s ? s.charAt(0).toUpperCase() + s.slice(1) : s);
 
 /**
+ * Fill `{name}` placeholders in a template string (Phase M). Templates live in
+ * the language pack so a new language translates grammar-bound connective text
+ * (articles, gender, word order) without touching code.
+ * @param {string} str
+ * @param {Record<string, any>} [params]
+ */
+export function fillTpl(str, params) {
+  if (params == null || typeof str !== 'string') return str;
+  return str.replace(/\{(\w+)\}/g, (m, k) => (k in params ? String(params[k]) : m));
+}
+
+/** Prompt templates (frame, subjects, chart descriptor) for the active language. */
+export function getPromptTemplates(lang = getLocale()) {
+  return pack(lang).promptTemplates;
+}
+
+/** Element-drawer scaffolding (composed titles, fact labels, state codas). */
+export function getDrawerText(lang = getLocale()) {
+  return pack(lang).drawer;
+}
+
+/** Initial-report scaffolding (section titles, closing prompt). */
+export function getReportShell(lang = getLocale()) {
+  return pack(lang).reportShell;
+}
+
+/**
  * Explanatory content for an element, or null when none is written yet.
  * @param {string} kind  e.g. 'type'
  * @param {string} key   e.g. 'generator'
@@ -71,11 +98,12 @@ function relatedIndex(kind, currentKeys, lang = getLocale()) {
  *  themes), each a clickable chip row — mirrors the gate/channel drawers. */
 function centerFacts(center, lang = getLocale()) {
   const p = pack(lang);
+  const D = p.drawer;
   const chans = CHANNELS.filter(([a, b]) => CENTER_BY_GATE[a] === center || CENTER_BY_GATE[b] === center);
   const gates = GATES_BY_CENTER[center] ?? [];
   return [
     {
-      label: 'Canales',
+      label: D.factChannels,
       rows: chans.map(([a, b]) => {
         const k = `${a}-${b}`;
         const name = p.channel?.[k]?.name;
@@ -83,7 +111,7 @@ function centerFacts(center, lang = getLocale()) {
       })
     },
     {
-      label: 'Puertas',
+      label: D.factGates,
       rows: gates.map((g) => {
         const t = gateTheme(g, lang);
         return { chip: { label: String(g), kind: 'gate', key: String(g) }, note: t ?? null };
@@ -167,10 +195,11 @@ export function getProfileInfo(profile, lang = getLocale()) {
   const la = getElementInfo('profile', a, lang);
   const lb = getElementInfo('profile', b, lang);
   if (!la || !lb) return null;
+  const D = pack(lang).drawer;
   return {
-    title: `Perfil ${profile}`,
+    title: fillTpl(D.profileTitle, { profile }),
     paragraphs: [
-      `El perfil ${profile} combina dos líneas: la ${a}, consciente, y la ${b}, inconsciente. Cada una aporta su matiz, y juntas describen una forma de aprender, de relacionarse y de desplegar el propósito.`,
+      fillTpl(D.profileIntro, { profile, a, b }),
       `**${la.title}.** ${la.paragraphs[0]}`,
       ...la.paragraphs.slice(1),
       `**${lb.title}.** ${lb.paragraphs[0]}`,
@@ -245,10 +274,11 @@ export function getReportProfile(profile, lang = getLocale()) {
   const ba = getReportBody('profile', a, lang);
   const bb = getReportBody('profile', b, lang);
   if (!la || !lb || !ba || !bb) return null;
+  const R = pack(lang).reportShell;
   return {
-    title: `Perfil ${profile}`,
+    title: fillTpl(R.profileHeading, { profile }),
     paragraphs: [
-      `Tu perfil ${profile} combina dos líneas: la ${a}, consciente, y la ${b}, inconsciente. Cada una aporta su matiz, y juntas describen tu forma de aprender, relacionarte y desplegar tu propósito.`,
+      fillTpl(R.profileIntro, { profile, a, b }),
       `**${la.title}.** ${ba[0]}`,
       ...ba.slice(1),
       `**${lb.title}.** ${bb[0]}`,
@@ -305,17 +335,10 @@ export function gateState(gate, chart) {
  *  drawers are the viewer's reference material and the chart on screen may be
  *  someone else's, so state lines say "esta carta" (voice decision 2026-07-03;
  *  only the initial report speaks in the second person). */
-function gateCoda(state, g) {
-  switch (state) {
-    case 'complete':
-      return `En esta carta, la puerta ${g} está activa y forma parte de un canal completo: es una energía que se aporta de forma estable e integrada.`;
-    case 'hanging':
-      return `En esta carta, la puerta ${g} está activa pero colgante: su tema está presente, y su otra mitad solo se completa de forma puntual, con ciertas personas o en ciertos tránsitos.`;
-    case 'inactive':
-      return `En esta carta, la puerta ${g} no está activa: es una energía que se reconoce y se recibe de los demás y del entorno, más que una constante propia.`;
-    default:
-      return null;
-  }
+function gateCoda(state, g, lang = getLocale()) {
+  const D = pack(lang).drawer;
+  const tpl = { complete: D.gateComplete, hanging: D.gateHanging, inactive: D.gateInactive }[state];
+  return tpl ? fillTpl(tpl, { g }) : null;
 }
 
 /**
@@ -339,11 +362,13 @@ export function getGateInfo(gate, chart = null, lang = getLocale()) {
   // centre / channel(s) / harmonic gate(s), one row per element, rendered by
   // ElementInfo as aligned chip rows. Gates 10/20/34/57 (the integration
   // cluster) sit on more than one channel, so channel rows can be plural.
+  const D = p.drawer;
+  const many = CHANNELS.filter(([a, b]) => a === g || b === g).length > 1;
   const pairs = CHANNELS.filter(([a, b]) => a === g || b === g);
   const facts = [
-    { label: 'Centro', inline: true, rows: [{ chip: { label: labels[center] ?? center, kind: 'center', key: center } }] },
+    { label: D.factCenter, inline: true, rows: [{ chip: { label: labels[center] ?? center, kind: 'center', key: center } }] },
     {
-      label: pairs.length > 1 ? 'Canales' : 'Canal',
+      label: many ? D.factChannels : D.factChannel,
       rows: pairs.map(([a, b]) => {
         const k = `${a}-${b}`;
         const chName = p.channel?.[k]?.name;
@@ -351,8 +376,8 @@ export function getGateInfo(gate, chart = null, lang = getLocale()) {
       })
     },
     {
-      label: pairs.length > 1 ? 'Puertas armónicas' : 'Puerta armónica',
-      tip: pairs.length > 1 ? 'puertas que completan sus canales' : 'puerta que completa el canal',
+      label: many ? D.factHarmonics : D.factHarmonic,
+      tip: many ? D.tipHarmonics : D.tipHarmonic,
       rows: pairs.map(([a, b]) => {
         const h = a === g ? b : a;
         const t = gateTheme(h, lang);
@@ -362,16 +387,16 @@ export function getGateInfo(gate, chart = null, lang = getLocale()) {
   ];
 
   const after = [
-    name
-      ? `Su raíz es el hexagrama ${g} del I Ching, "${name}".`
-      : `Le corresponde el hexagrama ${g} del I Ching.`
+    name ? fillTpl(D.ichingNamed, { g, name }) : fillTpl(D.ichingPlain, { g })
   ];
-  const coda = gateCoda(gateState(g, chart), g);
+  const coda = gateCoda(gateState(g, chart), g, lang);
   if (coda) after.push(coda);
-  after.push('Para una lectura más a fondo, puedes utilizar la opción de "saber más usando IA".');
+  after.push(D.deeper);
   const theme = gateTheme(g, lang);
-  const title = theme ? `Puerta ${g}: ${cap(theme)}` : `Puerta ${g}`;
-  return { title, paragraphs: [entry?.text ?? `La puerta ${g}.`], facts, after };
+  const title = theme
+    ? fillTpl(D.gateTitle, { g, theme: cap(theme) })
+    : fillTpl(D.gateTitlePlain, { g });
+  return { title, paragraphs: [entry?.text ?? fillTpl(D.gateFallback, { g })], facts, after };
 }
 
 /** A channel's state in a chart: 'complete' | 'half' | 'none', or null if no chart. */
@@ -385,19 +410,16 @@ export function channelState(a, b, chart) {
 }
 
 /** Chart-state coda for a channel, or null. Impersonal, same rule as gateCoda. */
-function channelCoda(a, b, chart) {
+function channelCoda(a, b, chart, lang = getLocale()) {
   if (!chart?.activeGates) return null;
+  const D = pack(lang).drawer;
   const aOn = chart.activeGates.includes(a);
   const bOn = chart.activeGates.includes(b);
-  if (aOn && bOn) {
-    return `En esta carta, el canal ${a}-${b} está completo: es una corriente que se aporta de forma estable e integrada.`;
-  }
+  if (aOn && bOn) return fillTpl(D.channelComplete, { a, b });
   if (aOn || bOn) {
-    const on = aOn ? a : b;
-    const off = aOn ? b : a;
-    return `En esta carta, del canal ${a}-${b} está activa una de sus dos puertas (la [puerta ${on}](gate:${on})) pero no la otra (la [puerta ${off}](gate:${off})): es un medio canal que se completa de forma puntual, con quien tenga la puerta que falta o en ciertos tránsitos.`;
+    return fillTpl(D.channelHalf, { a, b, on: aOn ? a : b, off: aOn ? b : a });
   }
-  return `En esta carta, ninguna de las dos puertas del canal ${a}-${b} está activa: es una corriente que se encuentra sobre todo en los demás.`;
+  return fillTpl(D.channelNone, { a, b });
 }
 
 /**
@@ -420,16 +442,17 @@ export function getChannelInfo(pair, chart = null, lang = getLocale()) {
 
   // Essence first; the mechanical identity (centres, gates) lives in the
   // schematic `facts` block below (text audit, jul 2026).
+  const D = pack(lang).drawer;
   const paragraphs = [];
   if (ch && ta && tb) {
-    paragraphs.push(`Es el **${ch.name}**: ${ch.essence}`);
+    paragraphs.push(fillTpl(D.channelIs, { name: ch.name, essence: ch.essence }));
   } else if (ta && tb) {
-    paragraphs.push(`Reúne "${ta}" ([puerta ${a}](gate:${a})) y "${tb}" ([puerta ${b}](gate:${b})), que conviene leer juntas para captar su carácter.`);
+    paragraphs.push(fillTpl(D.channelPair, { ta, tb, a, b }));
   }
 
   const facts = [
     {
-      label: 'Centros',
+      label: D.factCenters,
       inline: true,
       rows: [
         { chip: { label: labels[ca] ?? ca, kind: 'center', key: ca } },
@@ -437,7 +460,7 @@ export function getChannelInfo(pair, chart = null, lang = getLocale()) {
       ]
     },
     {
-      label: 'Puertas',
+      label: D.factGates,
       rows: [
         { chip: { label: String(a), kind: 'gate', key: String(a) }, note: ta ?? null },
         { chip: { label: String(b), kind: 'gate', key: String(b) }, note: tb ?? null }
@@ -445,13 +468,13 @@ export function getChannelInfo(pair, chart = null, lang = getLocale()) {
     }
   ];
 
-  const after = [
-    'Con sus dos puertas activas, el canal queda completo: define los dos centros que conecta y crea una corriente de energía estable entre ellos.'
-  ];
-  const coda = channelCoda(a, b, chart);
+  const after = [D.channelBoth];
+  const coda = channelCoda(a, b, chart, lang);
   if (coda) after.push(coda);
-  after.push('Para una lectura más a fondo, puedes utilizar la opción de "saber más usando IA".');
-  const title = ch?.name ? `${a}-${b}: ${cap(ch.name)}` : `Canal ${a}-${b}`;
+  after.push(D.deeper);
+  const title = ch?.name
+    ? fillTpl(D.channelTitle, { a, b, name: cap(ch.name) })
+    : fillTpl(D.channelTitlePlain, { a, b });
   return { title, paragraphs, facts, after };
 }
 
@@ -471,10 +494,11 @@ export function getPlanetInfo(planet, chart = null, lang = getLocale()) {
     const t = gateTheme(act.gate, lang);
     return [{ chip: { label: String(act.gate), kind: 'gate', key: String(act.gate) }, note: t ?? null }];
   };
+  const D = pack(lang).drawer;
   const pRows = row('personality');
   const dRows = row('design');
   const facts = [];
-  if (pRows) facts.push({ label: 'Personalidad', rows: pRows });
-  if (dRows) facts.push({ label: 'Diseño', rows: dRows });
+  if (pRows) facts.push({ label: D.sidePersonality, rows: pRows });
+  if (dRows) facts.push({ label: D.sideDesign, rows: dRows });
   return facts.length ? { ...entry, facts } : entry;
 }

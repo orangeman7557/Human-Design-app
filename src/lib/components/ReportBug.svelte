@@ -4,6 +4,7 @@
 <!-- automatically so the reporter never has to describe their setup. Covers both bugs -->
 <!-- and suggestions via a small type toggle. Modal chrome mirrors About.svelte. -->
 <script>
+  import { t } from '$lib/i18n/index.svelte.js';
   import { fade, fly } from 'svelte/transition';
   import { focusTrap } from './focus-trap.js';
   import { scrollLock } from './scroll-lock.js';
@@ -57,7 +58,7 @@
     e.preventDefault();
     if (botcheck) return; // a bot filled the honeypot
     if (!message.trim()) {
-      errorMsg = 'Cuéntame qué ha pasado antes de enviar.';
+      errorMsg = t('bug.errEmpty');
       status = 'error';
       return;
     }
@@ -66,9 +67,9 @@
 
     const form = new FormData();
     form.append('access_key', ACCESS_KEY);
-    form.append('subject', `HD Chart · ${kind === 'fallo' ? 'Fallo' : 'Sugerencia'}`);
-    form.append('from_name', 'Human Design Chart · reportes');
-    form.append('Tipo', kind === 'fallo' ? 'Fallo' : 'Sugerencia');
+    form.append('subject', `HD Chart · ${kind === 'fallo' ? t('bug.subjectBug') : t('bug.subjectIdea')}`);
+    form.append('from_name', t('bug.subjectPrefix'));
+    form.append('Tipo', kind === 'fallo' ? t('bug.subjectBug') : t('bug.subjectIdea'));
     if (name.trim()) form.append('name', name.trim());
     if (email.trim()) form.append('email', email.trim());
     form.append('message', message.trim());
@@ -81,11 +82,11 @@
         status = 'sent';
       } else {
         status = 'error';
-        errorMsg = data.message || 'No se pudo enviar. Inténtalo de nuevo en un momento.';
+        errorMsg = data.message || t('bug.errSend');
       }
     } catch {
       status = 'error';
-      errorMsg = 'Sin conexión o el envío falló. Inténtalo de nuevo en un momento.';
+      errorMsg = t('bug.errNet');
     }
   }
 
@@ -96,7 +97,7 @@
 
 <svelte:window {onkeydown} />
 
-<button class="link" type="button" onclick={() => (open = true)}>notificar fallo<svg class="bug" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+<button class="link" type="button" onclick={() => (open = true)}>{t('bug.link')}<svg class="bug" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
     <path d="M8 5a4 4 0 0 1 8 0" />
     <rect x="7" y="7" width="10" height="12" rx="5" />
     <path d="M12 10v8M4 11h3M4 16h3.2M17 11h3M16.8 16H20M6 7 4.5 5.5M18 7l1.5-1.5M6 19l-1.6 1.6M18 19l1.6 1.6" />
@@ -104,25 +105,25 @@
 
 {#if open}
   <div class="scrim" onclick={close} role="presentation" transition:fade={{ duration: 120 }}></div>
-  <div class="modal" role="dialog" aria-modal="true" aria-label="Notificar un fallo o sugerencia" use:focusTrap use:scrollLock transition:fly={{ y: 12, duration: 180 }}>
+  <div class="modal" role="dialog" aria-modal="true" aria-label={t('bug.aria')} use:focusTrap use:scrollLock transition:fly={{ y: 12, duration: 180 }}>
     <header>
-      <h2>Notificar un fallo o enviar una sugerencia</h2>
-      <button class="close" type="button" onclick={close} aria-label="Cerrar">✕</button>
+      <h2>{t('bug.title')}</h2>
+      <button class="close" type="button" onclick={close} aria-label={t('bug.close')}>✕</button>
     </header>
 
     {#if status === 'sent'}
       <div class="done">
-        <p class="thanks">¡Gracias! Lo he recibido.</p>
-        <p class="thanks-sub">Le echaré un vistazo en cuanto pueda. No hay respuesta automática, así que no te preocupes si no recibes nada de vuelta.</p>
-        <button class="submit" type="button" onclick={finish}>Cerrar</button>
+        <p class="thanks">{t('bug.thanks')}</p>
+        <p class="thanks-sub">{t('bug.thanksNote')}</p>
+        <button class="submit" type="button" onclick={finish}>{t('bug.close')}</button>
       </div>
     {:else}
       <form onsubmit={submit}>
         <div class="field">
-          <span>¿De qué se trata?</span>
-          <div class="toggle" role="group" aria-label="Tipo de reporte">
-            <button type="button" class:active={kind === 'fallo'} onclick={() => (kind = 'fallo')}>Notificar un fallo/bug</button>
-            <button type="button" class:active={kind === 'sugerencia'} onclick={() => (kind = 'sugerencia')}>Enviar una sugerencia/mensaje</button>
+          <span>{t('bug.what')}</span>
+          <div class="toggle" role="group" aria-label={t('bug.kindAria')}>
+            <button type="button" class:active={kind === 'fallo'} onclick={() => (kind = 'fallo')}>{t('bug.kindBug')}</button>
+            <button type="button" class:active={kind === 'sugerencia'} onclick={() => (kind = 'sugerencia')}>{t('bug.kindIdea')}</button>
           </div>
         </div>
 
@@ -144,23 +145,23 @@
         </div>
 
         <label class="field">
-          <span>{kind === 'fallo' ? '¿Qué ha pasado?' : 'Escribe tu sugerencia'}</span>
+          <span>{kind === 'fallo' ? '¿Qué ha pasado?' : t('bug.phIdea')}</span>
           <textarea
             bind:value={message}
             rows="5"
             placeholder={kind === 'fallo'
-              ? 'Qué hacías, qué esperabas, qué pasó, y cómo repetirlo si sabes cómo…'
+              ? t('bug.phBug')
               : 'Cuéntame :)'}
           ></textarea>
         </label>
 
         <div class="row">
           <label class="field">
-            <span>Nombre (opcional)</span>
+            <span>{t('bug.name')}</span>
             <input type="text" bind:value={name} autocomplete="name" />
           </label>
           <label class="field">
-            <span>Email (opcional)</span>
+            <span>{t('bug.email')}</span>
             <input type="email" bind:value={email} autocomplete="email" />
           </label>
         </div>
@@ -171,7 +172,7 @@
         {#if status === 'error'}<p class="err send-err">{errorMsg}</p>{/if}
 
         <button class="submit" type="submit" disabled={status === 'sending'}>
-          {status === 'sending' ? 'Enviando…' : 'Enviar'}
+          {status === 'sending' ? t('bug.sending') : t('bug.send')}
         </button>
       </form>
     {/if}

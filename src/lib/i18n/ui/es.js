@@ -171,6 +171,122 @@ export default {
     moreDefinition: 'Más información sobre esta definición'
   },
 
+  storage: {
+    link: 'saber más',
+    title: 'Cómo se guardan las cartas',
+    p1: 'Las cartas guardadas viven en este dispositivo, dentro del almacenamiento del navegador. No hay cuentas ni nube: nadie más puede verlas.',
+    p2: 'Para tener una copia manual, o para llevar las cartas a otro navegador o dispositivo, usa los botones de exportar e importar junto a esta nota.',
+    p3a: 'Algunos navegadores limpian ese almacenamiento de vez en cuando — Safari en iPhone y iPad, por ejemplo, borra los datos de las webs que llevan unos días sin visitarse. Para que eso no se lleve las cartas, la app guarda una copia de seguridad en una ',
+    p3b: 'cookie técnica propia',
+    p3c: ' (sin rastreo ni terceros) y las restaura sola si el navegador las borra. La copia solo viaja, cifrada, al crearse o restaurarse, y el servidor no la almacena.',
+    p4a: 'Lo que sí las borra del todo: ',
+    p4b: 'limpiar las cookies o los datos de este sitio',
+    p4c: ' en el navegador (desaparecen las cartas y su copia).'
+  },
+
+  bug: {
+    link: 'notificar fallo',
+    aria: 'Notificar un fallo o sugerencia',
+    title: 'Notificar un fallo o enviar una sugerencia',
+    thanks: '¡Gracias! Lo he recibido.',
+    thanksNote: 'Le echaré un vistazo en cuanto pueda. No hay respuesta automática, así que no te preocupes si no recibes nada de vuelta.',
+    close: 'Cerrar',
+    what: '¿De qué se trata?',
+    kindAria: 'Tipo de reporte',
+    kindBug: 'Notificar un fallo/bug',
+    kindIdea: 'Enviar una sugerencia/mensaje',
+    phIdea: 'Escribe tu sugerencia',
+    phBug: 'Qué hacías, qué esperabas, qué pasó, y cómo repetirlo si sabes cómo…',
+    name: 'Nombre (opcional)',
+    email: 'Email (opcional)',
+    send: 'Enviar',
+    sending: 'Enviando…',
+    errEmpty: 'Cuéntame qué ha pasado antes de enviar.',
+    errSend: 'No se pudo enviar. Inténtalo de nuevo en un momento.',
+    errNet: 'Sin conexión o el envío falló. Inténtalo de nuevo en un momento.',
+    subjectBug: 'Fallo',
+    subjectIdea: 'Sugerencia',
+    subjectPrefix: 'Human Design Chart · reportes'
+  },
+
+  about: {
+    link: 'acerca de',
+    aria: 'Acerca de',
+    title: 'Acerca de',
+    licenseA: 'Proyecto source-available, ',
+    licenseB: 'gratis para uso no comercial',
+    licenseC: '. (PolyForm Noncommercial 1.0.0)',
+    madeA: 'App creada por Javi G.O. con asistencia de IA, sin ánimo de lucro y sin ánimo de nada, la creé porque me dio la gana, como buen ',
+    madeType: 'Manifestador',
+    madeB: ' que soy :)',
+    wish: 'Ojalá que te sea útil, ¡y que vivas feliz con tu diseño, querido humano!',
+    disclaimer: 'Proyecto independiente sin afiliación a ninguna organización. Cualquier marca es propiedad de sus respectivos titulares. Todo el contenido presentado es de carácter divulgativo y no sustituye al asesoramiento profesional.',
+    coffee: 'Invítame a un café',
+    loveBase: '¡Mándame amor!',
+    loveMore: '¡Mándame <strong>MÁS</strong> amor!',
+    thanks: [
+      '¡Gracias! \u2764\ufe0f',
+      '¡Lo recibo! \ud83d\udc9b',
+      '¡Qué gusto! \ud83d\udc96',
+      '¡¡Cuánto cariño!! \ud83d\udc97\ud83d\udc97',
+      '¡¡Olé, olé, olé!! \u2764\ufe0f\ud83d\udc9b\ud83d\udc9c',
+      '¡¡¡Voy a explotar!!! \ud83d\udca5\ud83d\udc96\ud83d\udca5'
+    ],
+    loveOne: 'amor recibido',
+    loveMany: 'amores recibidos',
+    senderOne: 'querido humano',
+    senderMany: 'queridos humanos',
+    fromWord: ' de '
+  },
+
+  // Element drawer chrome + the AI hand-off block at its foot.
+  drawerUi: {
+    back: 'Atrás',
+    close: 'Cerrar'
+  },
+  ai: {
+    heading: 'Saber más usando IA',
+    angleChart: 'Sobre esta carta',
+    angleGeneral: 'Info general',
+    angleHint: 'Esta selección determina el prompt que se usa.',
+    switchAi: 'Cambiar IA',
+    openAi: 'Abrir IA',
+    copyPrompt: 'Copiar prompt',
+    copied: 'Copiado',
+    showPrompt: 'Ver/editar el prompt generado',
+    hidePrompt: 'Ocultar prompt',
+    otherNote: 'Para otras IA, usa "Copiar prompt" y pégalo donde quieras.'
+  },
+
+  // Initial-report overlay + PDF chrome (the report's own text is content).
+  reportUi: {
+    eyebrow: 'Tu informe inicial personalizado',
+    title: 'Conoce tu diseño',
+    shareAria: 'Compartir enlace al informe',
+    pdfAria: 'Descargar el informe en PDF',
+    pdfBusy: 'Generando PDF…',
+    toc: {
+      intro: 'Qué es Human Design',
+      experiment: 'Un experimento vital',
+      chart: 'Bodygraph',
+      type: 'Tu tipo',
+      centers: 'Tus centros',
+      strategy: 'Tu estrategia',
+      authority: 'Tu autoridad',
+      profile: 'Tu perfil',
+      definition: 'Tu definición',
+      practice: 'Vivir tu diseño'
+    },
+    sectionsAria: 'Secciones del informe',
+    learnMore: 'Saber más',
+    closingNote:
+      'Este informe es una primera impresión. Para profundizar en lo que más te interese, lleva tu carta a tu IA: el prompt ya lleva tus datos esenciales; complétalo con lo que quieras explorar.',
+    pdfDefined: 'DEFINIDO',
+    pdfOpen: 'ABIERTO',
+    showPrompt: 'Ver/editar el prompt',
+    hidePrompt: 'Ocultar el prompt'
+  },
+
   // Small category label above an element drawer's title.
   category: {
     type: 'Tipo',

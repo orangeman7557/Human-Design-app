@@ -4,6 +4,7 @@
 <!-- "Reportar un fallo" lives in its own footer link; the support row (send -->
 <!-- love + buy me a coffee) was added closing Phase L (jul 2026). -->
 <script>
+  import { t, getLocale } from '$lib/i18n/index.svelte.js';
   import { fade, fly } from 'svelte/transition';
   import { focusTrap } from './focus-trap.js';
   import { scrollLock } from './scroll-lock.js';
@@ -31,19 +32,12 @@
   const BURST_COLORS = ['#e84672', '#d4a657', '#8e6cf0', '#6ec48a', '#5aa9e6', '#e8788a'];
   // No square-tile emojis here (e.g. 🌠 renders as a framed picture on Apple).
   const FLYERS = ['🌟', '⭐', '✨', '🌈', '🦄', '💫', '💖', '🎉'];
-  const BASE_LABEL = '¡Mándame amor!';
+  const BASE_LABEL = $derived(t('about.loveBase'));
   // "MÁS" in caps + bold (rendered via {@html}) to invite another tap.
-  const MORE_LABEL = '¡Mándame <strong>MÁS</strong> amor!';
+  const MORE_LABEL = $derived(t('about.loveMore'));
   // Escalating thank-yous: one step every 4 clicks so each stays readable,
   // more over-the-top the deeper into the spree.
-  const THANKS = [
-    '¡Gracias! ❤️',
-    '¡Lo recibo! 💛',
-    '¡Qué gusto! 💖',
-    '¡¡Cuánto cariño!! 💗💗',
-    '¡¡Olé, olé, olé!! ❤️💛💜',
-    '¡¡¡Voy a explotar!!! 💥💖💥'
-  ];
+  const THANKS = $derived(t('about.thanks'));
 
   /** @type {number | null} global click count; null = unknown → line hidden */
   let loveCount = $state(null);
@@ -304,24 +298,22 @@
 
 <svelte:window {onkeydown} />
 
-<button class="link" type="button" onclick={() => (open = true)}>acerca de</button>
+<button class="link" type="button" onclick={() => (open = true)}>{t('about.link')}</button>
 
 {#if open}
   <div class="scrim" onclick={() => (open = false)} role="presentation" transition:fade={{ duration: 120 }}></div>
-  <div class="modal" role="dialog" aria-modal="true" aria-label="Acerca de" use:focusTrap use:scrollLock transition:fly={{ y: 12, duration: 180 }}>
+  <div class="modal" role="dialog" aria-modal="true" aria-label={t('about.aria')} use:focusTrap use:scrollLock transition:fly={{ y: 12, duration: 180 }}>
     <header>
-      <h2>Acerca de</h2>
-      <button class="close" type="button" onclick={() => (open = false)} aria-label="Cerrar">✕</button>
+      <h2>{t('about.title')}</h2>
+      <button class="close" type="button" onclick={() => (open = false)} aria-label={t('bug.close')}>✕</button>
     </header>
 
     <div class="facts">
-      <p>Proyecto source-available, <strong>gratis para uso no comercial</strong>. (PolyForm Noncommercial 1.0.0)</p>
+      <p>{t('about.licenseA')}<strong>{t('about.licenseB')}</strong>{t('about.licenseC')}</p>
       <p>
-        App creada por Javi G.O. con asistencia de IA, sin ánimo de lucro y sin
-        ánimo de nada, la creé porque me dio la gana, como buen
-        {#if onElement}<button type="button" class="tlink" onclick={() => openElement('type', 'manifestor')}>Manifestador</button>{:else}Manifestador{/if} que soy :)
+        {t('about.madeA')}{#if onElement}<button type="button" class="tlink" onclick={() => openElement('type', 'manifestor')}>{t('about.madeType')}</button>{:else}{t('about.madeType')}{/if}{t('about.madeB')}
       </p>
-      <p>Ojalá que te sea útil, ¡y que vivas feliz con tu diseño, querido humano!</p>
+      <p>{t('about.wish')}</p>
     </div>
 
     <div class="support">
@@ -348,23 +340,25 @@
             <path d="M7.5 7V5.5M10 7V5M12.5 7V5.5" />
           </svg>
         </span>
-        <span class="slabel">Invítame a un café</span>
+        <span class="slabel">{t('about.coffee')}</span>
       </a>
     </div>
 
     {#if loveCount !== null}
       <p class="lovecount">
-        <span class="num" bind:this={numEl} style:color={heartColor || null}>{loveCount.toLocaleString('es')}</span>
-        {(loveCount === 1 ? 'amor recibido' : 'amores recibidos') +
-          (loveSenders ? ` de ${loveSenders.toLocaleString('es')} ${loveSenders === 1 ? 'querido humano' : 'queridos humanos'}` : '')}.
+        <span class="num" bind:this={numEl} style:color={heartColor || null}>{loveCount.toLocaleString(getLocale())}</span>
+        {(loveCount === 1 ? t('about.loveOne') : t('about.loveMany')) +
+          (loveSenders
+            ? t('about.fromWord') +
+              loveSenders.toLocaleString(getLocale()) +
+              ' ' +
+              (loveSenders === 1 ? t('about.senderOne') : t('about.senderMany'))
+            : '')}.
       </p>
     {/if}
 
     <p class="fine">
-      Proyecto independiente sin afiliación a ninguna organización. Cualquier
-      marca es propiedad de sus respectivos titulares. Todo el contenido
-      presentado es de carácter divulgativo y no sustituye al asesoramiento
-      profesional.
+      {t('about.disclaimer')}
     </p>
 
     {#if version}<p class="fine ver">v{version}</p>{/if}
