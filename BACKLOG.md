@@ -1649,6 +1649,57 @@ a una versión que declare soporte explícito para wrangler v4, o bajar wrangler
 a `^3.28.4`. Revisar el changelog de `@sveltejs/adapter-cloudflare` antes de
 subir de versión.
 
+## QA review before 1.4 (2026-07-22)
+
+A full user-testing pass over the multi-language build, run before the 1.4
+bump. What got fixed is in the commits and in `TASKS.md`; this records what was
+**deliberately not** fixed, so it isn't rediscovered as if it were new.
+
+### Deferred by the author — revisit later
+
+- **Channel names to double-check against a reference.** `10-57` is called
+  *"canal de la supervivencia"* / *"the channel of survival"*, but the canonical
+  HD name is *Perfected Form*; "survival" is normally the keynote of gate 57 /
+  the Spleen. `7-31` is *"canal del liderazgo"* where the canonical name is
+  *The Alpha*. Both may be a deliberate plain-language choice — the project
+  writes its own copy — but they should be confirmed once against a reference
+  tool. Left as-is for now (author, 2026-07-22).
+- **The report addresses a masculine reader in Spanish.** `es.js` uses
+  "diseñado", "experto", "llamado", "por ti mismo", and `report.js` builds
+  "Tú eres un {tipo}". Neutral phrasing would be ideal, but Spanish defaults to
+  the masculine and the alternatives (–x, –e, doubling) all cost readability.
+  Left as-is deliberately (author, 2026-07-22); worth revisiting if the app
+  grows an audience that asks for it. English is already neutral.
+
+### Reviewed and consciously accepted (no action)
+
+- **Straight quotes (`"…"`) mixed with typographic dashes** across the content
+  packs. Consistent enough in practice; converting them all is churn.
+- **Saving an already-saved chart creates a duplicate.** Opening a chart from
+  the saved list and pressing "save" adds a second identical row — the header
+  never shows "saved ✓" for a chart that came *from* storage. Accepted for now.
+- **Personal data travels in the share-link query string** (name, date, time,
+  coordinates). That is the design — the recipient recomputes locally, there is
+  no backend — but URLs get logged by edges, messaging previews and browser
+  history. Not mentioned in `/privacy`. Accepted 2026-07-22.
+- **`decodeBirth` falls back to `00:00`** when a share link has no `t` param,
+  silently producing a *different* chart rather than refusing. Edge case; the
+  app never generates such a link itself.
+- **Native validation bubbles** (empty date/time on submit) appear in the
+  browser's language, not the app's, and the custom error never gets a chance
+  to show. Low impact.
+- **The unknown-time slider maxes at 23:30 while its axis is labelled `24h`**,
+  and it has no `aria-valuetext` (a screen reader announces "0", not "00:00").
+
+### Latent, worth a fix if it ever bites
+
+- **`toBlob()` (html-to-image) has no timeout and no recovery.** PNG and PDF
+  export were confirmed working on real browsers (author, 2026-07-22), but in
+  an embedded Chromium the call hung forever: it never resolves and never
+  rejects, so `sharing` stays `true`, the button stays disabled and the only
+  way out is a reload. A timeout that rejects into the existing `shareError`
+  path would make the failure visible instead of silent.
+
 ## Known tech debt
 
 - A handful of older source files still carry Spanish code comments from

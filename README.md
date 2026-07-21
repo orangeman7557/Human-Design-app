@@ -6,7 +6,7 @@ Design charts. Free for any noncommercial use. See [License](#license).
 ## Status
 
 **Launched — live at [hdchart.app](https://hdchart.app/) since 2026-07-03
-(1.0.0).** From birth date, time, and place the app computes a full Human
+(1.0.0), bilingual since 1.4.0.** From birth date, time, and place the app computes a full Human
 Design chart and renders an interactive SVG bodygraph alongside a textual
 summary: type, strategy, authority, profile, definition, defined centres,
 complete channels, hanging gates, and the planetary activations table.
@@ -16,10 +16,18 @@ Around that core: saving charts locally (IndexedDB), JSON export/import, an
 info drawers with an **AI handoff** (chart-personalised prompts for the
 user's own AI), and a plain-language **initial report** with PDF export.
 
+The app is **available in English and Spanish** (Phase M): the language lives
+in the URL (`/en/…`, `/es/…`), the bare root is negotiated from the visitor's
+cookie and `Accept-Language`, and every page has its own canonical URL and
+`hreflang` alternates. Both languages are written, not machine-translated —
+the English is composed from the meaning rather than mirrored from the
+Spanish, and the I Ching hexagram names are original descriptive wording
+rather than the copyrighted Wilhelm/Baynes translation.
+
 The app is **installable** as a PWA (own icons, service worker,
 add-to-home-screen link) and works **offline** in basic mode: the shell and
 assets are cached and the calculation is fully local; only the city search
-(Photon) needs network. A Play Store build via TWA is planned (Phase P).
+(Photon) needs network. A Play Store build via TWA is next (Phase P).
 
 [`TASKS.md`](./TASKS.md) is the canonical, up-to-date project state;
 [`BACKLOG.md`](./BACKLOG.md) holds deferred decisions and known debt.
@@ -46,6 +54,9 @@ AI-authored work is not flagged file-by-file.
 - **[Photon](https://photon.komoot.io/)** — OpenStreetMap-based geocoder
   (typeahead) for birth-place autocomplete.
 - **SVG** — bodygraph rendering (Phase 1.3).
+- **No i18n dependency** — the multi-language engine is ~100 lines in
+  `src/lib/i18n/` (Phase M); see
+  [`docs/fase-m-multilingue.md`](./docs/fase-m-multilingue.md) to add a language.
 - **[Dexie.js](https://dexie.org/)** over IndexedDB — local persistence
   (Phase 2).
 
@@ -117,9 +128,10 @@ merits.
 9. **Phase L** — Launch: installability (PWA), SEO, custom domain
    [hdchart.app](https://hdchart.app/), privacy policy, bug reporting.
    *(1.0.0 shipped 2026-07-03.)*
-10. **Phase M (next)** — Multilingual: i18n infrastructure with **English
-    first**; Spanish stays as the already-written second language.
-11. **Phase P (planned)** — Google Play distribution via TWA. The Apple App
+10. **Phase M** — Multilingual: i18n infrastructure plus a full English
+    translation; Spanish stays as the already-written second language.
+    *(Shipped 2026-07-21; 1.4.0.)*
+11. **Phase P (next)** — Google Play distribution via TWA. The Apple App
     Store is deliberately deferred (yearly developer fee; only if the app
     proves traction).
 12. **Phase 8 (planned)** — Composite chart.
