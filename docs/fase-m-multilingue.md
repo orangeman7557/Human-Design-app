@@ -4,7 +4,7 @@ Cómo está montado el multiidioma de la app y **qué hay que tocar para añadir
 idioma nuevo** (respuesta corta: sus dos ficheros de textos y una línea en una
 constante; nada más).
 
-Estado: **Fase M cerrada**. La app funciona por completo en inglés y en
+Estado: **Fase M cerrada**, con la traducción inglesa revisada en dos pasadas. La app funciona por completo en inglés y en
 español: estructura, contenido, chrome y la política de privacidad.
 
 ---

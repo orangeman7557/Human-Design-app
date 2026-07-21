@@ -680,7 +680,7 @@ corrected).
     `<link rel="alternate" type="application/json">`, an HTTP header, or just
     the prompt's URL text.
 
-- 🟡 **Review the English translation for naturalness (author, 2026-07-21) — FIRST PASS DONE 2026-07-21.**
+- ✅ **Review the English translation for naturalness (author, 2026-07-21) — DONE 2026-07-21 (two passes).**
   The Phase M translation is complete and accurate, but the author flagged that
   parts read as *translated* rather than *written in English* — grammatically
   fine, yet not how an English speaker would put it. Example given:
@@ -709,14 +709,18 @@ corrected).
   Capitalisation was also settled: English uses Title Case (see
   docs/fase-m-multilingue.md); "Solar Plexus" and friends are fixed.
 
-  **Still on the literal side, for a later pass:** the second-person bodies of
-  strategy / authority / profile / definition / center inside `report`, the
-  strategy / authority / profile / definition / center drawers, the 64 gate
-  essences and the 36 channel essences. These are shorter and more formulaic, so
-  they read acceptably, but they were translated close to the Spanish.
+  **Second pass (2026-07-21):** the rest was rewritten too — the strategy /
+  authority / profile / definition / center drawers, their second-person bodies
+  inside `report`, the 36 channel essences and the 64 gate essences. Two things
+  were fixed along the way: the drawers had drifted into second person (they are
+  impersonal by rule, since the chart on screen may be someone else's), and the
+  gate essences were composed as "Gate N is …" which broke grammatically once
+  rewritten — they now open with their own statement.
 
-  One terminology call still open: **"Complete Channels"** — HD also says
-  "defined channels"; both are in use. Pick one and keep ES/EN in sync.
+  **Terminology settled:** "Complete Channels" stays (author, 2026-07-21).
+
+  What remains is only the author's own read-through; there is no known block
+  still translated literally.
 
 - ⬜ **PDF report on a white background instead of dark mode (requested
   2026-07-06).** The initial-report PDF (`report-pdf.js`) currently mirrors the
