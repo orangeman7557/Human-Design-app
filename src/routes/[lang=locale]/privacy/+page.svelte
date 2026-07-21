@@ -1,138 +1,92 @@
-<!-- Privacy policy (Phase L, step 6). Plain-language, RGPD-aware (Spain/EU),
-     tailored to what the app actually does: local-first calculation, and the
-     few external touchpoints (Photon geocoder, Web3Forms bug form, AI handoff,
-     Cloudflare hosting). Prerendered — see +page.js. -->
+<!-- Privacy policy (Phase L, step 6; translated Phase M). Plain-language,
+     GDPR-aware, tailored to what the app actually does: local-first
+     calculation, and the few external touchpoints (Photon geocoder, Web3Forms
+     bug form, AI handoff, Cloudflare hosting). Prerendered — see +page.js.
+     All wording lives in the i18n catalogs (ui/<lang>.js → `privacy`), so a new
+     language is a text-only change. -->
 <script>
   import ReportBug from '$lib/components/ReportBug.svelte';
   import { page } from '$app/stores';
+  import { t } from '$lib/i18n/index.svelte.js';
 
   // Injected by Vite's `define` from package.json (see vite.config.js).
   const version = __APP_VERSION__;
-  // Active language from the route param (SSR-safe for prerendered links).
+  // Prerendered page: the language MUST come from the route param and be passed
+  // explicitly to t() — the shared module locale can race at build time (see
+  // docs/fase-m-multilingue.md, "la regla de oro del SSR").
   const lang = $derived($page.params.lang);
+  const tr = (key) => t(key, undefined, lang);
 
   const SITE_URL = 'https://hdchart.app';
-  const SEO_TITLE = 'Privacidad · Human Design Chart';
-  const SEO_DESC =
-    'Cómo trata tus datos la app de Human Design Chart: la carta se calcula en tu dispositivo, sin cuentas, sin analítica y sin venta de datos.';
+
+  // Minimal inline renderer for this page only: **bold**, `code` and external
+  // [label](https://…) links. Deliberately NOT $lib/markup.js — that one turns
+  // [x](kind:key) into in-app links and would swallow "https:" as a kind.
+  function md(text) {
+    return String(text)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(
+        /\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g,
+        '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>'
+      )
+      .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+      .replace(/`([^`]+)`/g, '<code>$1</code>');
+  }
 </script>
 
 <svelte:head>
-  <title>{SEO_TITLE}</title>
-  <meta name="description" content={SEO_DESC} />
+  <title>{tr('privacy.seoTitle')}</title>
+  <meta name="description" content={tr('privacy.seoDesc')} />
   <link rel="canonical" href="{SITE_URL}/{lang}/privacy" />
-  <meta property="og:title" content={SEO_TITLE} />
-  <meta property="og:description" content={SEO_DESC} />
+  <meta property="og:title" content={tr('privacy.seoTitle')} />
+  <meta property="og:description" content={tr('privacy.seoDesc')} />
   <meta property="og:url" content="{SITE_URL}/{lang}/privacy" />
 </svelte:head>
 
 <main>
-  <a class="back" href="/{lang}">← volver</a>
+  <a class="back" href="/{lang}">{tr('privacy.back')}</a>
 
-  <h1>Privacidad</h1>
-  <p class="lead">
-    Esta app está pensada para funcionar en tu dispositivo. Tu carta se calcula
-    en tu propio navegador y tus datos de nacimiento se guardan solo en tu
-    equipo. Aquí te explicamos, en lenguaje llano, qué ocurre con tus datos.
-  </p>
+  <h1>{tr('privacy.title')}</h1>
+  <p class="lead">{tr('privacy.lead')}</p>
 
   <section>
-    <h2>Lo que se queda en tu dispositivo</h2>
-    <p>
-      Los datos que introduces (nombre, fecha, hora y lugar de nacimiento) y las
-      cartas que guardas se almacenan <strong>localmente en tu navegador</strong>
-      (mediante <code>sessionStorage</code> e <code>IndexedDB</code>). No se
-      envían a ningún servidor para calcular la carta: todo el cálculo
-      astronómico ocurre en tu propio dispositivo.
-    </p>
-    <p>
-      Para que una limpieza automática del navegador no borre tus cartas
-      guardadas (algunos navegadores, como Safari en iPhone o iPad, vacían el
-      almacenamiento de las webs que llevan días sin visitarse), la app guarda
-      además una copia de seguridad de esas cartas en una
-      <strong>cookie técnica propia</strong>. Esa cookie vive también en tu
-      navegador, contiene únicamente los datos de tus cartas guardadas y no se
-      usa para identificarte ni para seguirte.
-    </p>
-    <p>
-      Puedes borrarlos cuando quieras: elimina cada carta guardada desde la
-      propia app, o borra los datos del sitio (incluidas las cookies) en los
-      ajustes de tu navegador. Al hacerlo desaparecen por completo, copia de
-      seguridad incluida.
-    </p>
+    <h2>{tr('privacy.h1')}</h2>
+    <p>{@html md(tr('privacy.p1'))}</p>
+    <p>{@html md(tr('privacy.p2'))}</p>
+    <p>{@html md(tr('privacy.p3'))}</p>
   </section>
 
   <section>
-    <h2>Lo que sale de tu dispositivo (y cuándo)</h2>
+    <h2>{tr('privacy.h2')}</h2>
     <ul>
-      <li>
-        <strong>Buscador de ciudad.</strong> Cuando escribes el lugar de
-        nacimiento, el texto que tecleas se envía a
-        <a href="https://photon.komoot.io/" target="_blank" rel="noopener noreferrer">Photon</a>
-        (un servicio de komoot sobre OpenStreetMap) para ofrecerte sugerencias.
-        Solo viaja ese texto; no se acompaña de tu fecha ni tu hora.
-      </li>
-      <li>
-        <strong>Formulario para reportar fallos.</strong> Si decides usarlo, se
-        envía lo que escribas (y, opcionalmente, tu nombre y email) junto con
-        datos técnicos de tu navegador, a través del servicio
-        <a href="https://web3forms.com/" target="_blank" rel="noopener noreferrer">Web3Forms</a>,
-        para que podamos leer tu mensaje. Esto solo ocurre si tú lo envías.
-      </li>
-      <li>
-        <strong>Llevar tu carta a una IA.</strong> Si usas la opción de
-        consultar tu carta con una IA, la app abre el servicio de IA que elijas
-        con un texto de tu carta ya preparado. A partir de ahí tus datos se
-        rigen por la política de privacidad de ese servicio, no por esta.
-      </li>
-      <li>
-        <strong>Copia de seguridad de tus cartas.</strong> Al crearse o
-        restaurarse la copia descrita arriba, tus cartas guardadas viajan
-        cifradas hasta nuestro servidor, que las devuelve convertidas en la
-        cookie y <strong>no las almacena</strong>: no hay ninguna base de datos
-        ni registro de tus cartas en el servidor. Fuera de esos dos momentos,
-        la cookie con tus cartas no se envía al navegar por la app.
-      </li>
+      {#each ['l1', 'l2', 'l3', 'l4'] as key}
+        <li>{@html md(tr('privacy.' + key))}</li>
+      {/each}
     </ul>
   </section>
 
   <section>
-    <h2>Alojamiento</h2>
-    <p>
-      La app se sirve a través de <strong>Cloudflare</strong>. Como cualquier
-      servidor web, su red puede registrar de forma temporal datos técnicos de
-      la conexión (como la dirección IP) por seguridad y funcionamiento. No
-      usamos esos registros para identificarte ni para seguirte.
-    </p>
+    <h2>{tr('privacy.h3')}</h2>
+    <p>{@html md(tr('privacy.p4'))}</p>
   </section>
 
   <section>
-    <h2>Lo que no hacemos</h2>
-    <p>
-      No usamos cookies de seguimiento, ni analítica, ni publicidad — la única
-      cookie de la app es la copia de seguridad técnica descrita arriba. No hay
-      cuentas de usuario. No vendemos ni cedemos tus datos a terceros.
-    </p>
+    <h2>{tr('privacy.h4')}</h2>
+    <p>{@html md(tr('privacy.p5'))}</p>
   </section>
 
   <section>
-    <h2>Tus derechos</h2>
-    <p>
-      Como los datos de tu carta viven en tu dispositivo, tienes el control
-      directo: puedes consultarlos, modificarlos o borrarlos en cualquier
-      momento desde la app. Conforme al Reglamento General de Protección de
-      Datos (RGPD) y a la normativa española y europea, tienes derecho de
-      acceso, rectificación, supresión, oposición y portabilidad sobre cualquier
-      dato personal. Para ejercerlos, o para cualquier duda sobre privacidad,
-      escríbenos con el botón <strong>«notificar un fallo»</strong> de aquí abajo.
-    </p>
-    <p class="resp">Responsable: Javi G.O., autor de la app.</p>
+    <h2>{tr('privacy.h5')}</h2>
+    <p>{@html md(tr('privacy.p6'))}</p>
+    <p class="resp">{tr('privacy.controller')}</p>
   </section>
 
-  <p class="updated">Última actualización: 7 de julio de 2026.</p>
+  <p class="updated">{tr('privacy.updated')}</p>
 
   <footer>
-    <a class="foot-link" href="/{lang}">inicio</a>
+    <a class="foot-link" href="/{lang}">{tr('privacy.home')}</a>
     <span aria-hidden="true">·</span>
     <ReportBug {version} />
   </footer>
@@ -188,18 +142,21 @@
     margin-top: 0.6rem;
     color: #c4c4ca;
   }
-  strong {
+  /* The body prose is injected with {@html} (it comes from the i18n catalog),
+     so its inline elements never receive Svelte's scoping class — they must be
+     addressed with :global or they lose their styling entirely. */
+  main :global(strong) {
     color: var(--text);
     font-weight: 600;
   }
-  code {
+  main :global(code) {
     font-size: 0.85em;
     background: var(--surface-2);
     border: 1px solid var(--border);
     border-radius: 5px;
     padding: 0.05em 0.35em;
   }
-  a {
+  main :global(a) {
     color: var(--accent);
     text-underline-offset: 2px;
   }

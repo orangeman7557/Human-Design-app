@@ -288,6 +288,33 @@ export default {
   },
 
   // Small category label above an element drawer's title.
+  privacy: {
+    seoTitle: 'Privacidad · Human Design Chart',
+    seoDesc:
+      'Cómo trata tus datos la app de Human Design Chart: la carta se calcula en tu dispositivo, sin cuentas, sin analítica y sin venta de datos.',
+    back: '← volver',
+    home: 'inicio',
+    title: 'Privacidad',
+    lead: 'Esta app está pensada para funcionar en tu dispositivo. Tu carta se calcula en tu propio navegador y tus datos de nacimiento se guardan solo en tu equipo. Aquí te explicamos, en lenguaje llano, qué ocurre con tus datos.',
+    h1: 'Lo que se queda en tu dispositivo',
+    p1: 'Los datos que introduces (nombre, fecha, hora y lugar de nacimiento) y las cartas que guardas se almacenan **localmente en tu navegador** (mediante `sessionStorage` e `IndexedDB`). No se envían a ningún servidor para calcular la carta: todo el cálculo astronómico ocurre en tu propio dispositivo.',
+    p2: 'Para que una limpieza automática del navegador no borre tus cartas guardadas (algunos navegadores, como Safari en iPhone o iPad, vacían el almacenamiento de las webs que llevan días sin visitarse), la app guarda además una copia de seguridad de esas cartas en una **cookie técnica propia**. Esa cookie vive también en tu navegador, contiene únicamente los datos de tus cartas guardadas y no se usa para identificarte ni para seguirte.',
+    p3: 'Puedes borrarlos cuando quieras: elimina cada carta guardada desde la propia app, o borra los datos del sitio (incluidas las cookies) en los ajustes de tu navegador. Al hacerlo desaparecen por completo, copia de seguridad incluida.',
+    h2: 'Lo que sale de tu dispositivo (y cuándo)',
+    l1: '**Buscador de ciudad.** Cuando escribes el lugar de nacimiento, el texto que tecleas se envía a [Photon](https://photon.komoot.io/) (un servicio de komoot sobre OpenStreetMap) para ofrecerte sugerencias. Solo viaja ese texto; no se acompaña de tu fecha ni tu hora.',
+    l2: '**Formulario para reportar fallos.** Si decides usarlo, se envía lo que escribas (y, opcionalmente, tu nombre y email) junto con datos técnicos de tu navegador, a través del servicio [Web3Forms](https://web3forms.com/), para que podamos leer tu mensaje. Esto solo ocurre si tú lo envías.',
+    l3: '**Llevar tu carta a una IA.** Si usas la opción de consultar tu carta con una IA, la app abre el servicio de IA que elijas con un texto de tu carta ya preparado. A partir de ahí tus datos se rigen por la política de privacidad de ese servicio, no por esta.',
+    l4: '**Copia de seguridad de tus cartas.** Al crearse o restaurarse la copia descrita arriba, tus cartas guardadas viajan cifradas hasta nuestro servidor, que las devuelve convertidas en la cookie y **no las almacena**: no hay ninguna base de datos ni registro de tus cartas en el servidor. Fuera de esos dos momentos, la cookie con tus cartas no se envía al navegar por la app.',
+    h3: 'Alojamiento',
+    p4: 'La app se sirve a través de **Cloudflare**. Como cualquier servidor web, su red puede registrar de forma temporal datos técnicos de la conexión (como la dirección IP) por seguridad y funcionamiento. No usamos esos registros para identificarte ni para seguirte.',
+    h4: 'Lo que no hacemos',
+    p5: 'No usamos cookies de seguimiento, ni analítica, ni publicidad — la única cookie de la app es la copia de seguridad técnica descrita arriba. No hay cuentas de usuario. No vendemos ni cedemos tus datos a terceros.',
+    h5: 'Tus derechos',
+    p6: 'Como los datos de tu carta viven en tu dispositivo, tienes el control directo: puedes consultarlos, modificarlos o borrarlos en cualquier momento desde la app. Conforme al Reglamento General de Protección de Datos (RGPD) y a la normativa española y europea, tienes derecho de acceso, rectificación, supresión, oposición y portabilidad sobre cualquier dato personal. Para ejercerlos, o para cualquier duda sobre privacidad, escríbenos con el botón **«notificar un fallo»** de aquí abajo.',
+    controller: 'Responsable: Javi G.O., autor de la app.',
+    updated: 'Última actualización: 7 de julio de 2026.'
+  },
+
   category: {
     type: 'Tipo',
     strategy: 'Estrategia',

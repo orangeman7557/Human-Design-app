@@ -4,8 +4,8 @@ Cómo está montado el multiidioma de la app y **qué hay que tocar para añadir
 idioma nuevo** (respuesta corta: sus dos ficheros de textos y una línea en una
 constante; nada más).
 
-Estado: **turnos 1 (estructura) y 2 (traducción) cerrados**. La app funciona en
-inglés y español; queda solo el cuerpo legal de `/privacy` (ver §5).
+Estado: **Fase M cerrada**. La app funciona por completo en inglés y en
+español: estructura, contenido, chrome y la política de privacidad.
 
 ---
 
@@ -138,12 +138,25 @@ Hecho:
   contenido resuelvan todas, que el inglés no sea un *fallback* masivo, y la
   negociación de la raíz.
 
-### Pendiente (única pieza)
+- **Política de privacidad traducida.** Su prosa vive ahora también en el
+  catálogo (`ui/<lang>.js` → `privacy`), así que un idioma nuevo la cubre sin
+  tocar el componente. La versión inglesa no es una traducción literal: sigue las
+  convenciones de una política inglesa de este tipo (voz consistente en "we",
+  *data controller* en vez de *responsable*, los derechos del RGPD enumerados
+  como se hace en inglés — *access, rectify, erase, object, restrict,
+  portability* — y fecha en formato británico).
 
-- **El cuerpo de `routes/[lang=locale]/privacy/+page.svelte`** sigue en español.
-  Se dejó a propósito: es texto **legal** (RGPD, normativa española y europea) y
-  merece una redacción revisada por el autor, no una traducción automática. El
-  resto de la página (enlaces, canonical, hreflang) ya es por idioma.
+### Dos trampas de esa página, por si se replica
+
+1. **Es prerenderizada** → usa el patrón `tr` con el idioma del parámetro de
+   ruta (§3). No `t()` a secas.
+2. **Su prosa se inyecta con `{@html}`**, así que sus elementos en línea
+   (`strong`, `code`, `a`) **no reciben la clase de scope de Svelte**: hay que
+   apuntarlos con `main :global(...)` o pierden todo el estilo (pasó, el
+   compilador lo avisó como "unused CSS selector").
+   El renderer es **propio de la página** (`md()`), no `$lib/markup.js`: ese
+   convierte `[x](kind:key)` en enlaces internos y se tragaría `https:` como si
+   fuera un tipo.
 
 ### Nota de estilo heredada
 

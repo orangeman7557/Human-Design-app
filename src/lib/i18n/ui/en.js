@@ -271,6 +271,33 @@ export default {
     hidePrompt: 'Hide the prompt'
   },
 
+  privacy: {
+    seoTitle: 'Privacy · Human Design Chart',
+    seoDesc:
+      'How the Human Design Chart app handles your data: your chart is calculated on your device, with no accounts, no analytics and no data selling.',
+    back: '← back',
+    home: 'home',
+    title: 'Privacy',
+    lead: 'This app is built to run on your device. Your chart is calculated in your own browser, and your birth details are stored only on your machine. Below we explain, in plain language, what happens to your data.',
+    h1: 'What stays on your device',
+    p1: 'The details you enter (name, date, time and place of birth) and the charts you save are stored **locally in your browser** (using `sessionStorage` and `IndexedDB`). They are not sent to any server to calculate the chart: all of the astronomical calculation happens on your own device.',
+    p2: 'So that an automatic browser clean-up does not delete your saved charts (some browsers, such as Safari on iPhone and iPad, clear the storage of sites that have not been visited for a few days), the app also keeps a backup of those charts in a **first-party technical cookie**. That cookie also lives in your browser, contains only the data of your saved charts, and is not used to identify or track you.',
+    p3: 'You can delete it all whenever you like: remove each saved chart from within the app, or clear this site’s data (including cookies) in your browser settings. Doing so removes everything, backup included.',
+    h2: 'What leaves your device (and when)',
+    l1: '**City search.** When you type your place of birth, the text you type is sent to [Photon](https://photon.komoot.io/) (a komoot service built on OpenStreetMap) to offer you suggestions. Only that text is sent; it is not accompanied by your date or time of birth.',
+    l2: '**Bug report form.** If you choose to use it, whatever you write (and, optionally, your name and email) is sent together with technical details about your browser, via the [Web3Forms](https://web3forms.com/) service, so that we can read your message. This only happens if you submit it.',
+    l3: '**Taking your chart to an AI.** If you use the option to explore your chart with an AI, the app opens the AI service you choose with a text of your chart already prepared. From that point on, your data is governed by that service’s privacy policy, not by this one.',
+    l4: '**Backup of your charts.** When the backup described above is created or restored, your saved charts travel encrypted to our server, which returns them converted into the cookie and **does not store them**: there is no database and no record of your charts on the server. Outside those two moments, the cookie holding your charts is not sent as you browse the app.',
+    h3: 'Hosting',
+    p4: 'The app is served through **Cloudflare**. Like any web server, its network may temporarily log technical connection data (such as the IP address) for security and operational purposes. We do not use those logs to identify or track you.',
+    h4: 'What we don’t do',
+    p5: 'We use no tracking cookies, no analytics and no advertising — the app’s only cookie is the technical backup described above. There are no user accounts. We do not sell or share your data with third parties.',
+    h5: 'Your rights',
+    p6: 'Because your chart data lives on your device, you are in direct control: you can view, change or delete it at any time from within the app. Under the EU General Data Protection Regulation (GDPR) and Spanish data protection law, you have the right to access, rectify and erase your personal data, to object to and restrict its processing, and to data portability. To exercise those rights, or for any privacy question, write to us using the **“report a bug”** button below.',
+    controller: 'Data controller: Javi G.O., the author of the app.',
+    updated: 'Last updated: 7 July 2026.'
+  },
+
   category: {
     type: 'Type',
     strategy: 'Strategy',
