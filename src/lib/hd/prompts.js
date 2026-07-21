@@ -19,7 +19,7 @@
 // names how that element sits in it (a gate: complete / hanging / inactive; a
 // channel: complete / half / none).
 
-import { getPromptLabels, gateState, channelState, DEFAULT_LANG } from './content/index.js';
+import { getPromptLabels, gateState, channelState, getLocale } from './content/index.js';
 
 const FRAME = 'En el marco de Human Design';
 
@@ -85,7 +85,7 @@ function channelChartSubject(a, b, state) {
  * @param {string} [lang]
  * @returns {{ general: string, chart: string | null }}
  */
-export function buildPrompts(kind, key, chart, lang = DEFAULT_LANG) {
+export function buildPrompts(kind, key, chart, lang = getLocale()) {
   const L = getPromptLabels(lang);
 
   if (kind === 'concept') return conceptPrompts(L, key, chart);

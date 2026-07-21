@@ -3,6 +3,8 @@
   import { onMount } from 'svelte';
   import { browser } from '$app/environment';
   import Dialog from '$lib/components/Dialog.svelte';
+  import LangSwitch from '$lib/components/LangSwitch.svelte';
+  import { getLocale } from '$lib/i18n/index.svelte.js';
   import { ensureBackupRestored } from '$lib/db/charts.js';
   let { children } = $props();
 
@@ -11,6 +13,17 @@
   // (staging.hdchart.app or the *-staging.workers.dev fallback URL).
   const staging = browser && /^staging\.|-staging\./.test(location.hostname);
 
+  // Keep <html lang> in sync with the active language on client-side navigation
+  // (first paint is already correct via the prerendered HTML / the Worker's
+  // transformPageChunk), and remember the choice in the `hdl` cookie so the
+  // bare-root `/` redirect can honour it (see hooks.server.js). Effects are
+  // client-only, so this never runs during prerender.
+  $effect(() => {
+    const lang = getLocale();
+    document.documentElement.lang = lang;
+    document.cookie = `hdl=${lang}; path=/; max-age=34560000; samesite=lax`;
+  });
+
   // Kick the cookie-vault restore at boot, whatever the entry route: if the
   // browser purged the local DB (iOS ~7-day rule) the charts come back before
   // the user can act. The home additionally awaits it before listing.
@@ -18,6 +31,8 @@
     ensureBackupRestored();
   });
 </script>
+
+<LangSwitch />
 
 {#if staging}
   <div class="env-badge">staging</div>

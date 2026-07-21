@@ -14,6 +14,7 @@
 
 import { cityCountry } from '$lib/geo/place.js';
 import { timezoneFor } from '$lib/geo/timezone.js';
+import { getLocale } from '$lib/i18n/index.svelte.js';
 
 /** Round to ~11 m and drop trailing zeros (city centroids don't need more). */
 function shortCoord(n) {
@@ -36,9 +37,15 @@ export function encodeBirth(birth) {
   return p.toString();
 }
 
-/** Build the full absolute share URL for a chart. */
-export function buildShareUrl(birth, origin) {
-  return `${origin}/chart?${encodeBirth(birth)}`;
+/**
+ * Build the full absolute share URL for a chart. The language is carried in the
+ * path (Phase M) so the recipient opens the chart in the sharer's language.
+ * @param {any} birth
+ * @param {string} origin
+ * @param {string} [lang] active locale (defaults to the app's active locale)
+ */
+export function buildShareUrl(birth, origin, lang = getLocale()) {
+  return `${origin}/${lang}/chart?${encodeBirth(birth)}`;
 }
 
 /** True when the query string looks like a shared-chart link. */

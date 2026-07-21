@@ -16,7 +16,7 @@ import {
   getTypeReport,
   getCenterReport,
   getPromptLabels,
-  DEFAULT_LANG
+  getLocale
 } from './content/index.js';
 
 /**
@@ -35,7 +35,7 @@ function definitionTitle(key, fullTitle) {
  * @param {string} [lang]
  * @returns {ReportSection[]}
  */
-export function buildReport(chart, lang = DEFAULT_LANG) {
+export function buildReport(chart, lang = getLocale()) {
   if (!chart) return [];
   const L = getPromptLabels(lang);
   /** @type {ReportSection[]} */
@@ -119,7 +119,7 @@ export function buildReport(chart, lang = DEFAULT_LANG) {
  * @param {string} [lang]
  * @returns {string}
  */
-export function buildReportPrompt(chart, lang = DEFAULT_LANG) {
+export function buildReportPrompt(chart, lang = getLocale()) {
   const L = getPromptLabels(lang);
   const type = L.type?.[chart.type] ?? chart.type;
   const authority = L.authority?.[chart.authority] ?? chart.authority;

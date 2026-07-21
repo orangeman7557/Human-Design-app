@@ -4,9 +4,12 @@
      Cloudflare hosting). Prerendered — see +page.js. -->
 <script>
   import ReportBug from '$lib/components/ReportBug.svelte';
+  import { page } from '$app/stores';
 
   // Injected by Vite's `define` from package.json (see vite.config.js).
   const version = __APP_VERSION__;
+  // Active language from the route param (SSR-safe for prerendered links).
+  const lang = $derived($page.params.lang);
 
   const SITE_URL = 'https://hdchart.app';
   const SEO_TITLE = 'Privacidad · Human Design Chart';
@@ -17,14 +20,14 @@
 <svelte:head>
   <title>{SEO_TITLE}</title>
   <meta name="description" content={SEO_DESC} />
-  <link rel="canonical" href="{SITE_URL}/privacy" />
+  <link rel="canonical" href="{SITE_URL}/{lang}/privacy" />
   <meta property="og:title" content={SEO_TITLE} />
   <meta property="og:description" content={SEO_DESC} />
-  <meta property="og:url" content="{SITE_URL}/privacy" />
+  <meta property="og:url" content="{SITE_URL}/{lang}/privacy" />
 </svelte:head>
 
 <main>
-  <a class="back" href="/">← volver</a>
+  <a class="back" href="/{lang}">← volver</a>
 
   <h1>Privacidad</h1>
   <p class="lead">
@@ -129,7 +132,7 @@
   <p class="updated">Última actualización: 7 de julio de 2026.</p>
 
   <footer>
-    <a class="foot-link" href="/">inicio</a>
+    <a class="foot-link" href="/{lang}">inicio</a>
     <span aria-hidden="true">·</span>
     <ReportBug {version} />
   </footer>

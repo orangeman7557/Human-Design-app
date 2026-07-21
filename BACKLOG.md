@@ -241,6 +241,14 @@ incarnation cross). Items registered below in suggested priority order.
   summary rows with their own "i" drawers. For a beginner this is the most
   *practical* tool in the system — the daily "am I in my signature or in my
   not-self?" barometer.
+  **Naming (author, 2026-07-21):** "firma" / "tema del no-yo" are opaque jargon
+  for a newcomer. Label them in plainer terms — something along the lines of
+  *"señal de alineamiento"* / *"señal de desalineamiento"* (a symptom you can
+  check yourself), keeping the canonical HD term as a secondary mention. Exact
+  wording to be settled when the item is built.
+- ⬜ **NEXT AFTER PHASE M (author, 2026-07-21):** items 1 and 2 above (the
+  incarnation cross, and signature/not-self with the clearer naming) are the
+  agreed next batch once the multi-language phase closes.
 - ⬜ **3. "¿Qué es el Diseño Humano?" entry point on the home.** All the
   educational material lives *after* calculating; someone landing on
   hdchart.app without knowing the system sees only a form and no reason to
@@ -617,6 +625,24 @@ corrected).
   would avoid potential jank (it's already sequence-guarded).
 
 ## Possible improvements (not scheduled, not part of Phase 5)
+
+- ⬜ **"Guía práctica de esta persona" — a second, jargon-free report (author,
+  2026-07-21).** A report aimed at somebody who knows nothing about Human Design
+  *and doesn't care to*: no HD vocabulary on the surface, just clear, usable
+  guidance about the person whose chart it is. Suggested sections: tendencies,
+  strengths, weaknesses/blind spots, how they communicate, what they need,
+  how to deal with/work with them, what drains them, and — when the chart is a
+  child's — how to raise/educate them. It's a **different product from the
+  initial report**: the initial report teaches the system and speaks to the chart
+  owner (2nd person); this one is a practical dossier *about* a person, for
+  whoever is reading (impersonal), and would work as the natural thing to share
+  with a partner, a manager or a parent.
+  Notes: the substance is largely derivable from what the app already computes
+  (type · strategy · authority · profile · definition · defined vs open centres),
+  so it's mostly a **content-writing** job on top of the existing engine, plus a
+  second `buildReport`-style assembler. Decide whether it ships as its own
+  overlay/PDF next to "Informe" or as a mode of it. Watch the child variant: it
+  should read as parenting guidance, not diagnosis.
 
 - ⬜ **PDF report on a white background instead of dark mode (requested
   2026-07-06).** The initial-report PDF (`report-pdf.js`) currently mirrors the

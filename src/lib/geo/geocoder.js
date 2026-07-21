@@ -13,12 +13,17 @@
 
 const ENDPOINT = 'https://photon.komoot.io/api/';
 
-// Locale-biased result ordering. The audience is currently Spanish, so when
-// two cities share a name (classic: "Cuenca" exists in both Spain and
-// Ecuador) we surface the Spanish one first. We do NOT filter by country —
-// the user can still pick the Ecuadorian one. Replace with something
-// user-configurable when the app grows beyond ES.
-const PREFERRED_COUNTRY_CODE = 'es';
+// Locale-biased result ordering. When two cities share a name (classic:
+// "Cuenca" exists in both Spain and Ecuador) we surface one first by country.
+// The bias follows the UI language (Phase M): Spanish → Spain; other languages
+// keep Photon's own relevance order. We do NOT filter by country — the user can
+// still pick any result.
+const PREFERRED_COUNTRY_BY_LANG = { es: 'es' };
+
+// Photon accepts de/en/fr/it (and default); it rejects lang=es with HTTP 400
+// (see the header note). So we only forward languages Photon supports; Spanish
+// falls through to the default, which returns local-language names.
+const PHOTON_LANGS = new Set(['de', 'en', 'fr', 'it']);
 
 // OSM `place` values we accept as birth-places. Restricting to settlements
 // (server-side, via `osm_tag`) is what keeps regions, counties and POIs out
@@ -39,15 +44,19 @@ const PLACE_TAGS = ['city', 'town', 'village', 'hamlet', 'municipality'];
  *
  * @param {string} query - Free-text input (e.g. "madr", "Madrid", "Berlin").
  * @param {AbortSignal} [signal] - Used by the caller to cancel stale requests.
+ * @param {string} [lang] - UI language; biases ranking and result-name language.
  * @returns {Promise<Place[]>}
  */
-export async function searchPlaces(query, signal) {
+export async function searchPlaces(query, signal, lang) {
   const params = new URLSearchParams({
     q: query,
     // Over-fetch (more than we show) so client-side dedup and re-rank have
     // material to work with.
     limit: '15'
   });
+  // Ask Photon for names in the UI language when it supports it (English etc.),
+  // so results read "Madrid, Spain" rather than "Madrid, España".
+  if (PHOTON_LANGS.has(lang)) params.set('lang', lang);
   // Multiple `osm_tag` values are OR-combined, so this keeps only settlements.
   for (const tag of PLACE_TAGS) params.append('osm_tag', `place:${tag}`);
 
@@ -61,7 +70,7 @@ export async function searchPlaces(query, signal) {
   const places = (json.features ?? [])
     .map(toPlace)
     .filter((p) => p.label && Number.isFinite(p.latitude) && Number.isFinite(p.longitude));
-  return dedupeAndRank(places).slice(0, 6);
+  return dedupeAndRank(places, PREFERRED_COUNTRY_BY_LANG[lang] ?? null).slice(0, 6);
 }
 
 /**
@@ -103,11 +112,11 @@ function toPlace(feature) {
  * Dedup is by exact label after ranking, so the highest-ranked entry for a
  * given label survives.
  */
-function dedupeAndRank(places) {
+function dedupeAndRank(places, preferredCountry = null) {
   const score = (p) => {
     let s = 0;
     if (!PLACE_TAGS.includes(p._value)) s += 10;
-    if (p._countryCode !== PREFERRED_COUNTRY_CODE) s += 5;
+    if (preferredCountry && p._countryCode !== preferredCountry) s += 5;
     return s;
   };
   const sorted = [...places].sort((a, b) => score(a) - score(b));

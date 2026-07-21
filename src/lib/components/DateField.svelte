@@ -1,24 +1,47 @@
-<!-- AI-authored — day/month/year date entry (2026-07-06).
+<!-- AI-authored — day/month/year date entry (2026-07-06; localized Phase M).
      Replaces the native `type=date` input on the home form: birth dates are
      known, not picked, and Android's native picker makes the user scroll a
-     ~100-year list. Three numeric segments (DD / MM / AAAA) inside one
-     field-looking container: numeric keypad on mobile, auto-advance when a
-     segment fills, backspace walks back, single digits pad on blur.
+     ~100-year list. Three numeric segments inside one field-looking container:
+     numeric keypad on mobile, auto-advance when a segment fills, backspace
+     walks back, single digits pad on blur.
      Binds an ISO `YYYY-MM-DD` string (or '' while incomplete/impossible), so
-     the rest of the app is untouched. Field order is per-component markup —
-     ready to swap for locales that write month first (Phase M). -->
+     the rest of the app is untouched. Segment ORDER is data-driven: DD/MM/YYYY
+     everywhere, except MM/DD/YYYY for US English (navigator en-US) — other
+     English locales (UK, AU, CA…) keep day-first. -->
 <script>
   import { untrack } from 'svelte';
+  import { browser } from '$app/environment';
+  import { page } from '$app/stores';
+  import { t } from '$lib/i18n/index.svelte.js';
   import { selectOnFocus } from './select-on-focus.js';
 
   /** @type {{ value?: string }} value: ISO YYYY-MM-DD, '' when incomplete */
   let { value = $bindable('') } = $props();
+
+  const lang = $derived($page.params.lang);
+  const tr = (key) => t(key, undefined, lang);
+
+  // Month-first only for US English; every other locale is day-first. Decided
+  // client-side (navigator), so SSR/first paint is day-first and en-US swaps on
+  // hydration while the field is still empty.
+  let monthFirst = $state(false);
+  $effect(() => {
+    monthFirst = browser && lang === 'en' && (navigator.language || '').toLowerCase() === 'en-us';
+  });
 
   let day = $state('');
   let month = $state('');
   let year = $state('');
   /** @type {HTMLInputElement[]} segment elements in visual order */
   let els = [];
+
+  // Segment descriptors keyed by field; the visual `order` arranges them.
+  const D = {
+    day: { get: () => day, set: (v) => (day = v), max: 2, ph: 'date.phDay', aria: 'date.day', ac: 'bday-day' },
+    month: { get: () => month, set: (v) => (month = v), max: 2, ph: 'date.phMonth', aria: 'date.month', ac: 'bday-month' },
+    year: { get: () => year, set: (v) => (year = v), max: 4, ph: 'date.phYear', aria: 'date.year', ac: 'bday-year' }
+  };
+  const order = $derived(monthFirst ? ['month', 'day', 'year'] : ['day', 'month', 'year']);
 
   // A calendar-real date (rejects 31/02 etc.).
   function realDate(y, m, d) {
@@ -56,14 +79,8 @@
   // All three segments filled but not a real date → mark the field.
   const invalid = $derived(!!(day && month && year.length === 4) && !compose());
 
-  const SEGMENTS = [
-    { get: () => day, set: (v) => (day = v), max: 2 },
-    { get: () => month, set: (v) => (month = v), max: 2 },
-    { get: () => year, set: (v) => (year = v), max: 4 }
-  ];
-
   function onInput(e, i) {
-    const seg = SEGMENTS[i];
+    const seg = D[order[i]];
     const clean = e.currentTarget.value.replace(/\D/g, '').slice(0, seg.max);
     e.currentTarget.value = clean; // drop non-digits even when state is unchanged
     seg.set(clean);
@@ -92,7 +109,7 @@
   // "3" → "03" on leave (day and month only; a 2-digit year stays incomplete
   // rather than guessing the century).
   function onBlur(i) {
-    const seg = SEGMENTS[i];
+    const seg = D[order[i]];
     const v = seg.get();
     if (seg.max === 2 && v.length === 1) {
       seg.set('0' + v);
@@ -101,60 +118,28 @@
   }
 </script>
 
-<div class="datefield" class:invalid role="group" aria-label="Fecha de nacimiento (día, mes y año)">
-  <input
-    bind:this={els[0]}
-    use:selectOnFocus
-    value={day}
-    oninput={(e) => onInput(e, 0)}
-    onkeydown={(e) => onKeydown(e, 0)}
-    onblur={() => onBlur(0)}
-    type="text"
-    class="seg"
-    inputmode="numeric"
-    pattern="[0-9]*"
-    maxlength="2"
-    placeholder="dd"
-    autocomplete="bday-day"
-    aria-label="Día"
-    required
-  />
-  <span class="sep" aria-hidden="true">/</span>
-  <input
-    bind:this={els[1]}
-    use:selectOnFocus
-    value={month}
-    oninput={(e) => onInput(e, 1)}
-    onkeydown={(e) => onKeydown(e, 1)}
-    onblur={() => onBlur(1)}
-    type="text"
-    class="seg"
-    inputmode="numeric"
-    pattern="[0-9]*"
-    maxlength="2"
-    placeholder="mm"
-    autocomplete="bday-month"
-    aria-label="Mes"
-    required
-  />
-  <span class="sep" aria-hidden="true">/</span>
-  <input
-    bind:this={els[2]}
-    use:selectOnFocus
-    value={year}
-    oninput={(e) => onInput(e, 2)}
-    onkeydown={(e) => onKeydown(e, 2)}
-    onblur={() => onBlur(2)}
-    type="text"
-    class="seg year"
-    inputmode="numeric"
-    pattern="[0-9]*"
-    maxlength="4"
-    placeholder="aaaa"
-    autocomplete="bday-year"
-    aria-label="Año"
-    required
-  />
+<div class="datefield" class:invalid role="group" aria-label={tr('date.group')}>
+  {#each order as key, i (key)}
+    {#if i > 0}<span class="sep" aria-hidden="true">/</span>{/if}
+    <input
+      bind:this={els[i]}
+      use:selectOnFocus
+      value={D[key].get()}
+      oninput={(e) => onInput(e, i)}
+      onkeydown={(e) => onKeydown(e, i)}
+      onblur={() => onBlur(i)}
+      type="text"
+      class="seg"
+      class:year={key === 'year'}
+      inputmode="numeric"
+      pattern="[0-9]*"
+      maxlength={D[key].max}
+      placeholder={tr(D[key].ph)}
+      autocomplete={D[key].ac}
+      aria-label={tr(D[key].aria)}
+      required
+    />
+  {/each}
 </div>
 
 <style>

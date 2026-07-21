@@ -3,6 +3,16 @@
 
   import { onMount } from 'svelte';
   import { goto } from '$app/navigation';
+  import { page } from '$app/stores';
+  import { t, LOCALES, localeMeta } from '$lib/i18n/index.svelte.js';
+  import { getDisplayLabels } from '$lib/hd/content/index.js';
+  // The active language for URLs and text. Read from the route param (not the
+  // i18n module state), since the home is prerendered (concurrent at build) and
+  // the shared module locale can race; `tr` passes it explicitly to t().
+  const lang = $derived($page.params.lang);
+  const tr = (key, params) => t(key, params, lang);
+  // Full type names come from the content pack (translated in Phase M turn 2).
+  const typeLabels = $derived(getDisplayLabels(lang).type);
 
   // Injected by Vite's `define` from package.json (see vite.config.js).
   const version = __APP_VERSION__;
@@ -27,38 +37,34 @@
   import StorageInfo from '$lib/components/StorageInfo.svelte';
   import { computeChart } from '$lib/hd/chart.js';
 
-  // ── SEO (Phase L, step 2) ─────────────────────────────────────────────
+  // ── SEO (Phase L, step 2 · per-language in Phase M) ───────────────────
   // The home is prerendered (see +page.js), so these tags land in the real
   // static HTML that crawlers and social scrapers read. Absolute URLs use the
-  // custom domain (Phase L, step 3). www redirects to the root at Cloudflare.
+  // custom domain (Phase L, step 3). Each language has its own canonical URL;
+  // hreflang alternates cross-link them, with x-default on the bare root (the
+  // Worker negotiates it). www redirects to the root at Cloudflare.
   const SITE_URL = 'https://hdchart.app';
-  const SEO_TITLE = 'Human Design Chart — calcula tu carta gratis, sin registro';
-  const SEO_DESC =
-    'Calcula tu carta de Human Design gratis y sin registro: tipo, estrategia, autoridad, perfil, centros y canales, con un bodygraph interactivo.';
-  const jsonLd =
+  const seoTitle = $derived(tr('seo.title'));
+  const seoDesc = $derived(tr('seo.description'));
+  const canonical = $derived(`${SITE_URL}/${lang}`);
+  const ogLocale = $derived(localeMeta(lang).ogLocale);
+  const jsonLd = $derived(
     `<script type="application/ld+json">` +
-    JSON.stringify({
-      '@context': 'https://schema.org',
-      '@type': 'WebApplication',
-      name: 'Human Design Chart',
-      url: `${SITE_URL}/`,
-      description: SEO_DESC,
-      applicationCategory: 'LifestyleApplication',
-      operatingSystem: 'Web',
-      inLanguage: 'es',
-      isAccessibleForFree: true,
-      offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
-      author: { '@type': 'Person', name: 'Javi G.O.' }
-    }) +
-    `<\/script>`;
-
-  const TYPE_LABELS = {
-    generator: 'Generador',
-    'manifesting-generator': 'Generador Manifestante',
-    projector: 'Proyector',
-    manifestor: 'Manifestador',
-    reflector: 'Reflector'
-  };
+      JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'WebApplication',
+        name: 'Human Design Chart',
+        url: canonical,
+        description: seoDesc,
+        applicationCategory: 'LifestyleApplication',
+        operatingSystem: 'Web',
+        inLanguage: lang,
+        isAccessibleForFree: true,
+        offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
+        author: { '@type': 'Person', name: 'Javi G.O.' }
+      }) +
+      `<\/script>`
+  );
 
   let name = $state('');
   let date = $state('');
@@ -98,7 +104,7 @@
     };
     sessionStorage.setItem('birthData', JSON.stringify(birth));
     sessionStorage.setItem('hd:openInfo', `${kind}:${key}`);
-    goto('/chart');
+    goto(`/${lang}/chart`);
   }
 
   // "instalar como app" link (top of the home). Chromium → native prompt;
@@ -109,9 +115,8 @@
       await promptInstall();
     } else if (install.mode === 'ios') {
       await dialog.alert({
-        title: 'Instalar como app',
-        message:
-          'Abre el menú de compartir del navegador y elige "Añadir a pantalla de inicio".'
+        title: tr('install.iosTitle'),
+        message: tr('install.iosMessage')
       });
     }
   }
@@ -158,14 +163,6 @@
   const sliderTime = $derived(
     `${String(Math.floor(sliderVal / 2)).padStart(2, '0')}:${sliderVal % 2 === 0 ? '00' : '30'}`
   );
-
-  const TYPE_ABBR = {
-    generator: 'G',
-    'manifesting-generator': 'MG',
-    projector: 'P',
-    manifestor: 'M',
-    reflector: 'R'
-  };
 
   // Map of the whole day: which type results from each half-hour. Computed
   // once per date/place (48 chart computations) and rendered as a segmented
@@ -256,12 +253,12 @@
     // The DateField segments are `required` (empty blocks natively), but a
     // filled-yet-impossible date (31/02) composes to '' — catch it here.
     if (!date) {
-      error = 'Revisa la fecha de nacimiento: no es una fecha válida.';
+      error = tr('form.errInvalidDate');
       return;
     }
 
     if (!place) {
-      error = 'Selecciona una ciudad de la lista de sugerencias.';
+      error = tr('form.errNoCity');
       return;
     }
 
@@ -277,7 +274,7 @@
         placeLabel: place.label
       };
       sessionStorage.setItem('birthData', JSON.stringify(birth));
-      goto('/chart');
+      goto(`/${lang}/chart`);
     } catch (e) {
       error = e instanceof Error ? e.message : String(e);
       submitting = false;
@@ -371,15 +368,15 @@
     // The saved (possibly renamed) chart name wins over whatever name was
     // typed in the form before saving.
     sessionStorage.setItem('birthData', JSON.stringify({ ...c.birth, name: c.name }));
-    goto('/chart');
+    goto(`/${lang}/chart`);
   }
 
   async function renameSaved(c) {
     const name = await dialog.prompt({
-      title: 'Renombrar carta',
+      title: tr('dialog.rename.title'),
       defaultValue: c.name,
-      placeholder: 'Nombre de la carta',
-      confirmLabel: 'Guardar'
+      placeholder: tr('dialog.rename.placeholder'),
+      confirmLabel: tr('dialog.rename.confirm')
     });
     if (name === null || !name.trim()) return;
     await renameChart(c.id, name.trim());
@@ -388,9 +385,9 @@
 
   async function deleteSaved(c) {
     const ok = await dialog.confirm({
-      title: 'Borrar carta',
-      message: `¿Borrar la carta "${c.name}"? Esta acción no se puede deshacer.`,
-      confirmLabel: 'Borrar',
+      title: tr('dialog.delete.title'),
+      message: tr('dialog.delete.message', { name: c.name }),
+      confirmLabel: tr('dialog.delete.confirm'),
       danger: true
     });
     if (!ok) return;
@@ -416,9 +413,9 @@
     try {
       const { imported, duplicates, invalid } = await importCharts(await file.text());
       await refreshList();
-      const parts = [`${imported} carta(s) importada(s).`];
-      if (duplicates) parts.push(`${duplicates} omitida(s) por estar ya guardada(s).`);
-      if (invalid) parts.push(`${invalid} descartada(s) por datos incompletos.`);
+      const parts = [tr('dialog.importImported', { n: imported })];
+      if (duplicates) parts.push(tr('dialog.importDuplicates', { n: duplicates }));
+      if (invalid) parts.push(tr('dialog.importInvalid', { n: invalid }));
       await dialog.alert({ message: parts.join(' ') });
     } catch (err) {
       listError = err instanceof Error ? err.message : String(err);
@@ -451,24 +448,28 @@
 <svelte:window onclick={tipTap} />
 
 <svelte:head>
-  <title>{SEO_TITLE}</title>
-  <meta name="description" content={SEO_DESC} />
-  <link rel="canonical" href="{SITE_URL}/" />
+  <title>{seoTitle}</title>
+  <meta name="description" content={seoDesc} />
+  <link rel="canonical" href={canonical} />
+  {#each LOCALES as l}
+    <link rel="alternate" hreflang={l.htmlLang} href="{SITE_URL}/{l.code}" />
+  {/each}
+  <link rel="alternate" hreflang="x-default" href={SITE_URL} />
 
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Human Design Chart" />
-  <meta property="og:title" content={SEO_TITLE} />
-  <meta property="og:description" content={SEO_DESC} />
-  <meta property="og:url" content="{SITE_URL}/" />
+  <meta property="og:title" content={seoTitle} />
+  <meta property="og:description" content={seoDesc} />
+  <meta property="og:url" content={canonical} />
   <meta property="og:image" content="{SITE_URL}/og-image.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta property="og:image:alt" content="Human Design Chart" />
-  <meta property="og:locale" content="es_ES" />
+  <meta property="og:locale" content={ogLocale} />
 
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content={SEO_TITLE} />
-  <meta name="twitter:description" content={SEO_DESC} />
+  <meta name="twitter:title" content={seoTitle} />
+  <meta name="twitter:description" content={seoDesc} />
   <meta name="twitter:image" content="{SITE_URL}/og-image.png" />
 
   {@html jsonLd}
@@ -479,16 +480,16 @@
     <div class="brand">
       <h1>Human Design Chart</h1>
       <!-- The app icon doubles as the "instalar como app" affordance. -->
-      <button class="app-icon" type="button" onclick={onInstallClick} aria-label="Instalar como app" title="Instalar como app">
+      <button class="app-icon" type="button" onclick={onInstallClick} aria-label={tr('install.aria')} title={tr('install.aria')}>
         <img src="/favicon.svg" alt="" width="28" height="28" />
       </button>
     </div>
-    <p class="tagline">Calcula tu carta de Diseño Humano — gratis y sin registro.</p>
+    <p class="tagline">{tr('home.tagline')}</p>
   </header>
 
   <form onsubmit={submit}>
     <label>
-      <span>Nombre</span>
+      <span>{tr('form.name')}</span>
       <input type="text" bind:value={name} autocomplete="off" use:selectOnFocus />
     </label>
 
@@ -496,7 +497,7 @@
          input: Android's picker leads with a ~100-year scroll, and a birth
          date is typed, not picked. -->
     <div class="field">
-      <span class="field-head"><span>Fecha de nacimiento</span></span>
+      <span class="field-head"><span>{tr('form.birthDate')}</span></span>
       <!-- {#key}: same pattern as CityAutocomplete — half-typed segments
            compose to the same '' as a cleared value, so clearing the form
            remounts the field instead of trying to signal it. -->
@@ -506,7 +507,7 @@
     </div>
 
     <label>
-      <span>Lugar de nacimiento</span>
+      <span>{tr('form.birthPlace')}</span>
       {#key formEpoch}
         <CityAutocomplete bind:value={place} />
       {/key}
@@ -514,39 +515,39 @@
 
     <div class="field">
       <span class="field-head">
-        <span>Hora local de nacimiento</span>
+        <span>{tr('form.birthTime')}</span>
       </span>
       {#if !unknownTime}
         <span class="dtwrap">
-          <input type="time" bind:this={timeEl} bind:value={time} required aria-label="Hora local de nacimiento" />
+          <input type="time" bind:this={timeEl} bind:value={time} required aria-label={tr('form.birthTime')} />
           <span class="dt-value" class:muted={!time} aria-hidden="true">{time || '--:--'}</span>
         </span>
       {:else}
         <div class="slider-block">
-          <p class="slider-hint">Elige una hora aproximada para calcular la carta:</p>
+          <p class="slider-hint">{tr('form.approxHint')}</p>
           <input
             type="range"
             min="0"
             max="47"
             step="1"
             bind:value={sliderVal}
-            aria-label="Hora estimada"
+            aria-label={tr('form.estimatedHour')}
           />
           {#if typeBands.length}
             <div class="bands" aria-hidden="true">
               {#each typeBands as b}
-                {@const label = TYPE_LABELS[b.type] ?? '—'}
+                {@const label = typeLabels[b.type] ?? '—'}
                 {@const fits = label.length <= b.span * 1.3}
                 <span
                   class="band"
                   class:active={sliderVal >= b.from && sliderVal < b.from + b.span}
                   style={`flex-grow:${b.span}`}
                   data-tip={fits ? undefined : label}
-                >{fits ? label : (TYPE_ABBR[b.type] ?? '')}</span>
+                >{fits ? label : b.type ? tr('types.abbr.' + b.type) : ''}</span>
               {/each}
             </div>
           {:else if bandsBusy}
-            <p class="bands-busy">Calculando los tipos del día…</p>
+            <p class="bands-busy">{tr('form.calcTypesBusy')}</p>
           {/if}
           <div class="slider-scale" aria-hidden="true">
             <span>0h</span><span>6h</span><span>12h</span><span>18h</span><span>24h</span>
@@ -555,11 +556,11 @@
             <span class="slider-time">{sliderTime}</span>
             <span class="slider-type">
               {#if !place}
-                Selecciona una ciudad
+                {tr('form.selectCity')}
               {:else if previewBusy}
                 …
               {:else}
-                {TYPE_LABELS[previewType] ?? '—'}
+                {typeLabels[previewType] ?? '—'}
               {/if}
             </span>
           </div>
@@ -567,7 +568,7 @@
       {/if}
       <label class="check">
         <input type="checkbox" checked={unknownTime} onchange={toggleUnknownTime} />
-        Hora desconocida
+        {tr('form.unknownTime')}
       </label>
     </div>
 
@@ -576,7 +577,7 @@
     {/if}
 
     <button type="submit" disabled={submitting}>
-      {submitting ? 'Calculando…' : 'Calcular carta'}
+      {submitting ? tr('form.calculating') : tr('form.calculate')}
     </button>
 
     <!-- onclickcapture: direct listener, also usable when the page is
@@ -585,13 +586,13 @@
       <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <path d="M21 12a9 9 0 1 1-2.64-6.36" /><path d="M21 3v6h-6" />
       </svg>
-      Borrar formulario
+      {tr('form.clearForm')}
     </button>
   </form>
 
   <section class="saved">
     <div class="saved-head">
-      <h2>Cartas guardadas</h2>
+      <h2>{tr('saved.heading')}</h2>
     </div>
 
     {#if listError}
@@ -599,7 +600,7 @@
     {/if}
 
     {#if savedCharts.length === 0}
-      <p class="empty">No hay cartas guardadas todavía.</p>
+      <p class="empty">{tr('saved.empty')}</p>
     {:else}
       <ul>
         {#each savedCharts as c, i (c.id)}
@@ -615,13 +616,13 @@
               <span class="chart-name">
                 {c.name}
                 {#if c.type}
-                  <span class="chart-type">{TYPE_LABELS[c.type] ?? c.type}</span>
+                  <span class="chart-type">{typeLabels[c.type] ?? c.type}</span>
                 {/if}
               </span>
               <span class="chart-meta">{formatDate(c)} · {cityCountry(c.birth?.placeLabel)}</span>
             </button>
-            <button class="icon" onclick={() => renameSaved(c)} aria-label="Renombrar">✎</button>
-            <button class="icon" onclick={() => deleteSaved(c)} aria-label="Borrar">✕</button>
+            <button class="icon" onclick={() => renameSaved(c)} aria-label={tr('saved.rename')}>✎</button>
+            <button class="icon" onclick={() => deleteSaved(c)} aria-label={tr('saved.delete')}>✕</button>
           </li>
         {/each}
       </ul>
@@ -629,15 +630,15 @@
 
     <div class="saved-foot">
       <div class="local-note">
-        <p>Las cartas se guardan en este dispositivo. <StorageInfo /></p>
+        <p>{tr('saved.localNote')} <StorageInfo /></p>
       </div>
       <div class="io">
         <button
           class="io-btn"
           onclick={doExport}
           disabled={savedCharts.length === 0}
-          data-tip="Exportar cartas"
-          aria-label="Exportar cartas"
+          data-tip={tr('saved.export')}
+          aria-label={tr('saved.export')}
         >
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M12 3v12" /><path d="m8 11 4 4 4-4" /><path d="M4 21h16" />
@@ -646,8 +647,8 @@
         <button
           class="io-btn"
           onclick={() => importInput?.click()}
-          data-tip="Importar cartas"
-          aria-label="Importar cartas"
+          data-tip={tr('saved.import')}
+          aria-label={tr('saved.import')}
         >
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M12 15V3" /><path d="m8 7 4-4 4 4" /><path d="M4 21h16" />
@@ -666,12 +667,12 @@
 
   <footer>
     {#if install.mode}
-      <button class="install-link" type="button" onclick={onInstallClick}>instalar como app</button>
+      <button class="install-link" type="button" onclick={onInstallClick}>{tr('install.link')}</button>
       <span aria-hidden="true">·</span>
     {/if}
     <ReportBug version={version} />
     <span aria-hidden="true">·</span>
-    <a class="foot-link" href="/privacy">privacidad</a>
+    <a class="foot-link" href={`/${lang}/privacy`}>{tr('footer.privacy')}</a>
     <span aria-hidden="true">·</span>
     <About version={version} onElement={openAuthorChartWithInfo} />
   </footer>

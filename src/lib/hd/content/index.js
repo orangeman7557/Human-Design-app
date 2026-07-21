@@ -6,13 +6,18 @@
 // `key`, and optionally a language.
 
 import es from './es.js';
+import en from './en.js';
 import { CENTER_BY_GATE, CHANNELS, GATES_BY_CENTER, CENTERS } from '../constants.js';
+import { getLocale, DEFAULT_LOCALE } from '$lib/i18n/index.svelte.js';
 
-const LANGS = { es };
-export const DEFAULT_LANG = 'es';
+const LANGS = { es, en };
+export const DEFAULT_LANG = DEFAULT_LOCALE;
+// Re-exported so report.js / prompts.js default their `lang` to the active
+// locale from one place (they already import from here).
+export { getLocale };
 
 function pack(lang) {
-  return LANGS[lang] ?? LANGS[DEFAULT_LANG];
+  return LANGS[lang] ?? LANGS[DEFAULT_LOCALE];
 }
 
 /** Capitalise the first letter (for names embedded in a title). */
@@ -25,7 +30,7 @@ const cap = (s) => (s ? s.charAt(0).toUpperCase() + s.slice(1) : s);
  * @param {string} [lang]
  * @returns {{ title: string, paragraphs: string[] } | null}
  */
-export function getElementInfo(kind, key, lang = DEFAULT_LANG) {
+export function getElementInfo(kind, key, lang = getLocale()) {
   const entry = pack(lang)[kind]?.[key];
   if (!entry) return null;
   // Centres are stored split (fn/defined/open) — Phase 7. The chip "i" shows the
@@ -47,7 +52,7 @@ export function getElementInfo(kind, key, lang = DEFAULT_LANG) {
 
 /** Closed-set schema ({ heading, items, hasPct }) for a category, with
  *  `currentKeys` highlighted, or null when the category has no closed set. */
-function relatedIndex(kind, currentKeys, lang = DEFAULT_LANG) {
+function relatedIndex(kind, currentKeys, lang = getLocale()) {
   const idx = pack(lang).relatedIndex?.[kind];
   if (!idx) return null;
   const cur = new Set((Array.isArray(currentKeys) ? currentKeys : [currentKeys]).map(String));
@@ -64,7 +69,7 @@ function relatedIndex(kind, currentKeys, lang = DEFAULT_LANG) {
 
 /** A centre's schematic facts: its channels (with names) and its gates (with
  *  themes), each a clickable chip row — mirrors the gate/channel drawers. */
-function centerFacts(center, lang = DEFAULT_LANG) {
+function centerFacts(center, lang = getLocale()) {
   const p = pack(lang);
   const chans = CHANNELS.filter(([a, b]) => CENTER_BY_GATE[a] === center || CENTER_BY_GATE[b] === center);
   const gates = GATES_BY_CENTER[center] ?? [];
@@ -88,7 +93,7 @@ function centerFacts(center, lang = DEFAULT_LANG) {
 }
 
 /** Whether an element has explanatory content (drives the info "i"). */
-export function hasElementInfo(kind, key, lang = DEFAULT_LANG) {
+export function hasElementInfo(kind, key, lang = getLocale()) {
   return getElementInfo(kind, key, lang) != null;
 }
 
@@ -100,7 +105,7 @@ export function hasElementInfo(kind, key, lang = DEFAULT_LANG) {
  * @param {string} key 'type'|'strategy'|'authority'|'profile'|'definition'|'center'|'channel'|'gate'
  * @param {string} [lang]
  */
-export function getConceptInfo(key, chart = null, lang = DEFAULT_LANG) {
+export function getConceptInfo(key, chart = null, lang = getLocale()) {
   const base = getElementInfo('concept', key, lang);
   if (!base) return null;
   const p = pack(lang);
@@ -157,7 +162,7 @@ export function getConceptInfo(key, chart = null, lang = DEFAULT_LANG) {
  * @param {string} profile e.g. "3/5"
  * @param {string} [lang]
  */
-export function getProfileInfo(profile, lang = DEFAULT_LANG) {
+export function getProfileInfo(profile, lang = getLocale()) {
   const [a, b] = String(profile).split('/');
   const la = getElementInfo('profile', a, lang);
   const lb = getElementInfo('profile', b, lang);
@@ -175,13 +180,24 @@ export function getProfileInfo(profile, lang = DEFAULT_LANG) {
   };
 }
 
-/** Natural-language labels used to build prompts. */
-export function getPromptLabels(lang = DEFAULT_LANG) {
+/** Natural-language labels used to build prompts (lower-case, with articles). */
+export function getPromptLabels(lang = getLocale()) {
   return pack(lang).promptLabels;
 }
 
+/**
+ * Display labels for the UI (cards, chips, table columns) — sentence case and
+ * without articles, unlike `getPromptLabels`. Phase M.
+ * @returns {{ type: Record<string,string>, strategy: Record<string,string>,
+ *   authority: Record<string,string>, definition: Record<string,string>,
+ *   center: Record<string,string>, planet: Record<string,string> }}
+ */
+export function getDisplayLabels(lang = getLocale()) {
+  return pack(lang).labels;
+}
+
 /** I Ching hexagram name for a gate (gate N ↔ hexagram N), or null. */
-export function getIchingName(gate, lang = DEFAULT_LANG) {
+export function getIchingName(gate, lang = getLocale()) {
   return pack(lang).iching?.[Number(gate)] ?? null;
 }
 
@@ -189,19 +205,19 @@ export function getIchingName(gate, lang = DEFAULT_LANG) {
  * Relative weight of a planet's activation (Phase 6.E) — `{ tier, label }` or
  * null. PROVISIONAL (see es.js): only Sun+Earth ≈ 70% is firm.
  */
-export function getActivationWeight(planet, lang = DEFAULT_LANG) {
+export function getActivationWeight(planet, lang = getLocale()) {
   return pack(lang).activationWeight?.[planet] ?? null;
 }
 
 // ── Initial report (Phase 7). Content accessors used by buildReport (report.js). ──
 
 /** A general report section ({ title, paragraphs }) by id, or null. */
-export function getReportSection(id, lang = DEFAULT_LANG) {
+export function getReportSection(id, lang = getLocale()) {
   return pack(lang).report?.[id] ?? null;
 }
 
 /** Short connective lead-in string for a personalised report section, or null. */
-export function getReportLeadIn(id, lang = DEFAULT_LANG) {
+export function getReportLeadIn(id, lang = getLocale()) {
   return pack(lang).report?.leadIn?.[id] ?? null;
 }
 
@@ -211,7 +227,7 @@ export function getReportLeadIn(id, lang = DEFAULT_LANG) {
  * 'type' | 'strategy' | 'authority' | 'definition' (and 'profile' per line).
  * @returns {string[] | null}
  */
-export function getReportBody(section, key, lang = DEFAULT_LANG) {
+export function getReportBody(section, key, lang = getLocale()) {
   return pack(lang).report?.[section]?.[key] ?? null;
 }
 
@@ -222,7 +238,7 @@ export function getReportBody(section, key, lang = DEFAULT_LANG) {
  * @param {string} profile e.g. "1/3"
  * @returns {{ title: string, paragraphs: string[] } | null}
  */
-export function getReportProfile(profile, lang = DEFAULT_LANG) {
+export function getReportProfile(profile, lang = getLocale()) {
   const [a, b] = String(profile).split('/');
   const la = getElementInfo('profile', a, lang);
   const lb = getElementInfo('profile', b, lang);
@@ -242,7 +258,7 @@ export function getReportProfile(profile, lang = DEFAULT_LANG) {
 }
 
 /** The per-type practical block ({ energia, trampa, senales }) or null. */
-export function getTypeReport(type, lang = DEFAULT_LANG) {
+export function getTypeReport(type, lang = getLocale()) {
   return pack(lang).typeReport?.[type] ?? null;
 }
 
@@ -252,7 +268,7 @@ export function getTypeReport(type, lang = DEFAULT_LANG) {
  * @param {boolean} isDefined
  * @param {string} [lang]
  */
-export function getCenterReport(key, isDefined, lang = DEFAULT_LANG) {
+export function getCenterReport(key, isDefined, lang = getLocale()) {
   const entry = pack(lang).center?.[key];
   if (!entry) return null;
   // The report uses the shared `fn` (a general description of what the centre
@@ -272,7 +288,7 @@ export function getCenterReport(key, isDefined, lang = DEFAULT_LANG) {
 // channel links its centres and gates, etc. — clicking opens a nested drawer.
 
 /** Short theme phrase for a gate (used to compose channels), or null. */
-function gateTheme(gate, lang = DEFAULT_LANG) {
+function gateTheme(gate, lang = getLocale()) {
   return pack(lang).gate?.[Number(gate)]?.theme ?? null;
 }
 
@@ -310,7 +326,7 @@ function gateCoda(state, g) {
  * @param {string} [lang]
  * @returns {{ title: string, paragraphs: string[] } | null}
  */
-export function getGateInfo(gate, chart = null, lang = DEFAULT_LANG) {
+export function getGateInfo(gate, chart = null, lang = getLocale()) {
   const g = Number(gate);
   const center = CENTER_BY_GATE[g];
   if (!center) return null;
@@ -392,7 +408,7 @@ function channelCoda(a, b, chart) {
  * @param {string} [lang]
  * @returns {{ title: string, paragraphs: string[] } | null}
  */
-export function getChannelInfo(pair, chart = null, lang = DEFAULT_LANG) {
+export function getChannelInfo(pair, chart = null, lang = getLocale()) {
   const [a, b] = Array.isArray(pair) ? pair.map(Number) : String(pair).split('-').map(Number);
   const ca = CENTER_BY_GATE[a];
   const cb = CENTER_BY_GATE[b];
@@ -446,7 +462,7 @@ export function getChannelInfo(pair, chart = null, lang = DEFAULT_LANG) {
  * @param {any} [chart]
  * @param {string} [lang]
  */
-export function getPlanetInfo(planet, chart = null, lang = DEFAULT_LANG) {
+export function getPlanetInfo(planet, chart = null, lang = getLocale()) {
   const entry = pack(lang).planet?.[planet];
   if (!entry) return null;
   const row = (side) => {

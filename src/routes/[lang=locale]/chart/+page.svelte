@@ -16,48 +16,30 @@
   import { install, promptInstall } from '$lib/pwa/install.svelte.js';
   import { dialog } from '$lib/components/dialog.svelte.js';
   import { cityCountry } from '$lib/geo/place.js';
-  import { getElementInfo, getProfileInfo, getGateInfo, getChannelInfo, getConceptInfo, getPlanetInfo, getActivationWeight } from '$lib/hd/content/index.js';
+  import { getElementInfo, getProfileInfo, getGateInfo, getChannelInfo, getConceptInfo, getPlanetInfo, getActivationWeight, getDisplayLabels } from '$lib/hd/content/index.js';
+  import { t } from '$lib/i18n/index.svelte.js';
   import { buildPrompts } from '$lib/hd/prompts.js';
   import { buildShareUrl, decodeBirth, hasShareParams } from '$lib/hd/share-link.js';
   import { goto } from '$app/navigation';
+  import { page } from '$app/stores';
+  // Active language for building URLs — from the route param (SSR-safe).
+  const lang = $derived($page.params.lang);
+  const tr = (key, params) => t(key, params, lang);
 
-  // Etiquetas humanas. En la próxima iteración esto vivirá en i18n.
-  const CENTER_LABELS = {
-    head: 'Cabeza',
-    ajna: 'Ajna',
-    throat: 'Garganta',
-    g: 'G',
-    heart: 'Corazón',
-    sacral: 'Sacral',
-    spleen: 'Bazo',
-    solarPlexus: 'Plexo solar',
-    root: 'Raíz'
-  };
+  // Human labels for centres/planets/types/strategies/authorities/definitions
+  // all come from the content pack's DISPLAY labels (not the prompt ones, which
+  // are lower-case and carry articles), so they translate with the rest of the
+  // Human Design content (Phase M turn 2). The variable names are kept, so every
+  // usage site below is untouched. Astro symbols are language-neutral.
+  const CENTER_LABELS = $derived(getDisplayLabels(lang).center);
+  const PLANET_LABELS = $derived(getDisplayLabels(lang).planet);
+  const STRATEGY_LABELS = $derived(getDisplayLabels(lang).strategy);
+  const AUTHORITY_LABELS = $derived(getDisplayLabels(lang).authority);
+  const DEFINITION_LABELS = $derived(getDisplayLabels(lang).definition);
 
-  const PLANET_LABELS = {
-    sun: 'Sol',
-    earth: 'Tierra',
-    moon: 'Luna',
-    northNode: 'Nodo Norte',
-    southNode: 'Nodo Sur',
-    mercury: 'Mercurio',
-    venus: 'Venus',
-    mars: 'Marte',
-    jupiter: 'Júpiter',
-    saturn: 'Saturno',
-    uranus: 'Urano',
-    neptune: 'Neptuno',
-    pluto: 'Plutón'
-  };
-
-  // Ordered by estimated share of the population.
-  const TYPES = [
-    { key: 'generator', label: 'Generador' },
-    { key: 'manifesting-generator', label: 'Generador Manifestante' },
-    { key: 'projector', label: 'Proyector' },
-    { key: 'manifestor', label: 'Manifestador' },
-    { key: 'reflector', label: 'Reflector' }
-  ];
+  // Types ordered by estimated share of the population; labels from the pack.
+  const TYPE_ORDER = ['generator', 'manifesting-generator', 'projector', 'manifestor', 'reflector'];
+  const TYPES = $derived(TYPE_ORDER.map((key) => ({ key, label: getDisplayLabels(lang).type[key] ?? key })));
 
   const PLANET_SYMBOLS = {
     sun: '☉',
@@ -73,33 +55,6 @@
     uranus: '♅',
     neptune: '♆',
     pluto: '♇'
-  };
-
-  const STRATEGY_LABELS = {
-    'inform-before-acting': 'Informar antes de actuar',
-    respond: 'Responder',
-    'respond-then-inform': 'Responder y luego informar',
-    'wait-for-invitation': 'Esperar la invitación',
-    'wait-lunar-cycle': 'Esperar un ciclo lunar'
-  };
-
-  // Same quality-(centre) order as the drawers and prompts (text audit, jul 2026).
-  const AUTHORITY_LABELS = {
-    emotional: 'Emocional (Plexo solar)',
-    sacral: 'Sacral',
-    splenic: 'Esplénica (Bazo)',
-    ego: 'Ego (Corazón)',
-    'self-projected': 'Autoproyectada (G-Garganta)',
-    mental: 'Mental/ambiental',
-    lunar: 'Lunar'
-  };
-
-  const DEFINITION_LABELS = {
-    'no-definition': 'Sin definición',
-    single: 'Definición única',
-    split: 'Definición split',
-    'triple-split': 'Definición triple split',
-    'quad-split': 'Definición cuádruple split'
   };
 
   /** @type {any} */
@@ -139,12 +94,12 @@
    *  innerReveal is ever set, so exactly one "i" shows at a time. */
   let innerReveal = $state(null);
 
-  const CATEGORY_BY_KIND = {
-    type: 'Tipo', strategy: 'Estrategia', authority: 'Autoridad',
-    profile: 'Perfil', definition: 'Definición', center: 'Centro',
-    channel: 'Canal', gate: 'Puerta', activationCol: 'Activaciones',
-    planet: 'Planeta'
-  };
+  const CATEGORY_BY_KIND = $derived({
+    type: tr('category.type'), strategy: tr('category.strategy'), authority: tr('category.authority'),
+    profile: tr('category.profile'), definition: tr('category.definition'), center: tr('category.center'),
+    channel: tr('category.channel'), gate: tr('category.gate'), activationCol: tr('category.activationCol'),
+    planet: tr('category.planet')
+  });
 
   /** Resolve an element's `{ title, paragraphs, facts?, after?, related?, list? }` by kind. */
   function resolveInfo(kind, key) {
@@ -192,14 +147,14 @@
   // info-zone's cardClick from also toggling the section reveal.
   function actClick(e, gate) {
     e.stopPropagation();
-    openInfoFor('Puerta', 'gate', String(gate));
+    openInfoFor(CATEGORY_BY_KIND.gate, 'gate', String(gate));
   }
   // Tapping the line number (the ".N" part) opens that line's drawer, not the
   // gate. The line 1-6 shares its archetype with the profile lines, so it
   // reuses the 'profile' content by line number.
   function actLineClick(e, line) {
     e.stopPropagation();
-    openInfoFor('Perfil', 'profile', String(line));
+    openInfoFor(CATEGORY_BY_KIND.profile, 'profile', String(line));
   }
 
   // Desktop: one mouseover per card decides whether the pointer sits on an
@@ -275,7 +230,7 @@
   function onSvgCenterClick(e, c) {
     pin(e, { kind: 'center', center: c, gates: [] });
     if (isTouch()) { innerReveal = null; cardReveal = null; }
-    openInfoFor('Centro', 'center', c);
+    openInfoFor(CATEGORY_BY_KIND.center, 'center', c);
   }
 
   // Hanging gates: active gates that don't complete any channel.
@@ -522,7 +477,7 @@
         return true;
       }
     });
-    if (!blob) throw new Error('No se pudo generar la imagen.');
+    if (!blob) throw new Error(tr('chart.errImageGen'));
     return blob;
   }
 
@@ -549,18 +504,18 @@
   async function doShareUrl(url) {
     try {
       if (navigator.share) {
-        await navigator.share({ title: 'Carta de Human Design', url });
+        await navigator.share({ title: tr('chart.shareSheetTitle'), url });
       } else if (navigator.clipboard?.writeText) {
         await navigator.clipboard.writeText(url);
         linkCopied = true;
         clearTimeout(copiedTimer);
         copiedTimer = setTimeout(() => (linkCopied = false), 2200);
       } else {
-        await dialog.alert({ title: 'Enlace de la carta', message: url });
+        await dialog.alert({ title: tr('chart.shareFallbackTitle'), message: url });
       }
     } catch (e) {
       if (e?.name !== 'AbortError') {
-        shareError = `No se pudo compartir el enlace: ${e instanceof Error ? e.message : String(e)}`;
+        shareError = tr('chart.errShare', { msg: e instanceof Error ? e.message : String(e) });
       }
     }
   }
@@ -636,12 +591,12 @@
   async function save() {
     if (!birthData || saved) return;
     saveError = null;
-    const suggested = birthData.name || birthData.placeLabel || 'Sin nombre';
+    const suggested = birthData.name || birthData.placeLabel || tr('chart.noName');
     const name = await dialog.prompt({
-      title: 'Guardar carta',
+      title: tr('chart.dlgSaveTitle'),
       defaultValue: suggested,
-      placeholder: 'Nombre de la carta',
-      confirmLabel: 'Guardar'
+      placeholder: tr('chart.dlgSavePlaceholder'),
+      confirmLabel: tr('chart.dlgSaveConfirm')
     });
     if (name === null) return;
     try {
@@ -715,7 +670,7 @@
       if (!birth) {
         const raw = sessionStorage.getItem('birthData');
         if (!raw) {
-          error = 'No hay datos de nacimiento. Vuelve a la página inicial y rellena el formulario.';
+          error = tr('chart.noBirthData');
           loading = false;
           return;
         }
@@ -749,7 +704,7 @@
     // Opened directly (new tab, shared URL) there is no in-app history to go
     // back to — go home instead of doing nothing or leaving the site.
     if (history.length > 1) history.back();
-    else goto('/');
+    else goto(`/${lang}`);
   }
 
   // "instalar como app" footer link — same behaviour as the home's: Chromium
@@ -759,25 +714,24 @@
       await promptInstall();
     } else if (install.mode === 'ios') {
       await dialog.alert({
-        title: 'Instalar como app',
-        message:
-          'Abre el menú de compartir del navegador y elige "Añadir a pantalla de inicio".'
+        title: tr('install.iosTitle'),
+        message: tr('install.iosMessage')
       });
     }
   }
 </script>
 
 <svelte:head>
-  <title>Tu carta · Human Design Chart</title>
-  <meta name="description" content="Tu carta de Human Design: bodygraph interactivo con tipo, estrategia, autoridad, perfil, centros y canales." />
+  <title>{tr('chart.seoTitle')}</title>
+  <meta name="description" content={tr('chart.seoDesc')} />
 </svelte:head>
 
 {#snippet imgButtons()}
   <button
     class="img-btn"
     onclick={shareLink}
-    data-tip={linkCopied ? 'Enlace copiado ✓' : 'Compartir enlace'}
-    aria-label="Compartir enlace de la carta"
+    data-tip={linkCopied ? tr('chart.shareCopied') : tr('chart.shareLink')}
+    aria-label={tr('chart.shareLinkAria')}
   >
     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <circle cx="18" cy="5" r="3" />
@@ -791,8 +745,8 @@
     class="img-btn"
     onclick={download}
     disabled={sharing}
-    data-tip={sharing ? 'Generando imagen…' : 'Descargar imagen'}
-    aria-label="Descargar imagen"
+    data-tip={sharing ? tr('chart.generatingImage') : tr('chart.downloadImage')}
+    aria-label={tr('chart.downloadImage')}
   >
     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <path d="M12 3v12" /><path d="m8 11 4 4 4-4" /><path d="M4 21h16" />
@@ -812,23 +766,23 @@
     class:hdr-noinforme={hdrMode === 'noInforme'}
     class:hdr-icons={hdrMode === 'icons'}
   >
-    <button class="back" onclick={back} aria-label="Volver">
+    <button class="back" onclick={back} aria-label={tr('chart.back')}>
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <line x1="19" y1="12" x2="5" y2="12" />
         <polyline points="12 19 5 12 12 5" />
       </svg>
     </button>
     <div class="title-wrap">
-      <h1>{birthData?.name?.trim() || 'Tu carta'}</h1>
+      <h1>{birthData?.name?.trim() || tr('chart.untitled')}</h1>
       {#if chart}
-        <button class="report-btn" type="button" onclick={() => (reportOpen = true)} aria-label="Informe inicial">
+        <button class="report-btn" type="button" onclick={() => (reportOpen = true)} aria-label={tr('chart.reportAria')}>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
             <polyline points="14 2 14 8 20 8" />
             <line x1="8" y1="13" x2="16" y2="13" />
             <line x1="8" y1="17" x2="16" y2="17" />
           </svg>
-          <span class="report-lbl">Informe</span>
+          <span class="report-lbl">{tr('chart.report')}</span>
         </button>
       {/if}
     </div>
@@ -839,31 +793,31 @@
         <div class="img-actions">
           {@render imgButtons()}
         </div>
-        <button class="save" onclick={save} disabled={saved} aria-label={saved ? 'Carta guardada' : 'Guardar carta'}>
+        <button class="save" onclick={save} disabled={saved} aria-label={saved ? tr('chart.savedAria') : tr('chart.save')}>
           {#if saved}
             <svg class="save-ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>
           {:else}
             <svg class="save-ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" /><polyline points="17 21 17 13 7 13 7 21" /><polyline points="7 3 7 8 15 8" /></svg>
           {/if}
-          <span class="save-lbl">{saved ? 'Guardada ✓' : 'Guardar carta'}</span>
-          <span class="save-lbl-m">{saved ? 'Guardada ✓' : 'Guardar'}</span>
+          <span class="save-lbl">{saved ? tr('chart.saved') : tr('chart.save')}</span>
+          <span class="save-lbl-m">{saved ? tr('chart.saved') : tr('chart.saveShort')}</span>
         </button>
       </div>
     {/if}
   </header>
 
   {#if saveError}
-    <p class="status error">No se pudo guardar: {saveError}</p>
+    <p class="status error">{tr('chart.errSave', { msg: saveError })}</p>
   {/if}
   {#if shareError}
     <p class="status error">{shareError}</p>
   {/if}
 
   {#if loading}
-    <p class="status">Calculando…</p>
+    <p class="status">{tr('chart.calculating')}</p>
   {:else if error}
-    <p class="status error">Error: {error}</p>
-    <p class="status"><a href="/">Volver al formulario</a></p>
+    <p class="status error">{tr('chart.errorPrefix', { msg: error })}</p>
+    <p class="status"><a href={`/${lang}`}>{tr('chart.backToForm')}</a></p>
   {:else if chart}
     {#if birthData}
       <p class="birth">{formatBirth(birthData)}</p>
@@ -881,11 +835,11 @@
         onmouseleave={clearReveal}
       >
         <span class="bg-title">
-          Bodygraph
+          {tr('chart.hBodygraph')}
           <span class="dot-h2">
             {#if cardReveal === 'bodygraph' || infoIsOpen('concept', 'bodygraph')}
               <span class="dot-host" data-info-cat="Bodygraph" data-info-kind="concept" data-info-key="bodygraph">
-                <InfoDot active={infoIsOpen('concept', 'bodygraph')} label="Qué es el bodygraph" />
+                <InfoDot active={infoIsOpen('concept', 'bodygraph')} label={tr('chart.whatBodygraph')} />
               </span>
             {/if}
           </span>
@@ -900,11 +854,11 @@
           onmouseleave={clearReveal}
         >
           <span class="label">
-            Tipo
+            {tr('category.type')}
             <span class="dot-h2">
               {#if cardReveal === 'type' || infoIsOpen('concept', 'type')}
                 <span class="dot-host" data-info-cat="Tipo" data-info-kind="concept" data-info-key="type">
-                  <InfoDot active={infoIsOpen('concept', 'type')} label="Qué es el tipo" />
+                  <InfoDot active={infoIsOpen('concept', 'type')} label={tr('chart.whatType')} />
                 </span>
               {/if}
             </span>
@@ -915,7 +869,7 @@
                 {t.label}
                 {#if innerReveal === `type:${t.key}` || infoIsOpen('type', t.key)}
                   <span class="dot-slot" data-info-cat="Tipo" data-info-kind="type" data-info-key={t.key}>
-                    <InfoDot active={infoIsOpen('type', t.key)} label={`Más información sobre ${t.label}`} />
+                    <InfoDot active={infoIsOpen('type', t.key)} label={t.label} />
                   </span>
                 {/if}
               </span>
@@ -933,11 +887,11 @@
           onmouseleave={clearReveal}
         >
           <span class="label">
-            Estrategia
+            {tr('category.strategy')}
             <span class="dot-h2">
               {#if cardReveal === 'strategy' || infoIsOpen('concept', 'strategy')}
                 <span class="dot-host" data-info-cat="Estrategia" data-info-kind="concept" data-info-key="strategy">
-                  <InfoDot active={infoIsOpen('concept', 'strategy')} label="Qué es la estrategia" />
+                  <InfoDot active={infoIsOpen('concept', 'strategy')} label={tr('chart.whatStrategy')} />
                 </span>
               {/if}
             </span>
@@ -946,7 +900,7 @@
             >{STRATEGY_LABELS[chart.strategy] ?? chart.strategy}{#if innerReveal === 'strategy:value' || infoIsOpen('strategy', chart.strategy)}<span
               class="dot-side"
               data-info-cat="Estrategia" data-info-kind="strategy" data-info-key={chart.strategy}
-            ><InfoDot active={infoIsOpen('strategy', chart.strategy)} label="Más información sobre esta estrategia" /></span>{/if}</span>
+            ><InfoDot active={infoIsOpen('strategy', chart.strategy)} label={tr('chart.moreStrategy')} /></span>{/if}</span>
         </div>
         <div
           class="card"
@@ -956,11 +910,11 @@
           onmouseleave={clearReveal}
         >
           <span class="label">
-            Autoridad
+            {tr('category.authority')}
             <span class="dot-h2">
               {#if cardReveal === 'authority' || infoIsOpen('concept', 'authority')}
                 <span class="dot-host" data-info-cat="Autoridad" data-info-kind="concept" data-info-key="authority">
-                  <InfoDot active={infoIsOpen('concept', 'authority')} label="Qué es la autoridad" />
+                  <InfoDot active={infoIsOpen('concept', 'authority')} label={tr('chart.whatAuthority')} />
                 </span>
               {/if}
             </span>
@@ -969,7 +923,7 @@
             >{AUTHORITY_LABELS[chart.authority] ?? chart.authority}{#if innerReveal === 'authority:value' || infoIsOpen('authority', chart.authority)}<span
               class="dot-side"
               data-info-cat="Autoridad" data-info-kind="authority" data-info-key={chart.authority}
-            ><InfoDot active={infoIsOpen('authority', chart.authority)} label="Más información sobre esta autoridad" /></span>{/if}</span>
+            ><InfoDot active={infoIsOpen('authority', chart.authority)} label={tr('chart.moreAuthority')} /></span>{/if}</span>
         </div>
         <div
           class="card"
@@ -979,11 +933,11 @@
           onmouseleave={clearReveal}
         >
           <span class="label">
-            Perfil
+            {tr('category.profile')}
             <span class="dot-h2">
               {#if cardReveal === 'profile' || infoIsOpen('concept', 'profile')}
                 <span class="dot-host" data-info-cat="Perfil" data-info-kind="concept" data-info-key="profile">
-                  <InfoDot active={infoIsOpen('concept', 'profile')} label="Qué es el perfil" />
+                  <InfoDot active={infoIsOpen('concept', 'profile')} label={tr('chart.whatProfile')} />
                 </span>
               {/if}
             </span>
@@ -992,7 +946,7 @@
             >{chart.profile}{#if innerReveal === 'profile:value' || infoIsOpen('profile', chart.profile)}<span
               class="dot-side"
               data-info-cat="Perfil" data-info-kind="profile" data-info-key={chart.profile}
-            ><InfoDot active={infoIsOpen('profile', chart.profile)} label="Más información sobre este perfil" /></span>{/if}</span>
+            ><InfoDot active={infoIsOpen('profile', chart.profile)} label={tr('chart.moreProfile')} /></span>{/if}</span>
         </div>
         <div
           class="card pointer"
@@ -1003,11 +957,11 @@
           onclick={(e) => cardClick(e, 'definition', () => pin(e, { kind: 'definition', gates: [] }))}
         >
           <span class="label">
-            Definición
+            {tr('category.definition')}
             <span class="dot-h2">
               {#if cardReveal === 'definition' || infoIsOpen('concept', 'definition')}
                 <span class="dot-host" data-info-cat="Definición" data-info-kind="concept" data-info-key="definition">
-                  <InfoDot active={infoIsOpen('concept', 'definition')} label="Qué es la definición" />
+                  <InfoDot active={infoIsOpen('concept', 'definition')} label={tr('chart.whatDefinition')} />
                 </span>
               {/if}
             </span>
@@ -1016,7 +970,7 @@
             >{DEFINITION_LABELS[chart.definition] ?? chart.definition}{#if innerReveal === 'definition:value' || infoIsOpen('definition', chart.definition)}<span
               class="dot-side"
               data-info-cat="Definición" data-info-kind="definition" data-info-key={chart.definition}
-            ><InfoDot active={infoIsOpen('definition', chart.definition)} label="Más información sobre esta definición" /></span>{/if}</span>
+            ><InfoDot active={infoIsOpen('definition', chart.definition)} label={tr('chart.moreDefinition')} /></span>{/if}</span>
         </div>
       </div>
 
@@ -1035,12 +989,12 @@
           onmouseleave={clearReveal}
         >
           <span class="label">
-            Centros
-            <span class="count" data-tip="Centros definidos">({chart.definedCenters.length})</span>
+            {tr('chart.hCenters')}
+            <span class="count" data-tip={tr('chart.definedCenters')}>({chart.definedCenters.length})</span>
             <span class="dot-h2">
               {#if cardReveal === 'center' || infoIsOpen('concept', 'center')}
                 <span class="dot-host" data-info-cat="Centros" data-info-kind="concept" data-info-key="center">
-                  <InfoDot active={infoIsOpen('concept', 'center')} label="Qué son los centros" />
+                  <InfoDot active={infoIsOpen('concept', 'center')} label={tr('chart.whatCenters')} />
                 </span>
               {/if}
             </span>
@@ -1061,7 +1015,7 @@
                 </button>
                 {#if innerReveal === `center:${c}` || infoIsOpen('center', c)}
                   <span class="dot-slot" data-info-cat="Centro" data-info-kind="center" data-info-key={c}>
-                    <InfoDot active={infoIsOpen('center', c)} label={`Más información sobre el centro ${CENTER_LABELS[c]}`} />
+                    <InfoDot active={infoIsOpen('center', c)} label={CENTER_LABELS[c]} />
                   </span>
                 {/if}
               </span>
@@ -1088,17 +1042,17 @@
           onmouseleave={clearReveal}
         >
           <h2>
-            Canales completos ({chart.activeChannels.length})
+            {tr('chart.completeChannels')} ({chart.activeChannels.length})
             <span class="dot-h2">
               {#if cardReveal === 'channels' || infoIsOpen('concept', 'channel')}
                 <span class="dot-host" data-info-cat="Canales" data-info-kind="concept" data-info-key="channel">
-                  <InfoDot active={infoIsOpen('concept', 'channel')} label="Qué son los canales" />
+                  <InfoDot active={infoIsOpen('concept', 'channel')} label={tr('chart.whatChannels')} />
                 </span>
               {/if}
             </span>
           </h2>
           {#if chart.activeChannels.length === 0}
-            <p class="none">Ninguno</p>
+            <p class="none">{tr('chart.noneM')}</p>
           {:else}
             <div class="chips small">
               {#each chart.activeChannels as [g1, g2]}
@@ -1118,7 +1072,7 @@
                   </span>
                   {#if innerReveal === `channel:${g1}-${g2}` || infoIsOpen('channel', `${g1}-${g2}`)}
                     <span class="dot-slot" data-info-cat="Canal" data-info-kind="channel" data-info-key={`${g1}-${g2}`}>
-                      <InfoDot active={infoIsOpen('channel', `${g1}-${g2}`)} label={`Más información sobre el canal ${g1}-${g2}`} />
+                      <InfoDot active={infoIsOpen('channel', `${g1}-${g2}`)} label={`${g1}-${g2}`} />
                     </span>
                   {/if}
                 </span>
@@ -1137,21 +1091,21 @@
           onmouseleave={clearReveal}
         >
           <h2>
-            Puertas colgantes
+            {tr('chart.hHangingGates')}
             <span
               class="count"
-              data-tip={`${hangingGates.length - hangingInDefined} puertas en centros indefinidos\n${hangingInDefined} puertas en centros definidos`}
+              data-tip={tr('chart.hangingTip', { a: hangingGates.length - hangingInDefined, b: hangingInDefined })}
             >({hangingGates.length})</span>
             <span class="dot-h2">
               {#if cardReveal === 'gates' || infoIsOpen('concept', 'gate')}
                 <span class="dot-host" data-info-cat="Puertas" data-info-kind="concept" data-info-key="gate">
-                  <InfoDot active={infoIsOpen('concept', 'gate')} label="Qué son las puertas" />
+                  <InfoDot active={infoIsOpen('concept', 'gate')} label={tr('chart.whatGates')} />
                 </span>
               {/if}
             </span>
           </h2>
           {#if hangingGates.length === 0}
-            <p class="none">Ninguna</p>
+            <p class="none">{tr('chart.noneF')}</p>
           {:else}
             <div class="chips small">
               {#each hangingGates as g}
@@ -1174,7 +1128,7 @@
                   </span>
                   {#if innerReveal === `gate:${g}` || infoIsOpen('gate', `${g}`)}
                     <span class="dot-slot" data-info-cat="Puerta" data-info-kind="gate" data-info-key={`${g}`}>
-                      <InfoDot active={infoIsOpen('gate', `${g}`)} label={`Más información sobre la puerta ${g}`} />
+                      <InfoDot active={infoIsOpen('gate', `${g}`)} label={`${g}`} />
                     </span>
                   {/if}
                 </span>
@@ -1194,11 +1148,11 @@
         onmouseleave={clearReveal}
       >
         <h2>
-          Activaciones
+          {tr('chart.hActivations')}
           <span class="dot-h2">
             {#if cardReveal === 'activations' || infoIsOpen('concept', 'activation')}
               <span class="dot-host" data-info-cat="Activaciones" data-info-kind="concept" data-info-key="activation">
-                <InfoDot active={infoIsOpen('concept', 'activation')} label="Qué son las activaciones" />
+                <InfoDot active={infoIsOpen('concept', 'activation')} label={tr('chart.whatActivations')} />
               </span>
             {/if}
           </span>
@@ -1209,13 +1163,13 @@
             <tr>
               <th></th>
               <th data-inner-key="actcol:personality">
-                <span class="side-head" data-tip="Se define en el momento del nacimiento">Personalidad<span class="side-dot personality" aria-hidden="true"></span><span class="dot-side head-i" data-info-cat="Activaciones" data-info-kind="activationCol" data-info-key="personality">{#if innerReveal === 'actcol:personality' || infoIsOpen('activationCol', 'personality')}<InfoDot active={infoIsOpen('activationCol', 'personality')} label="Qué es Personalidad" />{/if}</span></span>
+                <span class="side-head" data-tip={tr('chart.tipPersonality')}>{tr('chart.colPersonality')}<span class="side-dot personality" aria-hidden="true"></span><span class="dot-side head-i" data-info-cat="Activaciones" data-info-kind="activationCol" data-info-key="personality">{#if innerReveal === 'actcol:personality' || infoIsOpen('activationCol', 'personality')}<InfoDot active={infoIsOpen('activationCol', 'personality')} label={tr('chart.whatPersonality')} />{/if}</span></span>
               </th>
               <th data-inner-key="actcol:design">
-                <span class="side-head" data-tip={'Se define 88° de arco solar antes\ndel nacimiento (~88 días)'}>Diseño<span class="side-dot design" aria-hidden="true"></span><span class="dot-side head-i" data-info-cat="Activaciones" data-info-kind="activationCol" data-info-key="design">{#if innerReveal === 'actcol:design' || infoIsOpen('activationCol', 'design')}<InfoDot active={infoIsOpen('activationCol', 'design')} label="Qué es Diseño" />{/if}</span></span>
+                <span class="side-head" data-tip={tr('chart.tipDesign')}>{tr('chart.colDesign')}<span class="side-dot design" aria-hidden="true"></span><span class="dot-side head-i" data-info-cat="Activaciones" data-info-kind="activationCol" data-info-key="design">{#if innerReveal === 'actcol:design' || infoIsOpen('activationCol', 'design')}<InfoDot active={infoIsOpen('activationCol', 'design')} label={tr('chart.whatDesign')} />{/if}</span></span>
               </th>
               <th class="weight-col" data-inner-key="actcol:weight">
-                <span class="side-head" data-tip={'Influencia relativa de la activación\n(el Sol y la Tierra pesan más)'}>Peso<span class="dot-side head-i" data-info-cat="Activaciones" data-info-kind="activationCol" data-info-key="weight">{#if innerReveal === 'actcol:weight' || infoIsOpen('activationCol', 'weight')}<InfoDot active={infoIsOpen('activationCol', 'weight')} label="Qué es el peso" />{/if}</span></span>
+                <span class="side-head" data-tip={tr('chart.tipWeight')}>{tr('chart.colWeight')}<span class="dot-side head-i" data-info-cat="Activaciones" data-info-kind="activationCol" data-info-key="weight">{#if innerReveal === 'actcol:weight' || infoIsOpen('activationCol', 'weight')}<InfoDot active={infoIsOpen('activationCol', 'weight')} label={tr('chart.whatWeight')} />{/if}</span></span>
               </th>
             </tr>
           </thead>
@@ -1224,7 +1178,7 @@
               {@const w = getActivationWeight(p)}
               <tr>
                 <td class="planet" data-inner-key={`planet:${p}`}>
-                  <span class="psym">{PLANET_SYMBOLS[p]}</span>{PLANET_LABELS[p]}{#if innerReveal === `planet:${p}` || infoIsOpen('planet', p)}<span class="dot-side" data-info-cat="Planeta" data-info-kind="planet" data-info-key={p}><InfoDot active={infoIsOpen('planet', p)} label={`Más información sobre ${PLANET_LABELS[p]}`} /></span>{/if}
+                  <span class="psym">{PLANET_SYMBOLS[p]}</span>{PLANET_LABELS[p]}{#if innerReveal === `planet:${p}` || infoIsOpen('planet', p)}<span class="dot-side" data-info-cat="Planeta" data-info-kind="planet" data-info-key={p}><InfoDot active={infoIsOpen('planet', p)} label={PLANET_LABELS[p]} /></span>{/if}
                 </td>
                 <td>
                   <span class="act" class:hl={actHl(chart.personality[p].gate)}
@@ -1243,19 +1197,19 @@
         </table>
         </div>
         <button class="show-more" onclick={(e) => { e.stopPropagation(); showAllPlanets = !showAllPlanets; }}>
-          {showAllPlanets ? 'Mostrar menos ▴' : 'Mostrar más ▾'}
+          {showAllPlanets ? tr('chart.showLess') + ' ▴' : tr('chart.showMore') + ' ▾'}
         </button>
       </div>
     </section>
 
     <footer>
       {#if install.mode}
-        <button class="install-link" type="button" onclick={onInstallClick}>instalar como app</button>
+        <button class="install-link" type="button" onclick={onInstallClick}>{tr('install.link')}</button>
         <span aria-hidden="true">·</span>
       {/if}
       <ReportBug version={version} />
       <span aria-hidden="true">·</span>
-      <a class="foot-link" href="/privacy">privacidad</a>
+      <a class="foot-link" href={`/${lang}/privacy`}>{tr('footer.privacy')}</a>
       <span aria-hidden="true">·</span>
       <About version={version} onElement={(kind, key) => openInfoFor(CATEGORY_BY_KIND[kind] ?? '', kind, key)} />
     </footer>

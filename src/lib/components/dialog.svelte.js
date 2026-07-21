@@ -11,6 +11,8 @@
 //   if (await dialog.confirm({ title: 'Borrar', danger: true })) { … }
 //   await dialog.alert({ message: '3 cartas importadas.' });
 
+import { t } from '$lib/i18n/index.svelte.js';
+
 let active = $state(null);
 let resolver = null;
 let hostMounted = false;
@@ -47,8 +49,8 @@ export const dialog = {
       message: '',
       defaultValue: '',
       placeholder: '',
-      confirmLabel: 'Aceptar',
-      cancelLabel: 'Cancelar',
+      confirmLabel: t('dialog.ok'),
+      cancelLabel: t('dialog.cancel'),
       ...opts
     });
   },
@@ -62,8 +64,8 @@ export const dialog = {
       mode: 'confirm',
       title: '',
       message: '',
-      confirmLabel: 'Aceptar',
-      cancelLabel: 'Cancelar',
+      confirmLabel: t('dialog.ok'),
+      cancelLabel: t('dialog.cancel'),
       danger: false,
       ...opts
     });
@@ -79,7 +81,7 @@ export const dialog = {
       mode: 'alert',
       title: '',
       message: '',
-      confirmLabel: 'Aceptar',
+      confirmLabel: t('dialog.ok'),
       ...opts
     });
   },

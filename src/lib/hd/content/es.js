@@ -1073,6 +1073,71 @@ export default {
   // i18n note (jul 2026): the Manifesting Generator abbreviates as **GM** in
   // Spanish ("Generador Manifestante"), not "MG". When adding languages, use
   // each language's own word order for the acronym.
+  // Display labels (Phase M). Distinct from `promptLabels` below on purpose:
+  // those are written to be embedded inside prompt sentences (lower-case, with
+  // articles — "estrategia responder", "el Sol"), while these are the labels the
+  // UI shows in cards, chips and table columns (sentence case, no articles).
+  // The chart page reads these; they translate with the rest of the content.
+  labels: {
+    type: {
+      generator: 'Generador',
+      'manifesting-generator': 'Generador Manifestante',
+      projector: 'Proyector',
+      manifestor: 'Manifestador',
+      reflector: 'Reflector'
+    },
+    strategy: {
+      'inform-before-acting': 'Informar antes de actuar',
+      respond: 'Responder',
+      'respond-then-inform': 'Responder y luego informar',
+      'wait-for-invitation': 'Esperar la invitación',
+      'wait-lunar-cycle': 'Esperar un ciclo lunar'
+    },
+    // Same quality-(centre) order as the drawers and prompts (text audit, jul 2026).
+    authority: {
+      emotional: 'Emocional (Plexo solar)',
+      sacral: 'Sacral',
+      splenic: 'Esplénica (Bazo)',
+      ego: 'Ego (Corazón)',
+      'self-projected': 'Autoproyectada (G-Garganta)',
+      mental: 'Mental/ambiental',
+      lunar: 'Lunar'
+    },
+    definition: {
+      'no-definition': 'Sin definición',
+      single: 'Definición única',
+      split: 'Definición split',
+      'triple-split': 'Definición triple split',
+      'quad-split': 'Definición cuádruple split'
+    },
+    center: {
+      head: 'Cabeza',
+      ajna: 'Ajna',
+      throat: 'Garganta',
+      g: 'G',
+      heart: 'Corazón',
+      sacral: 'Sacral',
+      spleen: 'Bazo',
+      solarPlexus: 'Plexo solar',
+      root: 'Raíz'
+    },
+    planet: {
+      sun: 'Sol',
+      earth: 'Tierra',
+      moon: 'Luna',
+      northNode: 'Nodo Norte',
+      southNode: 'Nodo Sur',
+      mercury: 'Mercurio',
+      venus: 'Venus',
+      mars: 'Marte',
+      jupiter: 'Júpiter',
+      saturn: 'Saturno',
+      uranus: 'Urano',
+      neptune: 'Neptuno',
+      pluto: 'Plutón'
+    }
+  },
+
   promptLabels: {
     type: {
       generator: 'Generador',

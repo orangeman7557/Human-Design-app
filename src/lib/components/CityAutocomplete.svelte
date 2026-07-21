@@ -6,9 +6,14 @@
   // timezone derived from its coordinates. The parent form treats a `null`
   // value as a validation error on submit.
 
+  import { page } from '$app/stores';
+  import { t } from '$lib/i18n/index.svelte.js';
   import { searchPlaces } from '$lib/geo/geocoder.js';
   import { timezoneFor } from '$lib/geo/timezone.js';
   import { selectOnFocus } from './select-on-focus.js';
+
+  const lang = $derived($page.params.lang);
+  const tr = (key) => t(key, undefined, lang);
 
   /**
    * @typedef {Object} ResolvedPlace
@@ -21,8 +26,10 @@
   let {
     /** @type {ResolvedPlace | null} */
     value = $bindable(null),
-    placeholder = 'Madrid, Bogotá, Berlín, Nuevayol…'
+    /** Overridable; defaults to the localized example cities. */
+    placeholder = null
   } = $props();
+  const ph = $derived(placeholder ?? tr('city.placeholder'));
 
   // Free-text input. Independent from `value`: typing erases the previous
   // selection until the user picks a result.
@@ -86,7 +93,7 @@
       inflight = new AbortController();
       loading = true;
       try {
-        results = await searchPlaces(trimmed, inflight.signal);
+        results = await searchPlaces(trimmed, inflight.signal, lang);
         searchError = false;
         activeIndex = -1;
       } catch (err) {
@@ -166,7 +173,7 @@
     onkeydown={onKeydown}
     onfocus={() => (focused = true)}
     onblur={onBlur}
-    {placeholder}
+    placeholder={ph}
     autocomplete="off"
     spellcheck="false"
     role="combobox"
@@ -184,7 +191,7 @@
       class="clear-btn"
       onmousedown={(e) => e.preventDefault()}
       onclick={clear}
-      aria-label="Borrar lugar"
+      aria-label={tr('city.clear')}
     >
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
         <line x1="6" y1="6" x2="18" y2="18" />
@@ -202,7 +209,7 @@
       stroke-width="3"
       stroke-linecap="round"
       stroke-linejoin="round"
-      aria-label="Lugar confirmado"
+      aria-label={tr('city.confirmed')}
     >
       <polyline points="20 6 9 17 4 12" />
     </svg>
@@ -210,18 +217,18 @@
 
   <span class="hint" class:warn={!loading && (searchError || (query.length >= 3 && results.length === 0 && !value))}>
     {#if loading}
-      Buscando…
+      {tr('city.searching')}
     {:else if searchError}
-      No se pudo buscar. Revisa tu conexión e inténtalo de nuevo.
+      {tr('city.searchError')}
     {:else if !value && query.length >= 3 && results.length === 0}
-      Sin resultados
+      {tr('city.noResults')}
     {:else}
       &nbsp;
     {/if}
   </span>
 
   {#if focused && results.length > 0}
-    <ul class="results" id="city-results" role="listbox" aria-label="Sugerencias de ciudad">
+    <ul class="results" id="city-results" role="listbox" aria-label={tr('city.suggestions')}>
       {#each results as r, i}
         <li id={`city-opt-${i}`} role="option" aria-selected={i === activeIndex}>
           <button type="button" class:active={i === activeIndex} tabindex="-1" onclick={() => pick(r)}>{r.label}</button>

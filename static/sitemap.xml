@@ -1,12 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://hdchart.app/</loc>
+    <loc>https://hdchart.app/en</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://hdchart.app/en" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://hdchart.app/es" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://hdchart.app/" />
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://hdchart.app/privacy</loc>
+    <loc>https://hdchart.app/es</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://hdchart.app/en" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://hdchart.app/es" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://hdchart.app/" />
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://hdchart.app/en/privacy</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://hdchart.app/en/privacy" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://hdchart.app/es/privacy" />
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://hdchart.app/es/privacy</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://hdchart.app/en/privacy" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://hdchart.app/es/privacy" />
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>

@@ -61,16 +61,26 @@ El usuario introduce su fecha, hora y lugar de nacimiento → la app calcula su 
     ├── app.html         ← shell HTML
     ├── app.css          ← tokens CSS globales (:root variables)
     ├── service-worker.js ← precache del shell + offline básico (Fase L)
+    ├── hooks.server.js  ← Worker: negocia `/`, redirects legacy, OG por carta, <html lang>
+    ├── params/
+    │   └── locale.js    ← matcher de ruta: solo enrutan idiomas que existen (Fase M)
     ├── routes/
     │   ├── +layout.js   ← SPA mode por defecto (ssr: false, prerender: false)
-    │   ├── +layout.svelte
-    │   ├── +page.js     ← la home se prerenderiza (SEO): ssr/prerender true solo aquí
-    │   ├── +page.svelte ← pantalla 1: formulario de nacimiento
-    │   ├── privacy/     ← política de privacidad (prerenderizada, Fase L)
-    │   └── chart/
-    │       ├── +page.js      ← recoge datos de sessionStorage (SPA puro)
-    │       └── +page.svelte  ← pantalla 2: bodygraph + resumen textual
+    │   ├── +layout.svelte ← chrome global: selector de idioma, badge staging, Dialog
+    │   ├── api/         ← endpoints del Worker (sin idioma: /api/backup, /api/love)
+    │   └── [lang=locale]/   ← TODAS las páginas cuelgan del idioma (/en/…, /es/…)
+    │       ├── +layout.js   ← activa el locale antes de renderizar
+    │       ├── +page.js     ← la home se prerenderiza por idioma (SEO)
+    │       ├── +page.svelte ← pantalla 1: formulario de nacimiento
+    │       ├── privacy/     ← política de privacidad (prerenderizada, Fase L)
+    │       └── chart/
+    │           ├── +page.js      ← recoge datos de sessionStorage (SPA puro)
+    │           └── +page.svelte  ← pantalla 2: bodygraph + resumen textual
     └── lib/
+        ├── i18n/          ← motor multiidioma (Fase M; ver docs/fase-m-multilingue.md)
+        │   ├── locales.js      ← FUENTE ÚNICA de idiomas (datos planos, la usa el Worker)
+        │   ├── index.svelte.js ← locale activo + t(clave, params, locale?)
+        │   └── ui/es.js · ui/en.js ← textos de chrome por idioma
         ├── hd/
         │   ├── constants.js           ← GATE_WHEEL, CENTERS, CHANNELS, GATES_BY_CENTER, etc.
         │   ├── ephemeris.js           ← cálculo astronómico (Julian Day, longitudes planetarias)
@@ -80,7 +90,7 @@ El usuario introduce su fecha, hora y lugar de nacimiento → la app calcula su 
         │   ├── prompts.js             ← genera los prompts para la IA del usuario (handoff, Fase 6)
         │   ├── report.js              ← ensambla el informe inicial desde el chart (Fase 7)
         │   ├── report-pdf.js          ← maqueta el informe en PDF con jsPDF (import diferido)
-        │   └── content/               ← textos propios (es.js) + accesores (index.js): conceptos, tipos, centros, 64 puertas, informe
+        │   └── content/               ← textos propios por idioma (es.js base; en.js = deep-merge sobre es) + accesores (index.js): conceptos, tipos, centros, 64 puertas, informe
         ├── geo/
         │   ├── geocoder.js   ← geocodificación vía Photon (typeahead, debounce, abort, dedup)
         │   ├── place.js      ← helper de etiqueta "ciudad, país"
@@ -119,7 +129,10 @@ El usuario introduce su fecha, hora y lugar de nacimiento → la app calcula su 
 - **Sin comentarios de rutina.** Solo cuando el *por qué* no es obvio. Nunca comentar el *qué*.
 - **Constantes y datos de referencia** viven en `constants.js`. La lógica no importa datos fijos de otros archivos.
 - **Comentarios de cabecera en archivos de geometría/cálculo** documentan las fases que los modificaron (registro de cambios arquitectónico).
-- **Idioma de los comentarios:** inglés en el código. El usuario se comunica en español; la UI también está en español (la internacionalización formal es la Fase M, con el inglés primero).
+- **Idioma de los comentarios:** inglés en el código. El usuario se comunica en español; la UI es multiidioma desde la Fase M (inglés y español).
+- **Textos de UI (Fase M):** nada de cadenas sueltas en componentes. El chrome va en `lib/i18n/ui/<lang>.js` vía `t()`; el contenido de Diseño Humano, en `lib/hd/content/<lang>.js`. Dos reglas que se aprendieron a golpes (detalle en `docs/fase-m-multilingue.md`):
+  1. **En páginas prerenderizadas** (home, privacy) el idioma se pasa **explícito** — `const tr = (k, p) => t(k, p, lang)` con `lang = $page.params.lang` — porque el prerender construye páginas en paralelo y el locale de módulo puede sangrar. En páginas/componentes de cliente basta `t()`.
+  2. **`labels` ≠ `promptLabels`** en el pack de contenido: `labels` son etiquetas de display (mayúscula inicial, sin artículos) y `promptLabels` está redactado para incrustarse en frases de prompt (minúsculas, "el Sol"). La UI usa `getDisplayLabels()`.
 - **Voz de los textos (decisión 2026-07-03):** el **informe inicial** (y su PDF) habla en **2ª persona** — es un documento dirigido al dueño de la carta. **Todo lo demás** (drawers "i", prompts, tooltips) es **impersonal** — material de consulta del que mira, que puede estar viendo la carta guardada de otra persona. Las líneas de estado dicen "esta carta", nunca "tu carta". Excepción consciente: el prompt de cierre del informe va en 1ª persona (vive dentro del marco-documento).
 - **Caso de prueba de validación:** la carta del autor (orangeman7557: 1984-03-13, 09:30, Madrid — Manifestor) es la referencia para validación manual. El atajo oculto de la home que rellenaba el formulario con esos datos se eliminó en el lanzamiento 1.0.0 (2026-07-03); para probar, introducir los datos a mano o usar los tests (`npm test`).
 - **Tests del núcleo de cálculo con vitest** (`npm test`; ver `src/lib/hd/chart.test.js`): dos cartas de referencia validadas externamente (Reflector + autor) con snapshot completo de activaciones, seis anclas de regresión auto-congeladas que cubren los 5 tipos y las 7 autoridades (2026-07-03), y límites de `longitudeToGate`/`cityCountry`. El resto se valida manualmente contra la carta conocida del autor.
@@ -196,7 +209,7 @@ Colores de centros definidos: Head/G amarillo `#e5cf3d`, Ajna verde `#6cb46c`, T
 - **Estabilización post-MVP:** en curso. Aterrizado (jun 2026): tests del núcleo con vitest, diálogos propios, autocompletado por prefijo (Photon), flecha de volver y etiqueta "ciudad, país". Pendiente: pruebas con cartas reales y las mejoras menores de BACKLOG ("Possible improvements"). El TWA para Google Play pasó a ser fase propia (Fase P).
 - **Fase 6 — Integración IA (handoff) + info de elementos:** generar desde cualquier elemento de la app un prompt listo para llevar a la IA del propio usuario (la IA no corre dentro de la app), más información textual básica de cada elemento (tipo, autoridad, perfil, centros, canales) — solo si es legalmente viable: redacción propia o fuentes libres, nunca copiado de Jovian Archive. **Funcionalmente completa** (6.A–6.F construidas y verificadas, jun 2026; revisión de textos del autor cerrada 2026-07-02 — el bump de versión llegará con el 1.0.0 de Fase L). Las **64 puertas** estrenan esencia propia (2-3 frases desde el hexagrama de dominio público + el centro + don/sombra) con **coda de 3 estados** según la carta (completa/colgante/inactiva); los canales heredan la misma lógica (jun 2026). Detalle en TASKS/BACKLOG.
 - **Fase 7 — Informe inicial:** primer de HD en lenguaje llano para quien ve su carta sin saber nada del sistema. **Construida y verificada (jun 2026; revisión de textos del autor cerrada 2026-07-02).** Overlay `InitialReport.svelte` abierto por un botón "Informe" junto al nombre de la carta; `report.js` (`buildReport`) ensambla ~13 secciones desde el chart — Parte A (qué es HD + analogía de las hormigas + bodygraph/centros + condicionamiento + desacondicionamiento), Parte B personalizada (tipo y lugar en el colectivo, estrategia, autoridad/decisiones, energía·trampa·señales por tipo, perfil, definición, recorrido de centros con su estado real) y Parte C (handoff de carta completa) — reutilizando la biblioteca de Fase 6 + bloques `report`/`typeReport`; arquitectura **híbrida** (estático determinista + handoff para profundizar). Spec en `docs/informe-inicial.md`.
-- **Fase M — Multilingüe (SIGUIENTE, decidida 2026-07-06):** convertir la app a multiidioma, con el **inglés como lo primero primerísimo** (es el mercado grande; el español queda como segundo idioma ya hecho). Implica extraer todo el copy a un módulo i18n (el contenido de `content/es.js` ya nació con forma i18n-ready), traducir los ~600 textos propios (conceptos, 64 puertas, canales, informe, prompts) y decidir el mecanismo de selección/persistencia de idioma y su efecto en SEO (hreflang, rutas o parámetro). Sin plan detallado aún — se diseñará al arrancarla.
+- **Fase M — Multilingüe (EN CURSO):** turno 1 (**estructura**) cerrado el 2026-07-21; turno 2 (**traducción del contenido**) pendiente. El idioma vive en la URL (`/en/…`, `/es/…`, sin contenido en la raíz: el Worker la negocia y redirige), con una **fuente única de idiomas** (`lib/i18n/locales.js`) de la que se derivan matcher de rutas, menú de idiomas, hreflang, entradas de prerender y fallback offline. Chrome de la home y de la página de carta ya en inglés; el contenido HD cae al español por deep-merge hasta el turno 2. **Plan, regla de SSR y checklist de "cómo añadir un idioma" en [`docs/fase-m-multilingue.md`](./docs/fase-m-multilingue.md)** — leerlo antes de tocar nada de i18n.
 - **Fase P — Play Store (tras Fase M, decidida 2026-07-06):** empaquetar la PWA como **TWA** y publicarla en **Google Play** (Bubblewrap/PWABuilder, cuenta de desarrollador de Google — pago único de 25 USD). **Apple App Store queda aparcada a propósito:** exige la cuota de ~99 €/año de la Apple Developer Program, que el autor no va a pagar salvo que la app demuestre recorrido más adelante.
 - **Fase 8 — Carta compuesta:** overlay visual de dos cartas guardadas.
 - **Fase 9 — Tránsitos:** vista de tránsitos en tiempo real sobre una carta guardada.
