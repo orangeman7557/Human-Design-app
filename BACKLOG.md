@@ -643,6 +643,33 @@ corrected).
   second `buildReport`-style assembler. Decide whether it ships as its own
   overlay/PDF next to "Informe" or as a mode of it. Watch the child variant: it
   should read as parenting guidance, not diagnosis.
+- ⬜ **Include a chart link in the prompts, backed by machine-readable chart
+  data (requested 2026-07-08).** Add to the generated AI prompts a URL to the
+  chart so that, when the user takes the prompt to their own AI, the AI can
+  fetch the full chart data from that URL instead of relying only on what the
+  prompt spells out. This gives the assistant every datum of the chart
+  (activations, centres, channels, gates, profile, definition…) without
+  bloating the prompt. **Implication — the web has to serve the data in a form
+  an AI can consume:** a chart URL that returns the chart as **JSON** (or
+  another agreed machine format) when requested, alongside the normal HTML
+  view. Open questions to design when picked up:
+  - **Where the data comes from.** The chart is computed client-side from the
+    birth data carried in the share link (`buildShareUrl`); a bot fetching the
+    URL runs no JS, so either (a) a Worker endpoint (e.g. `/chart.json?…` or a
+    content-negotiated `/chart`) recomputes the chart server-side from the same
+    encoded birth data and returns JSON, reusing the `computeChart` core, or
+    (b) the prompt links to a dedicated data endpoint rather than the HTML page.
+    Note `hooks.server.js` already rewrites the `/chart` `<head>` at the Worker
+    for OG tags — the same server-side entry point could emit JSON.
+  - **Privacy.** Birth data would then be reconstructable server-side on
+    request (today the Worker only reads the encoded params to build OG tags,
+    stores nothing). Keep the "server stores nothing" stance, and review
+    `/privacy` wording — this is a real change in what the server can see.
+  - **Stability of the format.** A documented, versioned JSON schema so a
+    linked AI (or third-party tool) can rely on it.
+  - **Discoverability.** Whether to hint the JSON alternative via a
+    `<link rel="alternate" type="application/json">`, an HTTP header, or just
+    the prompt's URL text.
 
 - ⬜ **PDF report on a white background instead of dark mode (requested
   2026-07-06).** The initial-report PDF (`report-pdf.js`) currently mirrors the
