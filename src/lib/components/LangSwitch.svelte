@@ -12,7 +12,13 @@
 
   let open = $state(false);
 
-  const current = $derived(getLocale());
+  // The route param, not the i18n module state: this component renders inside
+  // the root layout of every page, including the PRERENDERED ones, and the
+  // prerenderer builds pages concurrently — reading the shared module locale
+  // there printed "EN" into the static HTML of /es (it only self-corrected on
+  // hydration). See docs/fase-m-multilingue.md, "la regla de oro del SSR".
+  // Falls back to the module locale for any route without a language segment.
+  const current = $derived($page.params.lang ?? getLocale());
 
   /** Same path/query/hash, with the language segment swapped to `code`. */
   function urlFor(code) {
