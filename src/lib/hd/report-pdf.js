@@ -182,13 +182,19 @@ function drawCover(doc, L, image) {
   doc.roundedRect(x - 6, yTop - 6, w + 12, h + 12, 6, 6, 'S');
 }
 
-/** Render a centre walk-through card (name chip + state tag + two lines). */
+/** Render a centre walk-through card (name chip + state tag + two lines).
+ *
+ *  The left accent bar spans from the name down to the last text line, but the
+ *  card can break across pages mid-paragraph. Drawing it as one line from the
+ *  y captured before the text to the y after it produced broken bars — the
+ *  second y belongs to a *different page*, so the line stretched, overlapped or
+ *  vanished. The bar is therefore drawn as one segment per page it covers. */
 function drawCentre(doc, L, c, COVER) {
   L.ensure(40);
   L.gap(6);
   const x = MARGIN_X;
-  // Left accent bar, gold when defined, grey when open.
   const barTop = L.y - 9;
+  const startPage = doc.getNumberOfPages();
   doc.setFontSize(10.5);
   doc.setFont('helvetica', 'bold');
   doc.setTextColor(...C.text);
@@ -201,10 +207,25 @@ function drawCentre(doc, L, c, COVER) {
   L.y += 14;
   L.richText(parseRuns(c.fn), { size: 9.5, color: C.body, lineHeight: 13, x: x + 10, maxW: CONTENT_W - 10 });
   L.richText(parseRuns(c.state), { size: 9.5, color: C.body, lineHeight: 13, x: x + 10, maxW: CONTENT_W - 10 });
-  // The accent bar spans from the name down to the last text line.
+  const endPage = doc.getNumberOfPages();
+  const endY = L.y - 11;
   doc.setDrawColor(...(c.defined ? C.accent : C.border));
   doc.setLineWidth(2);
-  doc.line(x + 2, barTop, x + 2, L.y - 11);
+  if (endPage === startPage) {
+    if (endY > barTop) doc.line(x + 2, barTop, x + 2, endY);
+  } else {
+    // Split card: tail of the first page, full column on any page in between,
+    // and the head of the last one. jsPDF draws on the current page, so we hop
+    // back with setPage and return to where the layout left off.
+    doc.setPage(startPage);
+    doc.line(x + 2, barTop, x + 2, Y_MAX);
+    for (let p = startPage + 1; p < endPage; p++) {
+      doc.setPage(p);
+      doc.line(x + 2, MARGIN_TOP - 9, x + 2, Y_MAX);
+    }
+    doc.setPage(endPage);
+    if (endY > MARGIN_TOP - 9) doc.line(x + 2, MARGIN_TOP - 9, x + 2, endY);
+  }
 }
 
 /**

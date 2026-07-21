@@ -224,7 +224,7 @@
                 <div class="ccard" class:open={!c.defined}>
                   <div class="cchip">
                     <span class="cname">{c.title}</span>
-                    <span class="ctag">{c.defined ? 'definido' : 'abierto'}</span>
+                    <span class="ctag">{c.defined ? t('reportUi.tagDefined') : t('reportUi.tagOpen')}</span>
                   </div>
                   <p>{@html renderInline(c.fn)}</p>
                   <p>{@html renderInline(c.state)}</p>

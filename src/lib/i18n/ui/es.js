@@ -186,6 +186,10 @@ export default {
 
   bug: {
     link: 'notificar fallo',
+    introBug: 'Describe el problema con tanto detalle como puedas. Cuanto más claro lo expliques, más probabilidad de que lo pueda entender y arreglar. (Los datos de tu dispositivo y navegador se incluyen solos, no hace falta que los escribas.)',
+    introIdea: 'Describe la sugerencia con tanto detalle como puedas. Cuanto más claro lo expliques, más probabilidad de que lo pueda entender e implementar. (Los datos de tu dispositivo y navegador se incluyen solos, no hace falta que los escribas.)',
+    labelBug: '¿Qué ha pasado?',
+    phIdeaInput: 'Cuéntame :)',
     aria: 'Notificar un fallo o sugerencia',
     title: 'Notificar un fallo o enviar una sugerencia',
     thanks: '¡Gracias! Lo he recibido.',
@@ -278,11 +282,13 @@ export default {
       practice: 'Vivir tu diseño'
     },
     sectionsAria: 'Secciones del informe',
+    tagDefined: 'definido',
+    tagOpen: 'indefinido',
     learnMore: 'Saber más',
     closingNote:
       'Este informe es una primera impresión. Para profundizar en lo que más te interese, lleva tu carta a tu IA: el prompt ya lleva tus datos esenciales; complétalo con lo que quieras explorar.',
     pdfDefined: 'DEFINIDO',
-    pdfOpen: 'ABIERTO',
+    pdfOpen: 'INDEFINIDO',
     showPrompt: 'Ver/editar el prompt',
     hidePrompt: 'Ocultar el prompt'
   },
@@ -316,6 +322,10 @@ export default {
   },
 
   category: {
+    bodygraph: 'Bodygraph',
+    centers: 'Centros',
+    channels: 'Canales',
+    gates: 'Puertas',
     type: 'Tipo',
     strategy: 'Estrategia',
     authority: 'Autoridad',

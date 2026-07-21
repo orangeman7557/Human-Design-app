@@ -6,7 +6,7 @@ export default {
   seo: {
     title: 'Human Design Chart — calculate your chart free, no signup',
     description:
-      'Calculate your Human Design chart free and without signing up: type, strategy, authority, profile, centres and channels, with an interactive bodygraph.'
+      'Calculate your Human Design chart free and without signing up: type, strategy, authority, profile, centers and channels, with an interactive bodygraph.'
   },
 
   lang: {
@@ -92,7 +92,7 @@ export default {
   chart: {
     seoTitle: 'Your chart · Human Design Chart',
     seoDesc:
-      'Your Human Design chart: interactive bodygraph with type, strategy, authority, profile, centres and channels.',
+      'Your Human Design chart: interactive bodygraph with type, strategy, authority, profile, centers and channels.',
     untitled: 'Your chart',
     noName: 'Untitled',
     noBirthData: 'No birth data. Go back to the home page and fill in the form.',
@@ -120,13 +120,13 @@ export default {
     generatingImage: 'Generating image…',
     downloadImage: 'Download image',
     hBodygraph: 'Bodygraph',
-    hCenters: 'Centres',
+    hCenters: 'Centers',
     hChannels: 'Channels',
     hGates: 'Gates',
     hHangingGates: 'Hanging gates',
-    hangingTip: '{a} gates in undefined centres\n{b} gates in defined centres',
+    hangingTip: '{a} gates in undefined centers\n{b} gates in defined centers',
     hActivations: 'Activations',
-    definedCenters: 'Defined centres',
+    definedCenters: 'Defined centers',
     completeChannels: 'Complete channels',
     noneM: 'None',
     noneF: 'None',
@@ -144,7 +144,7 @@ export default {
     whatAuthority: 'What authority is',
     whatProfile: 'What profile is',
     whatDefinition: 'What definition is',
-    whatCenters: 'What the centres are',
+    whatCenters: 'What the centers are',
     whatChannels: 'What channels are',
     whatGates: 'What gates are',
     whatActivations: 'What activations are',
@@ -172,6 +172,10 @@ export default {
 
   bug: {
     link: 'report a bug',
+    introBug: 'Describe the problem in as much detail as you can. The clearer you are, the better the chance I can understand and fix it. (Your device and browser details are included automatically — no need to type them.)',
+    introIdea: 'Describe your suggestion in as much detail as you can. The clearer you are, the better the chance I can understand and build it. (Your device and browser details are included automatically — no need to type them.)',
+    labelBug: 'What happened?',
+    phIdeaInput: 'Tell me :)',
     aria: 'Report a bug or send a suggestion',
     title: 'Report a bug or send a suggestion',
     thanks: 'Thank you! I got it.',
@@ -206,7 +210,7 @@ export default {
     madeType: 'Manifestor',
     madeB: ' that I am :)',
     wish: 'I hope you find it useful, and may you live happily with your design, dear human!',
-    disclaimer: 'An independent project with no affiliation to any organisation. Any trademarks belong to their respective owners. All content presented is informational and does not replace professional advice.',
+    disclaimer: 'An independent project with no affiliation to any organization. Any trademarks belong to their respective owners. All content presented is informational and does not replace professional advice.',
     coffee: 'Buy me a coffee',
     loveBase: 'Send me love!',
     loveMore: 'Send me <strong>MORE</strong> love!',
@@ -244,7 +248,7 @@ export default {
   },
 
   reportUi: {
-    eyebrow: 'Your personalised initial report',
+    eyebrow: 'Your personalized initial report',
     title: 'Get to know your design',
     shareAria: 'Share a link to the report',
     pdfAria: 'Download the report as PDF',
@@ -254,7 +258,7 @@ export default {
       experiment: 'A life experiment',
       chart: 'Bodygraph',
       type: 'Your type',
-      centers: 'Your centres',
+      centers: 'Your centers',
       strategy: 'Your strategy',
       authority: 'Your authority',
       profile: 'Your profile',
@@ -262,11 +266,13 @@ export default {
       practice: 'Living your design'
     },
     sectionsAria: 'Report sections',
+    tagDefined: 'defined',
+    tagOpen: 'undefined',
     learnMore: 'Learn more',
     closingNote:
       'This report is a first impression. To go deeper into whatever interests you most, take your chart to your AI: the prompt already carries your essential data; complete it with whatever you want to explore.',
     pdfDefined: 'DEFINED',
-    pdfOpen: 'OPEN',
+    pdfOpen: 'UNDEFINED',
     showPrompt: 'View/edit the prompt',
     hidePrompt: 'Hide the prompt'
   },
@@ -299,12 +305,16 @@ export default {
   },
 
   category: {
+    bodygraph: 'Bodygraph',
+    centers: 'Centers',
+    channels: 'Channels',
+    gates: 'Gates',
     type: 'Type',
     strategy: 'Strategy',
     authority: 'Authority',
     profile: 'Profile',
     definition: 'Definition',
-    center: 'Centre',
+    center: 'Center',
     channel: 'Channel',
     gate: 'Gate',
     activationCol: 'Activations',

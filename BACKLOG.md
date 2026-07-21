@@ -234,6 +234,10 @@ incarnation cross). Items registered below in suggested priority order.
   and an "i" drawer + prompt like every other element. Legal footing = same
   as channel names (short titles not copyrightable, descriptive
   noncommercial use; decision 2026-07-02).
+  **Report impact (noted 2026-07-21):** adding the cross means the initial
+  report needs adjusting too — decide whether it gets its own section (the
+  "life purpose" hook is a natural fit right after the profile) or a line
+  inside an existing one. Don't bolt it on without re-reading the flow.
 - ⬜ **2. Signature + not-self theme as named summary fields.** Standard
   properties in the reference tools (satisfacción/frustración, paz/ira,
   éxito/amargura, sorpresa/decepción). The content already exists inside the
@@ -246,6 +250,11 @@ incarnation cross). Items registered below in suggested priority order.
   *"señal de alineamiento"* / *"señal de desalineamiento"* (a symptom you can
   check yourself), keeping the canonical HD term as a secondary mention. Exact
   wording to be settled when the item is built.
+  **Report impact (noted 2026-07-21):** the report's "Living your design"
+  section already ends with a *signals* bullet (energy · trap · signals) that
+  says essentially what signature/not-self say. When this ships, rework that
+  section so the two don't repeat each other — the named fields should feed
+  the signals bullet, not sit beside it.
 - ⬜ **NEXT AFTER PHASE M (author, 2026-07-21):** items 1 and 2 above (the
   incarnation cross, and signature/not-self with the clearer naming) are the
   agreed next batch once the multi-language phase closes.
@@ -670,6 +679,32 @@ corrected).
   - **Discoverability.** Whether to hint the JSON alternative via a
     `<link rel="alternate" type="application/json">`, an HTTP header, or just
     the prompt's URL text.
+
+- ⬜ **Review the English translation for naturalness (author, 2026-07-21).**
+  The Phase M translation is complete and accurate, but the author flagged that
+  parts read as *translated* rather than *written in English* — grammatically
+  fine, yet not how an English speaker would put it. Example given:
+  > "As in the ant simile, the Human Design types describe the different ways of
+  > being designed to use energy. None is better, and the whole works precisely
+  > because we are not all the same. Just as the colony works because every role
+  > exists, the human collective needs all the different kinds of person."
+
+  Diagnosis: the pass stayed too close to the Spanish sentence structure
+  (calques like "the ant simile" for *el símil de las hormigas*, "the whole
+  works" for *el conjunto funciona*, "kinds of person"), instead of re-expressing
+  the idea. The project's priority is the **user, clarity and a certain warmth**,
+  so the English should be *adapted*, not mirrored: shorter sentences, natural
+  idiom, contractions where the tone allows.
+
+  Scope when picked up: a read-through of `hd/content/en.js` (concepts, types,
+  and above all the initial report — the longest prose) plus `i18n/ui/en.js`.
+  Highest value first: the report's Part A (intro, ants, experiment, collective),
+  which is what a newcomer reads first. Best done as a **rewrite in English from
+  the meaning**, not a diff against the Spanish.
+  Two terminology calls also left open: **"Complete channels"** (HD also says
+  "defined channels" — both are in use; pick one and keep ES/EN in sync) and
+  whether center names should follow HD's usual title case ("Solar Plexus")
+  instead of the project-wide sentence case.
 
 - ⬜ **PDF report on a white background instead of dark mode (requested
   2026-07-06).** The initial-report PDF (`report-pdf.js`) currently mirrors the

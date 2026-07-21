@@ -2,6 +2,7 @@
   import '../app.css';
   import { onMount } from 'svelte';
   import { browser } from '$app/environment';
+  import { page } from '$app/stores';
   import Dialog from '$lib/components/Dialog.svelte';
   import LangSwitch from '$lib/components/LangSwitch.svelte';
   import { getLocale } from '$lib/i18n/index.svelte.js';
@@ -12,6 +13,17 @@
   // the same code ships everywhere and only lights up on staging hosts
   // (staging.hdchart.app or the *-staging.workers.dev fallback URL).
   const staging = browser && /^staging\.|-staging\./.test(location.hostname);
+
+  // The language tab aligns to the right edge of the page's content column, so
+  // it needs that column's width. Each page sets its own `main { max-width }`;
+  // keep these in sync if a page's width changes.
+  const contentMax = $derived(
+    /\/chart(\/|$)/.test($page.url.pathname)
+      ? 720
+      : /\/privacy(\/|$)/.test($page.url.pathname)
+        ? 640
+        : 460
+  );
 
   // Keep <html lang> in sync with the active language on client-side navigation
   // (first paint is already correct via the prerendered HTML / the Worker's
@@ -32,7 +44,7 @@
   });
 </script>
 
-<LangSwitch />
+<LangSwitch {contentMax} />
 
 {#if staging}
   <div class="env-badge">staging</div>

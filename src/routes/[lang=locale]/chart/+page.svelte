@@ -1,5 +1,5 @@
 <script>
-  import { onMount, tick } from 'svelte';
+  import { onMount, tick, untrack } from 'svelte';
 
   // Injected by Vite's `define` from package.json (see vite.config.js).
   const version = __APP_VERSION__;
@@ -94,11 +94,16 @@
    *  innerReveal is ever set, so exactly one "i" shows at a time. */
   let innerReveal = $state(null);
 
+  // Category eyebrow shown above a drawer's title. Also read from the DOM via
+  // `data-info-cat` on each info dot, so every entry point is translated.
   const CATEGORY_BY_KIND = $derived({
+    bodygraph: tr('category.bodygraph'),
     type: tr('category.type'), strategy: tr('category.strategy'), authority: tr('category.authority'),
-    profile: tr('category.profile'), definition: tr('category.definition'), center: tr('category.center'),
-    channel: tr('category.channel'), gate: tr('category.gate'), activationCol: tr('category.activationCol'),
-    planet: tr('category.planet')
+    profile: tr('category.profile'), definition: tr('category.definition'),
+    center: tr('category.center'), centers: tr('category.centers'),
+    channel: tr('category.channel'), channels: tr('category.channels'),
+    gate: tr('category.gate'), gates: tr('category.gates'),
+    activationCol: tr('category.activationCol'), planet: tr('category.planet')
   });
 
   /** Resolve an element's `{ title, paragraphs, facts?, after?, related?, list? }` by kind. */
@@ -113,10 +118,12 @@
       : getElementInfo(kind, key);
   }
 
-  function buildEntry(category, kind, key) {
+  // `catKey` is the *key* of the category eyebrow (not its translated label):
+  // the label is resolved at render time so it follows a language switch.
+  function buildEntry(catKey, kind, key) {
     const info = resolveInfo(kind, key);
     if (!info) return null;
-    return { category, kind, key, info, prompts: buildPrompts(kind, key, chart) };
+    return { catKey, kind, key, info, prompts: buildPrompts(kind, key, chart) };
   }
 
   /** Is the panel open *for* this element? Tracks the stack's origin so the
@@ -132,9 +139,27 @@
   }
   // Follow an in-text link: push onto the current stack (or open fresh).
   function navigateInfo(kind, key) {
-    const entry = buildEntry(CATEGORY_BY_KIND[kind] ?? '', kind, key);
+    const entry = buildEntry(kind, kind, key);
     if (entry) infoStack = [...infoStack, entry];
   }
+  // A language switch with a drawer open: `info` and `prompts` were resolved in
+  // the previous language when the entry was pushed, so re-resolve the whole
+  // stack. Without this the drawer only updated the parts that read live state
+  // and needed a close/reopen to fully switch.
+  $effect(() => {
+    const l = lang; // the ONLY tracked dependency
+    // Everything touching infoStack goes inside untrack: reading it here would
+    // make this effect depend on the very state it writes, which Svelte flags
+    // as an update loop.
+    untrack(() => {
+      if (!l || infoStack.length === 0) return;
+      infoStack = infoStack.map((e) => {
+        const info = resolveInfo(e.kind, e.key);
+        return info ? { ...e, info, prompts: buildPrompts(e.kind, e.key, chart) } : e;
+      });
+    });
+  });
+
   function backInfo() {
     if (infoStack.length > 1) infoStack = infoStack.slice(0, -1);
   }
@@ -147,14 +172,14 @@
   // info-zone's cardClick from also toggling the section reveal.
   function actClick(e, gate) {
     e.stopPropagation();
-    openInfoFor(CATEGORY_BY_KIND.gate, 'gate', String(gate));
+    openInfoFor('gate', 'gate', String(gate));
   }
   // Tapping the line number (the ".N" part) opens that line's drawer, not the
   // gate. The line 1-6 shares its archetype with the profile lines, so it
   // reuses the 'profile' content by line number.
   function actLineClick(e, line) {
     e.stopPropagation();
-    openInfoFor(CATEGORY_BY_KIND.profile, 'profile', String(line));
+    openInfoFor('profile', 'profile', String(line));
   }
 
   // Desktop: one mouseover per card decides whether the pointer sits on an
@@ -230,7 +255,7 @@
   function onSvgCenterClick(e, c) {
     pin(e, { kind: 'center', center: c, gates: [] });
     if (isTouch()) { innerReveal = null; cardReveal = null; }
-    openInfoFor(CATEGORY_BY_KIND.center, 'center', c);
+    openInfoFor('center', 'center', c);
   }
 
   // Hanging gates: active gates that don't complete any channel.
@@ -699,7 +724,7 @@
         const i = openInfo.indexOf(':');
         if (i > 0) {
           const kind = openInfo.slice(0, i);
-          openInfoFor(CATEGORY_BY_KIND[kind] ?? '', kind, openInfo.slice(i + 1));
+          openInfoFor(kind, kind, openInfo.slice(i + 1));
         }
       }
     } catch (e) {
@@ -711,10 +736,10 @@
   });
 
   function back() {
-    // Opened directly (new tab, shared URL) there is no in-app history to go
-    // back to — go home instead of doing nothing or leaving the site.
-    if (history.length > 1) history.back();
-    else goto(`/${lang}`);
+    // Always the home of the current language. history.back() used to be the
+    // first choice, but after a language switch the previous entry is this same
+    // chart in the old language, so the arrow appeared to undo the switch.
+    goto(`/${lang}`);
   }
 
   // "instalar como app" footer link — same behaviour as the home's: Chromium
@@ -848,7 +873,7 @@
           {tr('chart.hBodygraph')}
           <span class="dot-h2">
             {#if cardReveal === 'bodygraph' || infoIsOpen('concept', 'bodygraph')}
-              <span class="dot-host" data-info-cat="Bodygraph" data-info-kind="concept" data-info-key="bodygraph">
+              <span class="dot-host" data-info-cat="bodygraph" data-info-kind="concept" data-info-key="bodygraph">
                 <InfoDot active={infoIsOpen('concept', 'bodygraph')} label={tr('chart.whatBodygraph')} />
               </span>
             {/if}
@@ -867,7 +892,7 @@
             {tr('category.type')}
             <span class="dot-h2">
               {#if cardReveal === 'type' || infoIsOpen('concept', 'type')}
-                <span class="dot-host" data-info-cat="Tipo" data-info-kind="concept" data-info-key="type">
+                <span class="dot-host" data-info-cat="type" data-info-kind="concept" data-info-key="type">
                   <InfoDot active={infoIsOpen('concept', 'type')} label={tr('chart.whatType')} />
                 </span>
               {/if}
@@ -878,7 +903,7 @@
               <span class="tchip" class:on={chart.type === t.key} data-inner-key={`type:${t.key}`}>
                 {t.label}
                 {#if innerReveal === `type:${t.key}` || infoIsOpen('type', t.key)}
-                  <span class="dot-slot" data-info-cat="Tipo" data-info-kind="type" data-info-key={t.key}>
+                  <span class="dot-slot" data-info-cat="type" data-info-kind="type" data-info-key={t.key}>
                     <InfoDot active={infoIsOpen('type', t.key)} label={t.label} />
                   </span>
                 {/if}
@@ -900,7 +925,7 @@
             {tr('category.strategy')}
             <span class="dot-h2">
               {#if cardReveal === 'strategy' || infoIsOpen('concept', 'strategy')}
-                <span class="dot-host" data-info-cat="Estrategia" data-info-kind="concept" data-info-key="strategy">
+                <span class="dot-host" data-info-cat="strategy" data-info-kind="concept" data-info-key="strategy">
                   <InfoDot active={infoIsOpen('concept', 'strategy')} label={tr('chart.whatStrategy')} />
                 </span>
               {/if}
@@ -909,7 +934,7 @@
           <span class="value" data-inner-key="strategy:value"
             >{STRATEGY_LABELS[chart.strategy] ?? chart.strategy}{#if innerReveal === 'strategy:value' || infoIsOpen('strategy', chart.strategy)}<span
               class="dot-side"
-              data-info-cat="Estrategia" data-info-kind="strategy" data-info-key={chart.strategy}
+              data-info-cat="strategy" data-info-kind="strategy" data-info-key={chart.strategy}
             ><InfoDot active={infoIsOpen('strategy', chart.strategy)} label={tr('chart.moreStrategy')} /></span>{/if}</span>
         </div>
         <div
@@ -923,7 +948,7 @@
             {tr('category.authority')}
             <span class="dot-h2">
               {#if cardReveal === 'authority' || infoIsOpen('concept', 'authority')}
-                <span class="dot-host" data-info-cat="Autoridad" data-info-kind="concept" data-info-key="authority">
+                <span class="dot-host" data-info-cat="authority" data-info-kind="concept" data-info-key="authority">
                   <InfoDot active={infoIsOpen('concept', 'authority')} label={tr('chart.whatAuthority')} />
                 </span>
               {/if}
@@ -932,7 +957,7 @@
           <span class="value" data-inner-key="authority:value"
             >{AUTHORITY_LABELS[chart.authority] ?? chart.authority}{#if innerReveal === 'authority:value' || infoIsOpen('authority', chart.authority)}<span
               class="dot-side"
-              data-info-cat="Autoridad" data-info-kind="authority" data-info-key={chart.authority}
+              data-info-cat="authority" data-info-kind="authority" data-info-key={chart.authority}
             ><InfoDot active={infoIsOpen('authority', chart.authority)} label={tr('chart.moreAuthority')} /></span>{/if}</span>
         </div>
         <div
@@ -946,7 +971,7 @@
             {tr('category.profile')}
             <span class="dot-h2">
               {#if cardReveal === 'profile' || infoIsOpen('concept', 'profile')}
-                <span class="dot-host" data-info-cat="Perfil" data-info-kind="concept" data-info-key="profile">
+                <span class="dot-host" data-info-cat="profile" data-info-kind="concept" data-info-key="profile">
                   <InfoDot active={infoIsOpen('concept', 'profile')} label={tr('chart.whatProfile')} />
                 </span>
               {/if}
@@ -955,7 +980,7 @@
           <span class="value" data-inner-key="profile:value"
             >{chart.profile}{#if innerReveal === 'profile:value' || infoIsOpen('profile', chart.profile)}<span
               class="dot-side"
-              data-info-cat="Perfil" data-info-kind="profile" data-info-key={chart.profile}
+              data-info-cat="profile" data-info-kind="profile" data-info-key={chart.profile}
             ><InfoDot active={infoIsOpen('profile', chart.profile)} label={tr('chart.moreProfile')} /></span>{/if}</span>
         </div>
         <div
@@ -970,7 +995,7 @@
             {tr('category.definition')}
             <span class="dot-h2">
               {#if cardReveal === 'definition' || infoIsOpen('concept', 'definition')}
-                <span class="dot-host" data-info-cat="Definición" data-info-kind="concept" data-info-key="definition">
+                <span class="dot-host" data-info-cat="definition" data-info-kind="concept" data-info-key="definition">
                   <InfoDot active={infoIsOpen('concept', 'definition')} label={tr('chart.whatDefinition')} />
                 </span>
               {/if}
@@ -979,7 +1004,7 @@
           <span class="value" data-inner-key="definition:value"
             >{DEFINITION_LABELS[chart.definition] ?? chart.definition}{#if innerReveal === 'definition:value' || infoIsOpen('definition', chart.definition)}<span
               class="dot-side"
-              data-info-cat="Definición" data-info-kind="definition" data-info-key={chart.definition}
+              data-info-cat="definition" data-info-kind="definition" data-info-key={chart.definition}
             ><InfoDot active={infoIsOpen('definition', chart.definition)} label={tr('chart.moreDefinition')} /></span>{/if}</span>
         </div>
       </div>
@@ -1003,7 +1028,7 @@
             <span class="count" data-tip={tr('chart.definedCenters')}>({chart.definedCenters.length})</span>
             <span class="dot-h2">
               {#if cardReveal === 'center' || infoIsOpen('concept', 'center')}
-                <span class="dot-host" data-info-cat="Centros" data-info-kind="concept" data-info-key="center">
+                <span class="dot-host" data-info-cat="centers" data-info-kind="concept" data-info-key="center">
                   <InfoDot active={infoIsOpen('concept', 'center')} label={tr('chart.whatCenters')} />
                 </span>
               {/if}
@@ -1024,7 +1049,7 @@
                   {CENTER_LABELS[c]}
                 </button>
                 {#if innerReveal === `center:${c}` || infoIsOpen('center', c)}
-                  <span class="dot-slot" data-info-cat="Centro" data-info-kind="center" data-info-key={c}>
+                  <span class="dot-slot" data-info-cat="center" data-info-kind="center" data-info-key={c}>
                     <InfoDot active={infoIsOpen('center', c)} label={CENTER_LABELS[c]} />
                   </span>
                 {/if}
@@ -1055,7 +1080,7 @@
             {tr('chart.completeChannels')} ({chart.activeChannels.length})
             <span class="dot-h2">
               {#if cardReveal === 'channels' || infoIsOpen('concept', 'channel')}
-                <span class="dot-host" data-info-cat="Canales" data-info-kind="concept" data-info-key="channel">
+                <span class="dot-host" data-info-cat="channels" data-info-kind="concept" data-info-key="channel">
                   <InfoDot active={infoIsOpen('concept', 'channel')} label={tr('chart.whatChannels')} />
                 </span>
               {/if}
@@ -1081,7 +1106,7 @@
                     {g1}-{g2}
                   </span>
                   {#if innerReveal === `channel:${g1}-${g2}` || infoIsOpen('channel', `${g1}-${g2}`)}
-                    <span class="dot-slot" data-info-cat="Canal" data-info-kind="channel" data-info-key={`${g1}-${g2}`}>
+                    <span class="dot-slot" data-info-cat="channel" data-info-kind="channel" data-info-key={`${g1}-${g2}`}>
                       <InfoDot active={infoIsOpen('channel', `${g1}-${g2}`)} label={`${g1}-${g2}`} />
                     </span>
                   {/if}
@@ -1108,7 +1133,7 @@
             >({hangingGates.length})</span>
             <span class="dot-h2">
               {#if cardReveal === 'gates' || infoIsOpen('concept', 'gate')}
-                <span class="dot-host" data-info-cat="Puertas" data-info-kind="concept" data-info-key="gate">
+                <span class="dot-host" data-info-cat="gates" data-info-kind="concept" data-info-key="gate">
                   <InfoDot active={infoIsOpen('concept', 'gate')} label={tr('chart.whatGates')} />
                 </span>
               {/if}
@@ -1137,7 +1162,7 @@
                     {g}
                   </span>
                   {#if innerReveal === `gate:${g}` || infoIsOpen('gate', `${g}`)}
-                    <span class="dot-slot" data-info-cat="Puerta" data-info-kind="gate" data-info-key={`${g}`}>
+                    <span class="dot-slot" data-info-cat="gate" data-info-kind="gate" data-info-key={`${g}`}>
                       <InfoDot active={infoIsOpen('gate', `${g}`)} label={`${g}`} />
                     </span>
                   {/if}
@@ -1161,7 +1186,7 @@
           {tr('chart.hActivations')}
           <span class="dot-h2">
             {#if cardReveal === 'activations' || infoIsOpen('concept', 'activation')}
-              <span class="dot-host" data-info-cat="Activaciones" data-info-kind="concept" data-info-key="activation">
+              <span class="dot-host" data-info-cat="activationCol" data-info-kind="concept" data-info-key="activation">
                 <InfoDot active={infoIsOpen('concept', 'activation')} label={tr('chart.whatActivations')} />
               </span>
             {/if}
@@ -1173,13 +1198,13 @@
             <tr>
               <th></th>
               <th data-inner-key="actcol:personality">
-                <span class="side-head" data-tip={tr('chart.tipPersonality')}>{tr('chart.colPersonality')}<span class="side-dot personality" aria-hidden="true"></span><span class="dot-side head-i" data-info-cat="Activaciones" data-info-kind="activationCol" data-info-key="personality">{#if innerReveal === 'actcol:personality' || infoIsOpen('activationCol', 'personality')}<InfoDot active={infoIsOpen('activationCol', 'personality')} label={tr('chart.whatPersonality')} />{/if}</span></span>
+                <span class="side-head" data-tip={tr('chart.tipPersonality')}>{tr('chart.colPersonality')}<span class="side-dot personality" aria-hidden="true"></span><span class="dot-side head-i" data-info-cat="activationCol" data-info-kind="activationCol" data-info-key="personality">{#if innerReveal === 'actcol:personality' || infoIsOpen('activationCol', 'personality')}<InfoDot active={infoIsOpen('activationCol', 'personality')} label={tr('chart.whatPersonality')} />{/if}</span></span>
               </th>
               <th data-inner-key="actcol:design">
-                <span class="side-head" data-tip={tr('chart.tipDesign')}>{tr('chart.colDesign')}<span class="side-dot design" aria-hidden="true"></span><span class="dot-side head-i" data-info-cat="Activaciones" data-info-kind="activationCol" data-info-key="design">{#if innerReveal === 'actcol:design' || infoIsOpen('activationCol', 'design')}<InfoDot active={infoIsOpen('activationCol', 'design')} label={tr('chart.whatDesign')} />{/if}</span></span>
+                <span class="side-head" data-tip={tr('chart.tipDesign')}>{tr('chart.colDesign')}<span class="side-dot design" aria-hidden="true"></span><span class="dot-side head-i" data-info-cat="activationCol" data-info-kind="activationCol" data-info-key="design">{#if innerReveal === 'actcol:design' || infoIsOpen('activationCol', 'design')}<InfoDot active={infoIsOpen('activationCol', 'design')} label={tr('chart.whatDesign')} />{/if}</span></span>
               </th>
               <th class="weight-col" data-inner-key="actcol:weight">
-                <span class="side-head" data-tip={tr('chart.tipWeight')}>{tr('chart.colWeight')}<span class="dot-side head-i" data-info-cat="Activaciones" data-info-kind="activationCol" data-info-key="weight">{#if innerReveal === 'actcol:weight' || infoIsOpen('activationCol', 'weight')}<InfoDot active={infoIsOpen('activationCol', 'weight')} label={tr('chart.whatWeight')} />{/if}</span></span>
+                <span class="side-head" data-tip={tr('chart.tipWeight')}>{tr('chart.colWeight')}<span class="dot-side head-i" data-info-cat="activationCol" data-info-kind="activationCol" data-info-key="weight">{#if innerReveal === 'actcol:weight' || infoIsOpen('activationCol', 'weight')}<InfoDot active={infoIsOpen('activationCol', 'weight')} label={tr('chart.whatWeight')} />{/if}</span></span>
               </th>
             </tr>
           </thead>
@@ -1188,7 +1213,7 @@
               {@const w = getActivationWeight(p)}
               <tr>
                 <td class="planet" data-inner-key={`planet:${p}`}>
-                  <span class="psym">{PLANET_SYMBOLS[p]}</span>{PLANET_LABELS[p]}{#if innerReveal === `planet:${p}` || infoIsOpen('planet', p)}<span class="dot-side" data-info-cat="Planeta" data-info-kind="planet" data-info-key={p}><InfoDot active={infoIsOpen('planet', p)} label={PLANET_LABELS[p]} /></span>{/if}
+                  <span class="psym">{PLANET_SYMBOLS[p]}</span>{PLANET_LABELS[p]}{#if innerReveal === `planet:${p}` || infoIsOpen('planet', p)}<span class="dot-side" data-info-cat="planet" data-info-kind="planet" data-info-key={p}><InfoDot active={infoIsOpen('planet', p)} label={PLANET_LABELS[p]} /></span>{/if}
                 </td>
                 <td>
                   <span class="act" class:hl={actHl(chart.personality[p].gate)}
@@ -1221,14 +1246,14 @@
       <span aria-hidden="true">·</span>
       <a class="foot-link" href={`/${lang}/privacy`}>{tr('footer.privacy')}</a>
       <span aria-hidden="true">·</span>
-      <About version={version} onElement={(kind, key) => openInfoFor(CATEGORY_BY_KIND[kind] ?? '', kind, key)} />
+      <About version={version} onElement={(kind, key) => openInfoFor(kind, kind, key)} />
     </footer>
   {/if}
 </main>
 
 <ElementInfo
   open={infoOpen}
-  category={infoTop?.category ?? ''}
+  category={infoTop ? (CATEGORY_BY_KIND[infoTop.catKey] ?? '') : ''}
   info={infoTop?.info ?? null}
   prompts={infoTop?.prompts ?? null}
   elementKey={infoTop ? `${infoTop.kind}:${infoTop.key}` : ''}

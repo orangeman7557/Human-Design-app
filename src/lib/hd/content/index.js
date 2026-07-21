@@ -277,11 +277,14 @@ export function getReportProfile(profile, lang = getLocale()) {
   const R = pack(lang).reportShell;
   return {
     title: fillTpl(R.profileHeading, { profile }),
+    // Each of the two lines opens with a bullet (same marker as the types and
+    // the practice points); its follow-up paragraphs flow underneath, so the
+    // reading order stays line 1 → line 2.
     paragraphs: [
       fillTpl(R.profileIntro, { profile, a, b }),
-      `**${la.title}.** ${ba[0]}`,
+      { bullets: [`**${la.title}.** ${ba[0]}`] },
       ...ba.slice(1),
-      `**${lb.title}.** ${bb[0]}`,
+      { bullets: [`**${lb.title}.** ${bb[0]}`] },
       ...bb.slice(1)
     ]
   };

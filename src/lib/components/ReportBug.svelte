@@ -131,27 +131,21 @@
              of the tallest (fallo); switching type never resizes the modal. -->
         <div class="intro">
           <p class:hidden={kind !== 'fallo'} aria-hidden={kind !== 'fallo'}>
-            Describe el problema con tanto detalle como puedas. Cuanto más claro
-            lo expliques, más probabilidad de que lo pueda entender y arreglar.
-            (Los datos de tu dispositivo y navegador se incluyen solos, no hace
-            falta que los escribas.)
+{t('bug.introBug')}
           </p>
           <p class:hidden={kind !== 'sugerencia'} aria-hidden={kind !== 'sugerencia'}>
-            Describe la sugerencia con tanto detalle como puedas. Cuanto más
-            claro lo expliques, más probabilidad de que lo pueda entender e
-            implementar. (Los datos de tu dispositivo y navegador se incluyen
-            solos, no hace falta que los escribas.)
+{t('bug.introIdea')}
           </p>
         </div>
 
         <label class="field">
-          <span>{kind === 'fallo' ? '¿Qué ha pasado?' : t('bug.phIdea')}</span>
+          <span>{kind === 'fallo' ? t('bug.labelBug') : t('bug.phIdea')}</span>
           <textarea
             bind:value={message}
             rows="5"
             placeholder={kind === 'fallo'
               ? t('bug.phBug')
-              : 'Cuéntame :)'}
+              : t('bug.phIdeaInput')}
           ></textarea>
         </label>
 

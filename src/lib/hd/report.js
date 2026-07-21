@@ -110,7 +110,13 @@ export function buildReport(chart, lang = getLocale()) {
   if (def && defBody) add('definition', definitionTitle(R, chart.definition, def.title), [getReportLeadIn('definition', lang), ...defBody]);
 
   const tr = getTypeReport(chart.type, lang);
-  if (tr) add('practice', R.practiceTitle, [getReportLeadIn('practice', lang), tr.energia, tr.trampa, tr.senales]);
+  // Energy · trap · signals read as three parallel points, so they get the same
+  // simple bullets as the five types above.
+  if (tr)
+    add('practice', R.practiceTitle, [
+      getReportLeadIn('practice', lang),
+      { bullets: [tr.energia, tr.trampa, tr.senales] }
+    ]);
 
   return sections;
 }
