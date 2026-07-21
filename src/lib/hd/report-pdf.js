@@ -300,12 +300,18 @@ export async function buildReportPdf({ image = null, sections = [], labels = {} 
         // Bulleted list (the five types in "Tu tipo") — the overlay renders it
         // as <ul>; here each bullet is an indented paragraph with a gold dot.
         for (const b of p.bullets) {
+          // An item may be an array: several paragraphs under a single dot,
+          // all sharing the bullet indent.
+          const pars = Array.isArray(b) ? b : [b];
           L.ensure(15.5);
           doc.setFont('helvetica', 'normal');
           doc.setFontSize(10.5);
           doc.setTextColor(...C.accent);
           doc.text('•', MARGIN_X + 4, L.y);
-          L.richText(parseRuns(b), { size: 10.5, color: C.body, lineHeight: 15.5, x: MARGIN_X + 16, maxW: CONTENT_W - 16 });
+          pars.forEach((par, i) => {
+            if (i > 0) L.gap(4);
+            L.richText(parseRuns(par), { size: 10.5, color: C.body, lineHeight: 15.5, x: MARGIN_X + 16, maxW: CONTENT_W - 16 });
+          });
           L.gap(2);
         }
         L.gap(3);

@@ -212,7 +212,13 @@
               <p>{@html renderInline(p)}</p>
             {:else if p.bullets}
               <ul class="rbullets">
-                {#each p.bullets as b}<li>{@html renderInline(b)}</li>{/each}
+                {#each p.bullets as b}
+                  <li>
+                    {#if Array.isArray(b)}
+                      {#each b as par}<p class="bpar">{@html renderInline(par)}</p>{/each}
+                    {:else}{@html renderInline(b)}{/if}
+                  </li>
+                {/each}
               </ul>
             {:else if p.subhead}
               <p class="subhead">{@html renderInline(p.subhead)}</p>
@@ -500,6 +506,14 @@
   }
   .rbullets li::marker {
     color: var(--accent);
+  }
+  /* A bullet may carry several paragraphs (the two profile lines). They must
+     share the bullet's left margin instead of dropping back to the section's. */
+  .rbullets li .bpar {
+    margin: 0;
+  }
+  .rbullets li .bpar + .bpar {
+    margin-top: 0.55rem;
   }
   p {
     font-size: 0.92rem;
