@@ -82,6 +82,15 @@ const overrides = {
       uranus: 'Uranus',
       neptune: 'Neptune',
       pluto: 'Pluto'
+    },
+    signal: {
+      aligned: 'Alignment',
+      misaligned: 'Misalignment'
+    },
+    cross: {
+      right: 'Right Angle Cross',
+      left: 'Left Angle Cross',
+      juxtaposition: 'Juxtaposition Cross'
     }
   },
 
@@ -142,6 +151,12 @@ const overrides = {
       uranus: 'Uranus',
       neptune: 'Neptune',
       pluto: 'Pluto'
+    },
+    // Lower-case: the prompt template reads "the {name} formed by…".
+    cross: {
+      right: 'right angle cross',
+      left: 'left angle cross',
+      juxtaposition: 'juxtaposition cross'
     }
   },
 
@@ -177,7 +192,12 @@ const overrides = {
       definition: '{name}',
       noDefinition: 'what it means to have no definition (a chart with no definition)',
       center: 'the "{name}" center',
-      planet: 'what {name} represents'
+      planet: 'what {name} represents',
+      signalAligned:
+        'the alignment signal of the {type} type ("{name}"), what Human Design calls its signature',
+      signalMisaligned:
+        'the misalignment signal of the {type} type ("{name}"), what Human Design calls its not-self theme',
+      cross: 'the {name} formed by gates {gates}'
     },
     planetChart:
       '{frame}, for {who}, can you explain in detail what {name} represents and what its two activations contribute in this chart: {pg}.{pl} (conscious, Personality) and {dg}.{dl} (unconscious, Design)?',
@@ -199,7 +219,10 @@ const overrides = {
       definition: 'what definition is',
       channel: 'what channels are',
       gate: 'what gates are',
-      activation: 'what planetary activations are'
+      activation: 'what planetary activations are',
+      signal:
+        'what the alignment signal and the misalignment signal of each type are (the signature and the not-self theme)',
+      cross: 'what the incarnation cross is and how to read it'
     }
   },
 
@@ -243,7 +266,21 @@ const overrides = {
       'In this chart, neither of the two gates of channel {a}-{b} is active: a current found mostly in other people.',
     profileTitle: 'Profile {profile}',
     profileIntro:
-      'Profile {profile} combines two lines: the {a}, conscious, and the {b}, unconscious. Each adds its own nuance, and together they describe a way of learning, of relating and of unfolding one’s purpose.'
+      'Profile {profile} combines two lines: the {a}, conscious, and the {b}, unconscious. Each adds its own nuance, and together they describe a way of learning, of relating and of unfolding one’s purpose.',
+    signalAlignedTitle: 'Alignment: {name}',
+    signalMisalignedTitle: 'Misalignment: {name}',
+    signalPair:
+      'This is the {type} type’s signal. Its opposite is the [{other} signal](signal:{otherKey}), "{otherName}". Read them as a pair — what matters is not either one on its own but **which of the two is winning**.',
+    signalCanonical:
+      'Human Design calls these the *signature* (alignment) and the *not-self theme* (misalignment).',
+    signalOtherAligned: 'alignment',
+    signalOtherMisaligned: 'misalignment',
+    crossTitle: '{name} ({gates})',
+    factCrossPersonality: 'Personality Sun and Earth',
+    factCrossDesign: 'Design Sun and Earth',
+    crossWeight:
+      'These four gates are the heaviest activations in the chart — most of the imprint is attributed to them. Read them **together**, not one by one: that is where the cross gets its tone.',
+    crossGatesJoin: ' | '
   },
 
   reportShell: {
@@ -257,6 +294,8 @@ const overrides = {
     definitionTitleNone: 'Your Definition',
     definitionPrefix: '^Definition\\s+',
     practiceTitle: 'Living Your Design',
+    purposeTitle: 'Your Purpose',
+    purposeSubhead: '{name} ({gates})',
     profileHeading: 'Profile {profile}',
     profileIntro:
       'Your {profile} profile combines two lines: the {a}, conscious, and the {b}, unconscious. Each adds its own nuance, and together they describe your way of learning, relating and unfolding your purpose.',
@@ -347,6 +386,22 @@ const overrides = {
         'They are worked out at **two moments**, which is why there are two columns. *Personality* uses the position at the instant of birth — the conscious side. *Design* uses the position about 88 days earlier, 88\u00b0 of solar arc — the unconscious side. Hence two activations per planet.',
         'Each one is written **gate.line**: the gate (1 to 64) and, inside it, the line (1 to 6). A **30.3 on the Sun** means the Sun switches on **gate 30 in its line 3** — the theme of gate 30, read with the flavor line 3 brings. That is the basic unit the whole chart is built from.',
         'They do not all count equally: the **Sun and Earth** carry most of the meaning and the rest add nuance, which is what the *Weight* column summarizes. Tap an activation to open its gate, and see the [profile](concept:profile) for what the lines mean.'
+      ]
+    },
+    signal: {
+      title: 'The Signals',
+      paragraphs: [
+        'The **signals** are the quickest way to check, on any given day, whether someone is living with their design or against it. They do not describe a personality trait. They are a **state you can feel**, and it shifts with how you have been deciding and acting.',
+        'Every [type](concept:type) has its own pair. The **alignment signal** shows up when you follow [your strategy](concept:strategy) and decide from [your authority](concept:authority); the **misalignment signal** is what surfaces when you do not. For a [Generator](type:generator) the pair is satisfaction and frustration; for a [Projector](type:projector), success and bitterness; for a [Manifestor](type:manifestor), peace and anger; for a [Reflector](type:reflector), surprise and disappointment.',
+        'Human Design usually calls these the *signature* and the *not-self theme*. They are named as signals here because that is what they do: give you something you can check at any hour of the day without knowing anything about the system. When the misalignment one is winning, the answer is rarely to try harder — it is to look at what got decided, and how.'
+      ]
+    },
+    cross: {
+      title: 'The Incarnation Cross',
+      paragraphs: [
+        'The **incarnation cross** is the background theme of a life — the general direction a design points in. It usually gets introduced as your "purpose", but take it gently: it is a backdrop that unfolds over years, not a task waiting to be solved.',
+        'It is made of **four gates**: the [Personality](activationCol:personality) Sun and Earth, and the [Design](activationCol:design) Sun and Earth. These are the heaviest activations in the chart — most of the imprint is attributed to them — so the cross is essentially a summary of their dominant themes.',
+        'The **angle** says where that energy is aimed. A *right angle cross* points to a personal path, walked through your own experience. A *left angle cross* points to a transpersonal one, fulfilled through other people. A *juxtaposition cross* points to a fixed, singular fate. The angle follows from the [profile](concept:profile).'
       ]
     }
   },
@@ -872,7 +927,22 @@ const overrides = {
       authority: 'Your authority is how you are built to make decisions. If strategy tells you *how and when to act*, **authority tells you how and when to decide** — every yes and every no. Your mind is good at gathering information, working through a decision already made, and advising other people. But **your mind is not a reliable place to decide from** when it comes to your own life. Those decisions belong to something more bodily. That is *authority*.',
       definition: 'Definition describes how your defined centers group together: one connected block, or several separate ones.',
       practice: 'If you take one thing away from all of Human Design, take this: **living your design means acting on [your strategy](section:strategy) and deciding from [your authority](section:authority)**. Everything else adds nuance. These two are what actually change your day.',
-      centers: 'Here are the nine centers in your chart:'
+      centers: 'Here are the nine centers in your chart:',
+      purpose: 'And to close, the backdrop: where your design points over the long run.'
+    },
+    purpose: {
+      title: 'Your Purpose',
+      paragraphs: [
+        'Your **incarnation cross** is the background theme of your life — the general direction your design points in. It is made of **four gates**: your Personality Sun and Earth, and your Design Sun and Earth. Those are the four heaviest activations in your chart.',
+        'Take it gently. It is a backdrop that unfolds over years, not a task you have to solve or a calling you are supposed to work out as fast as possible. Most people recognize it looking back, not looking forward.'
+      ],
+      outro:
+        'And here is the part that matters: **you do not chase your purpose, you fulfill it by living your design**. There is nothing to *do* with this cross except recognize it. What actually changes your day is the previous section — acting on [your strategy](section:strategy) and deciding from [your authority](section:authority). Get that right and the rest takes care of itself.'
+    },
+    crossAngle: {
+      right: 'Yours is a **right angle** cross: your path is **personal**. It unfolds mostly through your own experience — what you live, try and get through yourself. Other people matter, of course, but you are the axis of the journey.',
+      left: 'Yours is a **left angle** cross: your path is **transpersonal**. Much of what matters will reach you through other people, and what is yours gets fulfilled in relationship with them. The encounters are not incidental to your life — they are the material it is built from.',
+      juxtaposition: 'Yours is a **juxtaposition** cross: a **fixed, singular** fate. Neither personal nor transpersonal — a very specific role you hold fairly independently of what goes on around you. It is the rarest angle, and it belongs to the 4/1 profile alone.'
     },
 
     type: {
@@ -1050,7 +1120,7 @@ const overrides = {
       trampa:
         '**The trap for your type** — What wears you down is **starting from your head** instead of waiting for something to respond to: saying yes out of obligation, out of logic, or out of fear of missing out. Get into something your energy never backed and frustration turns up — the classic Generator signal — along with the sense of being stuck in things that never quite land.',
       senales:
-        '**Signs you are on track** — Your compass is **satisfaction versus frustration**. End the day pleasantly tired, with the sense that your energy went somewhere real, and you are on track. If frustration and weariness are what you mostly feel, you have probably said yes to things your body did not.'
+        '**Signs you are on track** — Your compass is your two signals: [alignment](signal:aligned), which for you is **satisfaction**, and [misalignment](signal:misaligned), which is **frustration**. End the day pleasantly tired, with the sense that your energy went somewhere real, and you are on track. If frustration and weariness are what you mostly feel, you have probably said yes to things your body did not.'
     },
     'manifesting-generator': {
       energia:
@@ -1058,7 +1128,7 @@ const overrides = {
       trampa:
         '**The trap for your type** — **Scattering.** Taking on too much your body never said yes to, or skipping the heads-up and running straight into other people\u2019s resistance. Start from the head instead of responding and you collect frustration, a bit of anger, and a trail of half-finished projects.',
       senales:
-        '**Signs you are on track** — **Satisfaction**, and a certain calm around you, versus frustration and friction. Moving fast on what lights you up and actually finishing things means you are on track. Feeling scattered and meeting resistance everywhere usually means you said yes without your body, or you forgot to tell people.'
+        '**Signs you are on track** — Your [alignment](signal:aligned) signal is **satisfaction**, with a certain calm around you; your [misalignment](signal:misaligned) one is **frustration**, usually with friction. Moving fast on what lights you up and actually finishing things means you are on track. Feeling scattered and meeting resistance everywhere usually means you said yes without your body, or you forgot to tell people.'
     },
     projector: {
       energia:
@@ -1066,7 +1136,7 @@ const overrides = {
       trampa:
         '**The trap for your type** — **Keeping up with everyone else**, and **offering your insight where nobody asked for it**. Working yourself flat to prove your worth, or pushing in without an invitation, brings resistance, rejection and bitterness — the signal of a Projector living against their design.',
       senales:
-        '**Signs you are on track** — **Recognition and success**, versus bitterness. Being seen, being invited, having your view actually land: that is the track. Feeling invisible, drained and resentful usually means you are offering yourself where you were not called, or demanding an energy you do not have.'
+        '**Signs you are on track** — Your [alignment](signal:aligned) signal is **success** — being seen and recognized — and your [misalignment](signal:misaligned) one is **bitterness**. Being seen, being invited, having your view actually land: that is the track. Feeling invisible, drained and resentful usually means you are offering yourself where you were not called, or demanding an energy you do not have.'
     },
     manifestor: {
       energia:
@@ -1074,7 +1144,7 @@ const overrides = {
       trampa:
         '**The trap for your type** — Moving without **telling** the people your impact will reach. That is what fills the room with resistance and anger, and it ends up making everything harder for you. The other trap is **demanding a consistency that is not yours**, right up to burnout, instead of accepting how much rest you actually need.',
       senales:
-        '**Signs you are on track** — **Peace**, versus anger. Inform people and move freely and things go quiet around you. When everything turns into friction and conflict, you probably moved without warning, or you are forcing a steady pace that was never yours.'
+        '**Signs you are on track** — Your [alignment](signal:aligned) signal is **peace**; your [misalignment](signal:misaligned) one is **anger**. Inform people and move freely and things go quiet around you. When everything turns into friction and conflict, you probably moved without warning, or you are forcing a steady pace that was never yours.'
     },
     reflector: {
       energia:
@@ -1082,7 +1152,7 @@ const overrides = {
       trampa:
         '**The trap for your type** — Deciding in a hurry, staying in places that do not suit you, and **taking what you are reflecting for your own**: moods and pressures that actually belong to the group. **Forcing yourself to be the same every day** goes against how you work.',
       senales:
-        '**Signs you are on track** — **Surprise and delight**, versus disappointment. Get the place and the people right and life keeps surprising you pleasantly. When disappointment is the main note, you are usually somewhere wrong, with the wrong people, or you decided too fast.'
+        '**Signs you are on track** — Your [alignment](signal:aligned) signal is **surprise**, with its bit of delight; your [misalignment](signal:misaligned) one is **disappointment**. Get the place and the people right and life keeps surprising you pleasantly. When disappointment is the main note, you are usually somewhere wrong, with the wrong people, or you decided too fast.'
     }
   },
 
@@ -1277,6 +1347,104 @@ const overrides = {
     uranus: { tier: 'low', label: 'low' },
     neptune: { tier: 'low', label: 'low' },
     pluto: { tier: 'low', label: 'low' }
+  },
+
+  signal: {
+    generator: {
+      aligned: {
+        name: 'Satisfaction',
+        text: [
+          '**Satisfaction** is the sign that a Generator is spending their energy well: a good kind of tired at the end of the day, and the sense that the effort went somewhere worth going. It is not euphoria or constant enthusiasm — it is a quiet depth you notice most when you stop.',
+          'It shows up when the commitment came from a **response in the body** rather than a calculation in the head. Day after day, it is a good sign the [respond](strategy:respond) strategy is actually being followed.'
+        ]
+      },
+      misaligned: {
+        name: 'Frustration',
+        text: [
+          '**Frustration** is the sign that a Generator has committed to something the body never said yes to: things that will not get going, effort that does not add up, the feeling of being stuck.',
+          'It is not a character flaw, and it is not a reason to push harder. It is information. When it takes over, what usually helps is looking back at what got a yes and why, and going back to waiting for something to respond to.'
+        ]
+      }
+    },
+    'manifesting-generator': {
+      aligned: {
+        name: 'Satisfaction',
+        text: [
+          '**Satisfaction**, with some peace around it, is the sign that a Manifesting Generator is on track: moving fast on what lights them up, skipping what does not need doing, and finishing what they start.',
+          'It shows up when the commitment came from a response in the body **and** the people in the path of the move were told about it. Both halves count: responding without informing leaves friction around you even when the work itself is right.'
+        ]
+      },
+      misaligned: {
+        name: 'Frustration',
+        text: [
+          '**Frustration**, often mixed with anger, is the sign that a Manifesting Generator has spread themselves thin: too many commitments the body did not back, or moves made without warning that run into everyone else’s resistance.',
+          'It tends to look like half-finished projects and a lot of hurry with little progress. When it takes over, look at where the yeses piled up and who never got told.'
+        ]
+      }
+    },
+    projector: {
+      aligned: {
+        name: 'Success',
+        text: [
+          '**Success** is the Projector’s signal, and here it has nothing to do with money or status: it means **being seen**. You feel it when your way of seeing is recognized, when an invitation actually fits, and when your effort lands with someone who values it.',
+          'It shows up when you wait for recognition instead of offering yourself unasked, and when you ration your energy instead of forcing yourself to keep a Generator’s pace.'
+        ]
+      },
+      misaligned: {
+        name: 'Bitterness',
+        text: [
+          '**Bitterness** is the sign that a Projector is offering themselves where they were not invited, or demanding an energy they do not have: feeling invisible, giving a lot and getting little back, and worn out underneath it.',
+          'It is the easiest signal to mistake for other people’s problem. When it takes over, it usually means rest is overdue, energy needs pulling back from where it is not valued, and recognition is something to wait for rather than chase.'
+        ]
+      }
+    },
+    manifestor: {
+      aligned: {
+        name: 'Peace',
+        text: [
+          '**Peace** is the Manifestor’s signal: calm around you and room to move. It is not permanent inner serenity — it is the absence of resistance, the sense that you can start something without every step turning into a struggle.',
+          'It shows up above all when you **inform before acting**: telling the people your impact will reach is what defuses opposition before it has a chance to form.'
+        ]
+      },
+      misaligned: {
+        name: 'Anger',
+        text: [
+          '**Anger** is the sign that a Manifestor is running into resistance: people pushing back, permissions that never come, the feeling of having to fight for every move.',
+          'It nearly always points to the same two things: acting without informing, or forcing a steadiness this design was never built for. When it takes over, look at who did not get told — and at how much rest is being skipped.'
+        ]
+      }
+    },
+    reflector: {
+      aligned: {
+        name: 'Surprise',
+        text: [
+          '**Surprise**, with a certain delight in it, is the Reflector’s signal: life surprises you pleasantly when the places and the company are right. It is a lighter signal than the others, which is exactly why it is worth paying attention to.',
+          'It shows up when you choose carefully where you are and who you are with, and when you **give yourself the whole cycle** before closing anything that matters.'
+        ]
+      },
+      misaligned: {
+        name: 'Disappointment',
+        text: [
+          '**Disappointment** is the sign that a Reflector is in the wrong place, with the wrong people, or has decided too fast.',
+          'It is rarely about the particular individuals. It is about fit — what a Reflector samples from the environment goes right through them. When it takes over, changing the environment does far more than trying harder.'
+        ]
+      }
+    }
+  },
+
+  cross: {
+    right: {
+      name: 'Right Angle Cross',
+      text: 'A **right angle cross** describes a **personal** path: life unfolds mostly through your own experience, and the purpose is fulfilled by living what is yours. It is by far the most common angle. What happens around you counts, but you are the axis of the journey.'
+    },
+    left: {
+      name: 'Left Angle Cross',
+      text: 'A **left angle cross** describes a **transpersonal** path: the purpose is fulfilled in relationship with others, and much of what matters arrives through the people you cross paths with. It is an interwoven fate, where the encounters are not incidental but the material it is built from.'
+    },
+    juxtaposition: {
+      name: 'Juxtaposition Cross',
+      text: 'A **juxtaposition cross** describes a **fixed, singular** fate: a very specific role, neither personal nor transpersonal, held fairly independently of what goes on around it. It belongs to a single profile, the 4/1, and is the rarest angle.'
+    }
   }
 };
 

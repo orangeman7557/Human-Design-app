@@ -52,7 +52,8 @@ import {
  *   strategy: string,
  *   authority: string,
  *   profile: string,
- *   definition: string
+ *   definition: string,
+ *   cross: { angle: string, gates: number[] }
  * }>}
  */
 export async function computeChart(birth) {
@@ -127,6 +128,9 @@ export async function computeChart(birth) {
   // 13. Perfil: línea del Sol Personality / línea del Sol Design.
   const profile = `${personality.sun.line}/${design.sun.line}`;
 
+  // 14. Cruz de encarnación: las cuatro activaciones Sol/Tierra + el ángulo.
+  const cross = computeCross(personality, design, profile);
+
   return {
     meta: { birth, personalityJd, designJd },
     personality,
@@ -138,13 +142,49 @@ export async function computeChart(birth) {
     strategy,
     authority,
     profile,
-    definition
+    definition,
+    cross
   };
 }
 
 // ---------------------------------------------------------------------------
 // Funciones derivadas
 // ---------------------------------------------------------------------------
+
+/**
+ * Which profiles carry each incarnation-cross angle. The angle is a property of
+ * the profile alone, so it is a lookup rather than a derivation: right-angle
+ * profiles are the "personal destiny" ones, 4/1 is the single juxtaposition
+ * profile, and the left-angle ones are the "transpersonal" ones.
+ */
+const CROSS_ANGLE_BY_PROFILE = {
+  '1/3': 'right', '1/4': 'right', '2/4': 'right', '2/5': 'right',
+  '3/5': 'right', '3/6': 'right', '4/6': 'right',
+  '4/1': 'juxtaposition',
+  '5/1': 'left', '5/2': 'left', '6/2': 'left', '6/3': 'left'
+};
+
+/**
+ * Incarnation cross: the four Sun/Earth activations plus the angle. The gates
+ * are ordered in the conventional notation — personality Sun/Earth first, then
+ * design Sun/Earth, i.e. "(4/49 | 23/43)".
+ *
+ * Deliberately name-less for now: the ~768 canonical cross names are a separate
+ * content task, so the app shows the angle + the four gates and composes the
+ * meaning from the gate essences it already has (same approach as channels in
+ * Phase 6.D).
+ *
+ * @param {Record<string, Activation>} personality
+ * @param {Record<string, Activation>} design
+ * @param {string} profile
+ * @returns {{ angle: string, gates: number[] }}
+ */
+function computeCross(personality, design, profile) {
+  return {
+    angle: CROSS_ANGLE_BY_PROFILE[profile] ?? 'right',
+    gates: [personality.sun.gate, personality.earth.gate, design.sun.gate, design.earth.gate]
+  };
+}
 
 /**
  * Cuenta los grupos conectados de centros definidos (Single, Split, etc.).

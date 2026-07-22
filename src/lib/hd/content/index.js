@@ -209,6 +209,84 @@ export function getProfileInfo(profile, lang = getLocale()) {
   };
 }
 
+/**
+ * A signal (the alignment / misalignment pair) has no entry of its own: like a
+ * profile, it is composed on the fly — here from the *chart's type*, since the
+ * pair a person gets is a property of their type. Returns the panel's usual
+ * `{ title, paragraphs }`, or null without a chart (there is no generic signal).
+ * @param {'aligned'|'misaligned'} polarity
+ * @param {any} chart
+ * @param {string} [lang]
+ */
+export function getSignalInfo(polarity, chart, lang = getLocale()) {
+  const p = pack(lang);
+  const entry = p.signal?.[chart?.type]?.[polarity];
+  if (!entry) return null;
+  const other = polarity === 'aligned' ? 'misaligned' : 'aligned';
+  const otherEntry = p.signal[chart.type][other];
+  const D = p.drawer;
+  const title = fillTpl(
+    polarity === 'aligned' ? D.signalAlignedTitle : D.signalMisalignedTitle,
+    { name: entry.name }
+  );
+  return {
+    title,
+    paragraphs: entry.text,
+    after: [
+      fillTpl(D.signalPair, {
+        type: p.promptLabels.type?.[chart.type] ?? chart.type,
+        other: other === 'aligned' ? D.signalOtherAligned : D.signalOtherMisaligned,
+        otherKey: other,
+        otherName: otherEntry?.name ?? ''
+      }),
+      D.signalCanonical
+    ]
+  };
+}
+
+/** Display names of both signals for a type, e.g. `{ aligned: 'Satisfacción' }`. */
+export function getSignalNames(type, lang = getLocale()) {
+  const s = pack(lang).signal?.[type];
+  return s ? { aligned: s.aligned.name, misaligned: s.misaligned.name } : null;
+}
+
+/**
+ * The incarnation cross, composed from the angle plus the chart's four Sun/Earth
+ * gates. No canonical cross name yet (the ~768-entry table is its own content
+ * task), so the meaning is carried by the angle text and the four gate themes —
+ * the same approach channels use.
+ * @param {any} chart
+ * @param {string} [lang]
+ */
+export function getCrossInfo(chart, lang = getLocale()) {
+  const cross = chart?.cross;
+  const p = pack(lang);
+  const entry = p.cross?.[cross?.angle];
+  if (!entry) return null;
+  const D = p.drawer;
+  const [pSun, pEarth, dSun, dEarth] = cross.gates;
+  const gateRow = (g) => ({
+    chip: { label: String(g), kind: 'gate', key: String(g) },
+    note: gateTheme(g, lang) ?? null
+  });
+  return {
+    title: fillTpl(D.crossTitle, { name: entry.name, gates: formatCrossGates(cross, lang) }),
+    paragraphs: [entry.text],
+    facts: [
+      { label: D.factCrossPersonality, rows: [gateRow(pSun), gateRow(pEarth)] },
+      { label: D.factCrossDesign, rows: [gateRow(dSun), gateRow(dEarth)] }
+    ],
+    after: [D.crossWeight, D.deeper]
+  };
+}
+
+/** The cross's gates in the conventional "4/49 | 23/43" notation. */
+export function formatCrossGates(cross, lang = getLocale()) {
+  if (!cross?.gates) return '';
+  const [a, b, c, d] = cross.gates;
+  return `${a}/${b}${pack(lang).drawer.crossGatesJoin}${c}/${d}`;
+}
+
 /** Natural-language labels used to build prompts (lower-case, with articles). */
 export function getPromptLabels(lang = getLocale()) {
   return pack(lang).promptLabels;
