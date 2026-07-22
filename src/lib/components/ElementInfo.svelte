@@ -261,7 +261,14 @@
       onkeydown={onContentKeydown}
     >
       {#each info.paragraphs as p}
-        <p class="para">{@html renderInline(p)}</p>
+        {#if p?.subhead}
+          <!-- A heading inside the body (same shape the initial report uses):
+               used where a drawer opens with general framing and then moves on
+               to the concrete element, so the switch is visible. -->
+          <p class="subhead">{p.subhead}</p>
+        {:else}
+          <p class="para">{@html renderInline(p)}</p>
+        {/if}
       {/each}
       {#if info.facts}
         <!-- Schematic identity block (gates/channels/centres): one row per
@@ -589,6 +596,13 @@
     line-height: 1.6;
     color: #c4c4ca;
     margin: 0.7rem 0 0;
+  }
+  .subhead {
+    font-size: 0.9rem;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--accent);
+    margin: 1.1rem 0 -0.35rem;
   }
   .info-body .para:first-child {
     margin-top: 0;

@@ -326,12 +326,17 @@
       String(a.gates) === String(b.gates);
   }
 
-  // The definition highlight, toggled explicitly by the eye next to the
-  // definition note. Hover covers this on desktop, but touch has no hover, so
-  // without it the definition's grouping is simply not viewable on a phone.
-  const definitionPinned = $derived(hover?.kind === 'definition');
-  function toggleDefinitionPin() {
-    hover = definitionPinned ? null : { kind: 'definition', gates: [] };
+  // The definition note. On desktop hover already highlights it and surfaces
+  // the "i", so the click itself does nothing (it only has to stop the window
+  // handler from wiping the reveal out from under the pointer). On touch it
+  // behaves like the centre and channel chips: the tap pins the highlight and
+  // reveals the "i", and only the "i" opens the drawer.
+  function onDefinitionClick(e) {
+    if (!isTouch()) {
+      e.stopPropagation();
+      return;
+    }
+    onChipClick(e, { kind: 'definition', gates: [] }, 'definition:value');
   }
 
   // While a channel/gate chip is hovered or pinned, every other chip dims
@@ -827,20 +832,6 @@
   </svg>
 {/snippet}
 
-<!-- Eye / eye-off for the definition highlight toggle, same 2px line style. -->
-{#snippet eyeIcon(on)}
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    {#if on}
-      <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7Z" />
-      <circle cx="12" cy="12" r="3" />
-    {:else}
-      <path d="M9.9 5.2A10.9 10.9 0 0 1 12 5c6.4 0 10 7 10 7a18.4 18.4 0 0 1-3.2 4.2M6.2 6.2A18.3 18.3 0 0 0 2 12s3.6 7 10 7a10.7 10.7 0 0 0 4.2-.85" />
-      <path d="M10.6 10.6a2 2 0 0 0 2.8 2.8" />
-      <line x1="3" y1="3" x2="21" y2="21" />
-    {/if}
-  </svg>
-{/snippet}
-
 {#snippet imgButtons()}
   <button
     class="img-btn"
@@ -1208,29 +1199,27 @@
                says it — and clicking opens its drawer straight away (which is
                why every definition drawer now opens with the general framing
                the vanished concept "i" used to carry). -->
-          <div class="def-row">
+          <!-- Behaves like every other element: hover (desktop) / tap (touch)
+               highlights the definition on the bodygraph and surfaces its "i";
+               only the "i" opens the drawer. The "i" floats as a superscript
+               because the note is right-aligned and a reserved slot beside it
+               would push it off the card. -->
+          <span class="def-row" data-inner-key="definition:value">
             <button
               class="def-note"
+              class:focus={hover?.kind === 'definition'}
               onmouseenter={() => setHover({ kind: 'definition', gates: [] })}
               onmouseleave={() => setHover(null)}
-              onclick={(e) => { e.stopPropagation(); openInfoFor('definition', 'definition', chart.definition); }}
-              aria-label={tr('chart.moreDefinition')}
+              onclick={onDefinitionClick}
             >
               {DEFINITION_LABELS[chart.definition] ?? chart.definition}
             </button>
-            <!-- Touch has no hover, so the definition's grouping could not be
-                 seen on the graph at all: this pins/unpins the same highlight
-                 the desktop hover gives. -->
-            <button
-              class="def-eye"
-              onclick={(e) => { e.stopPropagation(); toggleDefinitionPin(); }}
-              aria-pressed={definitionPinned}
-              aria-label={definitionPinned ? tr('chart.hideDefinition') : tr('chart.showDefinition')}
-              data-tip={definitionPinned ? tr('chart.hideDefinition') : tr('chart.showDefinition')}
-            >
-              {@render eyeIcon(definitionPinned)}
-            </button>
-          </div>
+            {#if innerReveal === 'definition:value' || infoIsOpen('definition', chart.definition)}
+              <span class="dot-slot def-dot" data-info-cat="definition" data-info-kind="definition" data-info-key={chart.definition}>
+                <InfoDot active={infoIsOpen('definition', chart.definition)} label={tr('chart.moreDefinition')} />
+              </span>
+            {/if}
+          </span>
         </div>
       </div>
 
@@ -1874,24 +1863,19 @@
      bottom; mobile moves it into the card's empty top-right corner (see the
      media query), where it costs no height at all. */
   .def-row {
-    display: flex;
-    align-items: center;
-    gap: 0.3rem;
+    position: relative;
+    display: inline-flex;
     align-self: flex-end;
     margin-top: 0.35rem;
+    /* Room for the floating "i" so it can sit clear of the last letter without
+       spilling past the card's padding. */
+    margin-right: 0.45rem;
   }
-  .def-eye {
-    display: inline-flex;
-    background: none;
-    border: 0;
-    padding: 0;
-    color: var(--text-muted);
-    cursor: pointer;
-  }
-  .def-eye:hover,
-  .def-eye:focus-visible,
-  .def-eye[aria-pressed='true'] {
-    color: var(--accent);
+  /* Further right than the default .dot-slot (-9px): there it half-covered the
+     last character of the value. */
+  .def-dot {
+    top: -8px;
+    right: -13px;
   }
   .def-note {
     background: none;
@@ -1904,7 +1888,8 @@
     text-align: right;
   }
   .def-note:hover,
-  .def-note:focus-visible {
+  .def-note:focus-visible,
+  .def-note.focus {
     color: var(--accent);
   }
 
@@ -2064,9 +2049,6 @@
   .img-btn:disabled {
     opacity: 0.5;
     cursor: progress;
-  }
-  .card.pointer {
-    cursor: pointer;
   }
   .center-list {
     display: flex;
@@ -2496,7 +2478,8 @@
     }
     .weight-col .side-head .head-i {
       top: -3px;
-      right: -8px;
+      /* Nudged right (was -8px) so the superscript stops sitting on the label. */
+      right: -12px;
       transform: none;
     }
   }
