@@ -168,7 +168,8 @@ export default {
     moreCross: 'More about this incarnation cross',
     // Split around the info-dot glyph, which is rendered as the icon itself.
     infoHintA: 'Tap any element of the chart, then tap ',
-    infoHintB: ' for more information'
+    infoHintB: ' for more information.',
+    infoHintC: 'New to Human Design? Tap the \u201cReport\u201d button \u2014 it is a good place to start.'
   },
 
   storage: {

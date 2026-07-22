@@ -148,6 +148,8 @@
   // the user dismisses it or opens any drawer — at that point they've found
   // the mechanic and the line has done its job.
   const INFO_HINT_KEY = 'hd:info-hint-seen';
+  const INFO_HINT_VIEWS = 'hd:info-hint-views';
+  const INFO_HINT_MAX_VIEWS = 5;
   let showInfoHint = $state(false);
   function dismissInfoHint() {
     if (!showInfoHint) return;
@@ -746,7 +748,14 @@
 
   onMount(async () => {
     try {
-      showInfoHint = localStorage.getItem(INFO_HINT_KEY) !== '1';
+      // The hint retires either when the user dismisses it (the ✕, or opening
+      // any drawer) or on its own after a few visits: by the fifth chart the
+      // mechanic has been seen enough, and a permanent notice becomes furniture.
+      const seen = localStorage.getItem(INFO_HINT_KEY) === '1';
+      const views = Number(localStorage.getItem(INFO_HINT_VIEWS) ?? 0) + 1;
+      localStorage.setItem(INFO_HINT_VIEWS, String(views));
+      showInfoHint = !seen && views <= INFO_HINT_MAX_VIEWS;
+      if (views > INFO_HINT_MAX_VIEWS) localStorage.setItem(INFO_HINT_KEY, '1');
     } catch {
       showInfoHint = false;
     }
@@ -939,6 +948,7 @@
       <div class="info-hint">
         <p>
           {tr('chart.infoHintA')}<span class="dot" aria-hidden="true">i</span>{tr('chart.infoHintB')}
+          <span class="hint-more">{tr('chart.infoHintC')}</span>
         </p>
         <button type="button" onclick={dismissInfoHint} aria-label={tr('bug.close')}>✕</button>
       </div>
@@ -1628,6 +1638,10 @@
   }
   /* The "i" is shown as the glyph the user has to look for, not spelled out —
      same circle as InfoDot, but inert (the real one lives on each element). */
+  .hint-more {
+    display: block;
+    margin-top: 0.3rem;
+  }
   .info-hint .dot {
     display: inline-flex;
     align-items: center;

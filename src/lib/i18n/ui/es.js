@@ -184,7 +184,8 @@ export default {
     moreCross: 'Más información sobre esta cruz de encarnación',
     // Split around the info-dot glyph, which is rendered as the icon itself.
     infoHintA: 'Toca cualquier elemento de la carta y pulsa en ',
-    infoHintB: ' para obtener más información'
+    infoHintB: ' para obtener más información.',
+    infoHintC: 'Si no conoces aún el Diseño Humano, pulsa el botón «Informe»: es un buen lugar para empezar.'
   },
 
   storage: {
