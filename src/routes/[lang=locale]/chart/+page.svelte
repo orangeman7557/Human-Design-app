@@ -886,7 +886,9 @@
          dismissed on close, or the first time a drawer is actually opened. -->
     {#if showInfoHint}
       <div class="info-hint">
-        <p>{tr('chart.infoHint')}</p>
+        <p>
+          {tr('chart.infoHintA')}<span class="dot" aria-hidden="true">i</span>{tr('chart.infoHintB')}
+        </p>
         <button type="button" onclick={dismissInfoHint} aria-label={tr('bug.close')}>✕</button>
       </div>
     {/if}
@@ -1467,7 +1469,9 @@
      interactive chrome (see .capturing below). */
   .info-hint {
     display: none;
-    align-items: flex-start;
+    /* Centred, so the ✕ sits on the middle of the box however many lines the
+       text wraps to — not pinned to the first one. */
+    align-items: center;
     gap: 0.6rem;
     margin: -0.6rem 0 1.4rem;
     padding: 0.6rem 0.7rem;
@@ -1479,20 +1483,39 @@
   .info-hint p {
     margin: 0;
     flex: 1;
-    font-size: 0.82rem;
-    line-height: 1.45;
+    font-size: 0.75rem;
+    line-height: 1.5;
+    color: var(--text-muted);
+  }
+  /* The "i" is shown as the glyph the user has to look for, not spelled out —
+     same circle as InfoDot, but inert (the real one lives on each element). */
+  .info-hint .dot {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 14px;
+    height: 14px;
+    margin: 0 0.1rem;
+    vertical-align: -2px;
+    border-radius: 50%;
+    border: 1px solid #4a4a54;
+    background: var(--surface-2);
     color: var(--text);
+    font-family: Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 9px;
+    line-height: 1;
   }
   .info-hint button {
     flex: none;
+    align-self: center;
     background: none;
     border: none;
     padding: 0 0.1rem;
-    margin: -0.1rem 0 0;
     color: var(--accent);
     font-size: 0.85rem;
     cursor: pointer;
-    line-height: 1.4;
+    line-height: 1;
   }
   @media (max-width: 680px) {
     .info-hint {

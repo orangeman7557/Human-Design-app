@@ -158,7 +158,9 @@ export default {
     moreAuthority: 'More about this authority',
     moreProfile: 'More about this profile',
     moreDefinition: 'More about this definition',
-    infoHint: 'Tap any element of the chart for more information (i)'
+    // Split around the info-dot glyph, which is rendered as the icon itself.
+    infoHintA: 'Tap any element of the chart, then tap ',
+    infoHintB: ' for more information'
   },
 
   storage: {

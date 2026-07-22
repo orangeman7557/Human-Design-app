@@ -172,7 +172,9 @@ export default {
     moreAuthority: 'Más información sobre esta autoridad',
     moreProfile: 'Más información sobre este perfil',
     moreDefinition: 'Más información sobre esta definición',
-    infoHint: 'Toca cualquier elemento de la carta para obtener más información (i)'
+    // Split around the info-dot glyph, which is rendered as the icon itself.
+    infoHintA: 'Toca cualquier elemento de la carta y pulsa en ',
+    infoHintB: ' para obtener más información'
   },
 
   storage: {
