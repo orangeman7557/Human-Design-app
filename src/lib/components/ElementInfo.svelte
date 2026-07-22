@@ -261,7 +261,11 @@
       onkeydown={onContentKeydown}
     >
       {#each info.paragraphs as p}
-        {#if p?.subhead}
+        {#if p?.bullets}
+          <ul class="para blist">
+            {#each p.bullets as b}<li>{@html renderInline(b)}</li>{/each}
+          </ul>
+        {:else if p?.subhead}
           <!-- A heading inside the body (same shape the initial report uses):
                used where a drawer opens with general framing and then moves on
                to the concrete element, so the switch is visible. -->
@@ -277,11 +281,11 @@
         <div class="facts">
           {#each info.facts as f}
             <div class="fact">
-              <span class="fact-label">{f.label}{#if f.tip}<sup class="fact-i" data-tip={f.tip}>i</sup>{/if}:</span>
+              <span class="fact-label">{f.label}{#if f.tip}<sup class="fact-i" data-tip={f.tip}>i</sup>{/if}:{#if f.info}<button class="fact-dot" type="button" aria-label={f.label} onclick={() => onnavigate?.(f.info.kind, f.info.key)}>i</button>{/if}</span>
               <span class="fact-rows" class:inline={f.inline}>
                 {#each f.rows as r}
                   <span class="fact-row">
-                    {#if r.pre}<span class="fact-pre">{r.pre}</span>{/if}
+                    {#if r.pre}<span class="fact-pre">{r.pre}{#if r.info}<button class="fact-dot" type="button" aria-label={r.pre} onclick={() => onnavigate?.(r.info.kind, r.info.key)}>i</button>{/if}</span>{/if}
                     <button class="index-chip gold" type="button" onclick={() => onnavigate?.(r.chip.kind, r.chip.key)}>{r.chip.label}</button>
                     {#if r.note}<span class="fact-note">{r.note}</span>{/if}
                   </span>
@@ -598,6 +602,12 @@
     color: #c4c4ca;
     margin: 0.7rem 0 0;
   }
+  .blist {
+    padding-left: 1.05rem;
+  }
+  .blist li {
+    margin-top: 0.3rem;
+  }
   .subhead {
     font-size: 0.9rem;
     font-weight: 600;
@@ -671,6 +681,7 @@
   }
   .fact-label {
     flex: none;
+    min-width: 6.2rem;
     font-size: 0.8rem;
     color: var(--text-muted);
     padding-top: 0.24rem;
@@ -691,9 +702,34 @@
   }
   /* Row prefix ("sol" / "tierra" on the cross): fixed width so the chips of
      both rows line up under each other. */
+  /* Small italic "i" matching InfoDot, opening the label's own drawer. */
+  .fact-dot {
+    margin-left: 0.2rem;
+    padding: 0;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    border: 1px solid #4a4a54;
+    background: var(--surface-2);
+    color: var(--text-muted);
+    font-family: Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 9px;
+    line-height: 1;
+    cursor: pointer;
+    vertical-align: middle;
+  }
+  .fact-dot:hover,
+  .fact-dot:focus-visible {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
   .fact-pre {
     flex: none;
-    min-width: 3.1rem;
+    /* Wide enough for "tierra" + its "i", tight enough that the chip does not
+       drift away from the word. Both sides use it, so Personality and Design
+       line up under each other. */
+    min-width: 4.1rem;
     font-size: 0.8rem;
     color: var(--text-muted);
   }

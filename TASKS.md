@@ -19,7 +19,14 @@ lives in [`BACKLOG.md`](./BACKLOG.md).
 
 Last updated: 2026-07-22.
 
-> Latest change (2026-07-22, **cruz: lectura propia por cruz, esquema Sol/Tierra y varios pulidos**):
+> Latest change (2026-07-22, **el drawer de la cruz, reordenado**): ángulo breve → por qué se leen las cuatro puertas juntas → esquema → interpretación de esa cruz → handoff.
+> **Los textos de ángulo se acortan** y dejan claro que hablan *solo* de la orientación, no de la cruz entera. El párrafo esquemático que repetía las puertas sale de arriba; en su lugar va una nota breve sobre por qué las cuatro se leen juntas (absorbe el antiguo `crossWeight`, que decía lo mismo más abajo).
+> **Esquema alineado**: `fact-label` con ancho mínimo y `fact-pre` ajustado, así las filas de Diseño empiezan donde las de Personalidad (verificado: los cuatro chips en x=125) y «tierra» queda pegada a su chip. **Seis "i" nuevas** — Personalidad y Diseño abren su columna de activaciones, y cada «sol»/«tierra» abre su planeta (`fact-dot` en `ElementInfo`, reutilizando el `onnavigate` de los chips).
+> **Concepto de la cruz**: los tres ángulos pasan a **viñetas** (ElementInfo estrena soporte de `bullets`, como ya tenía el informe), el «El ángulo se deduce del perfil» va en **párrafo propio**, y se añade el origen de los nombres — **confirmado por búsqueda: vienen de la geometría del mandala** (la separación angular entre el Sol de Personalidad y el de Diseño), no del hexagrama.
+> **Interpretación por cruz — mecanismo listo, textos pendientes.** El drawer ya reserva su sitio (bloque `crossEssence`, misma clave que `crossName`) y **cae con elegancia** en la lectura compuesta de las cuatro puertas cuando una cruz no tiene texto propio, así que ninguna queda vacía. **Escribir las 192 interpretaciones —el «por qué se llama del Edén»— es un proyecto de redacción aparte**, no derivable de los datos: requiere conocer la imagen de cada nombre. Pendiente de decidir si se aborda por tandas.
+> **Verificado**: 36/36 tests, build sin avisos, drawer revisado en navegador.
+>
+> Previo (2026-07-22, **cruz: lectura propia por cruz, esquema Sol/Tierra y varios pulidos**):
 > **Cada cruz tiene ahora su lectura**, no solo la del ángulo. Se compone de las **esencias de sus cuatro puertas** —la misma técnica de los canales— separando el eje consciente (Personalidad) del inconsciente (Diseño), así que dos cruces del mismo ángulo ya leen distinto. **No son 192 textos escritos a mano**: eso sigue siendo un proyecto de redacción aparte; esto da especificidad real hoy y el handoff de IA cubre la profundidad.
 > **Esquema del drawer**: las cuatro puertas pasan de dos listas planas a `Personalidad: sol (36) tema / tierra (6) tema` y `Diseño: …`. `ElementInfo` estrena un `pre` opcional por fila (ancho fijo, así los chips se alinean). **Título del drawer sin las puertas**, solo el nombre.
 > **Concepto de la cruz**: añadido el párrafo de **por qué se llama «cruz»** (cruce de los ejes personalidad-diseño y Sol-Tierra) y el detalle de que el ángulo **sale del perfil** con ejemplos.
