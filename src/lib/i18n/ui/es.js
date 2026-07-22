@@ -110,6 +110,7 @@ export default {
     errorPrefix: 'Error: {msg}',
     backToForm: 'Volver al formulario',
     errImageGen: 'No se pudo generar la imagen.',
+    errImageTimeout: 'La imagen ha tardado demasiado en generarse. Inténtalo de nuevo.',
     errSave: 'No se pudo guardar: {msg}',
     errShare: 'No se pudo compartir el enlace: {msg}',
     errDownload: 'No se pudo descargar la imagen: {msg}',
@@ -135,6 +136,9 @@ export default {
     // Section headings
     hBodygraph: 'Bodygraph',
     hCenters: 'Centros',
+    // Short label for the cross CARD only; the drawer eyebrow keeps the full
+    // "Cruz de encarnación" (category.cross).
+    hCross: 'Cruz',
     hChannels: 'Canales',
     hGates: 'Puertas',
     hHangingGates: 'Puertas colgantes',
@@ -348,7 +352,7 @@ export default {
     activationCol: 'Activaciones',
     planet: 'Planeta',
     signal: 'Señal',
-    signals: 'Señales',
+    signals: 'Señales de alineamiento',
     cross: 'Cruz de encarnación'
   },
 

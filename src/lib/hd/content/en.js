@@ -275,6 +275,9 @@ const overrides = {
       'Human Design calls these the *signature* (alignment) and the *not-self theme* (misalignment).',
     signalOtherAligned: 'alignment',
     signalOtherMisaligned: 'misalignment',
+    signalIndexHeading: 'The Signals of the Five Types',
+    definitionIntro:
+      '**Definition** describes how a chart’s defined centers group together: whether they form one single block of energy or several separate ones. It speaks to inner consistency — which parts are always "on" and linked — and to how that energy integrates.',
     crossTitle: '{name} ({gates})',
     factCrossPersonality: 'Personality Sun and Earth',
     factCrossDesign: 'Design Sun and Earth',

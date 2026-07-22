@@ -73,6 +73,15 @@ export function getElementInfo(kind, key, lang = getLocale()) {
   }
   // Closed-set categories append the full set of possibilities (text audit,
   // jul 2026): a compact clickable schema with the current element highlighted.
+  // The "Definición" card was merged into the Centres card (2026-07-22), so it
+  // no longer has a concept "i" of its own — every concrete definition drawer
+  // now opens with the general framing that "i" used to carry.
+  if (kind === 'definition') {
+    const D = pack(lang).drawer;
+    const rel = relatedIndex(kind, key, lang);
+    const withIntro = { ...entry, paragraphs: [D.definitionIntro, ...entry.paragraphs] };
+    return rel ? { ...withIntro, related: rel } : withIntro;
+  }
   const rel = relatedIndex(kind, key, lang);
   return rel ? { ...entry, related: rel } : entry;
 }
@@ -232,6 +241,9 @@ export function getSignalInfo(polarity, chart, lang = getLocale()) {
   return {
     title,
     paragraphs: entry.text,
+    // Closed set, like the other value drawers: the five types with their own
+    // pair, this chart's type highlighted. The chips navigate to the type.
+    related: signalIndex(chart.type, lang),
     after: [
       fillTpl(D.signalPair, {
         type: p.promptLabels.type?.[chart.type] ?? chart.type,
@@ -242,6 +254,21 @@ export function getSignalInfo(polarity, chart, lang = getLocale()) {
       D.signalCanonical
     ]
   };
+}
+
+/** The five types with their signal pair as the note ({ heading, items }). */
+function signalIndex(currentType, lang = getLocale()) {
+  const p = pack(lang);
+  const labels = p.labels.type;
+  const items = Object.entries(p.signal).map(([type, pair]) => ({
+    kind: 'type',
+    key: type,
+    label: labels[type] ?? type,
+    note: `${pair.aligned.name} / ${pair.misaligned.name}`,
+    pct: null,
+    current: type === currentType
+  }));
+  return { heading: p.drawer.signalIndexHeading, items, hasPct: false };
 }
 
 /** Display names of both signals for a type, e.g. `{ aligned: 'Satisfacción' }`. */

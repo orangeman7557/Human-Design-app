@@ -101,6 +101,7 @@ export default {
     errorPrefix: 'Error: {msg}',
     backToForm: 'Back to the Form',
     errImageGen: 'Could not generate the image.',
+    errImageTimeout: 'The image took too long to generate. Please try again.',
     errSave: 'Could not save: {msg}',
     errShare: 'Could not share the link: {msg}',
     errDownload: 'Could not download the image: {msg}',
@@ -124,6 +125,7 @@ export default {
     downloadImage: 'Download Image',
     hBodygraph: 'Bodygraph',
     hCenters: 'Centers',
+    hCross: 'Cross',
     hChannels: 'Channels',
     hGates: 'Gates',
     hHangingGates: 'Hanging Gates',
@@ -338,7 +340,7 @@ export default {
     activationCol: 'Activations',
     planet: 'Planet',
     signal: 'Signal',
-    signals: 'Signals',
+    signals: 'Alignment Signals',
     cross: 'Incarnation Cross'
   },
 

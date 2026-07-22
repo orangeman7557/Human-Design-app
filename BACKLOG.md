@@ -1719,6 +1719,10 @@ bump. What got fixed is in the commits and in `TASKS.md`; this records what was
 
 ### Latent, worth a fix if it ever bites
 
+- ✅ **`toBlob()` timeout — DONE 2026-07-22.** A 30 s `Promise.race` in
+  `captureBlob` turns the silent hang into the existing `shareError` path
+  (`chart.errImageTimeout`), so the buttons recover instead of staying dead
+  until a reload. Original entry below.
 - **`toBlob()` (html-to-image) has no timeout and no recovery.** PNG and PDF
   export were confirmed working on real browsers (author, 2026-07-22), but in
   an embedded Chromium the call hung forever: it never resolves and never
