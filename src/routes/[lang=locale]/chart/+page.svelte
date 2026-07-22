@@ -1120,7 +1120,11 @@
             onmouseleave={clearReveal}
           >
             <span class="label">
-              {tr('chart.hCross')}
+              <!-- Full title on mobile (the card is full-width there and it
+                   fits); the short one on desktop, where the 192px column has
+                   to hold the four gates on the same line. -->
+              <span class="x-long">{tr('category.cross')}</span>
+              <span class="x-short">{tr('chart.hCross')}</span>
               <span class="dot-h2">
                 {#if cardReveal === 'cross' || infoIsOpen('concept', 'cross')}
                   <span class="dot-host" data-info-cat="cross" data-info-kind="concept" data-info-key="cross">
@@ -1911,6 +1915,9 @@
   /* Incarnation cross: label left, the four Sun/Earth gates pushed right on the
      SAME line (the card label is just "Cruz" so they fit even in the 192px
      desktop column), and the angle name on its own line below. */
+  .x-long {
+    display: none;
+  }
   .cross-card .label {
     display: flex;
     align-items: center;
@@ -2172,6 +2179,12 @@
     .overlay.left .card:first-child {
       grid-column: 1 / -1;
     }
+    .x-long {
+      display: inline;
+    }
+    .x-short {
+      display: none;
+    }
     /* The cross closes the grid across both columns: its name is far longer
        than any other value, so in a half-width cell it would be 4-5 lines and
        stretch its whole row. Full width keeps it to label + one line. */
@@ -2354,6 +2367,12 @@
     margin: 0;
     justify-content: center;
     transform: translateX(46px);
+  }
+  main.pdf-shot .x-long {
+    display: none;
+  }
+  main.pdf-shot .x-short {
+    display: inline;
   }
   main.pdf-shot .def-row {
     position: static;
