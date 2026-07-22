@@ -464,6 +464,20 @@
     return [name, tail].filter(Boolean).join(' ') + '.png';
   }
 
+  // html-to-image's toBlob can hang forever instead of resolving or rejecting
+  // (observed in an embedded Chromium): `sharing` then stays true and the
+  // share/download/PDF buttons are dead until a reload, with no error anywhere.
+  // A timeout turns that silent hang into the normal shareError path.
+  const CAPTURE_TIMEOUT_MS = 30000;
+  function withTimeout(promise, ms = CAPTURE_TIMEOUT_MS) {
+    return Promise.race([
+      promise,
+      new Promise((_, reject) =>
+        setTimeout(() => reject(new Error(tr('chart.errImageTimeout'))), ms)
+      )
+    ]);
+  }
+
   async function captureBlob({ summaryOnly = false } = {}) {
     // Wait for the .capturing class (set via `sharing`) to reach the DOM
     // before cloning, so the export-only centring is picked up.
@@ -502,7 +516,7 @@
         parseFloat(cs.paddingBottom) -
         footerH;
     }
-    const blob = await toBlob(captureEl, {
+    const blob = await withTimeout(toBlob(captureEl, {
       backgroundColor: '#0b0b0d',
       pixelRatio: 2,
       width: contentW + pad * 2,
@@ -527,7 +541,7 @@
           return false;
         return true;
       }
-    });
+    }));
     if (!blob) throw new Error(tr('chart.errImageGen'));
     return blob;
   }
@@ -792,6 +806,19 @@
   <meta name="description" content={tr('chart.seoDesc')} />
 </svelte:head>
 
+<!-- Polarity glyphs for the signals card: a + / − inside a circle, drawn in the
+     same 2px-stroke line style as the share/download icons. Not colour-coded
+     green/red on purpose — the drawers are explicit that the misalignment
+     signal is *information*, not a failing, so a "bad" red would contradict
+     the copy. The aligned one takes the accent, the other stays muted. -->
+{#snippet polarityIcon(plus)}
+  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+    <circle cx="12" cy="12" r="9" />
+    <line x1="7.5" y1="12" x2="16.5" y2="12" />
+    {#if plus}<line x1="12" y1="7.5" x2="12" y2="16.5" />{/if}
+  </svg>
+{/snippet}
+
 {#snippet imgButtons()}
   <button
     class="img-btn"
@@ -1027,13 +1054,15 @@
                 {/if}
               </span>
             </span>
-            <span class="value sig" data-inner-key="signal:aligned"
-              ><span class="sig-k">{SIGNAL_LABELS.aligned}</span>{signalNames.aligned}{#if innerReveal === 'signal:aligned' || infoIsOpen('signal', 'aligned')}<span
+            <span class="value sig" data-inner-key="signal:aligned" title={SIGNAL_LABELS.aligned}
+              ><span class="sig-i plus" aria-hidden="true">{@render polarityIcon(true)}</span
+              ><span class="sr-only">{SIGNAL_LABELS.aligned}: </span>{signalNames.aligned}{#if innerReveal === 'signal:aligned' || infoIsOpen('signal', 'aligned')}<span
                 class="dot-side"
                 data-info-cat="signal" data-info-kind="signal" data-info-key="aligned"
               ><InfoDot active={infoIsOpen('signal', 'aligned')} label={tr('chart.moreSignalAligned')} /></span>{/if}</span>
-            <span class="value sig" data-inner-key="signal:misaligned"
-              ><span class="sig-k">{SIGNAL_LABELS.misaligned}</span>{signalNames.misaligned}{#if innerReveal === 'signal:misaligned' || infoIsOpen('signal', 'misaligned')}<span
+            <span class="value sig" data-inner-key="signal:misaligned" title={SIGNAL_LABELS.misaligned}
+              ><span class="sig-i minus" aria-hidden="true">{@render polarityIcon(false)}</span
+              ><span class="sr-only">{SIGNAL_LABELS.misaligned}: </span>{signalNames.misaligned}{#if innerReveal === 'signal:misaligned' || infoIsOpen('signal', 'misaligned')}<span
                 class="dot-side"
                 data-info-cat="signal" data-info-kind="signal" data-info-key="misaligned"
               ><InfoDot active={infoIsOpen('signal', 'misaligned')} label={tr('chart.moreSignalMisaligned')} /></span>{/if}</span>
@@ -1074,7 +1103,7 @@
             onmouseleave={clearReveal}
           >
             <span class="label">
-              {tr('category.cross')}
+              {tr('chart.hCross')}
               <span class="dot-h2">
                 {#if cardReveal === 'cross' || infoIsOpen('concept', 'cross')}
                   <span class="dot-host" data-info-cat="cross" data-info-kind="concept" data-info-key="cross">
@@ -1148,32 +1177,21 @@
               </span>
             {/each}
           </div>
-        </div>
-        <!-- Definition sits under Centres: it *is* a statement about how the
-             defined centres group together, so it explains itself here. -->
-        <div
-          class="card pointer"
-          role="presentation"
-          onmouseenter={() => setHover({ kind: 'definition', gates: [] })}
-          onmouseleave={() => { setHover(null); clearReveal(); }}
-          onmouseover={(e) => cardOver(e, 'definition')}
-          onclick={(e) => cardClick(e, 'definition', () => pin(e, { kind: 'definition', gates: [] }))}
-        >
-          <span class="label">
-            {tr('category.definition')}
-            <span class="dot-h2">
-              {#if cardReveal === 'definition' || infoIsOpen('concept', 'definition')}
-                <span class="dot-host" data-info-cat="definition" data-info-kind="concept" data-info-key="definition">
-                  <InfoDot active={infoIsOpen('concept', 'definition')} label={tr('chart.whatDefinition')} />
-                </span>
-              {/if}
-            </span>
-          </span>
-          <span class="value" data-inner-key="definition:value"
-            >{DEFINITION_LABELS[chart.definition] ?? chart.definition}{#if innerReveal === 'definition:value' || infoIsOpen('definition', chart.definition)}<span
-              class="dot-side"
-              data-info-cat="definition" data-info-kind="definition" data-info-key={chart.definition}
-            ><InfoDot active={infoIsOpen('definition', chart.definition)} label={tr('chart.moreDefinition')} /></span>{/if}</span>
+          <!-- Definition lives here rather than in a card of its own: it *is* a
+               statement about how these centres group together, so it reads as
+               the closing note of the list. No "DEFINICIÓN" label — the value
+               says it — and clicking opens its drawer straight away (which is
+               why every definition drawer now opens with the general framing
+               the vanished concept "i" used to carry). -->
+          <button
+            class="def-note"
+            onmouseenter={() => setHover({ kind: 'definition', gates: [] })}
+            onmouseleave={() => setHover(null)}
+            onclick={(e) => { e.stopPropagation(); openInfoFor('definition', 'definition', chart.definition); }}
+            aria-label={tr('chart.moreDefinition')}
+          >
+            {DEFINITION_LABELS[chart.definition] ?? chart.definition}
+          </button>
         </div>
       </div>
 
@@ -1714,7 +1732,9 @@
     width: 17px;
     height: 17px;
     vertical-align: middle;
-    margin-left: 0.18rem;
+    /* Halved (was 0.18rem): the label's own letter-spacing already leaves a gap
+       after the last letter, so the "i" read as detached from the word. */
+    margin-left: 0.09rem;
   }
   .dot-host {
     display: inline-flex;
@@ -1793,28 +1813,57 @@
   }
 
   /* Signals card: two values in one card, each with its own "i". The polarity
-     rides its own tight line above the word — side by side it overflows the
-     192px column ("DESALINEAMIENTO Frustración" doesn't fit), and this way the
-     card is the same height at every breakpoint. */
-  .sig-k {
-    display: block;
-    font-size: 0.62rem;
-    line-height: 1.25;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+     is a +/− glyph rather than the spelled-out word, which keeps the card to
+     three lines (label + two values) instead of five. The word survives for
+     assistive tech and as the hover title. */
+  .value.sig {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+  .sig-i {
+    display: inline-flex;
+    flex: none;
     color: var(--text-muted);
   }
-  .value.sig + .value.sig {
-    margin-top: 0.25rem;
+  .sig-i.plus {
+    color: var(--accent);
+  }
+  /* Definition as the closing note of the Centres card: small, muted, pinned to
+     the bottom-right so it reads as a caption on the list rather than a field. */
+  .def-note {
+    align-self: flex-end;
+    margin-top: 0.35rem;
+    background: none;
+    border: 0;
+    padding: 0;
+    font: inherit;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    text-align: right;
+  }
+  .def-note:hover,
+  .def-note:focus-visible {
+    color: var(--accent);
   }
 
-  /* Incarnation cross: the four Sun/Earth gates ride the label's line, pushed
-     right, so the long angle name keeps the full width below. In the narrow
-     desktop column they simply wrap onto their own line. */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  /* Incarnation cross: label left, the four Sun/Earth gates pushed right on the
+     SAME line (the card label is just "Cruz" so they fit even in the 192px
+     desktop column), and the angle name on its own line below. */
   .cross-card .label {
     display: flex;
-    align-items: baseline;
-    flex-wrap: wrap;
+    align-items: center;
+    flex-wrap: nowrap;
     gap: 0 0.35rem;
   }
   .xgates {
@@ -2091,6 +2140,11 @@
       position: static;
       order: 2;
       justify-content: flex-start;
+      /* Without this the zero-height flex box stretches .bg-title to 0 too, and
+         the absolutely-positioned "i" (top:50% of nothing) rode above the text
+         like a superscript. flex-start keeps the label's natural height, so the
+         "i" sits inline as it does everywhere else. */
+      align-items: flex-start;
       align-self: flex-start;
       height: 0;
       overflow: visible;
@@ -2108,6 +2162,23 @@
       flex-direction: row;
       flex-wrap: wrap;
       justify-content: flex-start;
+    }
+    /* The TIPO label shares its line with the first chips instead of eating a
+       row of its own — the tallest block above the bodygraph, so this is where
+       the vertical saving is. The gap leaves room for the label's "i". */
+    .type-card {
+      flex-direction: row;
+      flex-wrap: nowrap;
+      align-items: flex-start;
+      column-gap: 0.75rem;
+    }
+    .type-card > .label {
+      flex: none;
+      padding-top: 0.15rem;
+    }
+    .type-card .type-list {
+      flex: 1;
+      margin-top: 0;
     }
     /* Types in two left-aligned rows: G + MG, then P / M / R. The selected
        chip is taller (bigger font + padding); align-items:center keeps every
@@ -2224,6 +2295,13 @@
     margin: 0;
     justify-content: center;
     transform: translateX(46px);
+  }
+  main.pdf-shot .type-card {
+    flex-direction: column;
+    column-gap: 0;
+  }
+  main.pdf-shot .type-card > .label {
+    padding-top: 0;
   }
   main.pdf-shot .type-list,
   main.pdf-shot .center-list {

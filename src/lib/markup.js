@@ -18,7 +18,10 @@ export function renderInline(text) {
     .replace(/>/g, '&gt;');
   return esc
     .replace(
-      /\[([^\]]+)\]\(([a-z]+:[^)]+)\)/g,
+      // The kind is camelCase for some elements (`activationCol:personality`),
+      // so it must accept capitals — with `[a-z]+` those links never matched and
+      // the raw `[label](kind:key)` leaked into the rendered text.
+      /\[([^\]]+)\]\(([a-zA-Z]+:[^)]+)\)/g,
       '<span class="ilink" role="link" tabindex="0" data-link="$2">$1</span>'
     )
     .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')

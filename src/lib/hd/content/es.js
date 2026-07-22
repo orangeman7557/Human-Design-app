@@ -1479,6 +1479,12 @@ export default {
       'En Diseño Humano esta señal se llama, según el caso, la *firma* (alineamiento) o el *tema del no-yo* (desalineamiento).',
     signalOtherAligned: 'alineamiento',
     signalOtherMisaligned: 'desalineamiento',
+    signalIndexHeading: 'Las señales de los cinco tipos',
+    // Prepended to every definition drawer: the "Definición" card label was
+    // merged into the Centres card (2026-07-22), so the concept-level framing
+    // that its own "i" used to carry now travels with each concrete definition.
+    definitionIntro:
+      'La **definición** describe cómo se agrupan entre sí los centros definidos de una carta: si forman un único bloque de energía o varios grupos separados. Habla de la consistencia interna —qué partes están siempre "encendidas" y enlazadas— y de cómo se integra esa energía.',
     crossTitle: '{name} ({gates})',
     factCrossPersonality: 'Sol y Tierra de Personalidad',
     factCrossDesign: 'Sol y Tierra de Diseño',
