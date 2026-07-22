@@ -24,6 +24,15 @@ export default {
     tagline: 'Calculate your Human Design chart — free, no signup.'
   },
 
+  // "What is Human Design?" — discreet link under the tagline that opens a modal
+  // with the initial report's opening (Part A), for someone who lands without
+  // knowing the system.
+  whatHd: {
+    link: 'What is Human Design?',
+    invite:
+      'Fill in the form above with your date, time and place of birth to calculate your own chart — it’s the way in to explore and learn more about your design.'
+  },
+
   form: {
     name: 'Name',
     birthDate: 'Date of Birth',
@@ -253,7 +262,8 @@ export default {
 
   drawerUi: {
     back: 'Back',
-    close: 'Close'
+    close: 'Close',
+    resize: 'Drag to resize'
   },
   ai: {
     heading: 'Learn More Using AI',

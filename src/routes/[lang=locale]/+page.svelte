@@ -35,6 +35,7 @@
     ensureBackupRestored
   } from '$lib/db/charts.js';
   import StorageInfo from '$lib/components/StorageInfo.svelte';
+  import WhatIsHD from '$lib/components/WhatIsHD.svelte';
   import { computeChart } from '$lib/hd/chart.js';
 
   // ── SEO (Phase L, step 2 · per-language in Phase M) ───────────────────
@@ -498,6 +499,7 @@
       </button>
     </div>
     <p class="tagline">{tr('home.tagline')}</p>
+    <div class="what-hd"><WhatIsHD {lang} /></div>
   </header>
 
   <form onsubmit={submit}>
@@ -748,6 +750,10 @@
     color: var(--text-muted);
     margin: 0;
     font-size: 0.9rem;
+  }
+  .what-hd {
+    text-align: center;
+    margin-top: 0.55rem;
   }
   form {
     display: flex;

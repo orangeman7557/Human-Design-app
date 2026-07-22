@@ -114,6 +114,7 @@ El usuario introduce su fecha, hora y lugar de nacimiento → la app calcula su 
             ├── About.svelte             ← modal "acerca de" (footer)
             ├── ReportBug.svelte         ← "notificar un fallo" → Web3Forms (footer)
             ├── StorageInfo.svelte       ← "saber más": dónde viven las cartas (bóveda de cookie)
+            ├── WhatIsHD.svelte          ← "¿Qué es el Diseño Humano?": modal en la home con la Parte A del informe
             ├── LangSwitch.svelte        ← selector de idioma (pestaña colgando del borde superior)
             ├── focus-trap.js            ← acción compartida: foco dentro del overlay + restore al cerrar
             ├── scroll-lock.js           ← acción compartida: body pinned con overlay abierto (fix scroll iOS)

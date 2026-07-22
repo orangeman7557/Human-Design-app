@@ -294,7 +294,9 @@ function crossIndex(lang = getLocale()) {
           gates: `${q[0]}/${q[1]} | ${q[2]}/${q[3]}`,
           tag: tags[angle],
           kind: 'gate',
-          key: String(g)
+          key: String(g),
+          // The name is a chip that opens THIS cross's own drawer.
+          crossKey: key
         };
       })
     )
@@ -361,7 +363,25 @@ export function getCrossEssence(cross, lang = getLocale()) {
  * @param {string} [lang]
  */
 export function getCrossInfo(chart, lang = getLocale()) {
-  const cross = chart?.cross;
+  return buildCrossInfo(chart?.cross, lang);
+}
+
+/**
+ * The cross drawer for an ARBITRARY cross, keyed "<sunGate>|<angle>" — used by
+ * the 192-cross index so each name chip opens that specific cross, not only the
+ * chart's own. The quartet is regenerated from the wheel (`crossQuartet`), the
+ * same map the engine and `cross-names.test.js` validate against.
+ * @param {string} key  e.g. "36|right"
+ * @param {string} [lang]
+ */
+export function getCrossInfoByKey(key, lang = getLocale()) {
+  const [g, angle] = String(key).split('|');
+  const gates = crossQuartet(Number(g), angle);
+  if (!gates) return null;
+  return buildCrossInfo({ angle, gates }, lang);
+}
+
+function buildCrossInfo(cross, lang = getLocale()) {
   const p = pack(lang);
   const entry = p.cross?.[cross?.angle];
   if (!entry) return null;
@@ -381,6 +401,9 @@ export function getCrossInfo(chart, lang = getLocale()) {
   return {
     title: fillTpl(D.crossTitle, { name: getCrossName(cross, lang) ?? entry.name }),
     paragraphs: [entry.text, D.crossFourGates],
+    // Wide, fixed-width fact labels so Personality/Design rows align (sol/tierra
+    // under each other). Other drawers keep the label snug to the chips.
+    factsAlign: true,
     facts: [
       {
         label: D.factCrossPersonality,

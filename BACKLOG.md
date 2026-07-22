@@ -299,11 +299,15 @@ incarnation cross). Items registered below in suggested priority order.
 - ✅ **NEXT AFTER PHASE M (author, 2026-07-21) — DONE 2026-07-22.** Items 1 and 2
   shipped together. The only remainder is the cross **name table**, now its own
   agreed next batch.
-- ⬜ **3. "¿Qué es el Diseño Humano?" entry point on the home.** All the
-  educational material lives *after* calculating; someone landing on
-  hdchart.app without knowing the system sees only a form and no reason to
-  type their birth data. A discreet link/drawer on the home reusing existing
-  concept content (also feeds the prerendered home's SEO).
+- ✅ **3. "¿Qué es el Diseño Humano?" entry point on the home — DONE 2026-07-23.**
+  A discreet, centred link under the tagline (title-white, hover underline) opens
+  a modal (`WhatIsHD.svelte`) with the initial report's **Part A** (what HD is +
+  the ant analogy + the life experiment + the bodygraph) plus a closing paragraph
+  inviting the visitor to fill the form. Route-bound so it survives prerender
+  (`t(k,p,lang)` + `getReportSection(id,lang)`); in-text drawer links are stripped
+  to plain text since the home has no drawer system. Original entry: all the
+  educational material lived *after* calculating; someone landing on hdchart.app
+  without knowing the system saw only a form and no reason to type their birth data.
 - ✅ **4. iOS local-data loss (CRITICAL) — RESOLVED 2026-07-07.** Cookie
   vault + silent restore shipped; see the dedicated section below ("iOS
   storage eviction — investigation + mitigation plan"). Real-iPhone check
@@ -775,19 +779,18 @@ corrected).
   the stack, and it would be worth passing which text the reader was on (element
   kind + key) as context so the report says what it is about.
 
-- ⬜ **Element drawer: pin the "Saber más usando IA" block to the bottom, and let
-  the user widen the drawer (author, 2026-07-22).** Two related improvements to
-  `ElementInfo.svelte`:
-  1. On **desktop** the AI section sits right after the text instead of at the
-     foot of the panel, so short drawers leave a gap under it and long ones push
-     it out of sight. Mobile already behaves (bottom sheet). Pinning it to the
-     bottom would also give the body more room. **Catch to design for:** when
-     "Ver/editar el prompt" is open, the textarea can be tall — so the pinned
-     block needs **its own scroll**, not to eat the body's height.
-  2. A **user-resizable drawer width on desktop**, with the choice **remembered**
-     (localStorage, same pattern as the preferred AI / preferred angle). Some
-     drawers — the 192-cross index, the 64-gate index — are dense enough that a
-     wider panel genuinely helps.
+- ✅ **Element drawer: pin the "Saber más usando IA" block to the bottom, and let
+  the user widen the drawer (author, 2026-07-22) — DONE 2026-07-23.** Both parts
+  shipped in `ElementInfo.svelte`:
+  1. The panel is now a bounded flex column (`overflow:hidden` + info body
+     `flex:1; min-height:0`): the IA section is **pinned at the bottom** and the
+     text fills the space up to it (on desktop and mobile). When "Ver/editar el
+     prompt" opens, the body **shrinks and scrolls** (text pushed up, like mobile)
+     and the textarea is capped (`max-height:40vh` + its own scroll), so a long
+     prompt never pushes the layout off-screen.
+  2. A **user-resizable drawer width on desktop** via a left-edge drag handle,
+     clamped 340–820px and **remembered** in localStorage (`hd:drawer-width`).
+     Mobile is unaffected (bottom sheet, no handle).
 
 - ⬜ **PDF report on a white background instead of dark mode (requested
   2026-07-06).** The initial-report PDF (`report-pdf.js`) currently mirrors the

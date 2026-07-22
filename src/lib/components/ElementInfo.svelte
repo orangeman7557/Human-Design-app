@@ -58,6 +58,46 @@
   let angleOpen = $state(false);
   let editedPrompt = $state('');
   let wide = $state(false);
+
+  // Desktop: the drawer width is user-resizable (drag the left edge) and the
+  // choice is remembered — some drawers (the 192-cross index, the 64-gate index)
+  // are dense enough that a wider panel genuinely helps.
+  const DRAWER_W_KEY = 'hd:drawer-width';
+  const DRAWER_W_MIN = 340;
+  const DRAWER_W_MAX = 820;
+  function loadWidth() {
+    try {
+      const v = parseInt(localStorage.getItem(DRAWER_W_KEY) || '', 10);
+      if (v >= DRAWER_W_MIN) return Math.min(v, DRAWER_W_MAX);
+    } catch {
+      // Private mode / storage disabled: fall back to the default.
+    }
+    return 420;
+  }
+  let panelWidth = $state(loadWidth());
+  let resizing = $state(false);
+  function startResize(e) {
+    e.preventDefault();
+    resizing = true;
+    document.body.style.userSelect = 'none';
+    const move = (ev) => {
+      const max = Math.min(DRAWER_W_MAX, window.innerWidth - 60);
+      panelWidth = Math.max(DRAWER_W_MIN, Math.min(max, window.innerWidth - ev.clientX));
+    };
+    const up = () => {
+      resizing = false;
+      document.body.style.userSelect = '';
+      window.removeEventListener('pointermove', move);
+      window.removeEventListener('pointerup', up);
+      try {
+        localStorage.setItem(DRAWER_W_KEY, String(Math.round(panelWidth)));
+      } catch {
+        // Non-fatal: the width just won't persist.
+      }
+    };
+    window.addEventListener('pointermove', move);
+    window.addEventListener('pointerup', up);
+  }
   /** @type {HTMLTextAreaElement | undefined} */
   let promptEl = $state();
   /** @type {HTMLDivElement | undefined} */
@@ -235,13 +275,16 @@
   <div class="scrim" onclick={onclose} role="presentation" transition:fly={{ duration: 150, opacity: 0 }}></div>
   <aside
     class="panel"
+    class:resizing
     role="dialog"
     aria-modal="true"
     aria-label={info.title}
+    style:width={wide ? `${panelWidth}px` : null}
     use:focusTrap
     use:scrollLock
     transition:fly={{ x: wide ? 460 : 0, y: wide ? 0 : 60, duration: 240, opacity: 1 }}
   >
+    <div class="resize" role="presentation" onpointerdown={startResize} title={t('drawerUi.resize')}></div>
     <div class="grabber" aria-hidden="true"></div>
 
     <header>
@@ -286,7 +329,7 @@
         <!-- Schematic identity block (gates/channels/centres): one row per
              element, gold chips aligned left under a shared label. Rows with a
              note stack one per line; note-less rows (centres) go inline. -->
-        <div class="facts">
+        <div class="facts" class:aligned={info.factsAlign}>
           {#each info.facts as f, fi}
             <div class="fact">
               <span class="fact-label" class:fact-shown={shownFact === `l${fi}`} onclick={() => tapFact(`l${fi}`)} role="presentation">{f.label}{#if f.tip}<sup class="fact-i" data-tip={f.tip}>i</sup>{/if}:{#if f.info}<button class="fact-dot" type="button" aria-label={f.label} onclick={() => onnavigate?.(f.info.kind, f.info.key)}>i</button>{/if}</span>
@@ -355,7 +398,7 @@
                 {#each q.rows as r}
                   <tr>
                     <td class="rt-chip"><button class="index-chip" type="button" onclick={() => onnavigate?.(r.kind, r.key)}>{r.sun}</button></td>
-                    <td class="rt-note"><span class="xname">{r.name}</span> <span class="xgates">{r.gates}</span></td>
+                    <td class="rt-note"><button class="index-chip xname-chip" type="button" onclick={() => onnavigate?.('cross', r.crossKey)}>{r.name}</button> <span class="xgates">{r.gates}</span></td>
                     <td class="rt-pct">{r.tag}</td>
                   </tr>
                 {/each}
@@ -501,7 +544,11 @@
     border-top: 1px solid var(--border);
     border-radius: 16px 16px 0 0;
     max-height: 88vh;
-    overflow-y: auto;
+    /* The panel is a bounded flex column; the info body (flex:1) fills it and
+       scrolls internally, so the IA section always sits at the bottom and the
+       text uses every spare pixel above it. `hidden`, not `auto`: the inner
+       body owns the scroll. */
+    overflow: hidden;
     overscroll-behavior: contain;
     -webkit-overflow-scrolling: touch;
     padding: 0.6rem 1.1rem 1.6rem;
@@ -518,6 +565,37 @@
       border-left: 1px solid var(--border);
       border-radius: 0;
       padding: 1.2rem 1.3rem;
+    }
+  }
+  /* Left-edge drag handle to resize the desktop drawer (hidden on mobile). */
+  .resize {
+    display: none;
+  }
+  @media (min-width: 680px) {
+    .resize {
+      display: block;
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 11px;
+      margin-left: -6px;
+      cursor: ew-resize;
+      z-index: 62;
+    }
+    .resize::before {
+      content: '';
+      position: absolute;
+      left: 5px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: transparent;
+      transition: background 120ms;
+    }
+    .resize:hover::before,
+    .panel.resizing .resize::before {
+      background: var(--accent);
     }
   }
   .grabber {
@@ -581,6 +659,12 @@
   /* Holds the bottom fade over the scroll box (see `hasMore`). */
   .info-scroll {
     position: relative;
+    /* Grow to fill the panel so the text area reaches down to the IA section
+       instead of stopping at a fixed cap. */
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
   }
   .info-scroll::after {
     content: '';
@@ -601,7 +685,8 @@
     /* The margin (not padding) keeps a constant gap below the header even
        when the body is scrolled — the scroll box starts below the header. */
     margin-top: 0.85rem;
-    max-height: 24rem;
+    flex: 1 1 auto;
+    min-height: 0;
     overflow-y: scroll;
     overscroll-behavior: contain;
     /* `scroll`, not `auto`, plus a permanently visible thumb: the overlay
@@ -622,11 +707,6 @@
   .info-body::-webkit-scrollbar-track {
     background: transparent;
   }
-  @media (min-width: 680px) {
-    .info-body {
-      max-height: 26rem;
-    }
-  }
   .para {
     font-size: 0.9rem;
     line-height: 1.6;
@@ -639,12 +719,17 @@
   .xtable {
     margin-top: 0.4rem;
   }
-  .xname {
-    color: #c4c4ca;
+  /* The cross name as a chip that opens that cross's own drawer (it holds only
+     the name; the four gates sit beside it as plain text). */
+  .xname-chip {
+    white-space: normal;
+    text-align: left;
+    line-height: 1.3;
   }
   .xgates {
     color: var(--text-muted);
     white-space: nowrap;
+    margin-left: 0.15rem;
   }
   .blist {
     padding-left: 1.05rem;
@@ -725,13 +810,17 @@
   }
   .fact-label {
     flex: none;
-    /* Fixed (not min-): the two blocks must start their rows at the same x, so
-       "sol"/"tierra" line up under each other and so do the gate chips. */
-    width: 6.6rem;
+    /* Snug by default: the label sits right next to its chips (channels / gates
+       / centres) so they don't drift far to the right. */
     font-size: 0.8rem;
     color: var(--text-muted);
     padding-top: 0.24rem;
     white-space: nowrap;
+  }
+  /* Only the cross needs a fixed-width label column, so its two blocks start
+     their rows at the same x ("sol"/"tierra" line up under each other). */
+  .facts.aligned .fact-label {
+    width: 6.6rem;
   }
   .fact-rows {
     display: flex;
@@ -902,20 +991,15 @@
   }
   .sep {
     border-top: 1px solid var(--border);
-    margin: 1.9rem 0 0.95rem;
+    margin: 1.3rem 0 0.95rem;
     flex: none;
-  }
-  /* Twice the air above the IA section on desktop. */
-  @media (min-width: 680px) {
-    .sep {
-      margin-top: 3.8rem;
-    }
   }
   .menu-head {
     display: flex;
     align-items: baseline;
     flex-wrap: wrap;
     gap: 0.4rem;
+    flex: none;
   }
   .angle-wrap {
     position: relative;
@@ -998,6 +1082,7 @@
     display: flex;
     gap: 0.5rem;
     margin-top: 0.9rem;
+    flex: none;
   }
   .mbtn,
   .split {
@@ -1091,6 +1176,7 @@
     border: 1px solid var(--border);
     border-radius: 9px;
     overflow: hidden;
+    flex: none;
   }
   .ai-list li {
     border-bottom: 1px solid var(--border);
@@ -1128,6 +1214,7 @@
     justify-content: space-between;
     gap: 0.75rem;
     margin-top: 0.5rem;
+    flex: none;
   }
   .vedit {
     background: none;
@@ -1166,7 +1253,11 @@
     line-height: 1.55;
     color: var(--text);
     resize: vertical;
-    overflow: hidden;
+    /* Pinned at the bottom, the IA section must not push the layout off-screen
+       when a long prompt is revealed: cap the box and let it scroll instead. */
+    flex: none;
+    max-height: 40vh;
+    overflow-y: auto;
   }
   .pbox:focus {
     outline: none;

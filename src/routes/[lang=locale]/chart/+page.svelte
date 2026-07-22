@@ -16,7 +16,7 @@
   import { install, promptInstall } from '$lib/pwa/install.svelte.js';
   import { dialog } from '$lib/components/dialog.svelte.js';
   import { cityCountry } from '$lib/geo/place.js';
-  import { getElementInfo, getProfileInfo, getGateInfo, getChannelInfo, getConceptInfo, getPlanetInfo, getSignalInfo, getSignalNames, getCrossInfo, getCrossName, formatCrossGates, getActivationWeight, getDisplayLabels } from '$lib/hd/content/index.js';
+  import { getElementInfo, getProfileInfo, getGateInfo, getChannelInfo, getConceptInfo, getPlanetInfo, getSignalInfo, getSignalNames, getCrossInfo, getCrossInfoByKey, getCrossName, formatCrossGates, getActivationWeight, getDisplayLabels } from '$lib/hd/content/index.js';
   import { t } from '$lib/i18n/index.svelte.js';
   import { buildPrompts } from '$lib/hd/prompts.js';
   import { buildShareUrl, decodeBirth, hasShareParams } from '$lib/hd/share-link.js';
@@ -125,7 +125,9 @@
       // the chart (the signal pair follows the type, the cross the Sun/Earth
       // gates), so the key is only the polarity / the angle.
       : kind === 'signal' ? getSignalInfo(key)
-      : kind === 'cross' ? getCrossInfo(chart)
+      // The chart's own cross has no key ("<angle>" from the card); a "<gate>|<angle>"
+      // key (from the 192-cross index) opens that specific cross instead.
+      : kind === 'cross' ? (String(key).includes('|') ? getCrossInfoByKey(key) : getCrossInfo(chart))
       : getElementInfo(kind, key);
   }
 

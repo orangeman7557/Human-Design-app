@@ -32,6 +32,15 @@ export default {
     tagline: 'Calcula tu carta de Diseño Humano — gratis, sin registro.'
   },
 
+  // "¿Qué es el Diseño Humano?" — discreet link under the tagline that opens a
+  // modal with the initial report's opening (Part A), for someone who lands
+  // without knowing the system.
+  whatHd: {
+    link: '¿Qué es el Diseño Humano?',
+    invite:
+      'Rellena el formulario de arriba con tu fecha, hora y lugar de nacimiento para calcular tu propia carta: es la puerta de entrada para explorar y aprender más sobre tu diseño.'
+  },
+
   form: {
     name: 'Nombre',
     birthDate: 'Fecha de nacimiento',
@@ -263,7 +272,8 @@ export default {
   // Element drawer chrome + the AI hand-off block at its foot.
   drawerUi: {
     back: 'Atrás',
-    close: 'Cerrar'
+    close: 'Cerrar',
+    resize: 'Arrastra para ajustar el ancho'
   },
   ai: {
     heading: 'Saber más usando IA',
