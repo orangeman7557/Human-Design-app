@@ -223,7 +223,22 @@ education** (initial report, drawers everywhere, own gate essences, AI
 handoff) — but **one standard chart datum is genuinely missing** (the
 incarnation cross). Items registered below in suggested priority order.
 
-- ⬜ **1. Incarnation cross (the essential missing datum).** The only
+- 🟡 **1. Incarnation cross — SHIPPED 2026-07-22 WITHOUT THE NAMES.** The datum
+  is on the chart (`chart.cross = { angle, gates }`), with its own summary card,
+  drawer and prompt, and a "Tu propósito" section in the initial report. What is
+  **still open is the name table**: the ~192 named crosses × 4 angles (~768
+  entries), which the author deliberately split into its own batch — sourcing
+  and verifying 768 rows is more work than everything else in that batch
+  combined, and a mis-copied row is something no test can catch. Until then the
+  card shows the **angle** ("Cruz derecha") and the four gates, and the drawer
+  **composes the meaning from the four gate essences** (grouped Personality /
+  Design) — the same trick channels use in Phase 6.D, and it reads well on its
+  own. When the table lands: it plugs into `content/<lang>.js` under `cross`,
+  and `drawer.crossTitle` / `reportShell.purposeSubhead` already take a `{name}`
+  placeholder, so nothing structural has to change. Legal footing = same as
+  channel names (short titles, descriptive noncommercial use). Original entry
+  kept below for the rationale.
+- ⬜ **1 (original). Incarnation cross (the essential missing datum).** The only
   standard chart property the summary lacks — every reference calculator
   shows it (even the free Spanish ones), and for beginners it's the "life
   purpose" hook; the literature attributes ~70% of the chart's imprint to its
@@ -238,7 +253,18 @@ incarnation cross). Items registered below in suggested priority order.
   report needs adjusting too — decide whether it gets its own section (the
   "life purpose" hook is a natural fit right after the profile) or a line
   inside an existing one. Don't bolt it on without re-reading the flow.
-- ⬜ **2. Signature + not-self theme as named summary fields.** Standard
+- ✅ **2. Signature + not-self theme as named summary fields — DONE 2026-07-22.**
+  Shipped as **one "Señales" card with two values** (Alineamiento / Desalineamiento),
+  each carrying its own "i" on top of the card's concept "i" — three drawers in
+  the footprint of one. **Naming settled**: they are called *señales* /
+  *signals*, and the canonical "firma" / "tema del no-yo" (signature /
+  not-self theme) is mentioned **inside** the drawer, not on the card, exactly as
+  the author asked. No per-signal content entry: `getSignalInfo(polarity, chart)`
+  composes them from the chart's **type**, the way a profile composes from its
+  two lines. The report's "Vivir tu diseño" signals bullet was reworked in all 5
+  types × 2 languages to **name the two fields and link to their drawers**, which
+  closes the duplication this entry warned about. Original entry below.
+- ⬜ **2 (original). Signature + not-self theme as named summary fields.** Standard
   properties in the reference tools (satisfacción/frustración, paz/ira,
   éxito/amargura, sorpresa/decepción). The content already exists inside the
   type texts (the report's energy·trap·signals block); surface it as two more
@@ -255,9 +281,9 @@ incarnation cross). Items registered below in suggested priority order.
   says essentially what signature/not-self say. When this ships, rework that
   section so the two don't repeat each other — the named fields should feed
   the signals bullet, not sit beside it.
-- ⬜ **NEXT AFTER PHASE M (author, 2026-07-21):** items 1 and 2 above (the
-  incarnation cross, and signature/not-self with the clearer naming) are the
-  agreed next batch once the multi-language phase closes.
+- ✅ **NEXT AFTER PHASE M (author, 2026-07-21) — DONE 2026-07-22.** Items 1 and 2
+  shipped together. The only remainder is the cross **name table**, now its own
+  agreed next batch.
 - ⬜ **3. "¿Qué es el Diseño Humano?" entry point on the home.** All the
   educational material lives *after* calculating; someone landing on
   hdchart.app without knowing the system sees only a form and no reason to

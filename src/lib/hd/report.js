@@ -16,7 +16,9 @@ import {
   getTypeReport,
   getCenterReport,
   getPromptLabels,
+  getDisplayLabels,
   getReportShell,
+  formatCrossGates,
   fillTpl,
   getLocale
 } from './content/index.js';
@@ -111,12 +113,38 @@ export function buildReport(chart, lang = getLocale()) {
 
   const tr = getTypeReport(chart.type, lang);
   // Energy · trap · signals read as three parallel points, so they get the same
-  // simple bullets as the five types above.
+  // simple bullets as the five types above. The signals bullet names the two
+  // summary fields and links to their drawers, so the two don't say the same
+  // thing twice.
   if (tr)
     add('practice', R.practiceTitle, [
       getReportLeadIn('practice', lang),
       { bullets: [tr.energia, tr.trampa, tr.senales] }
     ]);
+
+  // Purpose goes LAST and deliberately after "Living your design": the cross is
+  // a backdrop, not a task, and putting it first invites a newcomer to fixate on
+  // "my purpose" and skip strategy and authority, which are what actually get
+  // used day to day (author decision 2026-07-22).
+  const purpose = getReportSection('purpose', lang);
+  const angleBody = getReportBody('crossAngle', chart.cross?.angle, lang);
+  if (purpose && angleBody) {
+    // Display labels, not the prompt ones: the subhead is a heading, so it must
+    // follow the language's capitalisation (English Title Case).
+    const name = getDisplayLabels(lang).cross?.[chart.cross.angle] ?? '';
+    add('purpose', purpose.title, [
+      getReportLeadIn('purpose', lang),
+      ...purpose.paragraphs,
+      {
+        subhead: fillTpl(R.purposeSubhead, {
+          name,
+          gates: formatCrossGates(chart.cross, lang)
+        })
+      },
+      angleBody,
+      purpose.outro
+    ]);
+  }
 
   return sections;
 }

@@ -16,7 +16,7 @@
   import { install, promptInstall } from '$lib/pwa/install.svelte.js';
   import { dialog } from '$lib/components/dialog.svelte.js';
   import { cityCountry } from '$lib/geo/place.js';
-  import { getElementInfo, getProfileInfo, getGateInfo, getChannelInfo, getConceptInfo, getPlanetInfo, getActivationWeight, getDisplayLabels } from '$lib/hd/content/index.js';
+  import { getElementInfo, getProfileInfo, getGateInfo, getChannelInfo, getConceptInfo, getPlanetInfo, getSignalInfo, getSignalNames, getCrossInfo, formatCrossGates, getActivationWeight, getDisplayLabels } from '$lib/hd/content/index.js';
   import { t } from '$lib/i18n/index.svelte.js';
   import { buildPrompts } from '$lib/hd/prompts.js';
   import { buildShareUrl, decodeBirth, hasShareParams } from '$lib/hd/share-link.js';
@@ -36,6 +36,10 @@
   const STRATEGY_LABELS = $derived(getDisplayLabels(lang).strategy);
   const AUTHORITY_LABELS = $derived(getDisplayLabels(lang).authority);
   const DEFINITION_LABELS = $derived(getDisplayLabels(lang).definition);
+  const SIGNAL_LABELS = $derived(getDisplayLabels(lang).signal);
+  const CROSS_LABELS = $derived(getDisplayLabels(lang).cross);
+  // The type's alignment / misalignment pair, e.g. { aligned: 'Satisfacción' }.
+  const signalNames = $derived(chart ? getSignalNames(chart.type, lang) : null);
 
   // Types ordered by estimated share of the population; labels from the pack.
   const TYPE_ORDER = ['generator', 'manifesting-generator', 'projector', 'manifestor', 'reflector'];
@@ -101,6 +105,7 @@
     type: tr('category.type'), strategy: tr('category.strategy'), authority: tr('category.authority'),
     profile: tr('category.profile'), definition: tr('category.definition'),
     center: tr('category.center'), centers: tr('category.centers'),
+    signal: tr('category.signal'), signals: tr('category.signals'), cross: tr('category.cross'),
     channel: tr('category.channel'), channels: tr('category.channels'),
     gate: tr('category.gate'), gates: tr('category.gates'),
     activationCol: tr('category.activationCol'), planet: tr('category.planet')
@@ -115,6 +120,11 @@
       : kind === 'gate' ? getGateInfo(key, chart)
       : kind === 'channel' ? getChannelInfo(key, chart)
       : kind === 'planet' ? getPlanetInfo(key, chart)
+      // Signals and the cross have no stand-alone entry: both are composed from
+      // the chart (the signal pair follows the type, the cross the Sun/Earth
+      // gates), so the key is only the polarity / the angle.
+      : kind === 'signal' ? getSignalInfo(key, chart)
+      : kind === 'cross' ? getCrossInfo(chart)
       : getElementInfo(kind, key);
   }
 
@@ -995,6 +1005,40 @@
               data-info-cat="authority" data-info-kind="authority" data-info-key={chart.authority}
             ><InfoDot active={infoIsOpen('authority', chart.authority)} label={tr('chart.moreAuthority')} /></span>{/if}</span>
         </div>
+        <!-- Signals: one card, two values, each with its own "i" (the card's
+             concept "i" explains what signals are). They sit right after
+             Authority because they close that chain — type → strategy →
+             authority → "how do I know I'm getting it right?". -->
+        {#if signalNames}
+          <div
+            class="card"
+            role="presentation"
+            onclick={(e) => cardClick(e, 'signal')}
+            onmouseover={(e) => cardOver(e, 'signal')}
+            onmouseleave={clearReveal}
+          >
+            <span class="label">
+              {tr('category.signals')}
+              <span class="dot-h2">
+                {#if cardReveal === 'signal' || infoIsOpen('concept', 'signal')}
+                  <span class="dot-host" data-info-cat="signals" data-info-kind="concept" data-info-key="signal">
+                    <InfoDot active={infoIsOpen('concept', 'signal')} label={tr('chart.whatSignals')} />
+                  </span>
+                {/if}
+              </span>
+            </span>
+            <span class="value sig" data-inner-key="signal:aligned"
+              ><span class="sig-k">{SIGNAL_LABELS.aligned}</span>{signalNames.aligned}{#if innerReveal === 'signal:aligned' || infoIsOpen('signal', 'aligned')}<span
+                class="dot-side"
+                data-info-cat="signal" data-info-kind="signal" data-info-key="aligned"
+              ><InfoDot active={infoIsOpen('signal', 'aligned')} label={tr('chart.moreSignalAligned')} /></span>{/if}</span>
+            <span class="value sig" data-inner-key="signal:misaligned"
+              ><span class="sig-k">{SIGNAL_LABELS.misaligned}</span>{signalNames.misaligned}{#if innerReveal === 'signal:misaligned' || infoIsOpen('signal', 'misaligned')}<span
+                class="dot-side"
+                data-info-cat="signal" data-info-kind="signal" data-info-key="misaligned"
+              ><InfoDot active={infoIsOpen('signal', 'misaligned')} label={tr('chart.moreSignalMisaligned')} /></span>{/if}</span>
+          </div>
+        {/if}
         <div
           class="card"
           role="presentation"
@@ -1018,30 +1062,43 @@
               data-info-cat="profile" data-info-kind="profile" data-info-key={chart.profile}
             ><InfoDot active={infoIsOpen('profile', chart.profile)} label={tr('chart.moreProfile')} /></span>{/if}</span>
         </div>
-        <div
-          class="card pointer"
-          role="presentation"
-          onmouseenter={() => setHover({ kind: 'definition', gates: [] })}
-          onmouseleave={() => { setHover(null); clearReveal(); }}
-          onmouseover={(e) => cardOver(e, 'definition')}
-          onclick={(e) => cardClick(e, 'definition', () => pin(e, { kind: 'definition', gates: [] }))}
-        >
-          <span class="label">
-            {tr('category.definition')}
-            <span class="dot-h2">
-              {#if cardReveal === 'definition' || infoIsOpen('concept', 'definition')}
-                <span class="dot-host" data-info-cat="definition" data-info-kind="concept" data-info-key="definition">
-                  <InfoDot active={infoIsOpen('concept', 'definition')} label={tr('chart.whatDefinition')} />
-                </span>
-              {/if}
+        <!-- Incarnation cross. The four Sun/Earth gates ride the label's line
+             (right-aligned) so the long angle name keeps the full width to
+             itself; each gate opens its own drawer. -->
+        {#if chart.cross}
+          <div
+            class="card cross-card"
+            role="presentation"
+            onclick={(e) => cardClick(e, 'cross')}
+            onmouseover={(e) => cardOver(e, 'cross')}
+            onmouseleave={clearReveal}
+          >
+            <span class="label">
+              {tr('category.cross')}
+              <span class="dot-h2">
+                {#if cardReveal === 'cross' || infoIsOpen('concept', 'cross')}
+                  <span class="dot-host" data-info-cat="cross" data-info-kind="concept" data-info-key="cross">
+                    <InfoDot active={infoIsOpen('concept', 'cross')} label={tr('chart.whatCross')} />
+                  </span>
+                {/if}
+              </span>
+              <span class="xgates">
+                {#each chart.cross.gates as g, i}
+                  <button class="xgate" onclick={(e) => actClick(e, g)}>{g}</button
+                  >{#if i === 0 || i === 2}<span class="xsep" aria-hidden="true">/</span>{:else if i === 1}<span
+                      class="xsep bar"
+                      aria-hidden="true">|</span
+                    >{/if}
+                {/each}
+              </span>
             </span>
-          </span>
-          <span class="value" data-inner-key="definition:value"
-            >{DEFINITION_LABELS[chart.definition] ?? chart.definition}{#if innerReveal === 'definition:value' || infoIsOpen('definition', chart.definition)}<span
-              class="dot-side"
-              data-info-cat="definition" data-info-kind="definition" data-info-key={chart.definition}
-            ><InfoDot active={infoIsOpen('definition', chart.definition)} label={tr('chart.moreDefinition')} /></span>{/if}</span>
-        </div>
+            <span class="value" data-inner-key="cross:value"
+              >{CROSS_LABELS[chart.cross.angle] ?? chart.cross.angle}{#if innerReveal === 'cross:value' || infoIsOpen('cross', chart.cross.angle)}<span
+                class="dot-side"
+                data-info-cat="cross" data-info-kind="cross" data-info-key={chart.cross.angle}
+              ><InfoDot active={infoIsOpen('cross', chart.cross.angle)} label={tr('chart.moreCross')} /></span>{/if}</span>
+          </div>
+        {/if}
       </div>
 
       <!-- Mobile only: share/download over the graph's empty top-right
@@ -1091,6 +1148,32 @@
               </span>
             {/each}
           </div>
+        </div>
+        <!-- Definition sits under Centres: it *is* a statement about how the
+             defined centres group together, so it explains itself here. -->
+        <div
+          class="card pointer"
+          role="presentation"
+          onmouseenter={() => setHover({ kind: 'definition', gates: [] })}
+          onmouseleave={() => { setHover(null); clearReveal(); }}
+          onmouseover={(e) => cardOver(e, 'definition')}
+          onclick={(e) => cardClick(e, 'definition', () => pin(e, { kind: 'definition', gates: [] }))}
+        >
+          <span class="label">
+            {tr('category.definition')}
+            <span class="dot-h2">
+              {#if cardReveal === 'definition' || infoIsOpen('concept', 'definition')}
+                <span class="dot-host" data-info-cat="definition" data-info-kind="concept" data-info-key="definition">
+                  <InfoDot active={infoIsOpen('concept', 'definition')} label={tr('chart.whatDefinition')} />
+                </span>
+              {/if}
+            </span>
+          </span>
+          <span class="value" data-inner-key="definition:value"
+            >{DEFINITION_LABELS[chart.definition] ?? chart.definition}{#if innerReveal === 'definition:value' || infoIsOpen('definition', chart.definition)}<span
+              class="dot-side"
+              data-info-cat="definition" data-info-kind="definition" data-info-key={chart.definition}
+            ><InfoDot active={infoIsOpen('definition', chart.definition)} label={tr('chart.moreDefinition')} /></span>{/if}</span>
         </div>
       </div>
 
@@ -1709,6 +1792,59 @@
     line-height: 1.4;
   }
 
+  /* Signals card: two values in one card, each with its own "i". The polarity
+     rides its own tight line above the word — side by side it overflows the
+     192px column ("DESALINEAMIENTO Frustración" doesn't fit), and this way the
+     card is the same height at every breakpoint. */
+  .sig-k {
+    display: block;
+    font-size: 0.62rem;
+    line-height: 1.25;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+  }
+  .value.sig + .value.sig {
+    margin-top: 0.25rem;
+  }
+
+  /* Incarnation cross: the four Sun/Earth gates ride the label's line, pushed
+     right, so the long angle name keeps the full width below. In the narrow
+     desktop column they simply wrap onto their own line. */
+  .cross-card .label {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0 0.35rem;
+  }
+  .xgates {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: baseline;
+    font-size: 0.7rem;
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--text-muted);
+  }
+  .xgate {
+    background: none;
+    border: 0;
+    padding: 0;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+  }
+  .xgate:hover,
+  .xgate:focus-visible {
+    color: var(--accent);
+  }
+  .xsep {
+    opacity: 0.55;
+  }
+  .xsep.bar {
+    margin: 0 0.25rem;
+  }
+
   /* ~8% narrower than the 720px container so the full graph fits one
      screen height more easily. The top corners of the graph are empty,
      so the info cards / centres list overlay there (3.E). */
@@ -1939,6 +2075,12 @@
     .overlay.left .card:first-child {
       grid-column: 1 / -1;
     }
+    /* The cross closes the grid across both columns: its name is far longer
+       than any other value, so in a half-width cell it would be 4-5 lines and
+       stretch its whole row. Full width keeps it to label + one line. */
+    .overlay.left .cross-card {
+      grid-column: 1 / -1;
+    }
     .graph > :global(.bodygraph-wrap) {
       order: 2;
     }
@@ -2055,7 +2197,8 @@
     gap: 0.45rem;
     margin-bottom: 0;
   }
-  main.pdf-shot .overlay.left .card:first-child {
+  main.pdf-shot .overlay.left .card:first-child,
+  main.pdf-shot .overlay.left .cross-card {
     grid-column: auto;
   }
   main.pdf-shot .overlay.right {

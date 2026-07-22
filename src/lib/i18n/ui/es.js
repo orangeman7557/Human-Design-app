@@ -167,11 +167,16 @@ export default {
     whatPersonality: 'Qué es Personalidad',
     whatDesign: 'Qué es Diseño',
     whatWeight: 'Qué es el peso',
+    whatSignals: 'Qué son las señales',
+    whatCross: 'Qué es la cruz de encarnación',
     // Info-dot value labels ("more about this X")
     moreStrategy: 'Más información sobre esta estrategia',
     moreAuthority: 'Más información sobre esta autoridad',
     moreProfile: 'Más información sobre este perfil',
     moreDefinition: 'Más información sobre esta definición',
+    moreSignalAligned: 'Más información sobre esta señal de alineamiento',
+    moreSignalMisaligned: 'Más información sobre esta señal de desalineamiento',
+    moreCross: 'Más información sobre esta cruz de encarnación',
     // Split around the info-dot glyph, which is rendered as the icon itself.
     infoHintA: 'Toca cualquier elemento de la carta y pulsa en ',
     infoHintB: ' para obtener más información'
@@ -341,7 +346,10 @@ export default {
     channel: 'Canal',
     gate: 'Puerta',
     activationCol: 'Activaciones',
-    planet: 'Planeta'
+    planet: 'Planeta',
+    signal: 'Señal',
+    signals: 'Señales',
+    cross: 'Cruz de encarnación'
   },
 
   // Short type acronyms for the birth-time band. Language-dependent word order:

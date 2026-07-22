@@ -25,6 +25,8 @@
 import {
   getPromptLabels,
   getPromptTemplates,
+  getSignalNames,
+  formatCrossGates,
   fillTpl,
   gateState,
   channelState,
@@ -161,6 +163,27 @@ export function buildPrompts(kind, key, chart, lang = getLocale()) {
       general: ask(T, fillTpl(T.channel.subject, { a, b })),
       chart: state ? askChart(T, L, chart, channelChartSubject(T, a, b, state)) : null
     };
+  }
+
+  // A signal is a property of the type, so it has no abstract "general" angle
+  // detached from a chart: both angles name the type's own pair.
+  if (kind === 'signal') {
+    const names = getSignalNames(chart?.type, lang);
+    if (!names) return { general: '', chart: null };
+    const subject = fillTpl(key === 'aligned' ? S.signalAligned : S.signalMisaligned, {
+      type: L.type?.[chart.type] ?? chart.type,
+      name: key === 'aligned' ? names.aligned : names.misaligned
+    });
+    return { general: ask(T, subject), chart: askChart(T, L, chart, subject) };
+  }
+
+  if (kind === 'cross') {
+    if (!chart?.cross) return { general: '', chart: null };
+    const subject = fillTpl(S.cross, {
+      name: L.cross?.[chart.cross.angle] ?? key,
+      gates: formatCrossGates(chart.cross, lang)
+    });
+    return { general: ask(T, subject), chart: askChart(T, L, chart, subject) };
   }
 
   if (kind === 'activationCol') {

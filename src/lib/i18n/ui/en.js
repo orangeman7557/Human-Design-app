@@ -154,10 +154,15 @@ export default {
     whatPersonality: 'What Personality is',
     whatDesign: 'What Design is',
     whatWeight: 'What weight is',
+    whatSignals: 'What the signals are',
+    whatCross: 'What the incarnation cross is',
     moreStrategy: 'More about this strategy',
     moreAuthority: 'More about this authority',
     moreProfile: 'More about this profile',
     moreDefinition: 'More about this definition',
+    moreSignalAligned: 'More about this alignment signal',
+    moreSignalMisaligned: 'More about this misalignment signal',
+    moreCross: 'More about this incarnation cross',
     // Split around the info-dot glyph, which is rendered as the icon itself.
     infoHintA: 'Tap any element of the chart, then tap ',
     infoHintB: ' for more information'
@@ -331,7 +336,10 @@ export default {
     channel: 'Channel',
     gate: 'Gate',
     activationCol: 'Activations',
-    planet: 'Planet'
+    planet: 'Planet',
+    signal: 'Signal',
+    signals: 'Signals',
+    cross: 'Incarnation Cross'
   },
 
   types: {

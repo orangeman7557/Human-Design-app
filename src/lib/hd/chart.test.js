@@ -201,6 +201,38 @@ describe('computeChart — type/authority coverage anchors', () => {
   }
 });
 
+describe('computeChart — incarnation cross', () => {
+  it('takes its four gates from the Sun/Earth activations, in notation order', async () => {
+    const c = await computeChart(AUTHOR);
+    expect(c.cross.gates).toEqual([
+      c.personality.sun.gate,
+      c.personality.earth.gate,
+      c.design.sun.gate,
+      c.design.earth.gate
+    ]);
+  });
+
+  it('derives the angle from the profile', async () => {
+    // Right angle from the two externally-validated charts (1/3 and 2/4), left
+    // angle from the 6/2 coverage anchor. 4/1 — the only juxtaposition profile
+    // — has no reference chart here, so it stays uncovered on purpose.
+    const author = await computeChart(AUTHOR);
+    expect(author.profile).toBe('1/3');
+    expect(author.cross.angle).toBe('right');
+
+    const reflector = await computeChart(REFLECTOR);
+    expect(reflector.profile).toBe('2/4');
+    expect(reflector.cross.angle).toBe('right');
+
+    const left = await computeChart({
+      date: '1978-01-27', time: '04:30',
+      timezone: 'Europe/Madrid', latitude: 40.4168, longitude: -3.7038
+    });
+    expect(left.profile).toBe('6/2');
+    expect(left.cross.angle).toBe('left');
+  });
+});
+
 describe('longitudeToGate — wheel mapping', () => {
   it('starts the wheel at gate 41 line 1 (2° Aquarius)', () => {
     expect(longitudeToGate(GATE_WHEEL_START)).toMatchObject({ gate: 41, line: 1 });
