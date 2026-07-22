@@ -141,7 +141,7 @@ export default {
     colDesign: 'Design',
     colWeight: 'Weight',
     tipPersonality: 'Set at the moment of birth',
-    tipDesign: 'Set 88° of solar arc before\nbirth (~88 days)',
+    tipDesign: 'Set ~88 days before birth\n(88° of solar arc)',
     tipWeight: 'Relative influence of the activation\n(Sun and Earth weigh more)',
     whatBodygraph: 'What the bodygraph is',
     whatType: 'What type is',

@@ -155,7 +155,7 @@ export default {
     colDesign: 'Diseño',
     colWeight: 'Peso',
     tipPersonality: 'Se define en el momento del nacimiento',
-    tipDesign: 'Se define 88° de arco solar antes\ndel nacimiento (~88 días)',
+    tipDesign: 'Se define ~88 días antes del nacimiento\n(88° de arco solar)',
     tipWeight: 'Influencia relativa de la activación\n(el Sol y la Tierra pesan más)',
     // Info-dot concept labels ("what X is")
     whatBodygraph: 'Qué es el bodygraph',
