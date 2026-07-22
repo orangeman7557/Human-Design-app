@@ -16,7 +16,7 @@ import { describe, it, expect } from 'vitest';
 import es from './content/es.js';
 import en from './content/en.js';
 import { computeChart } from './chart.js';
-import { GATE_WHEEL } from './constants.js';
+import { GATE_WHEEL, crossQuartet } from './constants.js';
 
 const ANGLES = ['right', 'left', 'juxtaposition'];
 
@@ -126,4 +126,16 @@ describe('per-cross interpretations', () => {
       }
     }
   });
+});
+
+// crossQuartet derives the four gates from the wheel instead of storing them,
+// which is only safe if it agrees with the ephemeris for all 192.
+describe('crossQuartet', () => {
+  it('matches the engine for every cross', async () => {
+    const engine = await quartetsFromEngine();
+    for (const [key, quartet] of engine) {
+      const [g, angle] = key.split('|');
+      expect(crossQuartet(g, angle).join(','), key).toBe(quartet);
+    }
+  }, 60000);
 });

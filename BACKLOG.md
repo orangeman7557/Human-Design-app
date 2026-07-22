@@ -775,6 +775,20 @@ corrected).
   the stack, and it would be worth passing which text the reader was on (element
   kind + key) as context so the report says what it is about.
 
+- ⬜ **Element drawer: pin the "Saber más usando IA" block to the bottom, and let
+  the user widen the drawer (author, 2026-07-22).** Two related improvements to
+  `ElementInfo.svelte`:
+  1. On **desktop** the AI section sits right after the text instead of at the
+     foot of the panel, so short drawers leave a gap under it and long ones push
+     it out of sight. Mobile already behaves (bottom sheet). Pinning it to the
+     bottom would also give the body more room. **Catch to design for:** when
+     "Ver/editar el prompt" is open, the textarea can be tall — so the pinned
+     block needs **its own scroll**, not to eat the body's height.
+  2. A **user-resizable drawer width on desktop**, with the choice **remembered**
+     (localStorage, same pattern as the preferred AI / preferred angle). Some
+     drawers — the 192-cross index, the 64-gate index — are dense enough that a
+     wider panel genuinely helps.
+
 - ⬜ **PDF report on a white background instead of dark mode (requested
   2026-07-06).** The initial-report PDF (`report-pdf.js`) currently mirrors the
   app's dark theme (dark page + light text, and a dark cover image). Consider a

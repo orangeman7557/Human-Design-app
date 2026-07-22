@@ -12,6 +12,30 @@ export const GATE_WHEEL = [
   28, 44, 1,  43, 14, 34, 9,  5,  26, 11, 10, 58, 38, 54, 61, 60
 ];
 
+const WHEEL_IDX = new Map(GATE_WHEEL.map((g, i) => [g, i]));
+const atOffset = (g, d) => GATE_WHEEL[((WHEEL_IDX.get(g) + d) % 64 + 64) % 64];
+
+/**
+ * An incarnation cross's four gates, from its Personality Sun gate and angle.
+ * Derived from the wheel rather than stored: Earth is always half a turn away,
+ * and the Design Sun sits 16 wheel positions back for a right angle and 15 for
+ * the other two. Verified against the ephemeris in cross-names.test.js.
+ * @returns {number[]} [pSun, pEarth, dSun, dEarth]
+ */
+export function crossQuartet(gate, angle) {
+  const g = Number(gate);
+  const dSun = atOffset(g, angle === 'right' ? -16 : -15);
+  return [g, atOffset(g, 32), dSun, atOffset(dSun, 32)];
+}
+
+/** The mandala's four quarters, 16 gates each, in wheel order from gate 13. */
+export function quarterGates() {
+  const start = GATE_WHEEL.indexOf(13);
+  return [0, 1, 2, 3].map((q) =>
+    Array.from({ length: 16 }, (_, i) => GATE_WHEEL[(start + q * 16 + i) % 64])
+  );
+}
+
 export const GATE_WHEEL_START = 302; // longitud eclíptica donde arranca la puerta 41
 export const GATE_SIZE = 360 / 64;   // 5,625°
 export const LINE_SIZE = GATE_SIZE / 6; // 0,9375°

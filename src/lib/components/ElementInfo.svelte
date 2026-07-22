@@ -106,6 +106,14 @@
   // tables underneath (the five types, the centre index) went unnoticed. A
   // fade at the bottom edge says it without depending on OS scrollbar
   // settings; it disappears once you reach the end.
+  // Touch has no hover, so a tap on a fact's label or body word reveals its
+  // "i"; a second tap on the "i" opens the drawer. Same two-step the chart
+  // cards use.
+  let shownFact = $state(null);
+  function tapFact(id) {
+    shownFact = shownFact === id ? null : id;
+  }
+
   let hasMore = $state(false);
   function updateHasMore() {
     if (!bodyEl) return;
@@ -279,13 +287,13 @@
              element, gold chips aligned left under a shared label. Rows with a
              note stack one per line; note-less rows (centres) go inline. -->
         <div class="facts">
-          {#each info.facts as f}
+          {#each info.facts as f, fi}
             <div class="fact">
-              <span class="fact-label">{f.label}{#if f.tip}<sup class="fact-i" data-tip={f.tip}>i</sup>{/if}:{#if f.info}<button class="fact-dot" type="button" aria-label={f.label} onclick={() => onnavigate?.(f.info.kind, f.info.key)}>i</button>{/if}</span>
+              <span class="fact-label" class:fact-shown={shownFact === `l${fi}`} onclick={() => tapFact(`l${fi}`)} role="presentation">{f.label}{#if f.tip}<sup class="fact-i" data-tip={f.tip}>i</sup>{/if}:{#if f.info}<button class="fact-dot" type="button" aria-label={f.label} onclick={() => onnavigate?.(f.info.kind, f.info.key)}>i</button>{/if}</span>
               <span class="fact-rows" class:inline={f.inline}>
-                {#each f.rows as r}
+                {#each f.rows as r, ri}
                   <span class="fact-row">
-                    {#if r.pre}<span class="fact-pre">{r.pre}{#if r.info}<button class="fact-dot" type="button" aria-label={r.pre} onclick={() => onnavigate?.(r.info.kind, r.info.key)}>i</button>{/if}</span>{/if}
+                    {#if r.pre}<span class="fact-pre" class:fact-shown={shownFact === `r${fi}-${ri}`} onclick={() => tapFact(`r${fi}-${ri}`)} role="presentation">{r.pre}{#if r.info}<button class="fact-dot" type="button" aria-label={r.pre} onclick={() => onnavigate?.(r.info.kind, r.info.key)}>i</button>{/if}</span>{/if}
                     <button class="index-chip gold" type="button" onclick={() => onnavigate?.(r.chip.kind, r.chip.key)}>{r.chip.label}</button>
                     {#if r.note}<span class="fact-note">{r.note}</span>{/if}
                   </span>
@@ -331,6 +339,29 @@
               {/each}
             </tbody>
           </table>
+        </div>
+      {/if}
+      {#if info.crossIndex}
+        <!-- All 192 crosses, grouped by quarter: sun gate · name + gates ·
+             angle tag. The sun gate is the clickable part (it opens that gate),
+             which is also the column the reference tables key on. -->
+        <div class="related">
+          <div class="rel-head">{info.crossIndex.heading}</div>
+          {#each info.crossIndex.quarters as q}
+            <p class="subhead">{q.title}</p>
+            <p class="para qnote">{@html renderInline(q.note)}</p>
+            <table class="rel-table xtable">
+              <tbody>
+                {#each q.rows as r}
+                  <tr>
+                    <td class="rt-chip"><button class="index-chip" type="button" onclick={() => onnavigate?.(r.kind, r.key)}>{r.sun}</button></td>
+                    <td class="rt-note"><span class="xname">{r.name}</span> <span class="xgates">{r.gates}</span></td>
+                    <td class="rt-pct">{r.tag}</td>
+                  </tr>
+                {/each}
+              </tbody>
+            </table>
+          {/each}
         </div>
       {/if}
       {#if info.list}
@@ -602,6 +633,19 @@
     color: #c4c4ca;
     margin: 0.7rem 0 0;
   }
+  .qnote {
+    margin-top: 0.25rem;
+  }
+  .xtable {
+    margin-top: 0.4rem;
+  }
+  .xname {
+    color: #c4c4ca;
+  }
+  .xgates {
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
   .blist {
     padding-left: 1.05rem;
   }
@@ -681,7 +725,9 @@
   }
   .fact-label {
     flex: none;
-    min-width: 4.9rem;
+    /* Fixed (not min-): the two blocks must start their rows at the same x, so
+       "sol"/"tierra" line up under each other and so do the gate chips. */
+    width: 6.6rem;
     font-size: 0.8rem;
     color: var(--text-muted);
     padding-top: 0.24rem;
@@ -725,13 +771,9 @@
   }
   .fact-row:hover .fact-dot,
   .fact-label:hover .fact-dot,
-  .fact-dot:focus-visible {
+  .fact-dot:focus-visible,
+  .fact-shown .fact-dot {
     opacity: 1;
-  }
-  @media (hover: none) {
-    .fact-dot {
-      opacity: 1;
-    }
   }
   .fact-dot:hover,
   .fact-dot:focus-visible {
@@ -740,10 +782,8 @@
   }
   .fact-pre {
     flex: none;
-    /* Wide enough for "tierra" + its "i", tight enough that the chip does not
-       drift away from the word. Both sides use it, so Personality and Design
-       line up under each other. */
-    min-width: 3.2rem;
+    /* Just wide enough for the longest body word plus its "i". */
+    width: 3.9rem;
     font-size: 0.8rem;
     color: var(--text-muted);
   }

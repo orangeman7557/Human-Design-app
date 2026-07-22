@@ -280,6 +280,15 @@ const overrides = {
     signalIndexHeading: 'The Signals of the Five Types',
     definitionIntro:
       '**Definition** describes how a chart’s defined centers group together: whether they form one single block of energy or several separate ones. It speaks to inner consistency — which parts are always "on" and linked — and to how that energy integrates.',
+    angleTag: { right: 'R', left: 'L', juxtaposition: 'Jux' },
+    crossIndexHeading: 'All 192 crosses, by quarter of the mandala',
+    crossIndexCols: { sun: 'Sun', name: 'Cross', angle: 'Ang.' },
+    quarter: [
+      { title: 'Quarter of Initiation', note: 'The start: the spark, the idea with no shape yet. Purpose is sought through the **mind**.' },
+      { title: 'Quarter of Civilization', note: 'Giving form and building what serves everyone. Purpose is sought through **form**.' },
+      { title: 'Quarter of Duality', note: 'Meeting the other, and what comes of it. Purpose is sought through **bonding**.' },
+      { title: 'Quarter of Mutation', note: 'Transformation, and the ending of the old. Purpose is sought through **change**.' }
+    ],
     crossTitle: '{name}',
     factCrossPersonality: 'Personality',
     factCrossDesign: 'Design',
@@ -294,7 +303,7 @@ const overrides = {
 
   reportShell: {
     typeTitle: 'Your Type: {type}',
-    typeSubhead: 'You are a {type}',
+    typeSubhead: 'You are a [{type}](type:{typeKey})',
     centersTitle: 'Your Centers and Your Conditioning',
     strategyTitle: 'Your Strategy: {strategy}',
     authorityTitle: 'Your Authority: {authority}',
@@ -304,7 +313,7 @@ const overrides = {
     definitionPrefix: '^Definition\\s+',
     practiceTitle: 'Living Your Design',
     purposeTitle: 'Your Purpose',
-    purposeSubhead: '{name} ({gates})',
+    purposeSubhead: '[{name}](cross:{angle}) ({gates})',
     profileHeading: 'Profile {profile}',
     profileIntro:
       'Your {profile} profile combines two lines: the {a}, conscious, and the {b}, unconscious. Each adds its own nuance, and together they describe your way of learning, relating and unfolding your purpose.',
@@ -408,8 +417,8 @@ const overrides = {
     cross: {
       title: 'The Incarnation Cross',
       paragraphs: [
-        'The **incarnation cross** is the background theme of a life — the general direction a design points in. It usually gets introduced as your "purpose", but take it gently: it is a backdrop that unfolds over years, not a task waiting to be solved.',
-        'It is made of **four gates**: the [Personality](activationCol:personality) Sun and Earth, and the [Design](activationCol:design) Sun and Earth. These are the heaviest activations in the chart — most of the imprint is attributed to them — so the cross is essentially a summary of their dominant themes.',
+        'The **incarnation cross** is the background theme of a life — the general direction a design points in. It usually gets introduced as your "purpose", but take it gently and lightly: it is not something to work out, apply or force. Live in step with your design ([strategy](concept:strategy) and [authority](concept:authority)) and the cross unfolds by itself over a lifetime.',
+        'It is made of **four gates**: the sun-earth pair of [Personality](activationCol:personality) and the sun-earth pair of [Design](activationCol:design). These are the heaviest [activations](concept:activation) in the chart — most of the imprint is attributed to them — so the cross is essentially a summary of their dominant themes.',
         'It is called a "cross" because it comes from **two axes crossing**: the personality-design axis (conscious ↔ unconscious) and the Sun-Earth axis (what gets expressed and driven ↔ what holds and steadies it).',
         'The **angle** says where that energy is aimed:',
         { bullets: [
@@ -950,7 +959,8 @@ const overrides = {
       title: 'Your Purpose',
       paragraphs: [
         'Your **incarnation cross** is the background theme of your life — the general direction your design points in. It is made of **four gates**: your Personality Sun and Earth, and your Design Sun and Earth. Those are the four heaviest activations in your chart.',
-        'Take it gently. It is a backdrop that unfolds over years, not a task you have to solve or a calling you are supposed to work out as fast as possible. Most people recognize it looking back, not looking forward.'
+        'One thing before we go on: **the word "purpose" is misleading here**. It is not a mission you have to discover, and it is not something you can force or hurry. It is the **background theme** of your life, and **it unfolds on its own**. Human Design is explicit about this: do not go looking for it — put your attention on [your strategy](section:strategy) and [your authority](section:authority), and the theme lives itself out.',
+        'Most people recognize it looking back, not looking forward. So read it with curiosity, not as something still to be done.'
       ],
       outro:
         'And here is the part that matters: **you do not chase your purpose, you fulfill it by living your design**. There is nothing to *do* with this cross except recognize it. What actually changes your day is the previous section — acting on [your strategy](section:strategy) and deciding from [your authority](section:authority). Get that right and the rest takes care of itself.'
@@ -1136,7 +1146,7 @@ const overrides = {
       trampa:
         '**The trap for your type** — What wears you down is **starting from your head** instead of waiting for something to respond to: saying yes out of obligation, out of logic, or out of fear of missing out. Get into something your energy never backed and frustration turns up — the classic Generator signal — along with the sense of being stuck in things that never quite land.',
       senales:
-        '**Signs you are on track** — Your compass is your two signals: [alignment](signal:aligned), which for you is **satisfaction**, and [misalignment](signal:misaligned), which is **frustration**. End the day pleasantly tired, with the sense that your energy went somewhere real, and you are on track. If frustration and weariness are what you mostly feel, you have probably said yes to things your body did not.'
+        '**Signs you are on track** — Your compass is your two signals: [alignment](signal:generator), which for you is **satisfaction**, and [misalignment](signal:generator), which is **frustration**. End the day pleasantly tired, with the sense that your energy went somewhere real, and you are on track. If frustration and weariness are what you mostly feel, you have probably said yes to things your body did not.'
     },
     'manifesting-generator': {
       energia:
@@ -1144,23 +1154,23 @@ const overrides = {
       trampa:
         '**The trap for your type** — **Scattering.** Taking on too much your body never said yes to, or skipping the heads-up and running straight into other people\u2019s resistance. Start from the head instead of responding and you collect frustration, a bit of anger, and a trail of half-finished projects.',
       senales:
-        '**Signs you are on track** — Your [alignment](signal:aligned) signal is **satisfaction**, with a certain calm around you; your [misalignment](signal:misaligned) one is **frustration**, usually with friction. Moving fast on what lights you up and actually finishing things means you are on track. Feeling scattered and meeting resistance everywhere usually means you said yes without your body, or you forgot to tell people.'
+        '**Signs you are on track** — Your [alignment](signal:manifesting-generator) signal is **satisfaction**, with a certain calm around you; your [misalignment](signal:manifesting-generator) one is **frustration**, usually with friction. Moving fast on what lights you up and actually finishing things means you are on track. Feeling scattered and meeting resistance everywhere usually means you said yes without your body, or you forgot to tell people.'
     },
     projector: {
       energia:
-        '**Managing your energy** — With no defined [Sacral](center:sacral) you are **not built for constant work**, and you cannot hold a Generator\u2019s pace: your energy is uneven and runs out sooner. You are not built to start from scratch either — unlike a Manifestor, you have no motor wired to the [Throat](center:throat). Your gift is neither stamina nor initiation. It is to **see, guide and direct**, where you are invited to. So: **rest and pace yourself** — sleep and let go before you are empty — and save your attention for people who value it. **Know when to say yes and when to say no.**',
+        '**Managing your energy** — Like the Manifestor, **rest is part of your method, not a prize**: with no defined [Sacral](center:sacral) you are **not built for constant work**, and you cannot hold a Generator\u2019s pace: your energy is uneven and runs out sooner. You are not built to start from scratch either — unlike a Manifestor, you have no motor wired to the [Throat](center:throat). Your gift is neither stamina nor initiation. It is to **see, guide and direct**, where you are invited to. So: **rest and pace yourself** — sleep and let go before you are empty — and save your attention for people who value it. **Know when to say yes and when to say no.**',
       trampa:
         '**The trap for your type** — **Keeping up with everyone else**, and **offering your insight where nobody asked for it**. Working yourself flat to prove your worth, or pushing in without an invitation, brings resistance, rejection and bitterness — the signal of a Projector living against their design.',
       senales:
-        '**Signs you are on track** — Your [alignment](signal:aligned) signal is **success** — being seen and recognized — and your [misalignment](signal:misaligned) one is **bitterness**. Being seen, being invited, having your view actually land: that is the track. Feeling invisible, drained and resentful usually means you are offering yourself where you were not called, or demanding an energy you do not have.'
+        '**Signs you are on track** — Your [alignment](signal:projector) signal is **success** — being seen and recognized — and your [misalignment](signal:projector) one is **bitterness**. Being seen, being invited, having your view actually land: that is the track. Feeling invisible, drained and resentful usually means you are offering yourself where you were not called, or demanding an energy you do not have.'
     },
     manifestor: {
       energia:
-        '**Managing your energy** — You have a motor wired to the [Throat](center:throat) but an undefined [Sacral](center:sacral): your energy is **not constant, it comes in bursts** for starting things, and then it needs rest. You are made to **get things moving and make an impact**, not to keep them running. So respect the cycle of push and rest — sometimes a lot of rest — and protect your independence without cutting yourself off.',
+        '**Managing your energy** — You have a motor wired to the [Throat](center:throat) but an undefined [Sacral](center:sacral): your energy is **not constant, it arrives in bursts** to start things and set them moving, and then it runs out. You are built to **start things and land an impact**, not to grind them out.\n\nAnd here is the part few people will tell you this plainly: **rest is not your reward, it is your method**. You are not designed to create continuously. Some put a healthy Manifestor ratio at around **70-80% rest** against time spent initiating — the exact figure matters less than the point behind it: **most of your time should not be spent producing**. Your impact comes from a few well-charged moves, not many at half power.\n\nIn practice: **go to bed tired, not empty**. Wait until there is nothing left and the next burst arrives late and weak. And do not measure your rest against a Generator, because next to one you will always look like you are doing very little — that is not laziness, it is your design.',
       trampa:
         '**The trap for your type** — Moving without **telling** the people your impact will reach. That is what fills the room with resistance and anger, and it ends up making everything harder for you. The other trap is **demanding a consistency that is not yours**, right up to burnout, instead of accepting how much rest you actually need.',
       senales:
-        '**Signs you are on track** — Your [alignment](signal:aligned) signal is **peace**; your [misalignment](signal:misaligned) one is **anger**. Inform people and move freely and things go quiet around you. When everything turns into friction and conflict, you probably moved without warning, or you are forcing a steady pace that was never yours.'
+        '**Signs you are on track** — Your [alignment](signal:manifestor) signal is **peace**; your [misalignment](signal:manifestor) one is **anger**. Inform people and move freely and things go quiet around you. When everything turns into friction and conflict, you probably moved without warning, or you are forcing a steady pace that was never yours.'
     },
     reflector: {
       energia:
@@ -1168,7 +1178,7 @@ const overrides = {
       trampa:
         '**The trap for your type** — Deciding in a hurry, staying in places that do not suit you, and **taking what you are reflecting for your own**: moods and pressures that actually belong to the group. **Forcing yourself to be the same every day** goes against how you work.',
       senales:
-        '**Signs you are on track** — Your [alignment](signal:aligned) signal is **surprise**, with its bit of delight; your [misalignment](signal:misaligned) one is **disappointment**. Get the place and the people right and life keeps surprising you pleasantly. When disappointment is the main note, you are usually somewhere wrong, with the wrong people, or you decided too fast.'
+        '**Signs you are on track** — Your [alignment](signal:reflector) signal is **surprise**, with its bit of delight; your [misalignment](signal:reflector) one is **disappointment**. Get the place and the people right and life keeps surprising you pleasantly. When disappointment is the main note, you are usually somewhere wrong, with the wrong people, or you decided too fast.'
     }
   },
 
@@ -2146,15 +2156,15 @@ const overrides = {
   cross: {
     right: {
       name: 'Right Angle Cross',
-      text: 'The **angle** of this cross is a **right** one, and the angle speaks only to the *orientation* of the journey: a **personal** geometry. Life unfolds mostly through your own experience, and the purpose is fulfilled by living what is yours. It is by far the most common angle.'
+      text: 'The **angle** of this cross is a **right** one — meaning life is oriented by a **personal** geometry: the path is walked mostly through your own experience, and what is yours gets fulfilled by living it. It is by far the most common angle.'
     },
     left: {
       name: 'Left Angle Cross',
-      text: 'The **angle** of this cross is a **left** one, and the angle speaks only to the *orientation* of the journey: a **transpersonal** geometry. Much of what matters arrives through other people, and the purpose is fulfilled in relationship with them — the encounters are not incidental, they are the material.'
+      text: 'The **angle** of this cross is a **left** one — meaning life is oriented by a **transpersonal** geometry: much of what matters arrives through other people, and what is yours gets fulfilled in relationship with them. The encounters are not incidental to the path, they are what it is made of.'
     },
     juxtaposition: {
       name: 'Juxtaposition Cross',
-      text: 'The **angle** of this cross is a **juxtaposition**, and the angle speaks only to the *orientation* of the journey: a **fixed** geometry, a bridge between the personal and the transpersonal. A very specific role, held fairly independently of the surroundings. It belongs to a single profile, the 4/1, and is the rarest angle.'
+      text: 'The **angle** of this cross is a **juxtaposition** — meaning life is oriented by a **fixed** geometry: a very specific role, neither personal nor transpersonal, held fairly independently of what goes on around it. It belongs to a single profile, the 4/1, and is the rarest angle.'
     }
   }
 };
