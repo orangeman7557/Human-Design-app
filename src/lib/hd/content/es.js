@@ -1275,6 +1275,16 @@ export default {
       neptune: 'Neptuno',
       pluto: 'Plutón'
     },
+    // Short type names for tight spots (the signal-pair drawer title). Only the
+    // Manifesting Generator actually shortens; the acronym follows the
+    // language's word order — Spanish GM, English MG.
+    typeShort: {
+      generator: 'Generador',
+      'manifesting-generator': 'GM',
+      projector: 'Proyector',
+      manifestor: 'Manifestador',
+      reflector: 'Reflector'
+    },
     // The two polarities of the signals card (the values themselves are per
     // type and live in the `signal` block).
     signal: {
@@ -1392,9 +1402,8 @@ export default {
       noDefinition: 'qué significa no tener definición (una carta sin definición)',
       center: 'el centro "{name}"',
       planet: 'qué representa {name}',
-      signalAligned: 'la señal de alineamiento del tipo {type} (la "{name}"), lo que en Diseño Humano se llama su firma',
-      signalMisaligned:
-        'la señal de desalineamiento del tipo {type} (la "{name}"), lo que en Diseño Humano se llama su tema del no-yo',
+      signal:
+        'las dos señales del tipo {type} —"{aligned}" como señal de alineamiento (la firma) y "{misaligned}" como señal de desalineamiento (el tema del no-yo)— y cómo distinguirlas en el día a día',
       cross: 'la {name} formada por las puertas {gates}'
     },
     planetChart:
@@ -1469,16 +1478,14 @@ export default {
     profileTitle: 'Perfil {profile}',
     profileIntro:
       'El perfil {profile} combina dos líneas: la {a}, consciente, y la {b}, inconsciente. Cada una aporta su matiz, y juntas describen una forma de aprender, de relacionarse y de desplegar el propósito.',
-    signalAlignedTitle: 'Alineamiento: {name}',
-    signalMisalignedTitle: 'Desalineamiento: {name}',
-    // No article before {otherName}: the signal names differ in gender (la paz,
-    // el enfado), so a fixed "la" breaks half the pairs.
-    signalPair:
-      'Es la señal del tipo {type}. Su opuesta es la [señal de {other}](signal:{otherKey}), "{otherName}": conviene leerlas juntas, porque lo útil no es cada una por separado sino **cuál de las dos predomina**.',
+    // One drawer per PAIR, not per polarity: what is useful is never one signal
+    // on its own but which of the two is winning. The type disambiguates the
+    // Generator and MG pairs, which share the same two words.
+    signalTitle: '{aligned}/{misaligned} ({type})',
+    signalPairNote:
+      'Las dos se leen juntas: lo útil no es cada una por separado, sino **cuál de las dos predomina** en una temporada.',
     signalCanonical:
-      'En Diseño Humano esta señal se llama, según el caso, la *firma* (alineamiento) o el *tema del no-yo* (desalineamiento).',
-    signalOtherAligned: 'alineamiento',
-    signalOtherMisaligned: 'desalineamiento',
+      'En Diseño Humano, la señal de alineamiento se llama la *firma* y la de desalineamiento, el *tema del no-yo*.',
     signalIndexHeading: 'Las señales de los cinco tipos',
     // Prepended to every definition drawer: the "Definición" card label was
     // merged into the Centres card (2026-07-22), so the concept-level framing
