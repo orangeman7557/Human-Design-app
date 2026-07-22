@@ -115,11 +115,14 @@ describe('per-cross interpretations', () => {
     }
   });
 
-  it('covers every right-angle cross in both languages', () => {
+  it('covers all 192 crosses in both languages', () => {
     for (const [lang, pack] of [['es', es], ['en', en]]) {
-      for (let g = 1; g <= 64; g++) {
-        const bare = en.crossName[`${g}|right`].slice(en.labels.cross.right.length).trim();
-        expect(pack.crossEssence[bare], `${lang}: gate ${g} right angle`).toBeTruthy();
+      for (const angle of ANGLES) {
+        for (let g = 1; g <= 64; g++) {
+          const full = en.crossName[`${g}|${angle}`];
+          const bare = full.slice(en.labels.cross[angle].length).trim();
+          expect(pack.crossEssence[bare], `${lang}: gate ${g} ${angle}`).toBeTruthy();
+        }
       }
     }
   });

@@ -214,6 +214,422 @@ export default {
       'Penetrar es **atravesar la superficie**. La [puerta 51](gate:51) es el shock que despierta, la [57](gate:57) la intuición que oye lo que no se dice, la [54](gate:54) la ambición que empuja hacia arriba y la [53](gate:53) el impulso de empezar.',
       'Es una cruz de **iniciación**: el sobresalto que rompe la rutina de alguien y le hace ver algo que no veía. A menudo estas personas producen ese efecto sin pretenderlo, solo por cómo entran en una situación.',
       'Lo delicado es que el shock se recibe mal si llega por sorpresa. **La intuición del [57](gate:57) sabe cuándo y a quién**; escucharla convierte el golpe en despertar, ignorarla lo convierte en choque.'
+    ],
+    'of Defiance': [
+      'Desafío aquí no es rebeldía porque sí. La [puerta 1](gate:1) y la [2](gate:2) traen la expresión propia y la dirección; debajo, el [4](gate:4) ofrece respuestas y el [49](gate:49) es el principio que rompe un pacto cuando ya no sirve.',
+      'Es una cruz **transpersonal**: lo propio se afirma **frente a otros y con otros**. Estas personas suelen encontrarse discrepando —no por gusto, sino porque ven que algo no encaja— y esa discrepancia acaba siendo útil para el grupo.',
+      'El filo está en desafiar por costumbre. El [49](gate:49) sabe cuándo un principio se ha roto de verdad; **si el desafío no nace de ahí, es solo ruido**.'
+    ],
+    'of Wishes': [
+      'La [puerta 3](gate:3) es el arranque difícil de lo nuevo y la [50](gate:50), los valores que sostienen a un grupo; el [41](gate:41) enciende el deseo que abre todo ciclo y el [31](gate:31) le presta la voz que otros siguen.',
+      'El deseo es aquí **el motor de lo colectivo**: lo que estas personas anhelan no se queda dentro, se convierte en algo que mueve a otros. De ahí «deseos», en plural — no un capricho, sino el impulso que arranca cosas.',
+      'Cuidado con el [41](gate:41): fantasea mucho más de lo que se puede vivir. **La fantasía es el combustible, no el plan.**'
+    ],
+    'of Revolution': [
+      'La [puerta 4](gate:4) da respuestas y la [49](gate:49) revisa los principios; el [8](gate:8) aporta lo que uno tiene que contribuir y el [14](gate:14), los recursos para sostenerlo.',
+      'Revolución aquí es **cambiar las reglas del trato**, no derribar por derribar. El [49](gate:49) es la puerta del rechazo justificado: cuando un acuerdo deja de ser justo, algo tiene que reformularse — y estas personas son quienes lo formulan.',
+      'Funciona cuando hay algo que ofrecer a cambio. **Rechazar sin propuesta agota a todos**, empezando por uno mismo.'
+    ],
+    'of Separation': [
+      'La [puerta 5](gate:5) marca el ritmo y la [35](gate:35) busca experiencia nueva; el [47](gate:47) intenta dar sentido a lo confuso y el [22](gate:22) abre o cierra la puerta emocional a los demás.',
+      'Separación no es soledad: es **la capacidad de distinguirse**, de no fundirse con el grupo. Estas personas aportan justamente eso — una mirada que no se ha contagiado del ambiente.',
+      'El coste es sentirse aparte. El [22](gate:22) sabe cuándo abrirse; **usarlo bien convierte la separación en perspectiva y no en aislamiento**.'
+    ],
+    'of the Plane': [
+      'La [puerta 6](gate:6) trae la fricción y la intimidad y la [36](gate:36), la crisis; el [15](gate:15) ama la variedad humana y el [10](gate:10) exige ser fiel a uno mismo.',
+      'El «plano» es **el nivel en el que se vive**: esta cruz habla de subir el plano de las relaciones, de llevar el contacto con otros a algo más hondo que la superficie.',
+      'Se juega en el ritmo del [6](gate:6). **Forzar intimidad cuando la puerta está cerrada baja el plano en vez de subirlo.**'
+    ],
+    'of Masks': [
+      'La [puerta 7](gate:7) es el papel que se ocupa ante los demás y la [13](gate:13), la que escucha lo que traen; el [23](gate:23) aporta la voz singular y el [43](gate:43), la intuición que la alimenta.',
+      'Las máscaras no son mentira: son **los papeles que uno asume según el sitio**. Esta cruz describe a quien cambia de máscara con soltura y, precisamente por eso, llega a gente muy distinta.',
+      'El riesgo es perder el hilo de cuál es la propia. **Una máscara sirve mientras se sepa que es una máscara.**'
+    ],
+    'of Uncertainty': [
+      'La [puerta 8](gate:8) aporta la contribución propia y la [14](gate:14), los recursos; el [55](gate:55) trae el espíritu y sus vaivenes y el [59](gate:59), la capacidad de romper barreras con otros.',
+      'Incertidumbre aquí es **materia prima, no problema**: estas personas viven sin certezas fijas sobre su ánimo ni su rumbo, y esa apertura es lo que les permite crear algo genuinamente nuevo con otros.',
+      'La trampa es exigirse constancia emocional. **El [55](gate:55) no se corrige; se acompaña.**'
+    ],
+    'of Identification': [
+      'La [puerta 9](gate:9) enfoca el detalle y la [16](gate:16) pone entusiasmo y destreza; el [64](gate:64) llena la cabeza de imágenes y el [63](gate:63) las pone en duda.',
+      'Identificar es **reconocer qué merece el esfuerzo** entre todo lo posible. Esta cruz da ojo para señalar, dentro del ruido colectivo, aquello que de verdad va a llevar a alguna parte.',
+      'El desgaste llega al identificarse *con* lo que se señala. **Ver el patrón no obliga a cargar con él.**'
+    ],
+    'of Prevention': [
+      'La [puerta 10](gate:10) es el comportamiento propio y la [15](gate:15), el amor a la variedad humana; el [18](gate:18) ve lo que falla y el [17](gate:17) lo convierte en opinión.',
+      'Prevenir es **corregir antes de que el daño ocurra**. Estas personas detectan el fallo de un patrón colectivo cuando aún es pequeño, y su aportación es avisar a tiempo.',
+      'Solo se recibe bien si se pide. **Corregir sin que nadie lo haya pedido convierte la prevención en reproche.**'
+    ],
+    'of Education': [
+      'La [puerta 11](gate:11) trae las ideas y la [12](gate:12), la prudencia al decirlas; el [46](gate:46) ama el cuerpo y el estar aquí y el [25](gate:25) aporta la inocencia del amor universal.',
+      'Educar aquí no es dar clase: es **transmitir de forma que el otro cambie**. Las ideas del [11](gate:11) solo educan cuando encuentran el momento del [12](gate:12) — y esta cruz vive en esa espera.',
+      'Dicha a destiempo, la mejor idea suena a sermón. **El talento está en el cuándo, no en el qué.**'
+    ],
+    'of Upheaval': [
+      'La [puerta 17](gate:17) da opiniones y la [18](gate:18), el ojo crítico; el [38](gate:38) pelea por lo que vale la pena y el [39](gate:39) provoca para sacar lo que hay debajo.',
+      'Convulsión: esta cruz **remueve lo que estaba cómodo**. No por gusto, sino porque ve una estructura que no aguanta y no puede callarse. Es de las energías que empujan a un grupo a cambiar.',
+      'El [39](gate:39) provoca sin proponérselo. **La diferencia entre sacudir y molestar está en si hay algo mejor detrás.**'
+    ],
+    'of Refinement': [
+      'La [puerta 19](gate:19) se acerca y pide y la [33](gate:33) se retira a digerir; el [1](gate:1) y el [2](gate:2) ponen debajo la expresión propia y la dirección.',
+      'Refinar es **pulir lo que ya existe** hasta que sirva de verdad. El [19](gate:19) percibe lo que la gente necesita y el [33](gate:33) lo procesa a solas: de ahí sale una sensibilidad muy fina para lo que le falta a un grupo.',
+      'Necesita el retiro. **Sin la pausa del [33](gate:33), la sensibilidad del [19](gate:19) se vuelve sobrecarga.**'
+    ],
+    'of Duality': [
+      'La [puerta 20](gate:20) vive en el presente y la [34](gate:34) es potencia pura; el [37](gate:37) aporta los pactos y el [40](gate:40), la voluntad y la necesidad de retirarse.',
+      'Dualidad es **el dos**: esta cruz se cumple en la relación, en el emparejarse — con una persona, un socio, una causa. Lo que uno solo no puede, el par sí.',
+      'El [40](gate:40) recuerda que el par se sostiene con descanso. **Un pacto sin retirada acaba en resentimiento.**'
+    ],
+    'of Endeavor': [
+      'La [puerta 21](gate:21) quiere control sobre lo suyo y la [48](gate:48) busca profundidad; el [54](gate:54) empuja hacia arriba y el [53](gate:53) inicia.',
+      'Empeño es **la energía de subir**: ambición puesta al servicio de construir algo con otros, ladrillo a ladrillo. El [54](gate:54) es la puerta del que quiere llegar más alto de donde partió.',
+      'La ambición del [54](gate:54) necesita ser reconocida para prosperar. **Empujar sin alianza es escalar en solitario una pared que era de todos.**'
+    ],
+    'of Informing': [
+      'La [puerta 22](gate:22) abre con gracia y la [47](gate:47) busca sentido; el [11](gate:11) trae las ideas y el [12](gate:12), el momento justo para decirlas.',
+      'Informar aquí es **poner al día al otro**: la gracia social del [22](gate:22) al servicio de que la gente sepa lo que necesita saber. Suena menor y es de las cosas que más fricción evitan.',
+      'El [12](gate:12) manda. **Informar a destiempo es tan inútil como no informar.**'
+    ],
+    'of Dedication': [
+      'La [puerta 23](gate:23) aporta la voz singular y la [43](gate:43), la intuición que la alimenta; el [30](gate:30) pone el deseo ardiente y el [29](gate:29), la capacidad de comprometerse del todo.',
+      'Dedicación es **entregarse a algo hasta el fondo**. Esta cruz no reparte: elige y se vuelca, y esa entrega es lo que otros acaban siguiendo.',
+      'El [29](gate:29) dice que sí con facilidad. **Dedicarse a lo equivocado cuesta años**, así que aquí elegir bien es todo.'
+    ],
+    'of Incarnation': [
+      'La [puerta 24](gate:24) vuelve una y otra vez sobre lo mismo y la [44](gate:44) reconoce patrones del pasado; el [13](gate:13) escucha y el [7](gate:7) ocupa un papel.',
+      'Encarnación habla de **traer algo al mundo a través de la propia vida**: lo que estas personas han rumiado (24) y recordado (44) acaba tomando forma en el papel que ocupan ante otros.',
+      'Requiere paciencia con la repetición. **El [24](gate:24) vuelve al mismo punto hasta que un día trae algo distinto**; cortar antes es quedarse sin el fruto.'
+    ],
+    'of Healing': [
+      'La [puerta 25](gate:25) aporta el amor inocente y universal y la [46](gate:46), el amor al cuerpo; el [58](gate:58) trae la vitalidad y el [52](gate:52), la quietud.',
+      'Sanar aquí es **devolver a alguien a su propia forma**, no arreglarlo. La combinación de inocencia (25) y presencia física (46) hace que estas personas sanen sobre todo por cómo están, no por lo que hacen.',
+      'El [25](gate:25) es exigente: **pide amar sin condiciones ni preferencias**, y eso incluye a quien no lo devuelve. Ahí está el trabajo.'
+    ],
+    'of Confrontation': [
+      'La [puerta 26](gate:26) sabe presentar lo que tiene valor y la [45](gate:45) reúne y administra lo común; el [6](gate:6) trae la fricción y el [36](gate:36), la crisis.',
+      'Confrontar es **poner delante lo que se evitaba**. No es pelea: es la conversación difícil que un grupo necesita y nadie quiere abrir. Estas personas suelen abrirla.',
+      'El [26](gate:26) puede exagerar para convencer. **Una confrontación honesta cambia algo; una manipulada solo gana la discusión.**'
+    ],
+    'of Alignment': [
+      'La [puerta 27](gate:27) cuida y alimenta y la [28](gate:28) busca sentido jugándosela; el [19](gate:19) se acerca a pedir y el [33](gate:33) se retira a procesar.',
+      'Alineamiento es **poner el cuidado donde de verdad importa**. Esta cruz mide, con el [28](gate:28), qué merece la pena — y dedica a eso el cuidado del [27](gate:27), en vez de repartirlo a ciegas.',
+      'Cuidar de todo es no cuidar de nada. **El [28](gate:28) está aquí para elegir**, aunque elegir duela.'
+    ],
+    'of Industry': [
+      'La [puerta 29](gate:29) se compromete y la [30](gate:30) desea intensamente; el [20](gate:20) vive en el presente y el [34](gate:34) aporta la potencia.',
+      'Laboriosidad no es trabajar mucho: es **la capacidad de sostener un sí en el tiempo**. El [29](gate:29) se mete y aguanta, y eso, con la fuerza del [34](gate:34) detrás, saca proyectos adelante que otros abandonan.',
+      'Todo depende de a qué se dijo que sí. **Un compromiso sostenido en lo equivocado es la definición del desgaste.**'
+    ],
+    'of the Alpha': [
+      'La [puerta 31](gate:31) lleva la voz que otros siguen y la [41](gate:41) enciende el deseo inicial; el [24](gate:24) rumia y el [44](gate:44) reconoce patrones.',
+      'Alfa es **el que va delante**. No por imponerse, sino porque su voz nombra lo que el grupo aún no sabía decir. Es una cruz de liderazgo, y el liderazgo aquí **se otorga, no se toma**.',
+      'El [31](gate:31) solo funciona si hay quien lo siga de verdad. **Liderar sin mandato es hablar solo.**'
+    ],
+    'of Limitation': [
+      'La [puerta 32](gate:32) mide lo que va a durar y la [42](gate:42) cierra ciclos; el [56](gate:56) estimula con historias y el [60](gate:60) pone el límite.',
+      'Limitación aquí es **la buena noticia**: aceptar el marco es lo que permite que algo se termine y dure. El [60](gate:60) no recorta por gusto — recorta para que haya forma.',
+      'La tentación es forzar el límite. **Lo que se estira más allá del [60](gate:60) no crece, se rompe.**'
+    ],
+    'of Migration': [
+      'La [puerta 37](gate:37) teje los pactos y la [40](gate:40) aporta la voluntad y la retirada; el [5](gate:5) marca el ritmo y el [35](gate:35) busca experiencia nueva.',
+      'Migrar es **moverse buscando algo mejor, en grupo**. Esta cruz describe a quien lleva a los suyos a otro sitio — un cambio de trabajo, de ciudad, de manera de hacer las cosas — y sostiene el vínculo durante el traslado.',
+      'El [35](gate:35) se aburre y el [37](gate:37) se compromete. **La tensión entre irse y sostener el pacto es el tema de la vida.**'
+    ],
+    'of Individualism': [
+      'La [puerta 38](gate:38) pelea por lo que vale la pena y la [39](gate:39) provoca; el [57](gate:57) intuye y el [51](gate:51) sacude.',
+      'Individualismo aquí no es egoísmo: es **el derecho a ser diferente**, defendido a base de plantar cara. Estas personas sostienen su rareza y, al hacerlo, abren sitio para la de otros.',
+      'La pelea del [38](gate:38) necesita causa. **Sin algo que merezca la pena, se convierte en pelearse con todo.**'
+    ],
+    'of Cycles': [
+      'La [puerta 53](gate:53) inicia y la [54](gate:54) empuja hacia arriba; el [42](gate:42) cierra lo empezado y el [32](gate:32) juzga qué va a durar.',
+      'Ciclos: esta cruz vive **el empezar y el terminar** como su materia. No se trata de sostener una sola cosa para siempre, sino de llevar cada ciclo hasta su final antes de abrir el siguiente.',
+      'Lo que duele es dejar cosas a medias. **El [42](gate:42) pide cierre**, y saltarse el cierre deja una estela de cosas abiertas.'
+    ],
+    'of Spirit': [
+      'La [puerta 55](gate:55) trae el espíritu y sus mareas y la [59](gate:59), la capacidad de intimar de verdad; el [9](gate:9) enfoca el detalle y el [16](gate:16) pone entusiasmo.',
+      'Espíritu aquí es **el estado de ánimo como asunto serio**: esta cruz explora la libertad emocional y la lleva a sus relaciones. Es una de las energías más mutantes de la carta.',
+      'No hay que arreglarlo. **La melancolía del [55](gate:55) no es un fallo**; decidir desde ella, sí.'
+    ],
+    'of Distraction': [
+      'La [puerta 56](gate:56) estimula contando y la [60](gate:60) pone el límite; el [27](gate:27) cuida y el [28](gate:28) busca sentido.',
+      'Distracción no es despiste: es **el arte de sacar a alguien de donde estaba metido**. Una historia, un desvío, una idea lateral — y de pronto se ve otra cosa. El [56](gate:56) es la puerta del narrador.',
+      'Sin el [60](gate:60), la distracción se vuelve dispersión. **Un buen desvío tiene destino.**'
+    ],
+    'of the Clarion': [
+      'La [puerta 51](gate:51) es el shock y la [57](gate:57) la intuición aguda; el [61](gate:61) presiona hacia el misterio y el [62](gate:62) ordena el detalle.',
+      'El clarín **llama a formar**: un sonido que atraviesa el ruido y hace que la gente levante la cabeza. Esta cruz habla de decir algo que despierta, no de decir mucho.',
+      'La intuición del [57](gate:57) es de un solo intento. **Repetir la llamada la convierte en ruido.**'
+    ],
+    'of Demands': [
+      'La [puerta 52](gate:52) aporta la quietud y la [58](gate:58) la vitalidad; el [21](gate:21) quiere control sobre lo suyo y el [48](gate:48) busca profundidad.',
+      'Exigencias: esta cruz **pide** — a los demás y a sí misma. Y suele estar en su derecho, porque el [48](gate:48) ve lo que falta de verdad. Bien puesta, es la energía que sube el listón de un grupo.',
+      'Mal puesta, agota a todos. **El [52](gate:52) es el freno: exigir desde la quietud, no desde la prisa.**'
+    ],
+    'of Obscuration': [
+      'La [puerta 61](gate:61) presiona hacia la verdad interior y la [62](gate:62) ordena los hechos; el [50](gate:50) sostiene los valores y el [3](gate:3) arranca lo nuevo.',
+      'Oscurecimiento es **lo que aún no se ve**. Esta cruz vive con una pregunta de fondo que ningún dato resuelve, y su aportación es sostenerla en alto en vez de taparla con explicaciones.',
+      'El [62](gate:62) tiende a llenar el hueco con detalles. **A veces lo honesto es decir que todavía está oscuro.**'
+    ],
+    'of Dominion': [
+      'La [puerta 63](gate:63) duda y la [64](gate:64) se llena de imágenes sin ordenar; el [26](gate:26) sabe presentar y el [45](gate:45) reúne y administra.',
+      'Dominio es **hacerse cargo**: la duda del [63](gate:63) puesta al servicio de comprobar antes de que otros carguen con un error. Es una cruz de responsabilidad, no de poder.',
+      'La duda dirigida hacia dentro paraliza. **El [63](gate:63) está hecho para revisar lo de fuera**, no para desconfiar de uno mismo.'
+    ],
+    'of Self-expression': [
+      'Un papel fijo: **decir lo propio**. La [puerta 1](gate:1) es la creatividad que necesita salir y la [2](gate:2) le da dirección; debajo, el [4](gate:4) y el [49](gate:49) aportan respuestas y principios.',
+      'La yuxtaposición hace de esto algo **no negociable**: no es una vocación que se elige, es una necesidad. Callar lo propio aquí no ahorra conflictos, solo lo aplaza.'
+    ],
+    'of the Driver': [
+      'La [puerta 2](gate:2) es la dirección misma —saber hacia dónde— con la [1](gate:1) detrás; el [49](gate:49) y el [4](gate:4) sostienen los principios y las respuestas.',
+      'El conductor **no empuja, orienta**. Es un papel silencioso y fijo: estar donde hay que estar para que otros encuentren su rumbo. Buscar reconocimiento por ello suele estropearlo.'
+    ],
+    'of Mutation': [
+      'La [puerta 3](gate:3) es el arranque caótico de lo nuevo y la [50](gate:50) los valores que lo contienen; el [41](gate:41) enciende el deseo y el [31](gate:31) le presta voz.',
+      'Mutar es **traer lo que aún no existía**, con todo su desorden inicial. El papel es aguantar ese desorden el tiempo suficiente para que cuaje, sin apresurarlo ni abandonarlo.'
+    ],
+    'of Formulization': [
+      'La [puerta 4](gate:4) formula respuestas y la [49](gate:49) revisa principios; el [8](gate:8) y el [14](gate:14) aportan la contribución y los recursos.',
+      'Formular es **darle forma cerrada a una idea suelta**. Un papel de precisión: la fórmula sirve o no sirve. La tentación es formular antes de tener la respuesta entera.'
+    ],
+    'of Habits': [
+      'La [puerta 5](gate:5) es el ritmo y la costumbre y la [35](gate:35) el apetito de cambio; el [47](gate:47) y el [22](gate:22) buscan sentido y abren la puerta a los demás.',
+      'Los hábitos son aquí **el andamiaje de una vida**. El papel consiste en sostener un ritmo propio sin dejarse arrastrar por el de nadie. Romperlo por complacer sale caro.'
+    ],
+    'of Conflict': [
+      'La [puerta 6](gate:6) es la fricción y la intimidad y la [36](gate:36) la crisis; el [15](gate:15) y el [10](gate:10) traen la variedad humana y la fidelidad a uno mismo.',
+      'El conflicto aquí **es el trabajo, no el accidente**: estar en el roce sin huir ni enquistarse. El filo está en el ritmo del [6](gate:6): no todo momento es momento de entrar.'
+    ],
+    'of Interaction': [
+      'La [puerta 7](gate:7) ocupa un papel ante otros y la [13](gate:13) escucha lo que traen; el [23](gate:23) y el [43](gate:43) ponen la voz singular y la intuición.',
+      'Interactuar es **el papel en sí**: estar entre la gente, recogiendo y devolviendo. No es sociabilidad decorativa; es la función. El aislamiento aquí apaga la carta entera.'
+    ],
+    'of Contribution': [
+      'La [puerta 8](gate:8) aporta lo que uno tiene que dar y la [14](gate:14) los recursos; el [55](gate:55) y el [59](gate:59) traen el espíritu y la intimidad.',
+      'Contribuir es **poner lo propio al servicio de algo sin diluirse en ello**. El papel fijo consiste en aportar sin pedir permiso y sin necesitar aplauso.'
+    ],
+    'of Focus': [
+      'La [puerta 9](gate:9) concentra en el detalle y la [16](gate:16) pone entusiasmo; el [64](gate:64) y el [63](gate:63) llenan de imágenes y dudas.',
+      'Foco es **sostener la atención donde otros la pierden**. Es un papel de resistencia mental, y su desgaste llega al enfocarse en lo que no lo merecía.'
+    ],
+    'of Behavior': [
+      'La [puerta 10](gate:10) es el comportamiento propio, la más personal de todas, con el [15](gate:15) al lado; el [18](gate:18) y el [17](gate:17) corrigen y opinan.',
+      'El papel es **comportarse como uno es, sin ajustarse**. Suena fácil y es de lo más exigente: cualquier adaptación de más se paga por dentro.'
+    ],
+    'of Ideas': [
+      'La [puerta 11](gate:11) es el almacén de ideas y la [12](gate:12) la prudencia al soltarlas; el [46](gate:46) y el [25](gate:25) traen el cuerpo y la inocencia.',
+      'Tener ideas es aquí **una condición, no un logro**. El papel no es realizarlas todas —el [11](gate:11) no está hecho para eso— sino ofrecerlas a quien sí puede.'
+    ],
+    'of Articulation': [
+      'La [puerta 12](gate:12) es la expresión medida y la [11](gate:11) le da material; el [25](gate:25) y el [46](gate:46) ponen el amor inocente y el cuerpo.',
+      'Articular es **encontrar la forma exacta y el momento exacto**. El papel vive en la espera: dicho a destiempo, lo mismo pierde todo su valor.'
+    ],
+    'of Listening': [
+      'La [puerta 13](gate:13) escucha y guarda lo que la gente cuenta, con el [7](gate:7) al lado; el [43](gate:43) y el [23](gate:23) ponen la intuición y la voz.',
+      'Escuchar es aquí **un oficio**: la gente cuenta cosas a estas personas sin saber por qué. El papel se estropea al usar lo escuchado para otra cosa que no sea devolverlo bien.'
+    ],
+    'of Empowering': [
+      'La [puerta 14](gate:14) es la abundancia de recursos y la [8](gate:8) la contribución; el [59](gate:59) y el [55](gate:55) traen la intimidad y el espíritu.',
+      'Empoderar es **poner recursos donde alguien puede usarlos mejor que uno**. Papel de mecenas silencioso; el filo está en dárselos a quien no los va a mover.'
+    ],
+    'of Extremes': [
+      'La [puerta 15](gate:15) contiene toda la variedad humana —del exceso a la escasez— con el [10](gate:10) al lado; el [17](gate:17) y el [18](gate:18) opinan y corrigen.',
+      'El papel es **habitar los extremos sin normalizarse**. Estas personas tienen ritmos raros y esa rareza es la aportación: ensanchan lo que se considera humano.'
+    ],
+    'of Experimentation': [
+      'La [puerta 16](gate:16) es el entusiasmo que se lanza y la [9](gate:9) el detalle; el [63](gate:63) y el [64](gate:64) dudan y acumulan imágenes.',
+      'Experimentar es **probar antes de saber**. El papel pide lanzarse, y el error forma parte del método — pero el [16](gate:16) sin repetición se queda en un salto sin destreza.'
+    ],
+    'of Opinions': [
+      'La [puerta 17](gate:17) formula opiniones y la [18](gate:18) ve lo que falla; el [38](gate:38) y el [39](gate:39) pelean y provocan.',
+      'Opinar es aquí **el papel**, no un vicio. Lo delicado es que una opinión no es una verdad: sirve cuando se ofrece y estorba cuando se impone.'
+    ],
+    'of Correction': [
+      'La [puerta 18](gate:18) detecta el fallo y la [17](gate:17) lo pone en palabras; el [39](gate:39) y el [38](gate:38) provocan y pelean.',
+      'Corregir es **el oficio fijo**: ver lo mejorable antes que nadie. Bien dirigido, es un regalo para el grupo; dirigido a uno mismo sin freno, es corrosivo.'
+    ],
+    'of Need': [
+      'La [puerta 19](gate:19) percibe lo que hace falta y la [33](gate:33) se retira a digerirlo; el [1](gate:1) y el [2](gate:2) aportan expresión y dirección.',
+      'El papel es **notar la necesidad antes de que se diga**. Muy sensible, muy útil — y agotador si no se respeta el retiro del [33](gate:33).'
+    ],
+    'of the Now': [
+      'La [puerta 20](gate:20) vive en el presente puro y la [34](gate:34) da la fuerza; el [37](gate:37) y el [40](gate:40) traen los pactos y la retirada.',
+      'Estar en el ahora es **la función completa**: ni planificar de más ni rumiar el pasado. La independencia de la yuxtaposición aquí protege ese presente de las agendas ajenas.'
+    ],
+    'of Control': [
+      'La [puerta 21](gate:21) quiere control sobre lo suyo —recursos, territorio— y la [48](gate:48) busca profundidad; el [54](gate:54) y el [53](gate:53) empujan e inician.',
+      'El papel es **administrar lo propio sin que nadie lo administre por uno**. Extendido a lo ajeno, el mismo impulso se vuelve tiranía menor.'
+    ],
+    'of Grace': [
+      'La [puerta 22](gate:22) abre y cierra la puerta emocional con gracia y la [47](gate:47) busca sentido; el [11](gate:11) y el [12](gate:12) traen ideas y prudencia.',
+      'La gracia es **saber estar**: escuchar, abrirse, callar en el momento justo. Es un papel social muy fino, y depende por completo del estado de ánimo del día.'
+    ],
+    'of Assimilation': [
+      'La [puerta 23](gate:23) traduce lo singular a algo comprensible y la [43](gate:43) lo intuye; el [30](gate:30) y el [29](gate:29) desean y se comprometen.',
+      'Asimilar es **hacer digerible lo raro**. El papel se juega en el momento: la misma frase es genial o es incomprensible según cuándo se suelte.'
+    ],
+    'of Rationalization': [
+      'La [puerta 24](gate:24) vuelve una y otra vez sobre lo mismo y la [44](gate:44) reconoce patrones; el [13](gate:13) y el [7](gate:7) escuchan y ocupan papel.',
+      'Racionalizar es **darle sentido a lo que dolió**. Papel de rumia productiva; el filo es cuando la rumia se queda en bucle y no llega a conclusión.'
+    ],
+    'of Innocence': [
+      'La [puerta 25](gate:25) es el amor universal sin preferencias y la [46](gate:46) el amor al cuerpo; el [58](gate:58) y el [52](gate:52) traen vitalidad y quietud.',
+      'La inocencia aquí es **un papel duro**: amar sin condiciones incluye a quien no lo merece. No es ingenuidad; es una elección sostenida.'
+    ],
+    'of the Trickster': [
+      'La [puerta 26](gate:26) sabe presentar lo que tiene valor y la [45](gate:45) reúne lo común; el [6](gate:6) y el [36](gate:36) traen fricción y crisis.',
+      'El embaucador **vende, y hace falta que alguien venda**. El papel es legítimo mientras lo vendido sea real: el mismo talento, con la verdad estirada, es manipulación.'
+    ],
+    'of Caring': [
+      'La [puerta 27](gate:27) cuida y alimenta y la [28](gate:28) busca sentido; el [19](gate:19) y el [33](gate:33) se acercan y se retiran.',
+      'Cuidar es **la función fija**, y el aviso es antiguo: el [27](gate:27) cuida de otros con facilidad y de sí mismo con dificultad. Ahí está todo el aprendizaje.'
+    ],
+    'of Risks': [
+      'La [puerta 28](gate:28) se juega la vida buscándole sentido y la [27](gate:27) cuida; el [33](gate:33) y el [19](gate:19) procesan y se acercan.',
+      'Arriesgar es **el papel**: sin el riesgo no aparece el sentido. Lo que no vale es el riesgo por adrenalina — el [28](gate:28) pregunta siempre para qué.'
+    ],
+    'of Commitment': [
+      'La [puerta 29](gate:29) dice que sí y aguanta hasta el final y la [30](gate:30) desea; el [20](gate:20) y el [34](gate:34) ponen presente y potencia.',
+      'Comprometerse es **la función entera**. Por eso el sí importa tanto: aquí un compromiso no se abandona, así que un sí mal dado hipoteca años.'
+    ],
+    'of Fates': [
+      'La [puerta 30](gate:30) es el deseo ardiente que marca una vida y la [29](gate:29) el compromiso; el [34](gate:34) y el [20](gate:20) traen fuerza y presente.',
+      'Los destinos son aquí **lo que el deseo acaba construyendo**. Papel intenso: lo que se anhela de verdad termina ocurriendo, para bien y para mal.'
+    ],
+    'of Influence': [
+      'La [puerta 31](gate:31) lleva la voz que otros siguen y la [41](gate:41) enciende el deseo; el [24](gate:24) y el [44](gate:44) rumian y reconocen patrones.',
+      'Influir es **el papel fijo**, y viene con condición: el [31](gate:31) solo funciona si hay quien quiera seguir. Influencia tomada por la fuerza no es influencia.'
+    ],
+    'of Conservation': [
+      'La [puerta 32](gate:32) mide qué va a durar y la [42](gate:42) cierra ciclos; el [56](gate:56) y el [60](gate:60) estimulan y limitan.',
+      'Conservar es **proteger lo que merece sobrevivir**. Papel prudente y necesario; su sombra es el miedo al cambio disfrazado de sensatez.'
+    ],
+    'of Retreat': [
+      'La [puerta 33](gate:33) se retira a digerir lo vivido y la [19](gate:19) percibe la necesidad; el [2](gate:2) y el [1](gate:1) dan dirección y expresión.',
+      'Retirarse es aquí **una función, no una huida**. El material se cocina en el silencio, y lo que sale de ahí es lo que estas personas tienen para contar.'
+    ],
+    'of Power': [
+      'La [puerta 34](gate:34) es potencia pura, la única que no se comunica sola, y la [20](gate:20) la trae al presente; el [40](gate:40) y el [37](gate:37) ponen voluntad y pactos.',
+      'El poder aquí **no se explica, se usa**. Papel de fuerza disponible; la trampa es gastarla en lo que no responde a nada.'
+    ],
+    'of Experience': [
+      'La [puerta 35](gate:35) quiere haberlo probado todo y la [5](gate:5) marca el ritmo; el [22](gate:22) y el [47](gate:47) abren y dan sentido.',
+      'Experimentar la vida es **el papel**. La aportación llega después: alguien que ha estado en muchos sitios y puede contarlo. Sin el ritmo del [5](gate:5), la experiencia se vuelve fuga.'
+    ],
+    'of Crisis': [
+      'La [puerta 36](gate:36) es la crisis y lo aún no vivido y la [6](gate:6) la fricción; el [10](gate:10) y el [15](gate:15) traen la fidelidad a uno mismo y la variedad.',
+      'La crisis aquí **es el terreno**, no la excepción. El papel consiste en atravesarlas sin dramatizarlas, y en no meterse en la siguiente antes de digerir la anterior.'
+    ],
+    'of Bargains': [
+      'La [puerta 37](gate:37) teje los pactos que sostienen a la familia y la [40](gate:40) aporta voluntad y retirada; el [5](gate:5) y el [35](gate:35) dan ritmo y experiencia.',
+      'El pacto es **la función**: dar y recibir en términos claros. Y su regla es dura — un acuerdo que uno acepta sin querer se acaba cobrando.'
+    ],
+    'of Opposition': [
+      'La [puerta 38](gate:38) pelea por lo que merece la pena y la [39](gate:39) provoca; el [57](gate:57) y el [51](gate:51) intuyen y sacuden.',
+      'Oponerse es **el papel**, y no es negatividad: sin alguien que plante cara, muchas cosas malas pasan sin ruido. La condición es que la causa exista de verdad.'
+    ],
+    'of Provocation': [
+      'La [puerta 39](gate:39) provoca para sacar lo que hay debajo y la [38](gate:38) pelea; el [51](gate:51) y el [57](gate:57) sacuden e intuyen.',
+      'Provocar es **destapar**: una pregunta incómoda, un comentario a destiempo, y de pronto sale lo que se callaba. Útil cuando busca algo; cruel cuando solo busca reacción.'
+    ],
+    'of Denial': [
+      'La [puerta 40](gate:40) es el que trabaja y luego se retira, y necesita ambas cosas; el [37](gate:37), el [35](gate:35) y el [5](gate:5) traen pactos, experiencia y ritmo.',
+      'Negarse es aquí **una capacidad, no un defecto**: decir que no y retirarse a recuperar. El papel se rompe cuando la retirada se convierte en aislamiento permanente.'
+    ],
+    'of Fantasy': [
+      'La [puerta 41](gate:41) enciende el deseo que abre todo ciclo y la [31](gate:31) le presta voz; el [44](gate:44) y el [24](gate:24) reconocen y rumian.',
+      'La fantasía es **el arranque de todo lo que después existe**. Papel imaginativo; su límite es real: el [41](gate:41) imagina mucho más de lo que una vida puede contener.'
+    ],
+    'of Completion': [
+      'La [puerta 42](gate:42) cierra lo que se empezó y la [32](gate:32) juzga qué va a durar; el [60](gate:60) y el [56](gate:56) limitan y estimulan.',
+      'Completar es **el papel entero**. Poca gente termina; estas personas sí. El desgaste llega al meterse en ciclos que nunca debieron empezar.'
+    ],
+    'of Insight': [
+      'La [puerta 43](gate:43) sabe algo de golpe y por dentro y la [23](gate:23) lo traduce; el [29](gate:29) y el [30](gate:30) comprometen y desean.',
+      'La intuición aquí **llega entera y sin explicación**. El papel es sostenerla hasta encontrar cómo decirla; soltarla en bruto suele sonar a despropósito.'
+    ],
+    'of Alertness': [
+      'La [puerta 44](gate:44) reconoce en el presente patrones del pasado y la [24](gate:24) rumia; el [7](gate:7) y el [13](gate:13) ocupan papel y escuchan.',
+      'Estar alerta es **la función**: detectar el patrón que ya salió mal antes. Es un instinto, no un razonamiento, y funciona mejor cuando no se argumenta.'
+    ],
+    'of Possession': [
+      'La [puerta 45](gate:45) reúne y administra lo de todos y la [26](gate:26) sabe presentarlo; el [36](gate:36) y el [6](gate:6) traen crisis y fricción.',
+      'Poseer aquí es **hacerse cargo de lo común**, no acaparar. El papel es el de quien custodia los recursos del grupo — y la línea con la apropiación es fina.'
+    ],
+    'of Serendipity': [
+      'La [puerta 46](gate:46) es el amor al cuerpo y el estar en el sitio justo, y la [25](gate:25) la inocencia; el [52](gate:52) y el [58](gate:58) traen quietud y vitalidad.',
+      'La serendipia es **estar donde hay que estar sin haberlo planeado**. Papel afortunado, y su condición es física: cuidar el cuerpo es aquí cuidar la suerte.'
+    ],
+    'of Oppression': [
+      'La [puerta 47](gate:47) se atasca intentando dar sentido a lo confuso y la [22](gate:22) abre; el [12](gate:12) y el [11](gate:11) miden e imaginan.',
+      'Opresión es **la sensación de no encontrar la salida** mientras se procesa. El papel consiste en aguantarla sin forzar la conclusión: la comprensión llega sola, y llega tarde.'
+    ],
+    'of Depth': [
+      'La [puerta 48](gate:48) busca profundidad y teme no tenerla, y la [21](gate:21) quiere control; el [53](gate:53) y el [54](gate:54) inician y empujan.',
+      'La profundidad es **el papel**, y viene con su miedo pegado: la sensación de no saber bastante. Ese miedo es el motor, no una señal de que sea cierto.'
+    ],
+    'of Principles': [
+      'La [puerta 49](gate:49) sostiene los principios y rompe cuando se violan, con el [4](gate:4) al lado; el [14](gate:14) y el [8](gate:8) traen recursos y contribución.',
+      'Tener principios es aquí **una función social**: alguien tiene que marcar dónde está la línea. El filo es la rigidez — un principio que no se revisa nunca se convierte en dogma.'
+    ],
+    'of Values': [
+      'La [puerta 50](gate:50) guarda los valores que sostienen a un grupo y la [3](gate:3) arranca lo nuevo; el [31](gate:31) y el [41](gate:41) dan voz y deseo.',
+      'Custodiar valores es **el papel fijo**. No es moralismo: es notar cuándo un grupo se está saltando lo que lo mantenía en pie, y decirlo.'
+    ],
+    'of Shock': [
+      'La [puerta 51](gate:51) sacude y despierta y la [57](gate:57) intuye; el [61](gate:61) y el [62](gate:62) presionan hacia el misterio y ordenan el detalle.',
+      'El shock es **el papel**: producir el sobresalto que saca a alguien del piloto automático. Estas personas suelen provocarlo sin querer, solo por cómo entran.'
+    ],
+    'of Stillness': [
+      'La [puerta 52](gate:52) se queda quieta para poder ver y la [58](gate:58) aporta vitalidad; el [21](gate:21) y el [48](gate:48) controlan y profundizan.',
+      'La quietud es **una función activa**, no pasividad: quedarse el tiempo suficiente para que se vea lo que en movimiento no se ve. Cuesta en un entorno que premia la prisa.'
+    ],
+    'of Beginnings': [
+      'La [puerta 53](gate:53) empieza cosas —esa es toda su energía— y la [54](gate:54) empuja hacia arriba; el [42](gate:42) y el [32](gate:32) cierran y evalúan.',
+      'Empezar es **el papel**, y no incluye terminar. Entenderlo quita mucha culpa: la aportación es el arranque, y otros pueden llevarlo al final.'
+    ],
+    'of Ambition': [
+      'La [puerta 54](gate:54) empuja hacia arriba desde abajo y la [53](gate:53) inicia; el [32](gate:32) y el [42](gate:42) miden y cierran.',
+      'La ambición es **la función**, y tiene una regla: prospera cuando se la reconoce. Empujar sin alianza deja a estas personas subiendo solas una escalera muy larga.'
+    ],
+    'of Moods': [
+      'La [puerta 55](gate:55) es el espíritu y su marea emocional, y la [59](gate:59) rompe barreras; el [9](gate:9) y el [16](gate:16) enfocan y entusiasman.',
+      'Los estados de ánimo son aquí **el terreno de trabajo**, no un problema a resolver. El papel es vivirlos con honestidad, y la única regla práctica es no decidir desde el punto bajo.'
+    ],
+    'of Stimulation': [
+      'La [puerta 56](gate:56) cuenta y estimula y la [60](gate:60) pone el límite; el [27](gate:27) y el [28](gate:28) cuidan y buscan sentido.',
+      'Estimular es **el papel del narrador**: mantener despierta a la gente con lo que cuenta. Y su límite es el [60](gate:60) — sin él, el estímulo se vuelve ruido.'
+    ],
+    'of Intuition': [
+      'La [puerta 57](gate:57) oye lo que no se dice y la [51](gate:51) sacude; el [62](gate:62) y el [61](gate:61) ordenan el detalle y presionan hacia el misterio.',
+      'La intuición es aquí **el instrumento entero**. Funciona en el presente y una sola vez; razonarla después la borra. El papel consiste en fiarse de ese primer aviso.'
+    ],
+    'of Vitality': [
+      'La [puerta 58](gate:58) es la alegría de estar vivo y la [52](gate:52) la quietud; el [48](gate:48) y el [21](gate:21) profundizan y controlan.',
+      'La vitalidad es **el papel**, y no es optimismo: es una energía física que empuja a mejorar las cosas porque vivir da gusto. Cuando desaparece, algo se está corrigiendo de más.'
+    ],
+    'of Strategy': [
+      'La [puerta 59](gate:59) rompe barreras para llegar a lo íntimo y la [55](gate:55) trae el espíritu; el [16](gate:16) y el [9](gate:9) entusiasman y enfocan.',
+      'Estrategia aquí es **saber acercarse**: cómo se traspasa la distancia con otra persona. Papel íntimo y muy concreto; forzarlo cierra justo lo que buscaba abrir.'
+    ],
+    'of Limitation': [
+      'La [puerta 60](gate:60) acepta el límite para que algo pueda tomar forma y la [56](gate:56) estimula; el [28](gate:28) y el [27](gate:27) buscan sentido y cuidan.',
+      'El límite es **la función**, y es buena noticia: sin marco no hay forma. La sombra es la melancolía de lo que no cabe — real, y no razón para forzar el marco.'
+    ],
+    'of Thinking': [
+      'La [puerta 61](gate:61) presiona hacia la verdad de fondo y la [62](gate:62) ordena los hechos; el [50](gate:50) y el [3](gate:3) sostienen valores y arrancan.',
+      'Pensar es aquí **una presión, no un pasatiempo**: la [61](gate:61) empuja a saber sin garantizar respuesta. El papel es sostener la pregunta sin fabricar conclusiones para calmarla.'
+    ],
+    'of Detail': [
+      'La [puerta 62](gate:62) nombra y ordena los detalles y la [61](gate:61) presiona hacia el misterio; el [3](gate:3) y el [50](gate:50) arrancan y sostienen valores.',
+      'El detalle es **el papel**: poner nombre a las cosas para que se puedan manejar. Aportación enorme y poco reconocida; su sombra es perderse en lo pequeño y no ver el conjunto.'
+    ],
+    'of Doubts': [
+      'La [puerta 63](gate:63) duda de todo lo que se le presenta y la [64](gate:64) acumula imágenes; el [26](gate:26) y el [45](gate:45) presentan y administran.',
+      'Dudar es **la función**, y es valiosa: alguien tiene que preguntar si esto funciona de verdad. Dirigida hacia dentro paraliza; dirigida hacia fuera protege al grupo.'
+    ],
+    'of Confusion': [
+      'La [puerta 64](gate:64) se llena de imágenes sin ordenar y la [63](gate:63) duda; el [45](gate:45) y el [26](gate:26) reúnen y presentan.',
+      'La confusión es aquí **el estado normal de trabajo**, no un fallo: la mente recibe más material del que puede ordenar, y el orden llega solo, con el tiempo. Forzarlo es lo único que la empeora.'
     ]
   },
 
