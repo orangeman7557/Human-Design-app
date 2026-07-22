@@ -16,7 +16,7 @@
   import { install, promptInstall } from '$lib/pwa/install.svelte.js';
   import { dialog } from '$lib/components/dialog.svelte.js';
   import { cityCountry } from '$lib/geo/place.js';
-  import { getElementInfo, getProfileInfo, getGateInfo, getChannelInfo, getConceptInfo, getPlanetInfo, getSignalInfo, getSignalNames, getCrossInfo, formatCrossGates, getActivationWeight, getDisplayLabels } from '$lib/hd/content/index.js';
+  import { getElementInfo, getProfileInfo, getGateInfo, getChannelInfo, getConceptInfo, getPlanetInfo, getSignalInfo, getSignalNames, getCrossInfo, getCrossName, formatCrossGates, getActivationWeight, getDisplayLabels } from '$lib/hd/content/index.js';
   import { t } from '$lib/i18n/index.svelte.js';
   import { buildPrompts } from '$lib/hd/prompts.js';
   import { buildShareUrl, decodeBirth, hasShareParams } from '$lib/hd/share-link.js';
@@ -40,6 +40,7 @@
   const CROSS_LABELS = $derived(getDisplayLabels(lang).cross);
   // The type's alignment / misalignment pair, e.g. { aligned: 'Satisfacción' }.
   const signalNames = $derived(chart ? getSignalNames(chart.type, lang) : null);
+  const crossName = $derived(chart?.cross ? getCrossName(chart.cross, lang) : null);
 
   // Types ordered by estimated share of the population; labels from the pack.
   const TYPE_ORDER = ['generator', 'manifesting-generator', 'projector', 'manifestor', 'reflector'];
@@ -1138,7 +1139,7 @@
               </span>
             </span>
             <span class="value" data-inner-key="cross:value"
-              >{CROSS_LABELS[chart.cross.angle] ?? chart.cross.angle}{#if innerReveal === 'cross:value' || infoIsOpen('cross', chart.cross.angle)}<span
+              >{crossName ?? CROSS_LABELS[chart.cross.angle] ?? chart.cross.angle}{#if innerReveal === 'cross:value' || infoIsOpen('cross', chart.cross.angle)}<span
                 class="dot-side"
                 data-info-cat="cross" data-info-kind="cross" data-info-key={chart.cross.angle}
               ><InfoDot active={infoIsOpen('cross', chart.cross.angle)} label={tr('chart.moreCross')} /></span>{/if}</span>

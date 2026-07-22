@@ -281,10 +281,22 @@ export function getSignalNames(type, lang = getLocale()) {
 }
 
 /**
- * The incarnation cross, composed from the angle plus the chart's four Sun/Earth
- * gates. No canonical cross name yet (the ~768-entry table is its own content
- * task), so the meaning is carried by the angle text and the four gate themes —
- * the same approach channels use.
+ * The canonical name of a chart's incarnation cross ("Cruz Derecha de la
+ * Esfinge"), or null. The cross is fully determined by the Personality Sun gate
+ * and the angle, which is exactly how the 192-entry table is keyed — and how
+ * `cross-names.test.js` validates it against the ephemeris.
+ * @param {{ angle: string, gates: number[] }} cross
+ * @param {string} [lang]
+ */
+export function getCrossName(cross, lang = getLocale()) {
+  if (!cross?.gates) return null;
+  return pack(lang).crossName?.[`${cross.gates[0]}|${cross.angle}`] ?? null;
+}
+
+/**
+ * The incarnation cross: its canonical name, what its angle means, and the four
+ * Sun/Earth gates with their themes — the meaning is composed from those gates
+ * rather than hand-written 192 times, the same approach channels use.
  * @param {any} chart
  * @param {string} [lang]
  */
@@ -300,7 +312,10 @@ export function getCrossInfo(chart, lang = getLocale()) {
     note: gateTheme(g, lang) ?? null
   });
   return {
-    title: fillTpl(D.crossTitle, { name: entry.name, gates: formatCrossGates(cross, lang) }),
+    title: fillTpl(D.crossTitle, {
+      name: getCrossName(cross, lang) ?? entry.name,
+      gates: formatCrossGates(cross, lang)
+    }),
     paragraphs: [entry.text],
     facts: [
       { label: D.factCrossPersonality, rows: [gateRow(pSun), gateRow(pEarth)] },
