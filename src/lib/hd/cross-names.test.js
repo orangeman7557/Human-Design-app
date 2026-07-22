@@ -94,3 +94,33 @@ describe('incarnation-cross name table', () => {
     }
   }, 60000);
 });
+
+// The per-cross interpretations are keyed by NAME (crosses sharing a name share
+// their four gates), so the risk is a key that no cross resolves to — a text
+// that silently never shows. This catches that in both languages.
+describe('per-cross interpretations', () => {
+  // Keys are the ENGLISH bare name in every language, so both packs stay in
+  // step and a key that matches no cross (a text that would never show) fails.
+  const bareEn = new Set(
+    Object.entries(en.crossName).map(([key, full]) =>
+      full.slice(en.labels.cross[key.split('|')[1]].length).trim()
+    )
+  );
+
+  it('every essence key belongs to a real cross, in both languages', () => {
+    for (const [lang, pack] of [['es', es], ['en', en]]) {
+      for (const key of Object.keys(pack.crossEssence ?? {})) {
+        expect(bareEn.has(key), `${lang}: "${key}" matches no cross name`).toBe(true);
+      }
+    }
+  });
+
+  it('covers every right-angle cross in both languages', () => {
+    for (const [lang, pack] of [['es', es], ['en', en]]) {
+      for (let g = 1; g <= 64; g++) {
+        const bare = en.crossName[`${g}|right`].slice(en.labels.cross.right.length).trim();
+        expect(pack.crossEssence[bare], `${lang}: gate ${g} right angle`).toBeTruthy();
+      }
+    }
+  });
+});

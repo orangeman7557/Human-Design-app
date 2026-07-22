@@ -681,7 +681,7 @@
   }
   .fact-label {
     flex: none;
-    min-width: 6.2rem;
+    min-width: 4.9rem;
     font-size: 0.8rem;
     color: var(--text-muted);
     padding-top: 0.24rem;
@@ -702,9 +702,13 @@
   }
   /* Row prefix ("sol" / "tierra" on the cross): fixed width so the chips of
      both rows line up under each other. */
-  /* Small italic "i" matching InfoDot, opening the label's own drawer. */
+  /* Small italic "i" matching InfoDot, opening the label's own drawer. Hidden
+     until the row is hovered, like the "i" on the chart's cards — otherwise six
+     of them shout at once. Touch has no hover, so there it stays visible. */
   .fact-dot {
-    margin-left: 0.2rem;
+    opacity: 0;
+    transition: opacity 0.12s;
+    margin-left: 0.15rem;
     padding: 0;
     width: 13px;
     height: 13px;
@@ -719,6 +723,16 @@
     cursor: pointer;
     vertical-align: middle;
   }
+  .fact-row:hover .fact-dot,
+  .fact-label:hover .fact-dot,
+  .fact-dot:focus-visible {
+    opacity: 1;
+  }
+  @media (hover: none) {
+    .fact-dot {
+      opacity: 1;
+    }
+  }
   .fact-dot:hover,
   .fact-dot:focus-visible {
     color: var(--accent);
@@ -729,14 +743,14 @@
     /* Wide enough for "tierra" + its "i", tight enough that the chip does not
        drift away from the word. Both sides use it, so Personality and Design
        line up under each other. */
-    min-width: 4.1rem;
+    min-width: 3.2rem;
     font-size: 0.8rem;
     color: var(--text-muted);
   }
   .fact-row {
     display: inline-flex;
     align-items: center;
-    gap: 0.45rem;
+    gap: 0.3rem;
     flex-wrap: wrap;
   }
   .fact-note {

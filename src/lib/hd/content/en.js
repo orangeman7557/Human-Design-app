@@ -286,7 +286,7 @@ const overrides = {
     bodySun: 'sun',
     bodyEarth: 'earth',
     crossReading:
-      'In this particular cross, the conscious axis crosses "{tpSun}" ([gate {pSun}](gate:{pSun})) with "{tpEarth}" ([gate {pEarth}](gate:{pEarth})): the theme a person recognises as their own and keeps pushing at over a lifetime. Underneath, the unconscious axis brings "{tdSun}" ([gate {dSun}](gate:{dSun})) held up by "{tdEarth}" ([gate {dEarth}](gate:{dEarth})) — the ground all of that is done from, and usually clearer to other people than to the person themselves. **The cross is what comes of reading all four together**, not gate by gate.',
+      'In this particular cross, the conscious axis crosses "{tpSun}" ([gate {pSun}](gate:{pSun})) with "{tpEarth}" ([gate {pEarth}](gate:{pEarth})): the theme a person recognises as their own and keeps pushing at over a lifetime. Underneath, the unconscious axis brings "{tdSun}" ([gate {dSun}](gate:{dSun})) held up by "{tdEarth}" ([gate {dEarth}](gate:{dEarth})) — the ground all of that is done from, and usually clearer to other people than to the person themselves.',
     crossFourGates:
       'What gives each cross its own character is its **four gates**: the Personality Sun and Earth — the conscious side, what a person recognises as their own — and the Design Sun and Earth — the unconscious side, the ground they act from. They are the heaviest activations in the chart, and they have to be **read together**: the meaning is in the combination, not in any one gate.',
     crossGatesJoin: ' | '
@@ -1363,6 +1363,89 @@ const overrides = {
     uranus: { tier: 'low', label: 'low' },
     neptune: { tier: 'low', label: 'low' },
     pluto: { tier: 'low', label: 'low' }
+  },
+
+  crossEssence: {
+    'of the Sphinx': [
+      'The sphinx is the figure that **guards the road and poses the riddle**: it does not move, yet it orients whoever passes. That is the ground of this cross, built on [gate 1](gate:1) and [gate 2](gate:2) — self-expression and direction — held up by [7](gate:7) and [13](gate:13), the role you take in front of others and the capacity to hear what they bring.',
+      'In practice it comes down to something concrete: **these people give direction**. Not so much by telling others what to do as by **being themselves so distinctly that everyone else gets their bearings from watching**. Direction is not looked for outside; it comes from within and is recognised afterwards.',
+      'The risk is trying to direct on purpose, pushing. A sphinx chases nobody: it waits to be come to. When the self-expression is honest and the role is not forced, the orienting happens by itself.'
+    ],
+    'of Laws': [
+      'This cross is about **how things get ordered so they last**. [Gate 3](gate:3) brings the hard start every new thing has, [50](gate:50) the values that hold a group together; underneath, [60](gate:60) sets the limit and [56](gate:56) is the restlessness that pushes past it.',
+      'Hence the name: the "law" here is not an imposed rule but **the order that makes something work and repeat**. These people usually have a nose for what will hold a project, a family or a community together — and for what is going to break it.',
+      'The tension is between limit and impulse: **ordering without seizing up**. Done well, what gets built stands on its own; done badly, you get rules for the sake of rules.'
+    ],
+    'of Explanation': [
+      'The heart of this one is **making comprehensible what is not yet**. [Gate 4](gate:4) is the answer offered to a doubt, [49](gate:49) the principle on which something is accepted or overturned; [23](gate:23) and [43](gate:43) bring the singular insight and the knack of putting it in words other people can take in.',
+      'That is why it is called explanation: it is not about being right, it is about **translating**. An idea that is perfectly clear inside and unintelligible outside, until the form is found. Finding that form is the life theme.',
+      'The usual drain is explaining too early, or to someone who never asked — there the explanation just sounds odd. With the right timing, the same sentence opens a door.'
+    ],
+    'of Consciousness': [
+      'This cross works with **noticing**. [Gate 5](gate:5) sets rhythm and consistency, [35](gate:35) the appetite for new experience; below, [64](gate:64) fills the head with unsorted images and [63](gate:63) puts them all in doubt.',
+      'The combination describes someone who **turns what they have lived into understanding**: gathering experience, letting it settle at their own pace, and eventually drawing out a clarity others do not see. Consciousness here is not thought out, it is distilled.',
+      'The trap is wanting to understand it all now, or breaking your own rhythm chasing experiences. The clarity comes late and comes by itself; forcing it only muddies it.'
+    ],
+    'of Eden': [
+      'Eden is the paradise **you have to leave**. That is exactly the image here: [gate 36](gate:36) brings crisis and the not-yet-lived, [6](gate:6) friction and intimacy; underneath, [11](gate:11) supplies the ideas and [12](gate:12) the caution about voicing them.',
+      'It describes a life **made by going into experience**, including the kind that hurts. This is not a cross of contemplative retreat: its material is contact, the rub of other people, the crisis that teaches what nothing else could.',
+      'The practical key is timing. [Gate 6](gate:6) opens and closes, so **not every moment is the moment**: going in when it is open keeps experience from turning into wear, and the caution of [12](gate:12) is an ally, not a brake.'
+    ],
+    'of Contagion': [
+      'Contagion here is not illness, it is **what spreads without being intended**. [Gate 8](gate:8) brings what you have to contribute and [14](gate:14) the resources to do it; [30](gate:30) supplies the burning desire and [29](gate:29) the capacity to commit all the way in.',
+      'What follows is a life marked by **example**: these people move others by how they give themselves to their own thing, not by what they preach. When something really catches them, the enthusiasm is catching too.',
+      'The care is in what gets a yes. [29](gate:29) commits easily and [30](gate:30) wants intensely: **a yes given in the heat of the moment can cost years**. Choosing well is half the life here.'
+    ],
+    'of Planning': [
+      'This cross organises **so that the community works**. [Gate 9](gate:9) gives focus on detail and [16](gate:16) enthusiasm and skill; below, [40](gate:40) supplies the will to work — and to withdraw and rest — and [37](gate:37) the bargains that keep a group together.',
+      'What defines it is the long view: **seeing the steps that lead from here to there**, and sharing them out. Not control — structure in service of something shared, the plan that makes it possible for a group to actually arrive somewhere.',
+      'The delicate part is the deal: [40](gate:40) and [37](gate:37) form the channel of bargains. **An agreement accepted without real willingness charges interest**, and the rest is not optional; without it, planning turns into burden.'
+    ],
+    'of the Vessel of Love': [
+      'A vessel is **what holds and carries**. This cross gathers the four gates of love: [10](gate:10), loving yourself and behaving as you are; [15](gate:15), love of humanity in all its variety; [46](gate:46), love of the body and of being here; and [25](gate:25), universal, innocent love.',
+      'It is not about romance but about **a way of being in the world that makes room**. These people tend to be the place where others feel accepted without having to justify themselves — and that happens through who they are, not what they do.',
+      'The condition is that the love starts inside. An empty vessel holds no one: **[gate 10](gate:10) asks for fidelity to yourself first**, and the rest follows from there.'
+    ],
+    'of Service': [
+      'This cross is built to **improve what is there**. [Gate 17](gate:17) brings the opinion and [18](gate:18) the eye for what is off; below, [58](gate:58) brings vitality and the taste for living, and [52](gate:52) the stillness to look without moving.',
+      'Service here means **correcting with judgement**: seeing the flaw, yes, but in service of the thing working better for everyone. Lived well it is one of the most useful energies going; the whole group benefits.',
+      'The edge is obvious: the same gate that perfects can turn into relentless criticism, above all inward. **[58](gate:58) is the reminder of what it was all for** — joy. When correcting stops being joyful, something has gone crooked.'
+    ],
+    'of the Four Ways': [
+      '[Gate 19](gate:19) asks and approaches, [33](gate:33) retreats to digest what happened, [44](gate:44) recognises patterns from the past and [24](gate:24) returns again and again to the same idea. Four different movements: hence the name.',
+      'It describes a life that **moves by alternating**: approach and withdraw, join the group and step out to process it. That is not inconsistency, it is the method — the retreat is what gives the approach something to bring.',
+      'The common mistake is picking one mode, usually the sociable one, and trying to hold it. **Four ways means four, not one**: denying yourself the retreat hollows out the rest.'
+    ],
+    'of the Sleeping Phoenix': [
+      'The phoenix burns and is reborn; here it is **asleep**, waiting for its moment. [Gate 20](gate:20) lives in the present and [34](gate:34) is sheer power; below, [55](gate:55) brings spirit and its swings of mood, and [59](gate:59) the ability to break through barriers and be intimate.',
+      'This is a cross of **held force**: an enormous energy that is not spent continuously but waits and then unfolds whole when the moment comes. Reading that as slowness is a misreading.',
+      'The key is mood. [55](gate:55) rises and falls, and **life changes colour with it**; the work is not to correct that but to avoid deciding from the low point or promising from the high one.'
+    ],
+    'of Tension': [
+      '[Gate 21](gate:21) wants control over its own domain, [48](gate:48) reaches for depth and fears not having it, [38](gate:38) fights for what is worth fighting for and [39](gate:39) provokes to bring out what is underneath. Four energies pulling — and that pull is the point.',
+      'It sounds uncomfortable and it is the opposite of a flaw: **it is what drives improvement**. These people usually carry a background dissatisfaction that pushes them to go deeper, to stand their ground, and to refuse the superficial.',
+      'The care is where it discharges. Turned against your own life, tension exhausts; put behind something worth doing, **it is one of the most productive forces in the chart**.'
+    ],
+    'of Rulership': [
+      '[Gate 22](gate:22) opens with grace, [47](gate:47) tries to make sense of confusion, [26](gate:26) knows how to present what has value and [45](gate:45) gathers and administers what belongs to everyone. The rulership this cross means **is that: stewarding what is shared**.',
+      'It is not about giving orders. It is **the authority that appears when someone gathers, orders and distributes well** — and the social grace of [22](gate:22) is what makes it welcome rather than resented.',
+      'The sensitive point is [26](gate:26), the trickster gate: it knows how to pitch, which is exactly why it can overstate. **The line between ruling and manipulating runs through there**, and it is drawn in small decisions.'
+    ],
+    'of the Unexpected': [
+      '[Gate 27](gate:27) cares and feeds, [28](gate:28) stakes its life on finding meaning, [41](gate:41) lights the fantasy that starts every cycle and [31](gate:31) carries the voice others follow. Four gates that do not quite fit together: hence the unexpected.',
+      'This is a cross of **turns**. Life does not follow the plotted line; it arrives by routes nobody planned, and the good part is in those turns — [28](gate:28) is the gate that finds meaning precisely where there seemed to be none.',
+      'Lived defensively it feels like instability. Accepted, it becomes **a life rich in experience, and rich in the capacity to look after other people** exactly because of what has been lived.'
+    ],
+    'of Maya': [
+      'Maya is the name of the **veil**: the material world as it appears to us, at once so solid and so slippery. [Gate 32](gate:32) measures what will last and [42](gate:42) closes cycles; below, [62](gate:62) orders the detail and [61](gate:61) presses toward the mystery underneath.',
+      'The cross describes someone who **moves inside the illusion without entirely buying it**: a good eye for the practical — what endures, what is finished, names and facts — and at the same time a question no fact answers.',
+      'That double edge is the theme. Staying only in the detail makes for a dry life; staying only in the mystery, a life with no floor. **Maya is crossed using both hands.**'
+    ],
+    'of Penetration': [
+      'To penetrate is **to go through the surface**. [Gate 51](gate:51) is the shock that wakes you, [57](gate:57) the intuition that hears what is not said, [54](gate:54) the ambition that drives upward and [53](gate:53) the urge to begin.',
+      'This is a cross of **initiation**: the jolt that breaks someone out of their routine and makes them see what they were not seeing. These people often have that effect without meaning to, simply by how they enter a situation.',
+      'The delicate part is that shock lands badly when it arrives by surprise. **The intuition of [57](gate:57) knows when, and for whom**; listening to it turns the blow into a waking-up, ignoring it turns it into a collision.'
+    ]
   },
 
   // English cross names. See es.js for the sourcing and the validation test.
