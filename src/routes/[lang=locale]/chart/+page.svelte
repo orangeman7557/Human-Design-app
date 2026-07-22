@@ -1635,7 +1635,11 @@
     width: 14px;
     height: 14px;
     margin: 0 0.1rem;
-    vertical-align: -2px;
+    /* middle keeps the circle centred on the x-height whatever the line box;
+       the old -2px nudge left it sitting below the text. */
+    vertical-align: middle;
+    position: relative;
+    top: -1px;
     border-radius: 50%;
     border: 1px solid #4a4a54;
     background: var(--surface-2);

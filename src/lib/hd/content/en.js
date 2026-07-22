@@ -280,9 +280,13 @@ const overrides = {
     signalIndexHeading: 'The Signals of the Five Types',
     definitionIntro:
       '**Definition** describes how a chart’s defined centers group together: whether they form one single block of energy or several separate ones. It speaks to inner consistency — which parts are always "on" and linked — and to how that energy integrates.',
-    crossTitle: '{name} ({gates})',
-    factCrossPersonality: 'Personality Sun and Earth',
-    factCrossDesign: 'Design Sun and Earth',
+    crossTitle: '{name}',
+    factCrossPersonality: 'Personality',
+    factCrossDesign: 'Design',
+    bodySun: 'sun',
+    bodyEarth: 'earth',
+    crossReading:
+      'In this particular cross, the conscious axis crosses "{tpSun}" ([gate {pSun}](gate:{pSun})) with "{tpEarth}" ([gate {pEarth}](gate:{pEarth})): the theme a person recognises as their own and keeps pushing at over a lifetime. Underneath, the unconscious axis brings "{tdSun}" ([gate {dSun}](gate:{dSun})) held up by "{tdEarth}" ([gate {dEarth}](gate:{dEarth})) — the ground all of that is done from, and usually clearer to other people than to the person themselves. **The cross is what comes of reading all four together**, not gate by gate.',
     crossWeight:
       'These four gates are the heaviest activations in the chart — most of the imprint is attributed to them. Read them **together**, not one by one: that is where the cross gets its tone.',
     crossGatesJoin: ' | '
@@ -406,7 +410,8 @@ const overrides = {
       paragraphs: [
         'The **incarnation cross** is the background theme of a life — the general direction a design points in. It usually gets introduced as your "purpose", but take it gently: it is a backdrop that unfolds over years, not a task waiting to be solved.',
         'It is made of **four gates**: the [Personality](activationCol:personality) Sun and Earth, and the [Design](activationCol:design) Sun and Earth. These are the heaviest activations in the chart — most of the imprint is attributed to them — so the cross is essentially a summary of their dominant themes.',
-        'The **angle** says where that energy is aimed. A *right angle cross* points to a personal path, walked through your own experience. A *left angle cross* points to a transpersonal one, fulfilled through other people. A *juxtaposition cross* points to a fixed, singular fate. The angle follows from the [profile](concept:profile).'
+        'It is called a "cross" because it comes from **two axes crossing**: the personality-design axis (conscious ↔ unconscious) and the Sun-Earth axis (what gets expressed and driven ↔ what holds and steadies it).',
+        'The **angle** says where that energy is aimed. A *right angle cross* points to a personal path, walked through your own experience. A *left angle cross* points to a transpersonal one, fulfilled through other people. A *juxtaposition cross* points to a fixed, singular fate. The angle follows directly from the [profile](concept:profile) — a 1/3 profile is right angle, a 5/2 is left angle, and so on.'
       ]
     }
   },

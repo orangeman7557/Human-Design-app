@@ -19,7 +19,15 @@ lives in [`BACKLOG.md`](./BACKLOG.md).
 
 Last updated: 2026-07-22.
 
-> Latest change (2026-07-22, **nombres de cruz contrastados con el estándar en español**): revisión del autor sobre la tanda anterior, y tenía razón en desconfiar de mi traducción.
+> Latest change (2026-07-22, **cruz: lectura propia por cruz, esquema Sol/Tierra y varios pulidos**):
+> **Cada cruz tiene ahora su lectura**, no solo la del ángulo. Se compone de las **esencias de sus cuatro puertas** —la misma técnica de los canales— separando el eje consciente (Personalidad) del inconsciente (Diseño), así que dos cruces del mismo ángulo ya leen distinto. **No son 192 textos escritos a mano**: eso sigue siendo un proyecto de redacción aparte; esto da especificidad real hoy y el handoff de IA cubre la profundidad.
+> **Esquema del drawer**: las cuatro puertas pasan de dos listas planas a `Personalidad: sol (36) tema / tierra (6) tema` y `Diseño: …`. `ElementInfo` estrena un `pre` opcional por fila (ancho fijo, así los chips se alinean). **Título del drawer sin las puertas**, solo el nombre.
+> **Concepto de la cruz**: añadido el párrafo de **por qué se llama «cruz»** (cruce de los ejes personalidad-diseño y Sol-Tierra) y el detalle de que el ángulo **sale del perfil** con ejemplos.
+> **Pulidos**: el drawer general de señales ya **no destaca** el chip del tipo (parecía el drawer activo); los chips de índice **reaccionan al hover** en todos los drawers, incluido el de centros; y el glifo «i» del aviso móvil se centra con `vertical-align: middle` en vez del empujón de -2px que lo dejaba caído.
+> **Nombres en español, contraste ampliado**: no existe lista completa publicada en español —solo entradas sueltas—, pero **los siete nombres que sí pude verificar coinciden** (Esfinge, Edén, Explicación, lo Inesperado, Penetración, Servicio, Consciencia, Tensión, Receptáculo del amor). Los ~105 restantes siguen siendo traducción propia con el prefijo ya corregido. Alineados también los textos de ángulo, que aún decían «cruz derecha».
+> **Verificado**: 36/36 tests, build sin avisos, drawer revisado en navegador.
+>
+> Previo (2026-07-22, **nombres de cruz contrastados con el estándar en español**): revisión del autor sobre la tanda anterior, y tenía razón en desconfiar de mi traducción.
 > **Dos errores reales encontrados al contrastar con la comunidad hispana**: el prefijo estándar no es «Cruz Derecha» sino **«Cruz de ángulo derecho»** (e izquierdo), y *The Vessel of Love* se dice **«del receptáculo del amor»**, no «de la vasija del amor». Corregidos los 192, más las etiquetas de ángulo de reserva y las del prompt.
 > **Capitalización**: los nombres pasan a **sentence case** en español, como el resto del proyecto — «Cruz de ángulo derecho de la explicación» —, conservando mayúscula solo los **nombres propios de verdad**: Esfinge, Edén, Maya, Alfa. El inglés mantiene Title Case.
 > **Convención nueva en CLAUDE.md §4, y vale para cualquier idioma futuro**: cuando un elemento tiene **nombre establecido** en la comunidad de Diseño Humano, se **contrasta cómo lo llama esa comunidad en ese idioma y se usa eso**, no una traducción propia por buena que suene. Es exactamente el fallo que se coló aquí.
