@@ -17,9 +17,14 @@ Statuses:
 The deeper context (technical trade-offs, future ideas, deferred decisions)
 lives in [`BACKLOG.md`](./BACKLOG.md).
 
-Last updated: 2026-07-22.
+Last updated: 2026-07-22 (v1.5.0).
 
-> Latest change (2026-07-22, **corrección: el desarrollo del descanso iba en «Tu tipo», no en «Vivir tu diseño»**): el autor pidió desarrollar la gestión de la energía y el descanso en la sección **«Tu tipo»** del informe, y en la tanda anterior se escribió por error en `typeReport`, que es lo que alimenta la viñeta de **«Vivir tu diseño»**. Además faltaba la línea de cierre que remite a esa sección. Corregido:
+> Latest change (2026-07-22, **versión 1.5.0 — señales y cruz de encarnación**): cerrada la tanda y bump a **1.5.0**, con merge a `staging` y a `main`.
+> **Qué entra en la 1.5.0**, resumido: los dos datos que el análisis funcional marcaba como los que faltaban frente a las apps de referencia — las **señales** de alineamiento/desalineamiento (una tarjeta, drawer por pareja, tabla de los cinco tipos) y la **cruz de encarnación** completa: `chart.cross`, los **192 nombres canónicos validados contra la efeméride**, **interpretación propia de las 192** y el índice por cuartos del mandala. Alrededor: la definición fundida en la tarjeta de Centros, el reordenado de las tarjetas, la sección **«Tu propósito»** del informe, una **tercera pasada** sobre el inglés del informe (los cuerpos de `report.type` eran calcos), el desarrollo del **descanso** para Manifestador y Proyector, el timeout de `toBlob`, y el aviso inicial que ahora invita al informe y se retira tras 5 visitas.
+> **Estado de los tests**: 39 casos en 5 ficheros (eran 30 en la 1.4.0). Los nuevos son estructurales y de datos: cobertura y geometría de las 192 cruces, correspondencia nombre↔cuarteto contra la efeméride, `crossQuartet()` derivada de la rueda, y cobertura de las 192 interpretaciones en ambos idiomas.
+> **Post-deploy**: sigue pendiente el bloque de verificaciones en vivo que se arrastra desde la 1.0 (contador KV, redirect `www`, offline/SW, cabeceras, iOS real) — ver BACKLOG.
+>
+> Previo (2026-07-22, **corrección: el desarrollo del descanso iba en «Tu tipo», no en «Vivir tu diseño»**): el autor pidió desarrollar la gestión de la energía y el descanso en la sección **«Tu tipo»** del informe, y en la tanda anterior se escribió por error en `typeReport`, que es lo que alimenta la viñeta de **«Vivir tu diseño»**. Además faltaba la línea de cierre que remite a esa sección. Corregido:
 > - **`report.type.manifestor`** (que es «Tu tipo») desarrolla ahora el descanso como **método y no recompensa**, con la proporción del **70-80%** que citan algunas fuentes y el «acuéstate cansado, no agotado», y **cierra remitiendo a [vivir tu diseño](section:practice)**. Igual en **`report.type.projector`**, con el mismo cierre.
 > - **`typeReport` vuelve a su tamaño**: la viñeta de gestión de energía de Manifestador y Proyector se reduce y se parte en **dos párrafos dentro de la misma viñeta** (un ítem puede ser un array y ambos renderizadores lo maquetan con el mismo indentado), así que ya no repite lo que ahora dice «Tu tipo».
 > - Los dos idiomas.

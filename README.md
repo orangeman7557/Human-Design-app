@@ -131,6 +131,14 @@ merits.
 10. **Phase M** — Multilingual: i18n infrastructure plus a full English
     translation; Spanish stays as the already-written second language.
     *(Shipped 2026-07-21; 1.4.0.)*
+
+- **Incarnation cross and alignment signals.** The chart shows its incarnation
+  cross — canonical name, the four Sun/Earth gates, and an interpretation of
+  that particular cross — plus the pair of signals (alignment / misalignment)
+  that tell you day to day whether you are living your design. All 192 crosses
+  are named and interpreted in both languages, and the name table is validated
+  against the ephemeris by an automated test.
+  *(Shipped 2026-07-22; 1.5.0.)*
 11. **Phase P (next)** — Google Play distribution via TWA. The Apple App
     Store is deliberately deferred (yearly developer fee; only if the app
     proves traction).
