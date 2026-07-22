@@ -985,12 +985,13 @@ const overrides = {
       projector: [
         'Projectors are close to **20% of the population**. With no defined [Sacral](center:sacral), **you are not built for constant work**, and you cannot hold a [Generator](type:generator)\u2019s pace — trying to is the fastest way to burn yourself out. Your gift is a different one: you see other people with unusual depth, and you know how to guide and direct their energy.',
         'Your strategy is to **wait for the invitation** on the things that matter — work, love, where you live. Your insight and your effort land when someone asked for them; offer them unasked and you tend to meet resistance instead. *Recognition* and *success* are the sign you are on track. *Bitterness* is the sign you are not.',
-        'Managing your energy means **resting and pacing yourself**. You do not compete on stamina, you compete on depth. Sleep and let go before you are empty, and be careful who gets your attention — learning to say no matters here, because not every invitation is yours to accept.'
+        'Managing your energy comes down mostly to **resting in time**: you do not compete on stamina, you compete on depth. Like the Manifestor, **rest is part of your method and not a prize** — sleep and let go **before** you are empty, and withdraw when you feel it without asking permission. And be careful who gets your attention and your effort: not every invitation deserves a yes. All of this gets concrete later on, in [living your design](section:practice).'
       ],
       manifestor: [
         'You are the most independent type, around **9% of the population**. At least one motor — the Heart or the Solar Plexus — is wired to your [Throat](center:throat), but your [Sacral](center:sacral) is undefined. So your energy is not constant: it arrives in bursts you use to start things, and then it needs rest. Often quite a lot of rest.',
         'Your strategy is to **inform before you act**. Not asking permission — just telling the people your move is about to reach. It sounds like a small thing and it changes everything, because most of the resistance you meet is a reaction to being surprised. Inform, and you get *peace*. Skip it, and you get opposition, and *anger* builds.',
-        'You are here to **start things and make an impact**, not to grind them out. Managing your energy means respecting the rhythm of push and rest, and protecting your independence without shutting people out.'
+        'You are here to **start things and make an impact**, not to grind them out. And that leads to the most important thing, and the one least often said plainly: **rest is not your reward, it is your method**. You are not designed to create continuously. Some put a healthy Manifestor ratio at around **70-80% rest** against time spent initiating — the exact figure matters less than the point: **most of your time should not be spent producing**. Your impact comes from a few well-charged moves, not many at half power.',
+        'In practice: **go to bed tired, not empty**. Wait until there is nothing left and the next burst arrives late and weak. And do not measure your rest against a Generator, because next to one you will always look like you are doing very little — that is not laziness, it is your design. All of this gets concrete later on, in [living your design](section:practice).'
       ],
       reflector: [
         'You are the rarest type — Reflectors are barely **1% of the population**. Not one of your centers is defined; your whole bodygraph is open. That makes you an extraordinarily sensitive mirror of the people and places around you, and it lets you feel the health of a community from the inside.',
@@ -1158,7 +1159,10 @@ const overrides = {
     },
     projector: {
       energia:
-        '**Managing your energy** — Like the Manifestor, **rest is part of your method, not a prize**: with no defined [Sacral](center:sacral) you are **not built for constant work**, and you cannot hold a Generator\u2019s pace: your energy is uneven and runs out sooner. You are not built to start from scratch either — unlike a Manifestor, you have no motor wired to the [Throat](center:throat). Your gift is neither stamina nor initiation. It is to **see, guide and direct**, where you are invited to. So: **rest and pace yourself** — sleep and let go before you are empty — and save your attention for people who value it. **Know when to say yes and when to say no.**',
+        [
+        '**Managing your energy** — With no defined [Sacral](center:sacral) you are **not built for constant work**, and you cannot hold a Generator\u2019s pace: your energy is uneven and runs out sooner. Nor are you built to start from scratch — you have no motor wired to the [Throat](center:throat).',
+        'Your gift is to **see, guide and direct**, where you are invited to. Managing it well means **resting and pacing yourself** — sleeping and letting go before you are empty — and saving your attention for those who genuinely value it.'
+      ],
       trampa:
         '**The trap for your type** — **Keeping up with everyone else**, and **offering your insight where nobody asked for it**. Working yourself flat to prove your worth, or pushing in without an invitation, brings resistance, rejection and bitterness — the signal of a Projector living against their design.',
       senales:
@@ -1166,7 +1170,10 @@ const overrides = {
     },
     manifestor: {
       energia:
-        '**Managing your energy** — You have a motor wired to the [Throat](center:throat) but an undefined [Sacral](center:sacral): your energy is **not constant, it arrives in bursts** to start things and set them moving, and then it runs out. You are built to **start things and land an impact**, not to grind them out.\n\nAnd here is the part few people will tell you this plainly: **rest is not your reward, it is your method**. You are not designed to create continuously. Some put a healthy Manifestor ratio at around **70-80% rest** against time spent initiating — the exact figure matters less than the point behind it: **most of your time should not be spent producing**. Your impact comes from a few well-charged moves, not many at half power.\n\nIn practice: **go to bed tired, not empty**. Wait until there is nothing left and the next burst arrives late and weak. And do not measure your rest against a Generator, because next to one you will always look like you are doing very little — that is not laziness, it is your design.',
+        [
+        '**Managing your energy** — You have a motor wired to the [Throat](center:throat) but an undefined [Sacral](center:sacral): your energy is **not constant, it arrives in bursts** to start things, and then it runs out. You are built to start and land an impact, not to grind things out.',
+        'So **rest is part of your method**, not your reward: most of your time should not be spent producing. Respect the cycles of push and rest, and protect your autonomy without cutting yourself off.'
+      ],
       trampa:
         '**The trap for your type** — Moving without **telling** the people your impact will reach. That is what fills the room with resistance and anger, and it ends up making everything harder for you. The other trap is **demanding a consistency that is not yours**, right up to burnout, instead of accepting how much rest you actually need.',
       senales:
