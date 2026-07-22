@@ -223,7 +223,22 @@ education** (initial report, drawers everywhere, own gate essences, AI
 handoff) — but **one standard chart datum is genuinely missing** (the
 incarnation cross). Items registered below in suggested priority order.
 
-- 🟡 **1. Incarnation cross — SHIPPED 2026-07-22 WITHOUT THE NAMES.** The datum
+- ✅ **1. Incarnation cross — COMPLETE 2026-07-22 (names included).** The 192
+  canonical names shipped, sourced from published Human Design material and
+  **validated row by row against our own ephemeris**. The key insight that made
+  it safe: a cross is fully determined by its Personality Sun gate and its
+  angle, so `computeChart` can regenerate the whole (gate, angle) → quartet map
+  independently of the table — 192 entries, no conflicts. All 192 sourced rows
+  matched on the first run, and the check is now a permanent test
+  (`src/lib/hd/cross-names.test.js`), so a mistyped row cannot ship silently.
+  Structural facts worth keeping: there are **128 distinct gate quartets, two
+  per Sun gate** — the left-angle and juxtaposition crosses share one quartet
+  and the right angle has its own, which is why 128 quartets carry 192 names.
+  Legal footing confirmed with the author: names and short titles are not
+  copyrightable (same basis already agreed for the channel names, 2026-07-02);
+  the only caveat noted was EU database right, which applies to lifting a whole
+  compilation, not to using the names. Original entry below.
+- 🟡 **1 (superseded). Incarnation cross — SHIPPED 2026-07-22 WITHOUT THE NAMES.** The datum
   is on the chart (`chart.cross = { angle, gates }`), with its own summary card,
   drawer and prompt, and a "Tu propósito" section in the initial report. What is
   **still open is the name table**: the ~192 named crosses × 4 angles (~768

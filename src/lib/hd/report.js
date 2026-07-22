@@ -19,6 +19,7 @@ import {
   getDisplayLabels,
   getReportShell,
   formatCrossGates,
+  getCrossName,
   fillTpl,
   getLocale
 } from './content/index.js';
@@ -129,9 +130,8 @@ export function buildReport(chart, lang = getLocale()) {
   const purpose = getReportSection('purpose', lang);
   const angleBody = getReportBody('crossAngle', chart.cross?.angle, lang);
   if (purpose && angleBody) {
-    // Display labels, not the prompt ones: the subhead is a heading, so it must
-    // follow the language's capitalisation (English Title Case).
-    const name = getDisplayLabels(lang).cross?.[chart.cross.angle] ?? '';
+    // The cross's canonical name, falling back to the bare angle label.
+    const name = getCrossName(chart.cross, lang) ?? getDisplayLabels(lang).cross?.[chart.cross.angle] ?? '';
     add('purpose', purpose.title, [
       getReportLeadIn('purpose', lang),
       ...purpose.paragraphs,

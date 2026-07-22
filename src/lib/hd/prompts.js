@@ -27,6 +27,7 @@ import {
   getPromptTemplates,
   getSignalNames,
   formatCrossGates,
+  getCrossName,
   fillTpl,
   gateState,
   channelState,
@@ -185,7 +186,7 @@ export function buildPrompts(kind, key, chart, lang = getLocale()) {
   if (kind === 'cross') {
     if (!chart?.cross) return { general: '', chart: null };
     const subject = fillTpl(S.cross, {
-      name: L.cross?.[chart.cross.angle] ?? key,
+      name: getCrossName(chart.cross, lang) ?? L.cross?.[chart.cross.angle] ?? key,
       gates: formatCrossGates(chart.cross, lang)
     });
     return { general: ask(T, subject), chart: askChart(T, L, chart, subject) };
