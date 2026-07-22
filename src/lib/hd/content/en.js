@@ -287,8 +287,8 @@ const overrides = {
     bodyEarth: 'earth',
     crossReading:
       'In this particular cross, the conscious axis crosses "{tpSun}" ([gate {pSun}](gate:{pSun})) with "{tpEarth}" ([gate {pEarth}](gate:{pEarth})): the theme a person recognises as their own and keeps pushing at over a lifetime. Underneath, the unconscious axis brings "{tdSun}" ([gate {dSun}](gate:{dSun})) held up by "{tdEarth}" ([gate {dEarth}](gate:{dEarth})) — the ground all of that is done from, and usually clearer to other people than to the person themselves. **The cross is what comes of reading all four together**, not gate by gate.',
-    crossWeight:
-      'These four gates are the heaviest activations in the chart — most of the imprint is attributed to them. Read them **together**, not one by one: that is where the cross gets its tone.',
+    crossFourGates:
+      'What gives each cross its own character is its **four gates**: the Personality Sun and Earth — the conscious side, what a person recognises as their own — and the Design Sun and Earth — the unconscious side, the ground they act from. They are the heaviest activations in the chart, and they have to be **read together**: the meaning is in the combination, not in any one gate.',
     crossGatesJoin: ' | '
   },
 
@@ -411,7 +411,13 @@ const overrides = {
         'The **incarnation cross** is the background theme of a life — the general direction a design points in. It usually gets introduced as your "purpose", but take it gently: it is a backdrop that unfolds over years, not a task waiting to be solved.',
         'It is made of **four gates**: the [Personality](activationCol:personality) Sun and Earth, and the [Design](activationCol:design) Sun and Earth. These are the heaviest activations in the chart — most of the imprint is attributed to them — so the cross is essentially a summary of their dominant themes.',
         'It is called a "cross" because it comes from **two axes crossing**: the personality-design axis (conscious ↔ unconscious) and the Sun-Earth axis (what gets expressed and driven ↔ what holds and steadies it).',
-        'The **angle** says where that energy is aimed. A *right angle cross* points to a personal path, walked through your own experience. A *left angle cross* points to a transpersonal one, fulfilled through other people. A *juxtaposition cross* points to a fixed, singular fate. The angle follows directly from the [profile](concept:profile) — a 1/3 profile is right angle, a 5/2 is left angle, and so on.'
+        'The **angle** says where that energy is aimed:',
+        { bullets: [
+          '**Right angle** — a *personal* geometry: the path is walked mostly through your own experience.',
+          '**Left angle** — a *transpersonal* one: it is fulfilled through other people, through whoever you cross paths with.',
+          '**Juxtaposition** — a *fixed* geometry: a very specific role, held fairly independently of the surroundings.'
+        ] },
+        'The angle follows directly from the [profile](concept:profile) — a 1/3 profile is right angle, a 5/2 is left angle, and so on. The names come from the **geometry of the mandala**: how far apart the Personality Sun and the Design Sun sit, close to a right angle in one case and adjacent in the others. Neither is better than the other.'
       ]
     }
   },
@@ -1641,15 +1647,15 @@ const overrides = {
   cross: {
     right: {
       name: 'Right Angle Cross',
-      text: 'A **right angle cross** describes a **personal** path: life unfolds mostly through your own experience, and the purpose is fulfilled by living what is yours. It is by far the most common angle. What happens around you counts, but you are the axis of the journey.'
+      text: 'The **angle** of this cross is a **right** one, and the angle speaks only to the *orientation* of the journey: a **personal** geometry. Life unfolds mostly through your own experience, and the purpose is fulfilled by living what is yours. It is by far the most common angle.'
     },
     left: {
       name: 'Left Angle Cross',
-      text: 'A **left angle cross** describes a **transpersonal** path: the purpose is fulfilled in relationship with others, and much of what matters arrives through the people you cross paths with. It is an interwoven fate, where the encounters are not incidental but the material it is built from.'
+      text: 'The **angle** of this cross is a **left** one, and the angle speaks only to the *orientation* of the journey: a **transpersonal** geometry. Much of what matters arrives through other people, and the purpose is fulfilled in relationship with them — the encounters are not incidental, they are the material.'
     },
     juxtaposition: {
       name: 'Juxtaposition Cross',
-      text: 'A **juxtaposition cross** describes a **fixed, singular** fate: a very specific role, neither personal nor transpersonal, held fairly independently of what goes on around it. It belongs to a single profile, the 4/1, and is the rarest angle.'
+      text: 'The **angle** of this cross is a **juxtaposition**, and the angle speaks only to the *orientation* of the journey: a **fixed** geometry, a bridge between the personal and the transpersonal. A very specific role, held fairly independently of the surroundings. It belongs to a single profile, the 4/1, and is the rarest angle.'
     }
   }
 };

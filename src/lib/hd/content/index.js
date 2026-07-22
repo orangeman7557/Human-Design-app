@@ -310,23 +310,39 @@ export function getCrossInfo(chart, lang = getLocale()) {
   const [pSun, pEarth, dSun, dEarth] = cross.gates;
   // Schematic: one block per side, one row per body, so the four gates read as
   // the two axes they are rather than as a flat list.
-  const gateRow = (pre, g) => ({
+  const gateRow = (pre, g, info) => ({
     pre,
+    info,
     chip: { label: String(g), kind: 'gate', key: String(g) },
     note: gateTheme(g, lang) ?? null
   });
+  // Reading order: what the ANGLE means (briefly) → why the four gates are read
+  // together → the schema itself → the interpretation of THIS cross → handoff.
+  const essence = pack(lang).crossEssence?.[`${cross.gates[0]}|${cross.angle}`];
   return {
     title: fillTpl(D.crossTitle, { name: getCrossName(cross, lang) ?? entry.name }),
-    // The angle's meaning, then THIS cross read from its own four gates.
-    paragraphs: [entry.text, crossReading(cross, lang)].filter(Boolean),
+    paragraphs: [entry.text, D.crossFourGates],
     facts: [
       {
         label: D.factCrossPersonality,
-        rows: [gateRow(D.bodySun, pSun), gateRow(D.bodyEarth, pEarth)]
+        info: { kind: 'activationCol', key: 'personality' },
+        rows: [
+          gateRow(D.bodySun, pSun, { kind: 'planet', key: 'sun' }),
+          gateRow(D.bodyEarth, pEarth, { kind: 'planet', key: 'earth' })
+        ]
       },
-      { label: D.factCrossDesign, rows: [gateRow(D.bodySun, dSun), gateRow(D.bodyEarth, dEarth)] }
+      {
+        label: D.factCrossDesign,
+        info: { kind: 'activationCol', key: 'design' },
+        rows: [
+          gateRow(D.bodySun, dSun, { kind: 'planet', key: 'sun' }),
+          gateRow(D.bodyEarth, dEarth, { kind: 'planet', key: 'earth' })
+        ]
+      }
     ],
-    after: [D.crossWeight, D.deeper]
+    // Hand-written interpretation where it exists; otherwise the reading
+    // composed from the four gate themes, so no cross is ever left bare.
+    after: [...(essence ?? [crossReading(cross, lang)].filter(Boolean)), D.deeper]
   };
 }
 

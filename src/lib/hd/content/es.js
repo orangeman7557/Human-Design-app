@@ -119,7 +119,13 @@ export default {
         'La **cruz de encarnación** es el tema de fondo de una vida: la dirección general hacia la que apunta el diseño de una persona. Se la suele presentar como el "propósito", pero conviene tomarla con calma — es un telón de fondo que se despliega a lo largo de los años, no una tarea concreta que haya que resolver.',
         'La componen **cuatro puertas**: el Sol y la Tierra de [Personalidad](activationCol:personality) y el Sol y la Tierra de [Diseño](activationCol:design). Son las activaciones de más peso de la carta —la literatura les atribuye la mayor parte de la impronta—, así que la cruz viene a resumir sus temas dominantes.',
         'Se llama «cruz» porque surge del **cruce de dos ejes**: el eje personalidad-diseño (consciente ↔ inconsciente) y el eje Sol-Tierra (lo que se expresa e impulsa ↔ lo que sostiene y estabiliza).',
-        'El **ángulo** matiza hacia dónde se dirige esa energía: la *cruz de ángulo derecho* apunta a un camino personal, que se recorre a través de la propia experiencia; la *cruz de ángulo izquierdo*, a un camino transpersonal, que se cumple en relación con otros; y la *cruz de yuxtaposición*, a un destino más fijo y singular. El ángulo se deduce directamente del [perfil](concept:profile) (por ejemplo, el perfil 1/3 es ángulo derecho, el perfil 5/2 es ángulo izquierdo, etc.).'
+        'El **ángulo** matiza hacia dónde se dirige esa energía:',
+        { bullets: [
+          '**Ángulo derecho** — geometría *personal*: el camino se recorre sobre todo a través de la propia experiencia.',
+          '**Ángulo izquierdo** — geometría *transpersonal*: se cumple en relación con otros, a través de la gente que uno se cruza.',
+          '**Yuxtaposición** — geometría *fija*: un papel muy concreto, sostenido con bastante independencia del entorno.'
+        ] },
+        'El ángulo se deduce directamente del [perfil](concept:profile) (por ejemplo, el perfil 1/3 es ángulo derecho, el perfil 5/2 es ángulo izquierdo, etc.). Los nombres vienen de la **geometría del mandala** —de la separación angular entre el Sol de Personalidad y el de Diseño, próxima a un ángulo recto en un caso y contigua en los otros—, no de ninguna cualidad mejor ni peor.'
       ]
     }
   },
@@ -416,15 +422,15 @@ export default {
   cross: {
     right: {
       name: 'Cruz derecha',
-      text: 'La **cruz de ángulo derecho** describe un camino **personal**: la vida se despliega sobre todo a través de la propia experiencia, y el propósito se cumple viviendo lo de uno. Es el ángulo más frecuente con diferencia. Lo que ocurre alrededor cuenta, pero el eje del recorrido es la persona misma.'
+      text: 'El **ángulo** de esta cruz es **derecho**, y el ángulo habla solo de la *orientación* del recorrido: es una geometría **personal**. La vida se despliega sobre todo a través de la propia experiencia, y el propósito se cumple viviendo lo de uno. Es, con diferencia, el ángulo más frecuente.'
     },
     left: {
       name: 'Cruz izquierda',
-      text: 'La **cruz de ángulo izquierdo** describe un camino **transpersonal**: el propósito se cumple en relación con otros, y buena parte de lo importante llega a través de la gente que se cruza. Es un destino entrelazado, en el que los encuentros no son un accesorio sino el material con el que se construye.'
+      text: 'El **ángulo** de esta cruz es **izquierdo**, y el ángulo habla solo de la *orientación* del recorrido: es una geometría **transpersonal**. Buena parte de lo importante llega a través de otras personas, y el propósito se cumple en relación con ellas: los encuentros no son un accesorio, son el material.'
     },
     juxtaposition: {
       name: 'Cruz de yuxtaposición',
-      text: 'La **cruz de yuxtaposición** describe un destino **fijo y singular**: un papel muy concreto, ni personal ni transpersonal, que se sostiene con notable independencia de lo que pase alrededor. Corresponde a un solo perfil, el 4/1, y es el ángulo más raro.'
+      text: 'El **ángulo** de esta cruz es de **yuxtaposición**, y el ángulo habla solo de la *orientación* del recorrido: es una geometría **fija**, un puente entre lo personal y lo transpersonal. Un papel muy concreto, sostenido con bastante independencia de lo que pase alrededor. Corresponde a un solo perfil, el 4/1, y es el ángulo más raro.'
     }
   },
 
@@ -1701,8 +1707,8 @@ export default {
     bodyEarth: 'tierra',
     crossReading:
       'En esta cruz concreta, el eje consciente cruza «{tpSun}» ([puerta {pSun}](gate:{pSun})) con «{tpEarth}» ([puerta {pEarth}](gate:{pEarth})): es el tema que la persona reconoce como suyo y el que va empujando a lo largo de la vida. Debajo, el eje inconsciente aporta «{tdSun}» ([puerta {dSun}](gate:{dSun})) sostenido por «{tdEarth}» ([puerta {dEarth}](gate:{dEarth})) — el suelo desde el que se hace todo eso, casi siempre más visible para los demás que para uno mismo. **La cruz es lo que resulta de leer los cuatro juntos**, no cada puerta por separado.',
-    crossWeight:
-      'Estas cuatro puertas son las activaciones de más peso de la carta: la mayor parte de la impronta se les atribuye a ellas. Leídas **juntas** —y no una a una— dan el tono de fondo de la cruz.',
+    crossFourGates:
+      'Lo que da a cada cruz su carácter propio son sus **cuatro puertas**: el Sol y la Tierra de Personalidad —lo consciente, lo que uno reconoce como suyo— y el Sol y la Tierra de Diseño —lo inconsciente, el suelo desde el que actúa—. Son las activaciones de más peso de la carta, y **hay que leerlas juntas**: el sentido está en la combinación, no en cada puerta por separado.',
     crossGatesJoin: ' | '
   },
 
