@@ -172,8 +172,6 @@ export default {
     whatDesign: 'Qué es Diseño',
     whatWeight: 'Qué es el peso',
     whatSignals: 'Qué son las señales',
-    showDefinition: 'Ver la definición en el bodygraph',
-    hideDefinition: 'Ocultar la definición en el bodygraph',
     whatCross: 'Qué es la cruz de encarnación',
     // Info-dot value labels ("more about this X")
     moreStrategy: 'Más información sobre esta estrategia',

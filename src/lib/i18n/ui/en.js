@@ -157,8 +157,6 @@ export default {
     whatDesign: 'What Design is',
     whatWeight: 'What weight is',
     whatSignals: 'What the signals are',
-    showDefinition: 'Show the definition on the bodygraph',
-    hideDefinition: 'Hide the definition on the bodygraph',
     whatCross: 'What the incarnation cross is',
     moreStrategy: 'More about this strategy',
     moreAuthority: 'More about this authority',

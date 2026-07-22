@@ -79,15 +79,12 @@ export function getElementInfo(kind, key, lang = getLocale()) {
   if (kind === 'definition') {
     const D = pack(lang).drawer;
     const rel = relatedIndex(kind, key, lang);
-    // General framing first, then this definition named in bold at the head of
-    // its own text (the same shape getProfileInfo uses for its two lines).
+    // General framing first, then this definition as a real heading inside the
+    // body (accent-coloured, on its own line) so the switch from the general to
+    // the concrete is unmissable.
     const withIntro = {
       ...entry,
-      paragraphs: [
-        D.definitionIntro,
-        `**${entry.title}.** ${entry.paragraphs[0]}`,
-        ...entry.paragraphs.slice(1)
-      ]
+      paragraphs: [D.definitionIntro, { subhead: entry.title }, ...entry.paragraphs]
     };
     return rel ? { ...withIntro, related: rel } : withIntro;
   }
