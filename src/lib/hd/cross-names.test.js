@@ -58,7 +58,7 @@ describe('incarnation-cross name table', () => {
 
   it('names the angle it is keyed under', () => {
     const marker = {
-      es: { right: 'Cruz Derecha', left: 'Cruz Izquierda', juxtaposition: 'Cruz de Yuxtaposición' },
+      es: { right: 'Cruz de ángulo derecho', left: 'Cruz de ángulo izquierdo', juxtaposition: 'Cruz de yuxtaposición' },
       en: { right: 'Right Angle Cross', left: 'Left Angle Cross', juxtaposition: 'Juxtaposition Cross' }
     };
     for (const [lang, pack] of [['es', es], ['en', en]]) {
