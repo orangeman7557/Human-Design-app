@@ -19,7 +19,14 @@ lives in [`BACKLOG.md`](./BACKLOG.md).
 
 Last updated: 2026-07-22.
 
-> Latest change (2026-07-22, **interpretación propia por cruz — ángulo derecho completo (64/192)**): arranca el proyecto de redacción de las cruces.
+> Latest change (2026-07-22, **las 192 cruces con interpretación propia — proyecto cerrado**): completados los dos bloques que faltaban.
+> **32 nombres de ángulo izquierdo** (cubren 64 cruces) y **64 de yuxtaposición** (64 cruces), en los dos idiomas. Con las 16 de ángulo derecho de la tanda anterior son **112 entradas por idioma que cubren las 192 cruces**. El inglés está escrito desde el significado, no traducido.
+> **Enfoque por ángulo**, que es lo que las distingue: las de **ángulo izquierdo** se leen como geometría *transpersonal* —lo propio se cumple con otros y a través de otros—, y las de **yuxtaposición** como el *papel fijo* que da nombre a la cruz, sostenido con independencia del entorno. Cada entrada son 2-3 párrafos: qué significa el nombre anclado en sus cuatro puertas, cómo se traduce en una vida, y dónde está el filo.
+> **El test ahora exige cobertura total**: `cross-names.test.js` comprueba las **192 combinaciones en ambos idiomas** (antes solo el ángulo derecho). Sigue vigilando además que ninguna clave quede huérfana. La caída elegante a la lectura compuesta permanece en el código como red, pero ya no se usa.
+> **Verificado**: 38/38 tests, build sin avisos, drawer revisado en navegador con una carta de ángulo derecho distinta a la de referencia (Cruz de ángulo derecho de las leyes).
+> **Siguiente**: bump a **1.5.0** y merge a `main`.
+>
+> Previo (2026-07-22, **interpretación propia por cruz — ángulo derecho completo (64/192)**): arranca el proyecto de redacción de las cruces.
 > **Hallazgo estructural que reduce el trabajo un 40%**: las 192 cruces se reparten en **112 nombres únicos**, y los que comparten nombre **comparten las mismas cuatro puertas rotadas**. En concreto, **16 nombres cubren las 64 cruces de ángulo derecho** (4 claves cada uno), 32 cubren las 64 de izquierdo (2 cada uno) y 64 las de yuxtaposición (1 cada uno). Así que `crossEssence` se **indexa por nombre**, no por clave.
 > **Escritas las 16 del ángulo derecho, en los dos idiomas** (Esfinge, Leyes, Explicación, Consciencia, Edén, Contagio, Planificación, Receptáculo del amor, Servicio, Cuatro caminos, Fénix durmiente, Tensión, Gobierno, lo Inesperado, Maya, Penetración). Cada una son **2-3 párrafos con valor interpretativo**: qué significa la imagen del nombre, cómo se traduce en una vida y dónde está el filo. Cubren **64 de las 192 cruces** y el ángulo más frecuente con diferencia. El inglés está **escrito desde el significado**, no traducido.
 > **Clave neutra**: `crossEssence` se indexa por el **nombre inglés sin prefijo** (`'of Eden'`) en *todos* los idiomas, porque `en.js` hace deep-merge sobre `es.js` y con claves por idioma las españolas sobrevivían dentro del pack inglés. Con clave común, el merge sustituye limpio. **Dos tests nuevos** lo vigilan: que ninguna clave de ensayo quede huérfana (un texto que no se mostraría jamás) y que el ángulo derecho esté cubierto al 100% en ambos idiomas.

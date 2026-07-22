@@ -1445,6 +1445,422 @@ const overrides = {
       'To penetrate is **to go through the surface**. [Gate 51](gate:51) is the shock that wakes you, [57](gate:57) the intuition that hears what is not said, [54](gate:54) the ambition that drives upward and [53](gate:53) the urge to begin.',
       'This is a cross of **initiation**: the jolt that breaks someone out of their routine and makes them see what they were not seeing. These people often have that effect without meaning to, simply by how they enter a situation.',
       'The delicate part is that shock lands badly when it arrives by surprise. **The intuition of [57](gate:57) knows when, and for whom**; listening to it turns the blow into a waking-up, ignoring it turns it into a collision.'
+    ],
+    'of Defiance': [
+      'Defiance here is not contrariness for its own sake. [Gate 1](gate:1) and [2](gate:2) bring self-expression and direction; below, [4](gate:4) offers answers and [49](gate:49) is the principle that breaks an agreement once it stops working.',
+      'This is a **transpersonal** cross: what is yours gets asserted **in front of others and with them**. These people often find themselves dissenting — not for the pleasure of it, but because they can see something does not fit — and that dissent ends up serving the group.',
+      'The edge is defying out of habit. [49](gate:49) knows when a principle has genuinely been broken; **defiance that does not come from there is just noise**.'
+    ],
+    'of Wishes': [
+      '[Gate 3](gate:3) is the hard start of anything new and [50](gate:50) the values that hold a group; [41](gate:41) lights the desire that opens every cycle and [31](gate:31) lends it the voice others follow.',
+      'Desire is the **engine of the collective** here: what these people long for does not stay inside, it turns into something that moves other people. Hence the plural — not a whim, but the impulse that starts things.',
+      'Watch [41](gate:41): it fantasises far more than can be lived. **The fantasy is the fuel, not the plan.**'
+    ],
+    'of Revolution': [
+      '[Gate 4](gate:4) gives answers and [49](gate:49) reviews the principles; [8](gate:8) brings what you have to contribute and [14](gate:14) the resources to sustain it.',
+      'Revolution here is **changing the terms of the deal**, not tearing down for the sake of it. [49](gate:49) is the gate of justified refusal: when an agreement stops being fair, something has to be reformulated — and these are the people who formulate it.',
+      'It works when there is something to offer instead. **Refusing with no proposal exhausts everyone**, starting with you.'
+    ],
+    'of Separation': [
+      '[Gate 5](gate:5) sets the rhythm and [35](gate:35) reaches for new experience; [47](gate:47) tries to make sense of confusion and [22](gate:22) opens or closes the emotional door to others.',
+      'Separation is not loneliness: it is **the capacity to stay distinct**, not to merge with the group. What these people contribute is exactly that — a view that has not caught the mood of the room.',
+      'The cost is feeling apart. [22](gate:22) knows when to open; **using it well turns separation into perspective rather than isolation**.'
+    ],
+    'of the Plane': [
+      '[Gate 6](gate:6) brings friction and intimacy and [36](gate:36) crisis; [15](gate:15) loves human variety and [10](gate:10) insists on being true to yourself.',
+      'The plane is **the level things are lived at**: this cross is about raising the level of relationship, taking contact with others somewhere deeper than the surface.',
+      'It turns on the rhythm of [6](gate:6). **Forcing intimacy while the gate is shut lowers the plane instead of raising it.**'
+    ],
+    'of Masks': [
+      '[Gate 7](gate:7) is the role taken in front of others and [13](gate:13) the one that listens to what they bring; [23](gate:23) supplies the singular voice and [43](gate:43) the insight feeding it.',
+      'Masks are not lies: they are **the roles you take depending on where you are**. This cross describes someone who changes mask easily and, precisely because of that, reaches very different people.',
+      'The risk is losing track of which one is yours. **A mask works as long as you know it is one.**'
+    ],
+    'of Uncertainty': [
+      '[Gate 8](gate:8) brings your contribution and [14](gate:14) the resources; [55](gate:55) brings spirit and its swings and [59](gate:59) the ability to break through barriers with others.',
+      'Uncertainty here is **raw material, not a problem**: these people live without fixed certainties about their mood or their course, and that openness is what lets them make something genuinely new with others.',
+      'The trap is demanding emotional consistency of yourself. **[55](gate:55) is not corrected; it is accompanied.**'
+    ],
+    'of Identification': [
+      '[Gate 9](gate:9) focuses on detail and [16](gate:16) supplies enthusiasm and skill; [64](gate:64) fills the head with images and [63](gate:63) casts doubt on them.',
+      'To identify is **to recognise what deserves the effort** among everything possible. This cross gives an eye for picking out, from the collective noise, what will actually go somewhere.',
+      'The drain comes from identifying *with* what you point at. **Seeing the pattern does not oblige you to carry it.**'
+    ],
+    'of Prevention': [
+      '[Gate 10](gate:10) is your own conduct and [15](gate:15) the love of human variety; [18](gate:18) spots what is off and [17](gate:17) turns it into an opinion.',
+      'Prevention is **correcting before the harm lands**. These people catch the flaw in a collective pattern while it is still small, and their contribution is the timely warning.',
+      'It only lands well when asked for. **Correcting unasked turns prevention into reproach.**'
+    ],
+    'of Education': [
+      '[Gate 11](gate:11) brings the ideas and [12](gate:12) the caution about voicing them; [46](gate:46) loves the body and being here and [25](gate:25) brings the innocence of universal love.',
+      'Education here is not teaching a class: it is **passing something on in a way that changes the other person**. The ideas of [11](gate:11) only educate when they meet the timing of [12](gate:12) — and this cross lives in that wait.',
+      'Said at the wrong moment, the best idea sounds like a sermon. **The talent is in the when, not the what.**'
+    ],
+    'of Upheaval': [
+      '[Gate 17](gate:17) gives opinions and [18](gate:18) the critical eye; [38](gate:38) fights for what is worth it and [39](gate:39) provokes to bring out what is underneath.',
+      'Upheaval: this cross **stirs up what was comfortable**. Not for fun, but because it can see a structure that will not hold and cannot keep quiet about it. It is one of the energies that push a group to change.',
+      '[39](gate:39) provokes without trying to. **The difference between shaking things up and simply being annoying is whether something better is behind it.**'
+    ],
+    'of Refinement': [
+      '[Gate 19](gate:19) approaches and asks and [33](gate:33) withdraws to digest; [1](gate:1) and [2](gate:2) sit underneath as self-expression and direction.',
+      'To refine is **to polish what already exists** until it genuinely serves. [19](gate:19) senses what people need and [33](gate:33) processes it alone: out of that comes a very fine sense for what a group is missing.',
+      'It needs the retreat. **Without the pause of [33](gate:33), the sensitivity of [19](gate:19) becomes overload.**'
+    ],
+    'of Duality': [
+      '[Gate 20](gate:20) lives in the present and [34](gate:34) is sheer power; [37](gate:37) brings the bargains and [40](gate:40) the will — and the need to withdraw.',
+      'Duality is **the two**: this cross is fulfilled in relationship, in pairing up — with a person, a partner, a cause. What one alone cannot do, the pair can.',
+      '[40](gate:40) is the reminder that a pair is held together by rest. **A bargain with no retreat ends in resentment.**'
+    ],
+    'of Endeavor': [
+      '[Gate 21](gate:21) wants control of its own domain and [48](gate:48) reaches for depth; [54](gate:54) drives upward and [53](gate:53) begins.',
+      'Endeavour is **the energy of climbing**: ambition put to work building something with others, brick by brick. [54](gate:54) is the gate of wanting to end up higher than you started.',
+      'The ambition of [54](gate:54) needs recognition to prosper. **Pushing without an alliance is scaling a wall alone that belonged to everyone.**'
+    ],
+    'of Informing': [
+      '[Gate 22](gate:22) opens with grace and [47](gate:47) looks for sense; [11](gate:11) brings the ideas and [12](gate:12) the right moment to say them.',
+      'Informing here is **bringing the other person up to date**: the social grace of [22](gate:22) in service of people knowing what they need to know. It sounds minor and it is one of the great preventers of friction.',
+      '[12](gate:12) is in charge. **Informing at the wrong moment is as useless as not informing.**'
+    ],
+    'of Dedication': [
+      '[Gate 23](gate:23) supplies the singular voice and [43](gate:43) the insight feeding it; [30](gate:30) brings burning desire and [29](gate:29) the capacity to commit all the way.',
+      'Dedication is **giving yourself to something completely**. This cross does not spread itself: it picks and pours in, and that pouring in is what others end up following.',
+      '[29](gate:29) says yes easily. **Dedicating yourself to the wrong thing costs years**, so here choosing well is everything.'
+    ],
+    'of Incarnation': [
+      '[Gate 24](gate:24) returns again and again to the same thing and [44](gate:44) recognises patterns from the past; [13](gate:13) listens and [7](gate:7) takes a role.',
+      'Incarnation is about **bringing something into the world through your own life**: what these people have chewed over (24) and remembered (44) eventually takes shape in the role they hold in front of others.',
+      'It asks patience with repetition. **[24](gate:24) comes back to the same point until one day it brings something different**; cutting it short leaves you without the fruit.'
+    ],
+    'of Healing': [
+      '[Gate 25](gate:25) brings innocent, universal love and [46](gate:46) love of the body; [58](gate:58) brings vitality and [52](gate:52) stillness.',
+      'Healing here is **returning someone to their own shape**, not fixing them. Innocence (25) plus physical presence (46) means these people heal mostly through how they are, not what they do.',
+      '[25](gate:25) is demanding: **it asks for love without conditions or favourites**, including toward those who do not return it. That is the work.'
+    ],
+    'of Confrontation': [
+      '[Gate 26](gate:26) knows how to present what has value and [45](gate:45) gathers and stewards what is shared; [6](gate:6) brings friction and [36](gate:36) crisis.',
+      'To confront is **to put in front of people what was being avoided**. Not a fight: the difficult conversation a group needs and nobody wants to open. These people tend to open it.',
+      '[26](gate:26) can overstate to win you over. **An honest confrontation changes something; a manipulated one only wins the argument.**'
+    ],
+    'of Alignment': [
+      '[Gate 27](gate:27) cares and feeds and [28](gate:28) hunts for meaning at some risk; [19](gate:19) approaches to ask and [33](gate:33) withdraws to process.',
+      'Alignment is **putting the caring where it actually matters**. With [28](gate:28) this cross weighs what is worth it — and spends the care of [27](gate:27) there, instead of scattering it blindly.',
+      'Caring for everything is caring for nothing. **[28](gate:28) is here to choose**, even when choosing hurts.'
+    ],
+    'of Industry': [
+      '[Gate 29](gate:29) commits and [30](gate:30) wants intensely; [20](gate:20) lives in the present and [34](gate:34) supplies the power.',
+      'Industry is not working a lot: it is **the capacity to hold a yes over time**. [29](gate:29) gets in and stays in, and with the force of [34](gate:34) behind it that carries through projects other people abandon.',
+      'Everything depends on what got the yes. **A commitment sustained in the wrong place is the definition of burnout.**'
+    ],
+    'of the Alpha': [
+      '[Gate 31](gate:31) carries the voice others follow and [41](gate:41) lights the first desire; [24](gate:24) chews things over and [44](gate:44) recognises patterns.',
+      'Alpha is **the one who goes first**. Not by imposing, but because their voice names what the group could not yet say. This is a cross of leadership, and leadership here **is granted, not taken**.',
+      '[31](gate:31) only works if there are people genuinely following. **Leading without a mandate is talking to yourself.**'
+    ],
+    'of Limitation': [
+      '[Gate 32](gate:32) judges what will last and [42](gate:42) closes cycles; [56](gate:56) stimulates with stories and [60](gate:60) sets the limit.',
+      'Limitation here is **the good news**: accepting the frame is what lets something finish and endure. [60](gate:60) does not cut back for the pleasure of it — it cuts back so there is a shape.',
+      'The temptation is to force the limit. **What gets stretched past [60](gate:60) does not grow, it breaks.**'
+    ],
+    'of Migration': [
+      '[Gate 37](gate:37) weaves the bargains and [40](gate:40) brings will and withdrawal; [5](gate:5) sets the rhythm and [35](gate:35) reaches for new experience.',
+      'To migrate is **to move toward something better, together**. This cross describes someone who takes their people somewhere else — a new job, a new city, a new way of doing things — and holds the bond through the move.',
+      '[35](gate:35) gets bored and [37](gate:37) commits. **The pull between leaving and keeping the bargain is the life theme.**'
+    ],
+    'of Individualism': [
+      '[Gate 38](gate:38) fights for what is worth fighting for and [39](gate:39) provokes; [57](gate:57) intuits and [51](gate:51) shocks.',
+      'Individualism here is not selfishness: it is **the right to be different**, defended by standing your ground. These people hold on to their own oddness and, in doing so, make room for everyone else.',
+      'The fight of [38](gate:38) needs a cause. **Without something worth it, it turns into fighting everything.**'
+    ],
+    'of Cycles': [
+      '[Gate 53](gate:53) begins and [54](gate:54) drives upward; [42](gate:42) closes what was started and [32](gate:32) judges what will last.',
+      'Cycles: this cross lives **beginnings and endings** as its material. It is not about holding one single thing forever, but about taking each cycle all the way to its end before opening the next.',
+      'What hurts is leaving things half done. **[42](gate:42) asks for closure**, and skipping it leaves a wake of open loops.'
+    ],
+    'of Spirit': [
+      '[Gate 55](gate:55) brings spirit and its tides and [59](gate:59) the capacity for real intimacy; [9](gate:9) focuses on detail and [16](gate:16) supplies enthusiasm.',
+      'Spirit here means **mood taken seriously**: this cross explores emotional freedom and carries it into its relationships. It is one of the most mutative energies in the chart.',
+      'There is nothing to fix. **The melancholy of [55](gate:55) is not a fault**; deciding from inside it is.'
+    ],
+    'of Distraction': [
+      '[Gate 56](gate:56) stimulates by telling and [60](gate:60) sets the limit; [27](gate:27) cares and [28](gate:28) hunts for meaning.',
+      'Distraction is not absent-mindedness: it is **the art of pulling someone out of where they were stuck**. A story, a detour, a sideways idea — and suddenly something else is visible. [56](gate:56) is the storyteller gate.',
+      'Without [60](gate:60), distraction becomes scatter. **A good detour has a destination.**'
+    ],
+    'of the Clarion': [
+      '[Gate 51](gate:51) is the shock and [57](gate:57) the sharp intuition; [61](gate:61) presses toward mystery and [62](gate:62) orders the detail.',
+      'A clarion **calls people to form up**: a sound that cuts through noise and makes heads lift. This cross is about saying something that wakes people, not about saying a lot.',
+      'The intuition of [57](gate:57) gets one shot. **Repeating the call turns it into noise.**'
+    ],
+    'of Demands': [
+      '[Gate 52](gate:52) brings stillness and [58](gate:58) vitality; [21](gate:21) wants control of its own domain and [48](gate:48) reaches for depth.',
+      'Demands: this cross **asks** — of others and of itself. And it is usually within its rights, because [48](gate:48) genuinely sees what is missing. Well placed, it is the energy that raises a group standard.',
+      'Badly placed, it wears everyone out. **[52](gate:52) is the brake: demand from stillness, not from hurry.**'
+    ],
+    'of Obscuration': [
+      '[Gate 61](gate:61) presses toward inner truth and [62](gate:62) orders the facts; [50](gate:50) upholds the values and [3](gate:3) starts the new.',
+      'Obscuration is **what cannot be seen yet**. This cross lives with a background question no fact resolves, and its contribution is to hold it up rather than paper over it with explanations.',
+      '[62](gate:62) tends to fill the gap with detail. **Sometimes the honest thing is to say it is still dark.**'
+    ],
+    'of Dominion': [
+      '[Gate 63](gate:63) doubts and [64](gate:64) fills with unsorted images; [26](gate:26) knows how to present and [45](gate:45) gathers and stewards.',
+      'Dominion is **taking charge**: the doubt of [63](gate:63) put to work checking things before other people carry an error. It is a cross of responsibility, not of power.',
+      'Doubt turned inward paralyses. **[63](gate:63) is built to audit what is outside**, not to distrust yourself.'
+    ],
+    'of Self-expression': [
+      'A fixed role: **saying what is yours**. [Gate 1](gate:1) is creativity that has to come out and [2](gate:2) gives it direction; underneath, [4](gate:4) and [49](gate:49) supply answers and principles.',
+      'Juxtaposition makes this **non-negotiable**: it is not a calling you pick, it is a need. Keeping quiet here does not avoid conflict, it only postpones it.'
+    ],
+    'of the Driver': [
+      '[Gate 2](gate:2) is direction itself — knowing which way — with [1](gate:1) behind it; [49](gate:49) and [4](gate:4) hold the principles and answers.',
+      'The driver **does not push, it steers**. A quiet, fixed role: being where you need to be so others can find their bearings. Looking for credit for it usually spoils it.'
+    ],
+    'of Mutation': [
+      '[Gate 3](gate:3) is the chaotic start of anything new and [50](gate:50) the values that contain it; [41](gate:41) lights the desire and [31](gate:31) lends it a voice.',
+      'To mutate is **to bring in what did not exist yet**, mess and all. The role is to bear that mess long enough for it to set, without rushing it or abandoning it.'
+    ],
+    'of Formulization': [
+      '[Gate 4](gate:4) formulates answers and [49](gate:49) reviews principles; [8](gate:8) and [14](gate:14) bring the contribution and the resources.',
+      'To formulate is **to give a loose idea a closed shape**. A role of precision: the formula works or it does not. The temptation is formulating before the answer is whole.'
+    ],
+    'of Habits': [
+      '[Gate 5](gate:5) is rhythm and habit and [35](gate:35) the appetite for change; [47](gate:47) and [22](gate:22) look for sense and open the door to others.',
+      'Habits are **the scaffolding of a life** here. The role is holding a rhythm of your own without being dragged into anyone else. Breaking it to please costs a lot.'
+    ],
+    'of Conflict': [
+      '[Gate 6](gate:6) is friction and intimacy and [36](gate:36) crisis; [15](gate:15) and [10](gate:10) bring human variety and fidelity to yourself.',
+      'Conflict here **is the work, not the accident**: staying in the rub without fleeing it or getting stuck in it. The edge is the rhythm of [6](gate:6) — not every moment is the moment to go in.'
+    ],
+    'of Interaction': [
+      '[Gate 7](gate:7) takes a role in front of others and [13](gate:13) listens to what they bring; [23](gate:23) and [43](gate:43) supply the singular voice and the insight.',
+      'Interacting **is the role itself**: being among people, taking in and giving back. Not decorative sociability — the function. Isolation switches the whole chart off.'
+    ],
+    'of Contribution': [
+      '[Gate 8](gate:8) brings what you have to give and [14](gate:14) the resources; [55](gate:55) and [59](gate:59) bring spirit and intimacy.',
+      'To contribute is **to put what is yours in service of something without dissolving into it**. The fixed role is to give without asking permission and without needing applause.'
+    ],
+    'of Focus': [
+      '[Gate 9](gate:9) concentrates on detail and [16](gate:16) supplies enthusiasm; [64](gate:64) and [63](gate:63) fill with images and doubts.',
+      'Focus is **holding attention where others lose it**. A role of mental stamina, and its drain is having focused on something that did not deserve it.'
+    ],
+    'of Behavior': [
+      '[Gate 10](gate:10) is your own conduct, the most personal gate of all, with [15](gate:15) alongside; [18](gate:18) and [17](gate:17) correct and opine.',
+      'The role is **behaving as you are, without adjusting**. It sounds easy and it is among the most demanding: every extra adaptation gets paid for inside.'
+    ],
+    'of Ideas': [
+      '[Gate 11](gate:11) is the storehouse of ideas and [12](gate:12) the caution about releasing them; [46](gate:46) and [25](gate:25) bring the body and innocence.',
+      'Having ideas is **a condition here, not an achievement**. The role is not to realise them all — [11](gate:11) is not built for that — but to offer them to whoever can.'
+    ],
+    'of Articulation': [
+      '[Gate 12](gate:12) is measured expression and [11](gate:11) gives it material; [25](gate:25) and [46](gate:46) bring innocent love and the body.',
+      'To articulate is **finding the exact form and the exact moment**. The role lives in the wait: said at the wrong time, the same thing loses all its value.'
+    ],
+    'of Listening': [
+      '[Gate 13](gate:13) listens and keeps what people tell it, with [7](gate:7) alongside; [43](gate:43) and [23](gate:23) supply the insight and the voice.',
+      'Listening is **a craft** here: people tell these ones things without knowing why. The role is spoiled by using what was heard for anything other than giving it back well.'
+    ],
+    'of Empowering': [
+      '[Gate 14](gate:14) is abundance of resources and [8](gate:8) the contribution; [59](gate:59) and [55](gate:55) bring intimacy and spirit.',
+      'To empower is **putting resources where someone can use them better than you can**. A quiet patron role; the edge is giving them to someone who will not move them.'
+    ],
+    'of Extremes': [
+      '[Gate 15](gate:15) holds the whole range of human variety — from excess to scarcity — with [10](gate:10) alongside; [17](gate:17) and [18](gate:18) opine and correct.',
+      'The role is **living at the extremes without normalising**. These people keep odd rhythms, and the oddness is the contribution: they widen what counts as human.'
+    ],
+    'of Experimentation': [
+      '[Gate 16](gate:16) is the enthusiasm that leaps and [9](gate:9) the detail; [63](gate:63) and [64](gate:64) doubt and gather images.',
+      'To experiment is **trying before knowing**. The role asks you to leap, and error is part of the method — but [16](gate:16) without repetition stays a jump with no skill behind it.'
+    ],
+    'of Opinions': [
+      '[Gate 17](gate:17) forms opinions and [18](gate:18) sees what is off; [38](gate:38) and [39](gate:39) fight and provoke.',
+      'Having opinions is **the role**, not a vice. The delicate part is that an opinion is not a truth: it helps when offered and gets in the way when imposed.'
+    ],
+    'of Correction': [
+      '[Gate 18](gate:18) spots the flaw and [17](gate:17) puts it into words; [39](gate:39) and [38](gate:38) provoke and fight.',
+      'Correcting is **the fixed craft**: seeing what could be better before anyone else. Well aimed it is a gift to the group; aimed inward without a brake it corrodes.'
+    ],
+    'of Need': [
+      '[Gate 19](gate:19) senses what is missing and [33](gate:33) retreats to digest it; [1](gate:1) and [2](gate:2) bring expression and direction.',
+      'The role is **noticing the need before it is spoken**. Very sensitive, very useful — and exhausting if the retreat of [33](gate:33) is not respected.'
+    ],
+    'of the Now': [
+      '[Gate 20](gate:20) lives in the pure present and [34](gate:34) supplies the force; [37](gate:37) and [40](gate:40) bring bargains and withdrawal.',
+      'Being in the now is **the whole function**: no over-planning, no chewing the past. The independence of juxtaposition here protects that present from other people\'s agendas.'
+    ],
+    'of Control': [
+      '[Gate 21](gate:21) wants control over its own — resources, territory — and [48](gate:48) reaches for depth; [54](gate:54) and [53](gate:53) drive and begin.',
+      'The role is **running your own affairs without anyone running them for you**. Extended to other people\'s, the same impulse turns into petty tyranny.'
+    ],
+    'of Grace': [
+      '[Gate 22](gate:22) opens and closes the emotional door with grace and [47](gate:47) looks for sense; [11](gate:11) and [12](gate:12) bring ideas and caution.',
+      'Grace is **knowing how to be**: listening, opening up, staying quiet at the right moment. A very fine social role, and it depends entirely on the mood of the day.'
+    ],
+    'of Assimilation': [
+      '[Gate 23](gate:23) translates the singular into something comprehensible and [43](gate:43) intuits it; [30](gate:30) and [29](gate:29) desire and commit.',
+      'To assimilate is **making the strange digestible**. The role turns on timing: the same sentence is brilliant or unintelligible depending on when it lands.'
+    ],
+    'of Rationalization': [
+      '[Gate 24](gate:24) returns again and again to the same thing and [44](gate:44) recognises patterns; [13](gate:13) and [7](gate:7) listen and take a role.',
+      'To rationalise is **making sense of what hurt**. A role of productive chewing; the edge is when the chewing loops and never reaches a conclusion.'
+    ],
+    'of Innocence': [
+      '[Gate 25](gate:25) is universal love with no favourites and [46](gate:46) love of the body; [58](gate:58) and [52](gate:52) bring vitality and stillness.',
+      'Innocence here is **a hard role**: loving without conditions includes those who do not deserve it. It is not naivety; it is a sustained choice.'
+    ],
+    'of the Trickster': [
+      '[Gate 26](gate:26) knows how to present what has value and [45](gate:45) gathers what is shared; [6](gate:6) and [36](gate:36) bring friction and crisis.',
+      'The trickster **sells, and somebody has to sell**. The role is legitimate as long as what is sold is real: the same talent, with the truth stretched, is manipulation.'
+    ],
+    'of Caring': [
+      '[Gate 27](gate:27) cares and feeds and [28](gate:28) hunts for meaning; [19](gate:19) and [33](gate:33) approach and withdraw.',
+      'Caring is **the fixed function**, and the warning is an old one: [27](gate:27) looks after others easily and itself with difficulty. That is where the whole lesson sits.'
+    ],
+    'of Risks': [
+      '[Gate 28](gate:28) stakes its life on finding meaning and [27](gate:27) cares; [33](gate:33) and [19](gate:19) process and approach.',
+      'Risking **is the role**: without the risk the meaning does not show up. What does not count is risk for the adrenaline — [28](gate:28) always asks what for.'
+    ],
+    'of Commitment': [
+      '[Gate 29](gate:29) says yes and stays to the end and [30](gate:30) desires; [20](gate:20) and [34](gate:34) bring the present and the power.',
+      'Committing is **the entire function**. That is why the yes matters so much: here a commitment does not get abandoned, so a yes given badly mortgages years.'
+    ],
+    'of Fates': [
+      '[Gate 30](gate:30) is the burning desire that marks a life and [29](gate:29) the commitment; [34](gate:34) and [20](gate:20) bring force and the present.',
+      'Fates here are **what desire ends up building**. An intense role: what is genuinely longed for tends to happen, for better and for worse.'
+    ],
+    'of Influence': [
+      '[Gate 31](gate:31) carries the voice others follow and [41](gate:41) lights the desire; [24](gate:24) and [44](gate:44) chew over and recognise patterns.',
+      'Influencing is **the fixed role**, and it comes with a condition: [31](gate:31) only works if someone wants to follow. Influence taken by force is not influence.'
+    ],
+    'of Conservation': [
+      '[Gate 32](gate:32) judges what will last and [42](gate:42) closes cycles; [56](gate:56) and [60](gate:60) stimulate and limit.',
+      'Conserving is **protecting what deserves to survive**. A prudent, necessary role; its shadow is fear of change dressed up as good sense.'
+    ],
+    'of Retreat': [
+      '[Gate 33](gate:33) withdraws to digest what happened and [19](gate:19) senses the need; [2](gate:2) and [1](gate:1) give direction and expression.',
+      'Retreating here is **a function, not an escape**. The material cooks in the silence, and what comes out of it is what these people have to tell.'
+    ],
+    'of Power': [
+      '[Gate 34](gate:34) is sheer power, the one gate that cannot express itself alone, and [20](gate:20) brings it into the present; [40](gate:40) and [37](gate:37) supply will and bargains.',
+      'Power here **is not explained, it is used**. A role of available force; the trap is spending it on what responded to nothing.'
+    ],
+    'of Experience': [
+      '[Gate 35](gate:35) wants to have tried everything and [5](gate:5) sets the rhythm; [22](gate:22) and [47](gate:47) open and make sense.',
+      'Living experience **is the role**. The contribution comes afterwards: someone who has been to many places and can tell you about it. Without the rhythm of [5](gate:5), experience turns into flight.'
+    ],
+    'of Crisis': [
+      '[Gate 36](gate:36) is crisis and the not-yet-lived and [6](gate:6) friction; [10](gate:10) and [15](gate:15) bring fidelity to yourself and human variety.',
+      'Crisis here **is the terrain**, not the exception. The role is getting through them without dramatising, and not walking into the next before digesting the last.'
+    ],
+    'of Bargains': [
+      '[Gate 37](gate:37) weaves the bargains that hold a family together and [40](gate:40) brings will and withdrawal; [5](gate:5) and [35](gate:35) give rhythm and experience.',
+      'The bargain is **the function**: give and take on clear terms. And its rule is hard — an agreement accepted unwillingly always collects.'
+    ],
+    'of Opposition': [
+      '[Gate 38](gate:38) fights for what is worth it and [39](gate:39) provokes; [57](gate:57) and [51](gate:51) intuit and shock.',
+      'Opposing is **the role**, and it is not negativity: without someone standing their ground, a lot of bad things happen quietly. The condition is that the cause is real.'
+    ],
+    'of Provocation': [
+      '[Gate 39](gate:39) provokes to bring out what is underneath and [38](gate:38) fights; [51](gate:51) and [57](gate:57) shock and intuit.',
+      'To provoke is **to uncover**: an uncomfortable question, a badly timed remark, and suddenly what was unsaid is out. Useful when it is after something; cruel when it only wants a reaction.'
+    ],
+    'of Denial': [
+      '[Gate 40](gate:40) is the one who works and then withdraws, and needs both; [37](gate:37), [35](gate:35) and [5](gate:5) bring bargains, experience and rhythm.',
+      'Refusing is **a capacity here, not a flaw**: saying no and pulling back to recover. The role breaks when the withdrawal becomes permanent isolation.'
+    ],
+    'of Fantasy': [
+      '[Gate 41](gate:41) lights the desire that opens every cycle and [31](gate:31) lends it a voice; [44](gate:44) and [24](gate:24) recognise and chew over.',
+      'Fantasy is **the start of everything that later exists**. An imaginative role, with a real limit: [41](gate:41) imagines far more than one life can hold.'
+    ],
+    'of Completion': [
+      '[Gate 42](gate:42) closes what was started and [32](gate:32) judges what will last; [60](gate:60) and [56](gate:56) limit and stimulate.',
+      'Completing is **the whole role**. Few people finish; these ones do. The drain comes from getting into cycles that should never have been started.'
+    ],
+    'of Insight': [
+      '[Gate 43](gate:43) knows something all at once and from inside, and [23](gate:23) translates it; [29](gate:29) and [30](gate:30) commit and desire.',
+      'Insight here **arrives whole and without explanation**. The role is holding it until you find how to say it; letting it out raw usually sounds absurd.'
+    ],
+    'of Alertness': [
+      '[Gate 44](gate:44) recognises past patterns in the present and [24](gate:24) chews over; [7](gate:7) and [13](gate:13) take a role and listen.',
+      'Alertness is **the function**: catching the pattern that already went wrong once. It is instinct, not reasoning, and it works better when it is not argued.'
+    ],
+    'of Possession': [
+      '[Gate 45](gate:45) gathers and administers what belongs to everyone and [26](gate:26) knows how to present it; [36](gate:36) and [6](gate:6) bring crisis and friction.',
+      'Possession here is **taking charge of what is shared**, not hoarding. The role is the one who keeps the group\'s resources — and the line with appropriation is thin.'
+    ],
+    'of Serendipity': [
+      '[Gate 46](gate:46) is love of the body and being in the right place, and [25](gate:25) innocence; [52](gate:52) and [58](gate:58) bring stillness and vitality.',
+      'Serendipity is **being where you need to be without having planned it**. A fortunate role, and its condition is physical: looking after the body here is looking after the luck.'
+    ],
+    'of Oppression': [
+      '[Gate 47](gate:47) gets stuck trying to make sense of confusion and [22](gate:22) opens; [12](gate:12) and [11](gate:11) measure and imagine.',
+      'Oppression is **the feeling of finding no way out** while the processing happens. The role is bearing it without forcing the conclusion: understanding arrives on its own, and it arrives late.'
+    ],
+    'of Depth': [
+      '[Gate 48](gate:48) reaches for depth and fears not having it, and [21](gate:21) wants control; [53](gate:53) and [54](gate:54) begin and drive.',
+      'Depth is **the role**, and it comes with its fear attached: the sense of not knowing enough. That fear is the engine, not evidence that it is true.'
+    ],
+    'of Principles': [
+      '[Gate 49](gate:49) upholds principles and breaks when they are violated, with [4](gate:4) alongside; [14](gate:14) and [8](gate:8) bring resources and contribution.',
+      'Having principles is **a social function** here: somebody has to mark where the line is. The edge is rigidity — a principle never revisited turns into dogma.'
+    ],
+    'of Values': [
+      '[Gate 50](gate:50) keeps the values that hold a group and [3](gate:3) starts the new; [31](gate:31) and [41](gate:41) give voice and desire.',
+      'Guarding values is **the fixed role**. Not moralising: noticing when a group is skipping what kept it standing, and saying so.'
+    ],
+    'of Shock': [
+      '[Gate 51](gate:51) shocks and wakes and [57](gate:57) intuits; [61](gate:61) and [62](gate:62) press toward mystery and order the detail.',
+      'Shock is **the role**: producing the jolt that gets someone off autopilot. These people usually cause it without meaning to, just by how they arrive.'
+    ],
+    'of Stillness': [
+      '[Gate 52](gate:52) stays still in order to see and [58](gate:58) supplies vitality; [21](gate:21) and [48](gate:48) control and go deep.',
+      'Stillness is **an active function**, not passivity: staying long enough for what movement hides to become visible. Costly in a world that rewards hurry.'
+    ],
+    'of Beginnings': [
+      '[Gate 53](gate:53) starts things — that is its entire energy — and [54](gate:54) drives upward; [42](gate:42) and [32](gate:32) close and evaluate.',
+      'Beginning is **the role**, and it does not include finishing. Understanding that removes a lot of guilt: the contribution is the start, and others can carry it to the end.'
+    ],
+    'of Ambition': [
+      '[Gate 54](gate:54) drives upward from below and [53](gate:53) begins; [32](gate:32) and [42](gate:42) measure and close.',
+      'Ambition is **the function**, and it has a rule: it prospers when it is recognised. Pushing without an alliance leaves these people climbing a very long ladder alone.'
+    ],
+    'of Moods': [
+      '[Gate 55](gate:55) is spirit and its emotional tide, and [59](gate:59) breaks barriers; [9](gate:9) and [16](gate:16) focus and enthuse.',
+      'Moods here are **the working terrain**, not a problem to solve. The role is living them honestly, and the one practical rule is not deciding from the low point.'
+    ],
+    'of Stimulation': [
+      '[Gate 56](gate:56) tells and stimulates and [60](gate:60) sets the limit; [27](gate:27) and [28](gate:28) care and hunt for meaning.',
+      'Stimulating is **the storyteller\'s role**: keeping people awake with what you tell them. And its limit is [60](gate:60) — without it, stimulation turns into noise.'
+    ],
+    'of Intuition': [
+      '[Gate 57](gate:57) hears what is not said and [51](gate:51) shocks; [62](gate:62) and [61](gate:61) order the detail and press toward mystery.',
+      'Intuition here **is the whole instrument**. It works in the present and only once; reasoning about it afterwards erases it. The role is trusting that first signal.'
+    ],
+    'of Vitality': [
+      '[Gate 58](gate:58) is the joy of being alive and [52](gate:52) stillness; [48](gate:48) and [21](gate:21) go deep and control.',
+      'Vitality is **the role**, and it is not optimism: a physical energy that pushes to improve things because living feels good. When it goes, something is being over-corrected.'
+    ],
+    'of Strategy': [
+      '[Gate 59](gate:59) breaks through barriers to reach intimacy and [55](gate:55) brings spirit; [16](gate:16) and [9](gate:9) enthuse and focus.',
+      'Strategy here is **knowing how to approach**: how the distance to another person gets crossed. An intimate, very concrete role; forcing it closes exactly what it meant to open.'
+    ],
+    'of Limitation': [
+      '[Gate 60](gate:60) accepts the limit so something can take shape and [56](gate:56) stimulates; [28](gate:28) and [27](gate:27) hunt for meaning and care.',
+      'The limit is **the function**, and it is good news: no frame, no form. The shadow is melancholy about what does not fit — real, and not a reason to force the frame.'
+    ],
+    'of Thinking': [
+      '[Gate 61](gate:61) presses toward the truth underneath and [62](gate:62) orders the facts; [50](gate:50) and [3](gate:3) hold values and start the new.',
+      'Thinking here is **a pressure, not a pastime**: [61](gate:61) pushes to know without guaranteeing an answer. The role is holding the question without manufacturing conclusions to quiet it.'
+    ],
+    'of Detail': [
+      '[Gate 62](gate:62) names and orders the details and [61](gate:61) presses toward mystery; [3](gate:3) and [50](gate:50) start and hold values.',
+      'Detail is **the role**: naming things so they can be handled. An enormous and under-credited contribution; its shadow is getting lost in the small and missing the whole.'
+    ],
+    'of Doubts': [
+      '[Gate 63](gate:63) doubts everything put in front of it and [64](gate:64) gathers images; [26](gate:26) and [45](gate:45) present and administer.',
+      'Doubting is **the function**, and it is valuable: somebody has to ask whether this actually works. Aimed inward it paralyses; aimed outward it protects the group.'
+    ],
+    'of Confusion': [
+      '[Gate 64](gate:64) fills with unsorted images and [63](gate:63) doubts; [45](gate:45) and [26](gate:26) gather and present.',
+      'Confusion here is **the normal working state**, not a fault: the mind takes in more material than it can order, and the order arrives by itself, in time. Forcing it is the only thing that makes it worse.'
     ]
   },
 
