@@ -77,7 +77,7 @@ export function buildReport(chart, lang = getLocale()) {
       coll?.intro,
       coll?.bullets ? { bullets: coll.bullets } : null,
       coll?.outro,
-      { subhead: fillTpl(R.typeSubhead, { type: typeLabel }) },
+      { subhead: fillTpl(R.typeSubhead, { type: typeLabel, typeKey: chart.type }) },
       ...typeBody
     ]);
   }
@@ -138,6 +138,7 @@ export function buildReport(chart, lang = getLocale()) {
       {
         subhead: fillTpl(R.purposeSubhead, {
           name,
+          angle: chart.cross.angle,
           gates: formatCrossGates(chart.cross, lang)
         })
       },

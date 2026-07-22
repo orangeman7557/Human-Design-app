@@ -116,8 +116,8 @@ export default {
     cross: {
       title: 'La cruz de encarnación',
       paragraphs: [
-        'La **cruz de encarnación** es el tema de fondo de una vida: la dirección general hacia la que apunta el diseño de una persona. Se la suele presentar como el "propósito", pero conviene tomarla con calma — es un telón de fondo que se despliega a lo largo de los años, no una tarea concreta que haya que resolver.',
-        'La componen **cuatro puertas**: el Sol y la Tierra de [Personalidad](activationCol:personality) y el Sol y la Tierra de [Diseño](activationCol:design). Son las activaciones de más peso de la carta —la literatura les atribuye la mayor parte de la impronta—, así que la cruz viene a resumir sus temas dominantes.',
+        'La **cruz de encarnación** es el tema de fondo de una vida: la dirección general hacia la que apunta el diseño de una persona. Se la suele presentar como el "propósito", pero conviene tomarla con calma y ligereza — no se trata de intentar entenderla, aplicarla o forzarla. Si uno vive alineado con su diseño ([estrategia](concept:strategy) y [autoridad](concept:authority)), la cruz es un telón de fondo que se despliega de manera natural a lo largo de la vida.',
+        'La componen **cuatro puertas**: las puertas sol-tierra de [Personalidad](activationCol:personality) y sol-tierra de [Diseño](activationCol:design). Son las [activaciones](concept:activation) de más peso de la carta —la literatura les atribuye la mayor parte de la impronta—, así que la cruz viene a resumir sus temas dominantes.',
         'Se llama «cruz» porque surge del **cruce de dos ejes**: el eje personalidad-diseño (consciente ↔ inconsciente) y el eje Sol-Tierra (lo que se expresa e impulsa ↔ lo que sostiene y estabiliza).',
         'El **ángulo** matiza hacia dónde se dirige esa energía:',
         { bullets: [
@@ -925,15 +925,15 @@ export default {
   cross: {
     right: {
       name: 'Cruz derecha',
-      text: 'El **ángulo** de esta cruz es **derecho**, y el ángulo habla solo de la *orientación* del recorrido: es una geometría **personal**. La vida se despliega sobre todo a través de la propia experiencia, y el propósito se cumple viviendo lo de uno. Es, con diferencia, el ángulo más frecuente.'
+      text: 'El **ángulo** de esta cruz es **derecho**, es decir, la vida se orienta desde una geometría **personal**: el camino se recorre sobre todo a través de la propia experiencia, y lo que a uno le toca se cumple viviendo lo suyo. Es, con diferencia, el ángulo más frecuente.'
     },
     left: {
       name: 'Cruz izquierda',
-      text: 'El **ángulo** de esta cruz es **izquierdo**, y el ángulo habla solo de la *orientación* del recorrido: es una geometría **transpersonal**. Buena parte de lo importante llega a través de otras personas, y el propósito se cumple en relación con ellas: los encuentros no son un accesorio, son el material.'
+      text: 'El **ángulo** de esta cruz es **izquierdo**, es decir, la vida se orienta desde una geometría **transpersonal**: buena parte de lo importante llega a través de otras personas, y lo de uno se cumple en relación con ellas. Los encuentros no son un accesorio del camino, son el material con el que está hecho.'
     },
     juxtaposition: {
       name: 'Cruz de yuxtaposición',
-      text: 'El **ángulo** de esta cruz es de **yuxtaposición**, y el ángulo habla solo de la *orientación* del recorrido: es una geometría **fija**, un puente entre lo personal y lo transpersonal. Un papel muy concreto, sostenido con bastante independencia de lo que pase alrededor. Corresponde a un solo perfil, el 4/1, y es el ángulo más raro.'
+      text: 'El **ángulo** de esta cruz es de **yuxtaposición**, es decir, la vida se orienta desde una geometría **fija**: un papel muy concreto, ni personal ni transpersonal, que se sostiene con bastante independencia de lo que pase alrededor. Corresponde a un solo perfil, el 4/1, y es el ángulo más raro.'
     }
   },
 
@@ -1504,7 +1504,8 @@ export default {
       title: 'Tu propósito',
       paragraphs: [
         'Tu **cruz de encarnación** es el tema de fondo de tu vida: la dirección general hacia la que apunta tu diseño. La forman **cuatro puertas** —el Sol y la Tierra de tu Personalidad, y el Sol y la Tierra de tu Diseño—, que son las cuatro activaciones de más peso de tu carta.',
-        'Conviene tomarla con calma. Es un telón de fondo que se despliega a lo largo de los años, no una tarea que tengas que resolver ni una vocación que debas adivinar cuanto antes. Mucha gente la reconoce mirando hacia atrás, no hacia delante.'
+        'Y conviene decir algo antes de seguir: **la palabra «propósito» aquí engaña**. No es una misión que tengas que descubrir, ni algo que puedas forzar o acelerar. Es más bien el **tema de fondo** de tu vida, y **se despliega solo**. El Diseño Humano es explícito en esto: no vayas a buscarlo — céntrate en [tu estrategia](section:strategy) y [tu autoridad](section:authority), y el tema se irá viviendo por su cuenta.',
+        'Mucha gente la reconoce mirando hacia atrás, no hacia delante. Así que léela con curiosidad, no como una tarea pendiente.'
       ],
       outro:
         'Y aquí está lo importante: **el propósito no se persigue, se cumple viviendo tu diseño**. No hay nada que hacer con esta cruz salvo reconocerla. Lo que de verdad cambia tu día a día es lo de la sección anterior —actuar según [tu estrategia](section:strategy) y decidir desde [tu autoridad](section:authority)—; si eso está en su sitio, el resto se ocupa solo.'
@@ -1701,27 +1702,27 @@ export default {
     generator: {
       energia: '**Gestión de tu energía** — Tienes el [centro Sacral](center:sacral) definido: una energía de trabajo **sostenible y renovable**, hecha para emplearse a fondo cada día en lo correcto y vaciarse sanamente al llegar la noche. La clave no es ahorrarla, sino **gastarla en aquello a lo que tu cuerpo responde de verdad**: entonces el cansancio es satisfactorio y al día siguiente la carga vuelve. Forzarte en lo que no te enciende te agota sin saciar.',
       trampa: '**La trampa de tu tipo** — Tu mayor desgaste viene de **iniciar desde la mente** en vez de esperar a tener algo a lo que responder: decir que sí por obligación, por lógica o por miedo a perder la oportunidad. Cuando te metes en algo que tu energía no respaldaba, aparece la frustración —la señal clásica del Generador que vive contra su diseño— y la sensación de estar atascado en cosas que no terminan de llenar.',
-      senales: '**Señales de que vas por buen camino** — Tu brújula son tus dos señales: la de [alineamiento](signal:aligned), la **satisfacción**, y la de [desalineamiento](signal:misaligned), la **frustración**. Si al final del día sientes un cansancio a gusto y la sensación de haber empleado bien tu energía, vas bien encaminado. Si lo que predomina es la frustración y el hartazgo, suele ser señal de que te has comprometido con cosas a las que tu cuerpo no había dicho que sí.'
+      senales: '**Señales de que vas por buen camino** — Tu brújula son tus dos señales: la de [alineamiento](signal:generator), la **satisfacción**, y la de [desalineamiento](signal:generator), la **frustración**. Si al final del día sientes un cansancio a gusto y la sensación de haber empleado bien tu energía, vas bien encaminado. Si lo que predomina es la frustración y el hartazgo, suele ser señal de que te has comprometido con cosas a las que tu cuerpo no había dicho que sí.'
     },
     'manifesting-generator': {
       energia: '**Gestión de tu energía** — Como Generador, tienes el [Sacral](center:sacral) definido: energía de trabajo **sostenible y renovable**. Pero está conectada con la [Garganta](center:throat), lo que te hace **rápido, polifacético y no lineal**: saltas pasos, haces varias cosas a la vez y avanzas a gran velocidad cuando algo te enciende de verdad. Rindes al máximo si primero esperas la **respuesta del cuerpo** y luego **informas** a quienes te rodean antes de lanzarte.',
       trampa: '**La trampa de tu tipo** — **Dispersarte**: comprometerte con demasiadas cosas a las que tu cuerpo no había dicho que sí, o saltarte el aviso a los demás y chocar con su resistencia. Cuando inicias por mente en vez de responder, acumulas frustración —y a menudo algo de enfado— y proyectos a medio terminar.',
-      senales: '**Señales de que vas por buen camino** — Tu señal de [alineamiento](signal:aligned) es la **satisfacción**, con una cierta paz alrededor; la de [desalineamiento](signal:misaligned), la **frustración**, a menudo con enfado. Si avanzas rápido en lo que te enciende y dejas las cosas rematadas, vas bien; si te notas disperso y rodeado de fricción, suele ser que dijiste que sí donde el cuerpo no acompañaba, o que no informaste.'
+      senales: '**Señales de que vas por buen camino** — Tu señal de [alineamiento](signal:manifesting-generator) es la **satisfacción**, con una cierta paz alrededor; la de [desalineamiento](signal:manifesting-generator), la **frustración**, a menudo con enfado. Si avanzas rápido en lo que te enciende y dejas las cosas rematadas, vas bien; si te notas disperso y rodeado de fricción, suele ser que dijiste que sí donde el cuerpo no acompañaba, o que no informaste.'
     },
     projector: {
-      energia: '**Gestión de tu energía** — No tienes el [Sacral](center:sacral) definido, así que **no estás diseñado para un trabajo constante** ni para sostener el ritmo de un Generador: tu energía es irregular y se agota antes. Tampoco estás diseñado para iniciar desde cero —a diferencia del Manifestador, no tienes ningún motor conectado a la [Garganta](center:throat)—. Es por esto que tu don no está en la resistencia ni en la iniciación, tu don está en **ver, guiar y orientar** allí donde se te invita. Gestionarte bien pasa por **descansar y dosificarte** —dormir y soltar antes de quedar agotado— y por reservar tu atención para quien de verdad la valora: **saber cuándo decir sí y cuándo decir no**.',
+      energia: '**Gestión de tu energía** — Igual que el Manifestador, **el descanso es parte de tu método, no un premio**: no tienes el [Sacral](center:sacral) definido, así que **no estás diseñado para un trabajo constante** ni para sostener el ritmo de un Generador: tu energía es irregular y se agota antes. **Dormir antes de vaciarte** —y retirarte cuando lo notas, sin pedir permiso— es lo que sostiene tu don. Tampoco estás diseñado para iniciar desde cero —a diferencia del Manifestador, no tienes ningún motor conectado a la [Garganta](center:throat)—. Es por esto que tu don no está en la resistencia ni en la iniciación, tu don está en **ver, guiar y orientar** allí donde se te invita. Gestionarte bien pasa por **descansar y dosificarte** —dormir y soltar antes de quedar agotado— y por reservar tu atención para quien de verdad la valora: **saber cuándo decir sí y cuándo decir no**.',
       trampa: '**La trampa de tu tipo** — **Forzarte al ritmo de los demás** y **ofrecer tu visión y esfuerzo sin que nadie te lo pida**. Trabajar hasta el agotamiento para demostrar tu valía, o insistir sin ser invitado, trae resistencia, rechazo y amargura —la señal del Proyector que vive contra su diseño—.',
-      senales: '**Señales de que vas por buen camino** — Tu señal de [alineamiento](signal:aligned) es el **éxito** —ser visto y reconocido—, y la de [desalineamiento](signal:misaligned), la **amargura**. Cuando se te ve, se te invita y tu visión es bien recibida, vas por buen camino; cuando te sientes invisible, agotado y resentido, suele ser señal de que te ofreces donde no te han llamado o de que te exiges una energía que no tienes.'
+      senales: '**Señales de que vas por buen camino** — Tu señal de [alineamiento](signal:projector) es el **éxito** —ser visto y reconocido—, y la de [desalineamiento](signal:projector), la **amargura**. Cuando se te ve, se te invita y tu visión es bien recibida, vas por buen camino; cuando te sientes invisible, agotado y resentido, suele ser señal de que te ofreces donde no te han llamado o de que te exiges una energía que no tienes.'
     },
     manifestor: {
-      energia: '**Gestión de tu energía** — Tienes un motor conectado a la [Garganta](center:throat) pero el [Sacral](center:sacral) sin definir: tu energía **no es constante, llega a impulsos** para iniciar y poner cosas en marcha, y luego necesita reposo. Estás hecho para **arrancar e impactar**, no para ejecutar de forma sostenida. Gestionarte bien es respetar esos ciclos de empuje y descanso (a veces bastante descanso), y proteger tu autonomía sin aislarte.',
+      energia: '**Gestión de tu energía** — Tienes un motor conectado a la [Garganta](center:throat) pero el [Sacral](center:sacral) sin definir: tu energía **no es constante, llega a impulsos** para iniciar y poner cosas en marcha, y luego se acaba. Estás hecho para **arrancar e impactar**, no para ejecutar de forma sostenida.\n\nY aquí está lo que casi nadie te va a decir con esta claridad: **el descanso no es tu recompensa, es tu método**. No estás diseñado para crear de forma continua. Hay quien sitúa la proporción sana de un Manifestador en torno a un **70-80% de reposo** frente al tiempo de iniciar — la cifra exacta importa menos que la idea de fondo: **la mayor parte de tu tiempo no deberías estar produciendo**. Tu impacto sale de pocos movimientos bien cargados, no de muchos a media potencia.\n\nEn la práctica: **acuéstate cansado, no agotado**. Si esperas a quedarte sin nada para parar, el siguiente impulso llega tarde y flojo. Y no midas tu descanso con la vara de un Generador, porque a su lado siempre vas a parecer que haces poco — no es pereza, es tu diseño.',
       trampa: '**La trampa de tu tipo** — Actuar por sorpresa **sin informar** a quienes tu impacto va a alcanzar: eso provoca resistencia, oposición y enfado alrededor, que acaba poniéndote las cosas más difíciles. La otra gran trampa es **exigirte una constancia** que no es tuya, hasta quemarte, sin aceptar tu gran necesidad de reposo.',
-      senales: '**Señales de que vas por buen camino** — Tu señal de [alineamiento](signal:aligned) es la **paz**; la de [desalineamiento](signal:misaligned), el **enfado**. Cuando informas y te mueves con libertad, encuentras calma a tu alrededor; cuando todo se llena de resistencia y conflicto, suele ser señal de que actuaste sin avisar o de que estás forzando un ritmo continuo que no te corresponde.'
+      senales: '**Señales de que vas por buen camino** — Tu señal de [alineamiento](signal:manifestor) es la **paz**; la de [desalineamiento](signal:manifestor), el **enfado**. Cuando informas y te mueves con libertad, encuentras calma a tu alrededor; cuando todo se llena de resistencia y conflicto, suele ser señal de que actuaste sin avisar o de que estás forzando un ritmo continuo que no te corresponde.'
     },
     reflector: {
       energia: '**Gestión de tu energía** — No tienes **ningún centro definido**: muestreas constantemente la energía de la gente y los lugares, así que **el entorno te afecta muchísimo** y tu energía varía mucho de un día a otro. Lo más importante para ti es **elegir bien dónde estás y con quién**, y no exigirte una constancia que no es propia de tu diseño. Y no cierres en caliente lo que importa: date el ciclo entero.',
       trampa: '**La trampa de tu tipo** — Decidir con prisa, quedarte en entornos que no te sientan bien e **identificarte con lo que solo estás reflejando**: tomar por tuyos estados de ánimo o presiones que en realidad son del grupo. **Forzarte a ser siempre igual** va contra tu naturaleza cambiante.',
-      senales: '**Señales de que vas por buen camino** — Tu señal de [alineamiento](signal:aligned) es la **sorpresa**, con su punto de deleite; la de [desalineamiento](signal:misaligned), la **decepción**. Cuando los entornos y las compañías son los correctos, la vida te sorprende gratamente; cuando predomina la decepción, suele ser señal de que estás en el lugar o con la gente equivocados, o de que has decidido demasiado rápido.'
+      senales: '**Señales de que vas por buen camino** — Tu señal de [alineamiento](signal:reflector) es la **sorpresa**, con su punto de deleite; la de [desalineamiento](signal:reflector), la **decepción**. Cuando los entornos y las compañías son los correctos, la vida te sorprende gratamente; cuando predomina la decepción, suele ser señal de que estás en el lugar o con la gente equivocados, o de que has decidido demasiado rápido.'
     }
   },
 
@@ -2203,6 +2204,17 @@ export default {
     // that its own "i" used to carry now travels with each concrete definition.
     definitionIntro:
       'La **definición** describe cómo se agrupan entre sí los centros definidos de una carta: si forman un único bloque de energía o varios grupos separados. Habla de la consistencia interna —qué partes están siempre "encendidas" y enlazadas— y de cómo se integra esa energía.',
+    angleTag: { right: 'Der', left: 'Izq', juxtaposition: 'Yux' },
+    crossIndexHeading: 'Las 192 cruces, por cuartos del mandala',
+    crossIndexCols: { sun: 'Sol', name: 'Cruz', angle: 'Áng.' },
+    // Own wording, drawn from several sources: the four quarters divide the
+    // wheel into 16 gates each and name the register a life's theme plays in.
+    quarter: [
+      { title: 'Cuarto de la Iniciación', note: 'El arranque: la chispa, la idea que aún no tiene forma. El propósito se busca a través de la **mente**.' },
+      { title: 'Cuarto de la Civilización', note: 'Dar forma y construir lo que sirve a todos. El propósito se busca a través de la **forma**.' },
+      { title: 'Cuarto de la Dualidad', note: 'El encuentro con el otro y lo que sale de ahí. El propósito se busca a través del **vínculo**.' },
+      { title: 'Cuarto de la Mutación', note: 'La transformación y el cierre de lo viejo. El propósito se busca a través del **cambio**.' }
+    ],
     crossTitle: '{name}',
     factCrossPersonality: 'Personalidad',
     factCrossDesign: 'Diseño',
@@ -2219,7 +2231,7 @@ export default {
   // Second person by rule — the report is addressed to the chart's owner.
   reportShell: {
     typeTitle: 'Tu tipo: {type}',
-    typeSubhead: 'Tú eres un {type}',
+    typeSubhead: 'Tú eres un [{type}](type:{typeKey})',
     centersTitle: 'Tus centros y tus condicionamientos',
     strategyTitle: 'Tu estrategia: {strategy}',
     authorityTitle: 'Tu autoridad: {authority}',
@@ -2230,7 +2242,7 @@ export default {
     definitionPrefix: '^Definición\\s+',
     practiceTitle: 'Vivir tu diseño',
     purposeTitle: 'Tu propósito',
-    purposeSubhead: '{name} ({gates})',
+    purposeSubhead: '[{name}](cross:{angle}) ({gates})',
     profileHeading: 'Perfil {profile}',
     profileIntro:
       'Tu perfil {profile} combina dos líneas: la {a}, consciente, y la {b}, inconsciente. Cada una aporta su matiz, y juntas describen tu forma de aprender, relacionarte y desplegar tu propósito.',

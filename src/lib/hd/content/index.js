@@ -7,7 +7,7 @@
 
 import es from './es.js';
 import en from './en.js';
-import { CENTER_BY_GATE, CHANNELS, GATES_BY_CENTER, CENTERS } from '../constants.js';
+import { CENTER_BY_GATE, CHANNELS, GATES_BY_CENTER, CENTERS, GATE_WHEEL, crossQuartet, quarterGates } from '../constants.js';
 import { getLocale, DEFAULT_LOCALE } from '$lib/i18n/index.svelte.js';
 
 const LANGS = { es, en };
@@ -175,6 +175,13 @@ export function getConceptInfo(key, chart = null, lang = getLocale()) {
       }))
     };
   }
+  if (key === 'cross') {
+    // Full index of all 192 crosses, grouped by the mandala's four quarters —
+    // the same "reach any element" idea the gate and channel concepts already
+    // offer. Quarters are derived from GATE_WHEEL (16 gates each, starting at
+    // gate 13), so they can't drift out of step with the engine.
+    return { ...base, crossIndex: crossIndex(lang) };
+  }
   if (key === 'signal') {
     // Same table as the pair drawers, but with NO current row: this is the
     // general drawer, and highlighting the chart's type made it look like the
@@ -257,6 +264,41 @@ export function getSignalInfo(type, lang = getLocale()) {
     // belongs to as the note. The chips navigate to the other pairs.
     related: signalIndex(type, lang),
     after: [D.signalPairNote, D.signalCanonical]
+  };
+}
+
+/**
+ * All 192 crosses grouped by quarter: one row per (Sun gate, angle) with the
+ * cross's name, its four gates and the angle's short tag — the shape the
+ * reference tables use.
+ */
+function crossIndex(lang = getLocale()) {
+  const p = pack(lang);
+  const D = p.drawer;
+  const tags = D.angleTag;
+  return {
+    heading: D.crossIndexHeading,
+    cols: D.crossIndexCols,
+    quarters: quarterGates().map((gates, qi) => ({
+    title: D.quarter[qi].title,
+    note: D.quarter[qi].note,
+    rows: gates.flatMap((g) =>
+      ['right', 'left', 'juxtaposition'].map((angle) => {
+        const key = `${g}|${angle}`;
+        const full = p.crossName?.[key] ?? '';
+        const prefix = p.labels?.cross?.[angle] ?? '';
+        const q = crossQuartet(g, angle);
+        return {
+          sun: g,
+          name: full.startsWith(prefix) ? full.slice(prefix.length).trim() : full,
+          gates: `${q[0]}/${q[1]} | ${q[2]}/${q[3]}`,
+          tag: tags[angle],
+          kind: 'gate',
+          key: String(g)
+        };
+      })
+    )
+  }))
   };
 }
 
