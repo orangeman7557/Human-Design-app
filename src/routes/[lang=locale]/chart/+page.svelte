@@ -1205,6 +1205,16 @@
                because the note is right-aligned and a reserved slot beside it
                would push it off the card. -->
           <span class="def-row" data-inner-key="definition:value">
+            <!-- The "i" goes on the LEFT: the note is right-aligned, so that is
+                 the side with room — on the right it either covered the text or
+                 pushed past the card's padding. -->
+            <span class="def-dot">
+              {#if innerReveal === 'definition:value' || infoIsOpen('definition', chart.definition)}
+                <span class="dot-host" data-info-cat="definition" data-info-kind="definition" data-info-key={chart.definition}>
+                  <InfoDot active={infoIsOpen('definition', chart.definition)} label={tr('chart.moreDefinition')} />
+                </span>
+              {/if}
+            </span>
             <button
               class="def-note"
               class:focus={hover?.kind === 'definition'}
@@ -1214,11 +1224,6 @@
             >
               {DEFINITION_LABELS[chart.definition] ?? chart.definition}
             </button>
-            {#if innerReveal === 'definition:value' || infoIsOpen('definition', chart.definition)}
-              <span class="dot-slot def-dot" data-info-cat="definition" data-info-kind="definition" data-info-key={chart.definition}>
-                <InfoDot active={infoIsOpen('definition', chart.definition)} label={tr('chart.moreDefinition')} />
-              </span>
-            {/if}
           </span>
         </div>
       </div>
@@ -1863,19 +1868,19 @@
      bottom; mobile moves it into the card's empty top-right corner (see the
      media query), where it costs no height at all. */
   .def-row {
-    position: relative;
     display: inline-flex;
+    align-items: center;
     align-self: flex-end;
     margin-top: 0.35rem;
-    /* Room for the floating "i" so it can sit clear of the last letter without
-       spilling past the card's padding. */
-    margin-right: 0.45rem;
   }
-  /* Further right than the default .dot-slot (-9px): there it half-covered the
-     last character of the value. */
+  /* Fixed slot, so revealing the "i" never shifts the note sideways. */
   .def-dot {
-    top: -8px;
-    right: -13px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 17px;
+    height: 17px;
+    margin-right: 0.2rem;
   }
   .def-note {
     background: none;
@@ -2476,11 +2481,18 @@
       width: auto;
       height: auto;
     }
+    /* The Weight column has room for the "i" beside its label even at 375px,
+       so it stays INLINE here rather than riding the label as a superscript
+       like Personality/Design do. Tight margin so it doesn't push the column
+       any wider than it already is. */
     .weight-col .side-head .head-i {
-      top: -3px;
-      /* Nudged right (was -8px) so the superscript stops sitting on the label. */
-      right: -12px;
+      position: static;
+      top: auto;
+      right: auto;
       transform: none;
+      width: 17px;
+      height: 17px;
+      margin-left: 0.05rem;
     }
   }
   /* The activations tooltips pop *below* their header: the table scroller

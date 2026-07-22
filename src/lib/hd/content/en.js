@@ -667,7 +667,7 @@ const overrides = {
     sacral: {
       title: 'Sacral',
       fn: 'The great **motor of life force, work and sexuality**: the generative source of the system. It defines Generators and Manifesting Generators, and it sets how they handle energy.',
-      defined: '**Defined**, it offers a **renewable** working energy, meant to be spent fully on the right things and emptied out healthily each day.',
+      defined: '**Defined**, it gives a **renewable** working energy — meant to be spent fully on the right things and run right down by the end of the day.',
       open: '**Undefined**, that constant energy simply is not there. What matters here is **knowing when enough is enough**, and not being carried along by other people\u2019s pace to the point of exhaustion.'
     },
     spleen: {
@@ -952,30 +952,30 @@ const overrides = {
 
     type: {
       generator: [
-        'You are the majority type, a *pure* Generator — around **37% of the population**. Your defining feature is the defined [Sacral center](center:sacral): the life-force engine of the system, generative and renewable in character. Your generating, building energy, when you are well aligned, is sustained and abundant.',
-        'You operate by responding: **you react to what life puts in front of you** instead of initiating from the mind and from reasoning. When you commit your energy to the right thing, *satisfaction* appears; if you don’t listen to yourself well and force your energy where it doesn’t belong, *frustration* appears.',
-        'In practice, your Sacral center responds before your mind does: faced with something concrete — a proposal, a question, a situation — a gut reaction of attraction or rejection arises. **Following that bodily signal**, rather than deciding from thought and reason, is what keeps your energy well spent.'
+        'You are the most common type — about **37% of the population** — and a *pure* Generator. What defines you is a defined [Sacral Center](center:sacral), the life-force engine of the whole system. When you are living your design, that building energy is steady, and there is plenty of it.',
+        'You work by **responding**. Life puts something in front of you and your body answers — the opposite of talking yourself into things from your head. Commit your energy where the answer was yes and you feel *satisfaction*. Force it where there was no answer and you get *frustration* instead.',
+        'In practice your Sacral answers before your mind catches up. Something concrete turns up — a proposal, a question, a situation — and there is a pull toward it, or away from it. **Trusting that pull**, rather than reasoning your way to a decision, is what keeps your energy well spent.'
       ],
       'manifesting-generator': [
-        'You are a specific kind of [Generator](type:generator) — Manifesting Generators are 33% of the population, and together with the other Generators you add up to close to 70%: you have a defined [Sacral](center:sacral), and what sets you apart from other Generators is that you also have the [Throat](center:throat) connected to a motor center. That gives you the generating energy typical of Generators plus the ability to manifest and make things happen quickly.',
-        'Your strategy is to **respond and then inform**: first you wait for the sacral response — your body’s yes or no — and, once you have it, you let those who will be affected know before setting off. You tend to be multi-talented, fast and non-linear: you skip steps, do several things at once, and sometimes double back to finish what you skipped.',
-        'The key to managing your energy is not to scatter yourself by initiating without having listened to your body’s response: when you commit to what genuinely lights you up (when your body says yes), you move fast and feel *satisfaction* and *peace*; but when you force things driven by the mind and by ideas, you accumulate *frustration*, *anger* and half-finished work.'
+        'You are a particular kind of [Generator](type:generator), and there are a lot of you: Manifesting Generators are **33% of the population**, and all the Generators together come to nearly 70%. Like any Generator, you have a defined [Sacral](center:sacral). What sets you apart is that your [Throat](center:throat) is wired to a motor — so you get to make things happen, and fast.',
+        'Your strategy has two steps: **respond, then inform**. First wait for the sacral answer, your body\u2019s yes or no. Then, before you set off, tell the people it will affect. You are usually many-sided, quick and non-linear: you skip steps, run several things at once, and double back later to finish what you skipped.',
+        'The thing to watch is **scattering**. Start something your body never agreed to and you pay for it. Go with a genuine yes and you move fast and land in *satisfaction*, with a certain calm around you. Push from the head instead and you collect *frustration*, some *anger*, and a pile of things left half-done.'
       ],
       projector: [
-        'Projectors are close to **20% of the population**. You don’t have a defined [Sacral](center:sacral), so **you are not designed for constant work** nor to sustain the same energy as a [Generator](type:generator); so be careful about trying to perform continuously and without rest. Your gift is a different one: seeing others with enormous depth and knowing how to guide and direct other people’s energy.',
-        'Your strategy is to **wait for the invitation** for the important things — work, love, where to live. You need to be invited for your wisdom and your effort to be well received; when you offer yourself or step in unasked, you will usually meet resistance and rejection. When *recognition* and *success* show up in your life, they are the clue that you are on the right track. The symptom that appears when you are not living in alignment is *bitterness*.',
-        'In managing your energy, your task is to **rest and pace yourself**: you don’t compete on physical stamina, but on depth and mastery. Your wellbeing rests on sleeping and letting go before you are exhausted, and on choosing carefully who you give your attention and effort to: learning to say yes or no when it matters (because not every invitation means you have to say yes).'
+        'Projectors are close to **20% of the population**. With no defined [Sacral](center:sacral), **you are not built for constant work**, and you cannot hold a [Generator](type:generator)\u2019s pace — trying to is the fastest way to burn yourself out. Your gift is a different one: you see other people with unusual depth, and you know how to guide and direct their energy.',
+        'Your strategy is to **wait for the invitation** on the things that matter — work, love, where you live. Your insight and your effort land when someone asked for them; offer them unasked and you tend to meet resistance instead. *Recognition* and *success* are the sign you are on track. *Bitterness* is the sign you are not.',
+        'Managing your energy means **resting and pacing yourself**. You do not compete on stamina, you compete on depth. Sleep and let go before you are empty, and be careful who gets your attention — learning to say no matters here, because not every invitation is yours to accept.'
       ],
       manifestor: [
-        'You are the most independent type, around **9% of the population**. You have at least one motor center (the Heart or the Solar Plexus) connected to the [Throat](center:throat), but an undefined [Sacral](center:sacral), so your energy is not constant: it comes in bursts, which you use to initiate and set things in motion, and then you need rest — quite a lot of rest.',
-        'Your strategy is to **inform before acting**. This is not about asking permission, but about letting those your impact will reach know: by doing so, you reduce the resistance and rejection you otherwise meet around you. Acting in line with your strategy brings you *peace*; if you don’t, you feel opposition and *anger* grows in you.',
-        'You are here to **initiate and make an impact**, not to execute in a sustained way. Managing your energy means respecting your cycles of push and rest, and protecting your autonomy without isolating yourself from those around you.'
+        'You are the most independent type, around **9% of the population**. At least one motor — the Heart or the Solar Plexus — is wired to your [Throat](center:throat), but your [Sacral](center:sacral) is undefined. So your energy is not constant: it arrives in bursts you use to start things, and then it needs rest. Often quite a lot of rest.',
+        'Your strategy is to **inform before you act**. Not asking permission — just telling the people your move is about to reach. It sounds like a small thing and it changes everything, because most of the resistance you meet is a reaction to being surprised. Inform, and you get *peace*. Skip it, and you get opposition, and *anger* builds.',
+        'You are here to **start things and make an impact**, not to grind them out. Managing your energy means respecting the rhythm of push and rest, and protecting your independence without shutting people out.'
       ],
       reflector: [
-        'You are the rarest type: Reflectors are barely **1% of the population**. You have no defined center at all: your whole bodygraph is open. That makes you an extraordinarily sensitive mirror of the people and places around you, able to sense the health of a community.',
-        'Because you constantly sample other people’s energy, **the environment and the company affect you enormously**: who you are with and where you are changes your experience profoundly. Your strategy is to **wait a lunar cycle** — about 28 days — before important decisions, letting the matter be seen from many angles before settling it.',
-        'Your greatest care in managing energy is choosing environments well and not identifying with what you are merely reflecting. When you live in alignment with your design, in the right place and with the right people, *surprise* and *delight* appear in you. If you don’t live in alignment, the symptom that shows up in you is *disappointment*.'
-      ]
+        'You are the rarest type — Reflectors are barely **1% of the population**. Not one of your centers is defined; your whole bodygraph is open. That makes you an extraordinarily sensitive mirror of the people and places around you, and it lets you feel the health of a community from the inside.',
+        'Because you are constantly sampling everyone else\u2019s energy, **where you are and who you are with matters enormously** — it changes your experience completely. So your strategy is to **wait a lunar cycle**, about 28 days, before anything important. Give the question time to be seen from every angle before you settle it.',
+        'The care you need most is in **choosing your environments**, and in not mistaking what you are reflecting for what is yours. In the right place, with the right people, life keeps bringing you *surprise* and delight. When *disappointment* is the main note, it is usually the place or the company — not you.'
+      ],
     },
     strategy: {
       respond: [
@@ -1079,15 +1079,15 @@ const overrides = {
     },
     center: {
       head: {
-        defined: 'One of your **defined** centers: you have a steady way of finding inspiration and of feeling the pressure to understand.',
+        defined: 'One of your **defined** centers: inspiration reaches you in a consistent way, and so does the pressure to make sense of things.',
         open: 'One of your **open** centers: you amplify other people\u2019s questions and mental restlessness. Try not to get dragged into solving doubts that were never yours and do not matter for your life.'
       },
       ajna: {
-        defined: 'One of your **defined** centers: you have a fixed, dependable way of thinking, with stable opinions and certainties.',
+        defined: 'One of your **defined** centers: you think in a fixed, dependable way, and your opinions and certainties hold still.',
         open: 'One of your **open** centers: your mind is flexible and can hold many perspectives at once. Your trap is the pressure to look certain, or clinging to a borrowed certainty; your gift is not needing a fixed answer at all.'
       },
       throat: {
-        defined: 'One of your **defined** centers: you have a consistent voice and a consistent way of expressing yourself.',
+        defined: 'One of your **defined** centers: your voice is consistent, and so is the way you express yourself.',
         open: 'One of your **open** centers: your way of speaking shifts with the company, and you can feel the pressure to talk just to be noticed. Your lesson is waiting for the right moment instead of forcing words out.'
       },
       g: {
@@ -1095,19 +1095,19 @@ const overrides = {
         open: 'One of your **open** centers: your identity is more fluid and shifting, and it finds its direction through the right places and the right people. **Place** is your key — being somewhere that fits orients everything else.'
       },
       heart: {
-        defined: 'One of your **defined** centers: you have a consistent will and the capacity to hold to what you promise.',
+        defined: 'One of your **defined** centers: your willpower is consistent, and you can hold to what you promise.',
         open: 'One of your **open** centers, as it is for most people: you have nothing to prove and no willpower to measure. Your trap is over-promising in order to prove it anyway. Here you learn that your worth does not depend on your achievements.'
       },
       sacral: {
-        defined: 'One of your **defined** centers: you have a renewable working energy, meant to be spent fully on the right things and emptied out healthily each day.',
+        defined: 'One of your **defined** centers: a renewable working energy, meant to be spent fully on the right things and run right down by bedtime.',
         open: 'One of your **open** centers: that constant energy simply is not there, so it matters that you know when enough is enough and do not let other people\u2019s pace carry you to exhaustion.'
       },
       spleen: {
-        defined: 'One of your **defined** centers: you have a constant intuition and a steady sense of health.',
+        defined: 'One of your **defined** centers: your intuition is always on, and so is your sense of what is good for you.',
         open: 'One of your **open** centers: you amplify other people\u2019s fears and tend to hold on to what is not good for you — relationships, habits, situations — out of fear of letting go. Your lesson is not deciding from fear, and learning what actually agrees with your body.'
       },
       solarPlexus: {
-        defined: 'One of your **defined** centers: you run your own emotional waves and need time before clarity arrives.',
+        defined: 'One of your **defined** centers: you have emotional waves of your own, and clarity only turns up once a wave has passed.',
         open: 'One of your **open** centers: you soak up and amplify the emotions in the room — you read the mood of a place instantly — and tend to avoid confrontation. Your challenge is not taking ownership of moods you picked up from outside.'
       },
       root: {
@@ -1121,7 +1121,7 @@ const overrides = {
   typeReport: {
     generator: {
       energia:
-        '**Managing your energy** — You have a defined [Sacral Center](center:sacral): a **renewable** working energy, built to be spent fully each day on the right things and emptied out healthily by bedtime. The point is not to conserve it — it is to **spend it on what your body actually responds to**. Then the tiredness feels good and the charge comes back tomorrow. Push through things that do not light you up and it drains you without ever satisfying you.',
+        '**Managing your energy** — You have a defined [Sacral Center](center:sacral): a **renewable** working energy, built to be spent fully each day on the right things and run right down by bedtime. The point is not to conserve it — it is to **spend it on what your body actually responds to**. Then the tiredness feels good and the charge comes back tomorrow. Push through things that do not light you up and it drains you without ever satisfying you.',
       trampa:
         '**The trap for your type** — What wears you down is **starting from your head** instead of waiting for something to respond to: saying yes out of obligation, out of logic, or out of fear of missing out. Get into something your energy never backed and frustration turns up — the classic Generator signal — along with the sense of being stuck in things that never quite land.',
       senales:
