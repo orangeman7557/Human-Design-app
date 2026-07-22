@@ -123,7 +123,7 @@
       // Signals and the cross have no stand-alone entry: both are composed from
       // the chart (the signal pair follows the type, the cross the Sun/Earth
       // gates), so the key is only the polarity / the angle.
-      : kind === 'signal' ? getSignalInfo(key, chart)
+      : kind === 'signal' ? getSignalInfo(key)
       : kind === 'cross' ? getCrossInfo(chart)
       : getElementInfo(kind, key);
   }
@@ -324,6 +324,14 @@
   function sameHover(a, b) {
     return !!a && !!b && a.kind === b.kind && a.center === b.center &&
       String(a.gates) === String(b.gates);
+  }
+
+  // The definition highlight, toggled explicitly by the eye next to the
+  // definition note. Hover covers this on desktop, but touch has no hover, so
+  // without it the definition's grouping is simply not viewable on a phone.
+  const definitionPinned = $derived(hover?.kind === 'definition');
+  function toggleDefinitionPin() {
+    hover = definitionPinned ? null : { kind: 'definition', gates: [] };
   }
 
   // While a channel/gate chip is hovered or pinned, every other chip dims
@@ -819,6 +827,20 @@
   </svg>
 {/snippet}
 
+<!-- Eye / eye-off for the definition highlight toggle, same 2px line style. -->
+{#snippet eyeIcon(on)}
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    {#if on}
+      <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7Z" />
+      <circle cx="12" cy="12" r="3" />
+    {:else}
+      <path d="M9.9 5.2A10.9 10.9 0 0 1 12 5c6.4 0 10 7 10 7a18.4 18.4 0 0 1-3.2 4.2M6.2 6.2A18.3 18.3 0 0 0 2 12s3.6 7 10 7a10.7 10.7 0 0 0 4.2-.85" />
+      <path d="M10.6 10.6a2 2 0 0 0 2.8 2.8" />
+      <line x1="3" y1="3" x2="21" y2="21" />
+    {/if}
+  </svg>
+{/snippet}
+
 {#snippet imgButtons()}
   <button
     class="img-btn"
@@ -1054,18 +1076,21 @@
                 {/if}
               </span>
             </span>
-            <span class="value sig" data-inner-key="signal:aligned" title={SIGNAL_LABELS.aligned}
-              ><span class="sig-i plus" aria-hidden="true">{@render polarityIcon(true)}</span
-              ><span class="sr-only">{SIGNAL_LABELS.aligned}: </span>{signalNames.aligned}{#if innerReveal === 'signal:aligned' || infoIsOpen('signal', 'aligned')}<span
+            <!-- Both values open the SAME drawer (the pair), keyed by type: a
+                 signal on its own says little — the point is which of the two
+                 is winning. -->
+            <span class="value sig" data-inner-key="signal:aligned"
+              ><span class="sig-i" data-tip={tr('chart.tipSignalAligned')}>{@render polarityIcon(true)}</span
+              ><span class="sr-only">{SIGNAL_LABELS.aligned}: </span>{signalNames.aligned}{#if innerReveal === 'signal:aligned' || infoIsOpen('signal', chart.type)}<span
                 class="dot-side"
-                data-info-cat="signal" data-info-kind="signal" data-info-key="aligned"
-              ><InfoDot active={infoIsOpen('signal', 'aligned')} label={tr('chart.moreSignalAligned')} /></span>{/if}</span>
-            <span class="value sig" data-inner-key="signal:misaligned" title={SIGNAL_LABELS.misaligned}
-              ><span class="sig-i minus" aria-hidden="true">{@render polarityIcon(false)}</span
-              ><span class="sr-only">{SIGNAL_LABELS.misaligned}: </span>{signalNames.misaligned}{#if innerReveal === 'signal:misaligned' || infoIsOpen('signal', 'misaligned')}<span
+                data-info-cat="signal" data-info-kind="signal" data-info-key={chart.type}
+              ><InfoDot active={infoIsOpen('signal', chart.type)} label={tr('chart.moreSignals')} /></span>{/if}</span>
+            <span class="value sig" data-inner-key="signal:misaligned"
+              ><span class="sig-i" data-tip={tr('chart.tipSignalMisaligned')}>{@render polarityIcon(false)}</span
+              ><span class="sr-only">{SIGNAL_LABELS.misaligned}: </span>{signalNames.misaligned}{#if innerReveal === 'signal:misaligned' || infoIsOpen('signal', chart.type)}<span
                 class="dot-side"
-                data-info-cat="signal" data-info-kind="signal" data-info-key="misaligned"
-              ><InfoDot active={infoIsOpen('signal', 'misaligned')} label={tr('chart.moreSignalMisaligned')} /></span>{/if}</span>
+                data-info-cat="signal" data-info-kind="signal" data-info-key={chart.type}
+              ><InfoDot active={infoIsOpen('signal', chart.type)} label={tr('chart.moreSignals')} /></span>{/if}</span>
           </div>
         {/if}
         <div
@@ -1183,15 +1208,29 @@
                says it — and clicking opens its drawer straight away (which is
                why every definition drawer now opens with the general framing
                the vanished concept "i" used to carry). -->
-          <button
-            class="def-note"
-            onmouseenter={() => setHover({ kind: 'definition', gates: [] })}
-            onmouseleave={() => setHover(null)}
-            onclick={(e) => { e.stopPropagation(); openInfoFor('definition', 'definition', chart.definition); }}
-            aria-label={tr('chart.moreDefinition')}
-          >
-            {DEFINITION_LABELS[chart.definition] ?? chart.definition}
-          </button>
+          <div class="def-row">
+            <button
+              class="def-note"
+              onmouseenter={() => setHover({ kind: 'definition', gates: [] })}
+              onmouseleave={() => setHover(null)}
+              onclick={(e) => { e.stopPropagation(); openInfoFor('definition', 'definition', chart.definition); }}
+              aria-label={tr('chart.moreDefinition')}
+            >
+              {DEFINITION_LABELS[chart.definition] ?? chart.definition}
+            </button>
+            <!-- Touch has no hover, so the definition's grouping could not be
+                 seen on the graph at all: this pins/unpins the same highlight
+                 the desktop hover gives. -->
+            <button
+              class="def-eye"
+              onclick={(e) => { e.stopPropagation(); toggleDefinitionPin(); }}
+              aria-pressed={definitionPinned}
+              aria-label={definitionPinned ? tr('chart.hideDefinition') : tr('chart.showDefinition')}
+              data-tip={definitionPinned ? tr('chart.hideDefinition') : tr('chart.showDefinition')}
+            >
+              {@render eyeIcon(definitionPinned)}
+            </button>
+          </div>
         </div>
       </div>
 
@@ -1744,12 +1783,13 @@
     border-color: var(--accent);
     color: #1a1408;
     font-weight: 600;
-    font-size: 0.85rem;
-    padding: 0.3rem 0.75rem;
+    /* Sized so the longest label ("Generador Manifestante") still fits on ONE
+       line: in the 192px desktop column it used to wrap, and on mobile it
+       pushed the chips onto a third row. Still clearly the marked chip. */
+    font-size: 0.78rem;
+    padding: 0.24rem 0.62rem;
     opacity: 1;
-    /* Long labels (Manifesting Generator) overflow the narrow desktop
-       type card if kept on one line. */
-    white-space: normal;
+    white-space: nowrap;
   }
   /* Forces the G+MG / P+M+R two-row split on mobile; inert on desktop. */
   .row-break {
@@ -1821,19 +1861,39 @@
     align-items: center;
     gap: 0.35rem;
   }
+  /* Both polarities stay grey: neither is a verdict, and colouring one gold
+     would read as "the good one" against what the drawer text says. */
   .sig-i {
     display: inline-flex;
     flex: none;
     color: var(--text-muted);
+    cursor: help;
   }
-  .sig-i.plus {
-    color: var(--accent);
-  }
-  /* Definition as the closing note of the Centres card: small, muted, pinned to
-     the bottom-right so it reads as a caption on the list rather than a field. */
-  .def-note {
+  /* Definition as a note on the Centres card: small and muted so it reads as a
+     caption on the list rather than a field of its own. Desktop keeps it at the
+     bottom; mobile moves it into the card's empty top-right corner (see the
+     media query), where it costs no height at all. */
+  .def-row {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
     align-self: flex-end;
     margin-top: 0.35rem;
+  }
+  .def-eye {
+    display: inline-flex;
+    background: none;
+    border: 0;
+    padding: 0;
+    color: var(--text-muted);
+    cursor: pointer;
+  }
+  .def-eye:hover,
+  .def-eye:focus-visible,
+  .def-eye[aria-pressed='true'] {
+    color: var(--accent);
+  }
+  .def-note {
     background: none;
     border: 0;
     padding: 0;
@@ -2158,6 +2218,17 @@
       margin-top: 0.5rem;
       order: 3;
     }
+    /* The centres wrap into rows here, leaving the card's top-right corner
+       empty — the note rides it instead of adding a line at the bottom. */
+    .overlay.right .card {
+      position: relative;
+    }
+    .def-row {
+      position: absolute;
+      top: 0.45rem;
+      right: 0.6rem;
+      margin-top: 0;
+    }
     .center-list {
       flex-direction: row;
       flex-wrap: wrap;
@@ -2170,7 +2241,7 @@
       flex-direction: row;
       flex-wrap: nowrap;
       align-items: flex-start;
-      column-gap: 0.75rem;
+      column-gap: 0.55rem;
     }
     .type-card > .label {
       flex: none;
@@ -2295,6 +2366,10 @@
     margin: 0;
     justify-content: center;
     transform: translateX(46px);
+  }
+  main.pdf-shot .def-row {
+    position: static;
+    margin-top: 0.35rem;
   }
   main.pdf-shot .type-card {
     flex-direction: column;

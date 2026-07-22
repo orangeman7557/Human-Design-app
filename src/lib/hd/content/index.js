@@ -79,7 +79,16 @@ export function getElementInfo(kind, key, lang = getLocale()) {
   if (kind === 'definition') {
     const D = pack(lang).drawer;
     const rel = relatedIndex(kind, key, lang);
-    const withIntro = { ...entry, paragraphs: [D.definitionIntro, ...entry.paragraphs] };
+    // General framing first, then this definition named in bold at the head of
+    // its own text (the same shape getProfileInfo uses for its two lines).
+    const withIntro = {
+      ...entry,
+      paragraphs: [
+        D.definitionIntro,
+        `**${entry.title}.** ${entry.paragraphs[0]}`,
+        ...entry.paragraphs.slice(1)
+      ]
+    };
     return rel ? { ...withIntro, related: rel } : withIntro;
   }
   const rel = relatedIndex(kind, key, lang);
@@ -169,6 +178,11 @@ export function getConceptInfo(key, chart = null, lang = getLocale()) {
       }))
     };
   }
+  if (key === 'signal') {
+    // Same table as the pair drawers, so the concept "i" is also the index of
+    // every pair (this chart's type highlighted when there is one).
+    return { ...base, related: signalIndex(chart?.type, lang) };
+  }
   if (key === 'center') {
     // The nine centres as chips carrying the chart's defined/open state.
     const labels = p.promptLabels.center;
@@ -219,52 +233,44 @@ export function getProfileInfo(profile, lang = getLocale()) {
 }
 
 /**
- * A signal (the alignment / misalignment pair) has no entry of its own: like a
- * profile, it is composed on the fly — here from the *chart's type*, since the
- * pair a person gets is a property of their type. Returns the panel's usual
- * `{ title, paragraphs }`, or null without a chart (there is no generic signal).
- * @param {'aligned'|'misaligned'} polarity
- * @param {any} chart
+ * The signals of a type, as ONE drawer for the PAIR — never one polarity alone,
+ * because what the pair is for is telling you which of the two is winning. Like
+ * a profile, it is composed on the fly rather than written out: the two bodies
+ * already name themselves in bold, so they just run one after the other.
+ *
+ * The key is the TYPE (Generator and MG share the same two words, so the title
+ * carries the type to tell those two pairs apart).
+ * @param {string} type
  * @param {string} [lang]
  */
-export function getSignalInfo(polarity, chart, lang = getLocale()) {
+export function getSignalInfo(type, lang = getLocale()) {
   const p = pack(lang);
-  const entry = p.signal?.[chart?.type]?.[polarity];
-  if (!entry) return null;
-  const other = polarity === 'aligned' ? 'misaligned' : 'aligned';
-  const otherEntry = p.signal[chart.type][other];
+  const pair = p.signal?.[type];
+  if (!pair) return null;
   const D = p.drawer;
-  const title = fillTpl(
-    polarity === 'aligned' ? D.signalAlignedTitle : D.signalMisalignedTitle,
-    { name: entry.name }
-  );
   return {
-    title,
-    paragraphs: entry.text,
-    // Closed set, like the other value drawers: the five types with their own
-    // pair, this chart's type highlighted. The chips navigate to the type.
-    related: signalIndex(chart.type, lang),
-    after: [
-      fillTpl(D.signalPair, {
-        type: p.promptLabels.type?.[chart.type] ?? chart.type,
-        other: other === 'aligned' ? D.signalOtherAligned : D.signalOtherMisaligned,
-        otherKey: other,
-        otherName: otherEntry?.name ?? ''
-      }),
-      D.signalCanonical
-    ]
+    title: fillTpl(D.signalTitle, {
+      aligned: pair.aligned.name,
+      misaligned: pair.misaligned.name,
+      type: p.labels.typeShort?.[type] ?? p.labels.type?.[type] ?? type
+    }),
+    paragraphs: [...pair.aligned.text, ...pair.misaligned.text],
+    // Closed set, like the other value drawers: every pair, with the type it
+    // belongs to as the note. The chips navigate to the other pairs.
+    related: signalIndex(type, lang),
+    after: [D.signalPairNote, D.signalCanonical]
   };
 }
 
-/** The five types with their signal pair as the note ({ heading, items }). */
+/** Every signal pair as the clickable column, its type as the note. */
 function signalIndex(currentType, lang = getLocale()) {
   const p = pack(lang);
   const labels = p.labels.type;
   const items = Object.entries(p.signal).map(([type, pair]) => ({
-    kind: 'type',
+    kind: 'signal',
     key: type,
-    label: labels[type] ?? type,
-    note: `${pair.aligned.name} / ${pair.misaligned.name}`,
+    label: `${pair.aligned.name} / ${pair.misaligned.name}`,
+    note: labels[type] ?? type,
     pct: null,
     current: type === currentType
   }));

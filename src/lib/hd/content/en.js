@@ -83,6 +83,13 @@ const overrides = {
       neptune: 'Neptune',
       pluto: 'Pluto'
     },
+    typeShort: {
+      generator: 'Generator',
+      'manifesting-generator': 'MG',
+      projector: 'Projector',
+      manifestor: 'Manifestor',
+      reflector: 'Reflector'
+    },
     signal: {
       aligned: 'Alignment',
       misaligned: 'Misalignment'
@@ -193,10 +200,8 @@ const overrides = {
       noDefinition: 'what it means to have no definition (a chart with no definition)',
       center: 'the "{name}" center',
       planet: 'what {name} represents',
-      signalAligned:
-        'the alignment signal of the {type} type ("{name}"), what Human Design calls its signature',
-      signalMisaligned:
-        'the misalignment signal of the {type} type ("{name}"), what Human Design calls its not-self theme',
+      signal:
+        'the two signals of the {type} type — "{aligned}" as the alignment signal (the signature) and "{misaligned}" as the misalignment signal (the not-self theme) — and how to tell them apart day to day',
       cross: 'the {name} formed by gates {gates}'
     },
     planetChart:
@@ -267,14 +272,11 @@ const overrides = {
     profileTitle: 'Profile {profile}',
     profileIntro:
       'Profile {profile} combines two lines: the {a}, conscious, and the {b}, unconscious. Each adds its own nuance, and together they describe a way of learning, of relating and of unfolding one’s purpose.',
-    signalAlignedTitle: 'Alignment: {name}',
-    signalMisalignedTitle: 'Misalignment: {name}',
-    signalPair:
-      'This is the {type} type’s signal. Its opposite is the [{other} signal](signal:{otherKey}), "{otherName}". Read them as a pair — what matters is not either one on its own but **which of the two is winning**.',
+    signalTitle: '{aligned}/{misaligned} ({type})',
+    signalPairNote:
+      'The two are read together: what matters is never one of them on its own, but **which of the two is winning** at the moment.',
     signalCanonical:
-      'Human Design calls these the *signature* (alignment) and the *not-self theme* (misalignment).',
-    signalOtherAligned: 'alignment',
-    signalOtherMisaligned: 'misalignment',
+      'Human Design calls the alignment signal your *signature*, and the misalignment one your *not-self theme*.',
     signalIndexHeading: 'The Signals of the Five Types',
     definitionIntro:
       '**Definition** describes how a chart’s defined centers group together: whether they form one single block of energy or several separate ones. It speaks to inner consistency — which parts are always "on" and linked — and to how that energy integrates.',

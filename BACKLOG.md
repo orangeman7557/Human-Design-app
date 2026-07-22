@@ -748,6 +748,18 @@ corrected).
   What remains is only the author's own read-through; there is no known block
   still translated literally.
 
+- ⬜ **Bug glyph at the foot of every explanatory text (author, 2026-07-22).**
+  Put the "report a bug" bug icon — **icon only, no label, very discreet, bottom
+  right** — at the end of the explanatory bodies (element drawers, and probably
+  the initial report's sections), so whoever wants to send feedback *about a
+  text* finds a route without hunting for the footer link. Findable on purpose,
+  not advertised: the point is that someone already looking for it succeeds.
+  Notes for when it's picked up: `ReportBug.svelte` is already a modal opened
+  from the footer on both routes, so this is a second trigger for the same
+  component, not new machinery — but it will need to sit *above* the drawer in
+  the stack, and it would be worth passing which text the reader was on (element
+  kind + key) as context so the report says what it is about.
+
 - ⬜ **PDF report on a white background instead of dark mode (requested
   2026-07-06).** The initial-report PDF (`report-pdf.js`) currently mirrors the
   app's dark theme (dark page + light text, and a dark cover image). Consider a

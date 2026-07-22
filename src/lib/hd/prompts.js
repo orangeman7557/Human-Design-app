@@ -165,16 +165,21 @@ export function buildPrompts(kind, key, chart, lang = getLocale()) {
     };
   }
 
-  // A signal is a property of the type, so it has no abstract "general" angle
-  // detached from a chart: both angles name the type's own pair.
+  // Signals come as a PAIR, and the pair belongs to a type — so `key` is the
+  // type, and a pair reached from the index that isn't this chart's type gets
+  // the general angle only.
   if (kind === 'signal') {
-    const names = getSignalNames(chart?.type, lang);
+    const names = getSignalNames(key, lang);
     if (!names) return { general: '', chart: null };
-    const subject = fillTpl(key === 'aligned' ? S.signalAligned : S.signalMisaligned, {
-      type: L.type?.[chart.type] ?? chart.type,
-      name: key === 'aligned' ? names.aligned : names.misaligned
+    const subject = fillTpl(S.signal, {
+      type: L.type?.[key] ?? key,
+      aligned: names.aligned,
+      misaligned: names.misaligned
     });
-    return { general: ask(T, subject), chart: askChart(T, L, chart, subject) };
+    return {
+      general: ask(T, subject),
+      chart: key === chart?.type ? askChart(T, L, chart, subject) : null
+    };
   }
 
   if (kind === 'cross') {

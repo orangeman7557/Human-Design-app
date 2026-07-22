@@ -172,14 +172,17 @@ export default {
     whatDesign: 'Qué es Diseño',
     whatWeight: 'Qué es el peso',
     whatSignals: 'Qué son las señales',
+    showDefinition: 'Ver la definición en el bodygraph',
+    hideDefinition: 'Ocultar la definición en el bodygraph',
     whatCross: 'Qué es la cruz de encarnación',
     // Info-dot value labels ("more about this X")
     moreStrategy: 'Más información sobre esta estrategia',
     moreAuthority: 'Más información sobre esta autoridad',
     moreProfile: 'Más información sobre este perfil',
     moreDefinition: 'Más información sobre esta definición',
-    moreSignalAligned: 'Más información sobre esta señal de alineamiento',
-    moreSignalMisaligned: 'Más información sobre esta señal de desalineamiento',
+    moreSignals: 'Más información sobre estas señales',
+    tipSignalAligned: 'Señal de alineamiento',
+    tipSignalMisaligned: 'Señal de desalineamiento',
     moreCross: 'Más información sobre esta cruz de encarnación',
     // Split around the info-dot glyph, which is rendered as the icon itself.
     infoHintA: 'Toca cualquier elemento de la carta y pulsa en ',
@@ -351,8 +354,8 @@ export default {
     gate: 'Puerta',
     activationCol: 'Activaciones',
     planet: 'Planeta',
-    signal: 'Señal',
-    signals: 'Señales de alineamiento',
+    signal: 'Señales de alineamiento/desalineamiento',
+    signals: 'Señales',
     cross: 'Cruz de encarnación'
   },
 
