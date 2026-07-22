@@ -130,6 +130,93 @@ export default {
     }
   },
 
+  // ── Per-cross interpretation, keyed by the cross's NAME without its angle
+  // prefix. Crosses that share a name share the same four gates (rotated), so
+  // 16 right-angle texts cover all 64 right-angle crosses. Missing entries fall
+  // back to the reading composed from the gate themes (see content/index.js).
+  crossEssence: {
+    'of the Sphinx': [
+      'La esfinge es la figura que **guarda el camino y plantea el enigma**: no se mueve, pero orienta a quien pasa. Ese es el fondo de esta cruz, construida sobre la [puerta 1](gate:1) y la [puerta 2](gate:2) —la expresión de lo propio y la dirección— sostenidas por el [7](gate:7) y el [13](gate:13), el papel que se ocupa ante los demás y la capacidad de escuchar lo que traen.',
+      'En la práctica se traduce en algo muy concreto: **estas personas dan dirección**. No tanto diciendo a otros lo que tienen que hacer como **siendo ellas mismas de una forma tan definida que el resto se orienta al verlas**. La dirección no se busca fuera; sale de dentro y luego se reconoce.',
+      'El riesgo es querer dirigir a propósito, empujando. La esfinge no persigue a nadie: espera a que lleguen. Cuando la expresión propia es honesta y no se fuerza el papel, la orientación aparece sola.'
+    ],
+    'of Laws': [
+      'Esta cruz mira **cómo se ordenan las cosas para que duren**. La [puerta 3](gate:3) trae el arranque difícil de todo lo nuevo y la [50](gate:50), los valores que sostienen a un grupo; debajo, el [60](gate:60) pone el límite y el [56](gate:56), el estímulo que empuja a salir de él.',
+      'De ahí el nombre: lo que aquí se llama «ley» no es una norma impuesta, sino **el orden que hace que algo funcione y se pueda repetir**. Estas personas suelen tener buen olfato para lo que sostiene un proyecto, una familia o una comunidad — y para lo que la va a romper.',
+      'La tensión propia está entre el límite y el impulso: **ordenar sin agarrotar**. Cuando se resuelve bien, lo que se construye se aguanta solo; cuando se resuelve mal, aparecen reglas por las reglas.'
+    ],
+    'of Explanation': [
+      'Aquí lo central es **hacer comprensible lo que aún no lo es**. La [puerta 4](gate:4) es la respuesta que se ofrece a una duda y la [49](gate:49), el principio por el que algo se acepta o se rompe; el [23](gate:23) y el [43](gate:43) aportan la intuición singular y la capacidad de decirla en palabras que los demás puedan recibir.',
+      'Por eso se llama de la explicación: no es tener razón, es **traducir**. Una idea que dentro se ve clarísima y fuera no se entiende, hasta que se encuentra la forma. Ese trabajo de encontrar la forma es el tema de vida.',
+      'El desgaste típico llega al explicar antes de tiempo o a quien no ha preguntado — ahí la explicación suena a rareza. Con el momento adecuado, la misma frase abre una puerta.'
+    ],
+    'of Consciousness': [
+      'Esta cruz trabaja con **el darse cuenta**. La [puerta 5](gate:5) marca el ritmo y la constancia, y la [35](gate:35), el apetito de experiencia nueva; por debajo, el [64](gate:64) llena la cabeza de imágenes sin ordenar y el [63](gate:63) las somete a duda.',
+      'La combinación describe a alguien que **convierte lo vivido en comprensión**: acumula experiencias, las deja reposar en el ritmo propio y, con tiempo, saca de ahí una claridad que otros no ven. La consciencia no se piensa, se destila.',
+      'La trampa es querer entenderlo todo ya, o romper el propio ritmo persiguiendo experiencias. La claridad llega tarde y llega sola; forzarla la enturbia.'
+    ],
+    'of Eden': [
+      'El Edén es el paraíso **del que hay que salir**. Esa es la imagen exacta de esta cruz: la [puerta 36](gate:36) trae la crisis y lo aún no vivido, y la [6](gate:6), la fricción y la intimidad; debajo, el [11](gate:11) aporta las ideas y el [12](gate:12), la prudencia al expresarlas.',
+      'Habla de una vida que **se hace a base de meterse en la experiencia**, incluida la que duele. No es una cruz de retiro contemplativo: lo suyo es el contacto, el roce con otros, la crisis que enseña algo que no se aprendía de otro modo.',
+      'La clave práctica está en el ritmo. La [puerta 6](gate:6) abre y cierra, así que **no todo momento es momento**: entrar cuando toca evita convertir la experiencia en desgaste, y la prudencia del [12](gate:12) es aliada, no freno.'
+    ],
+    'of Contagion': [
+      'Contagio aquí no es enfermedad, es **lo que se transmite sin proponérselo**. La [puerta 8](gate:8) aporta lo que uno tiene para contribuir y la [14](gate:14), los recursos para hacerlo; el [30](gate:30) pone el deseo ardiente y el [29](gate:29), la capacidad de comprometerse a fondo.',
+      'De ahí una vida marcada por **el ejemplo**: estas personas mueven a otros por cómo se entregan a lo suyo, no por lo que predican. Cuando algo les prende de verdad, el entusiasmo se pega.',
+      'El cuidado está en a qué se dice que sí. El [29](gate:29) se compromete con facilidad y el [30](gate:30) desea intensamente: **un sí dado en caliente puede costar años**. Elegir bien es aquí media vida.'
+    ],
+    'of Planning': [
+      'Esta cruz organiza **para que la comunidad funcione**. La [puerta 9](gate:9) da el foco en el detalle y la [16](gate:16), el entusiasmo y la destreza; debajo, el [40](gate:40) aporta la voluntad de trabajar (y de retirarse a descansar) y el [37](gate:37), los acuerdos que mantienen unido al grupo.',
+      'Lo que la define es la mirada larga: **ver los pasos que llevan de aquí a allí** y repartirlos. No es control, es estructura al servicio de algo compartido — el plan que hace posible que un grupo llegue a algún sitio.',
+      'El punto delicado es el trato: el [40](gate:40) y el [37](gate:37) forman el canal de los pactos. **Un acuerdo aceptado sin ganas se cobra caro**, y el descanso no es opcional; sin él, la planificación se vuelve carga.'
+    ],
+    'of the Vessel of Love': [
+      'Un receptáculo es **lo que contiene y sostiene**. Esta cruz reúne las cuatro puertas del amor: el [10](gate:10), amarse y comportarse como uno es; el [15](gate:15), el amor a la humanidad en toda su variedad; el [46](gate:46), el amor al cuerpo y a estar aquí; y el [25](gate:25), el amor universal e inocente.',
+      'No habla de romanticismo, sino de **una forma de estar en el mundo que abre espacio**. Estas personas suelen ser el sitio donde otros se sienten aceptados sin tener que justificarse — y eso ocurre por lo que son, no por lo que hacen.',
+      'La condición es que el amor empiece por dentro. Un receptáculo vacío no sostiene a nadie: **la [puerta 10](gate:10) exige ser fiel a uno mismo primero**, y de ahí sale lo demás.'
+    ],
+    'of Service': [
+      'Esta cruz está hecha para **mejorar lo que hay**. La [puerta 17](gate:17) aporta la opinión y la [18](gate:18), el ojo para lo que falla; debajo, el [58](gate:58) trae la vitalidad y el gusto por vivir, y el [52](gate:52), la quietud para mirar sin moverse.',
+      'Servir aquí significa **corregir con criterio**: ver el fallo, sí, pero al servicio de que la cosa funcione mejor para todos. Bien vivido, es una de las energías más útiles que existen; el grupo entero se beneficia.',
+      'El filo es evidente: la misma puerta que perfecciona puede volverse crítica sin freno, sobre todo hacia dentro. **El [58](gate:58) recuerda para qué era todo esto** — la alegría. Si corregir deja de dar alegría, algo se ha torcido.'
+    ],
+    'of the Four Ways': [
+      'La [puerta 19](gate:19) pide y se acerca, la [33](gate:33) se retira a digerir lo vivido, la [44](gate:44) reconoce patrones del pasado y la [24](gate:24) vuelve una y otra vez sobre la misma idea. Cuatro movimientos distintos: de ahí el nombre.',
+      'Describe una vida que **avanza alternando**: acercarse y retirarse, entrar en el grupo y salir a procesarlo. No es incoherencia, es el método — se necesita el repliegue para que el acercamiento tenga algo que aportar.',
+      'El error habitual es querer elegir un solo modo, normalmente el social, y sostenerlo. **Los cuatro caminos son cuatro, no uno**: negarse el retiro vacía el resto.'
+    ],
+    'of the Sleeping Phoenix': [
+      'El fénix arde y renace; aquí está **dormido**, esperando el momento. La [puerta 20](gate:20) vive en el presente y la [34](gate:34) es pura potencia; debajo, el [55](gate:55) trae el espíritu y sus vaivenes de ánimo, y el [59](gate:59), la capacidad de romper barreras e intimar.',
+      'Es una cruz de **fuerza contenida**: una energía enorme que no se gasta continuamente sino que espera y, cuando llega el momento, se despliega entera. Confundirla con lentitud es un error de lectura.',
+      'La clave está en el estado de ánimo. El [55](gate:55) sube y baja, y **la vida cambia de color con él**; el trabajo no es corregirlo sino no decidir desde el punto bajo ni prometer desde el alto.'
+    ],
+    'of Tension': [
+      'La [puerta 21](gate:21) quiere control sobre lo propio, la [48](gate:48) busca profundidad y teme no tenerla, la [38](gate:38) pelea por lo que merece la pena y la [39](gate:39) provoca para sacar lo que hay debajo. Cuatro energías en tensión — y esa tensión es el motivo.',
+      'Suena incómodo y es lo contrario de un defecto: **es lo que empuja a mejorar**. Estas personas suelen tener una insatisfacción de fondo que las lleva a profundizar, a plantar cara y a no conformarse con lo superficial.',
+      'El cuidado es dónde se descarga. Peleada contra la propia vida, la tensión agota; puesta al servicio de algo que valga la pena, **es una de las fuerzas más productivas de la carta**.'
+    ],
+    'of Rulership': [
+      'La [puerta 22](gate:22) abre con gracia, la [47](gate:47) trata de dar sentido a lo confuso, la [26](gate:26) sabe contar lo que tiene valor y la [45](gate:45) reúne y administra lo de todos. El gobierno del que habla la cruz **es esto: administrar lo común**.',
+      'No es mandar. Es **la autoridad que aparece cuando alguien reúne, ordena y reparte bien** — y la gracia social del [22](gate:22) es la que hace que se acepte de buen grado.',
+      'El punto sensible está en el [26](gate:26), la puerta del embaucador: sabe presentar, y por eso puede exagerar. **La diferencia entre gobernar y manipular pasa por ahí**, y se juega en cada pequeña decisión.'
+    ],
+    'of the Unexpected': [
+      'La [puerta 27](gate:27) cuida y alimenta, la [28](gate:28) se juega la vida buscándole sentido, la [41](gate:41) enciende la fantasía que arranca todo ciclo y la [31](gate:31) lleva la voz que otros siguen. Cuatro puertas que no encajan del todo: de ahí lo inesperado.',
+      'Es una cruz de **giros**. La vida no sigue la línea prevista; llega por caminos que nadie había planeado, y en esos giros está lo bueno — la [28](gate:28) es la puerta que encuentra sentido justo donde parecía que no había.',
+      'Vivida a la defensiva se siente como inestabilidad. Aceptada, se convierte en **una vida rica en experiencia y en capacidad de cuidar a otros** precisamente por lo vivido.'
+    ],
+    'of Maya': [
+      'Maya es el nombre del **velo**: el mundo material tal y como se nos aparece, tan sólido y tan resbaladizo a la vez. La [puerta 32](gate:32) mide lo que va a durar y la [42](gate:42) cierra los ciclos; debajo, el [62](gate:62) ordena el detalle y el [61](gate:61) empuja hacia el misterio de fondo.',
+      'La cruz describe a quien **se mueve dentro de la ilusión sin creérsela del todo**: buen ojo para lo práctico —lo que dura, lo que se termina, los nombres y los datos— y a la vez una pregunta que ningún dato responde.',
+      'Ese doble filo es el tema. Quedarse solo en el detalle deja una vida seca; quedarse solo en el misterio, una vida sin suelo. **Maya se atraviesa usando las dos manos.**'
+    ],
+    'of Penetration': [
+      'Penetrar es **atravesar la superficie**. La [puerta 51](gate:51) es el shock que despierta, la [57](gate:57) la intuición que oye lo que no se dice, la [54](gate:54) la ambición que empuja hacia arriba y la [53](gate:53) el impulso de empezar.',
+      'Es una cruz de **iniciación**: el sobresalto que rompe la rutina de alguien y le hace ver algo que no veía. A menudo estas personas producen ese efecto sin pretenderlo, solo por cómo entran en una situación.',
+      'Lo delicado es que el shock se recibe mal si llega por sorpresa. **La intuición del [57](gate:57) sabe cuándo y a quién**; escucharla convierte el golpe en despertar, ignorarla lo convierte en choque.'
+    ]
+  },
+
   // ── Incarnation-cross names (192 = 64 Sun gates x 3 angles), keyed
   // "<personality Sun gate>|<angle>". These are the standard Human Design cross
   // names, not our own coinage: names and short titles are not copyrightable,
@@ -1706,7 +1793,7 @@ export default {
     bodySun: 'sol',
     bodyEarth: 'tierra',
     crossReading:
-      'En esta cruz concreta, el eje consciente cruza «{tpSun}» ([puerta {pSun}](gate:{pSun})) con «{tpEarth}» ([puerta {pEarth}](gate:{pEarth})): es el tema que la persona reconoce como suyo y el que va empujando a lo largo de la vida. Debajo, el eje inconsciente aporta «{tdSun}» ([puerta {dSun}](gate:{dSun})) sostenido por «{tdEarth}» ([puerta {dEarth}](gate:{dEarth})) — el suelo desde el que se hace todo eso, casi siempre más visible para los demás que para uno mismo. **La cruz es lo que resulta de leer los cuatro juntos**, no cada puerta por separado.',
+      'En esta cruz concreta, el eje consciente cruza «{tpSun}» ([puerta {pSun}](gate:{pSun})) con «{tpEarth}» ([puerta {pEarth}](gate:{pEarth})): es el tema que la persona reconoce como suyo y el que va empujando a lo largo de la vida. Debajo, el eje inconsciente aporta «{tdSun}» ([puerta {dSun}](gate:{dSun})) sostenido por «{tdEarth}» ([puerta {dEarth}](gate:{dEarth})) — el suelo desde el que se hace todo eso, casi siempre más visible para los demás que para uno mismo.',
     crossFourGates:
       'Lo que da a cada cruz su carácter propio son sus **cuatro puertas**: el Sol y la Tierra de Personalidad —lo consciente, lo que uno reconoce como suyo— y el Sol y la Tierra de Diseño —lo inconsciente, el suelo desde el que actúa—. Son las activaciones de más peso de la carta, y **hay que leerlas juntas**: el sentido está en la combinación, no en cada puerta por separado.',
     crossGatesJoin: ' | '

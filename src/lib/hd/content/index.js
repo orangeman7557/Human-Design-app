@@ -295,6 +295,23 @@ export function getCrossName(cross, lang = getLocale()) {
 }
 
 /**
+ * The hand-written interpretation of a cross, or null. Keyed by the cross's name
+ * WITHOUT its angle prefix, because crosses that share a name share the same
+ * four gates (rotated): 16 right-angle texts cover all 64 right-angle crosses.
+ * The prefix is stripped using the pack's own angle labels, so this works in any
+ * language without a separate key map.
+ */
+export function getCrossEssence(cross, lang = getLocale()) {
+  // The KEY is language-neutral (the English bare name), so every pack keys the
+  // same entries and en.js's deep merge overrides them cleanly instead of
+  // leaving the Spanish ones alongside.
+  const full = en.crossName?.[`${cross?.gates?.[0]}|${cross?.angle}`];
+  const prefix = en.labels?.cross?.[cross?.angle];
+  if (!full || !prefix || !full.startsWith(prefix)) return null;
+  return pack(lang).crossEssence?.[full.slice(prefix.length).trim()] ?? null;
+}
+
+/**
  * The incarnation cross: its canonical name, what its angle means, and the four
  * Sun/Earth gates with their themes — the meaning is composed from those gates
  * rather than hand-written 192 times, the same approach channels use.
@@ -318,7 +335,7 @@ export function getCrossInfo(chart, lang = getLocale()) {
   });
   // Reading order: what the ANGLE means (briefly) → why the four gates are read
   // together → the schema itself → the interpretation of THIS cross → handoff.
-  const essence = pack(lang).crossEssence?.[`${cross.gates[0]}|${cross.angle}`];
+  const essence = getCrossEssence(cross, lang);
   return {
     title: fillTpl(D.crossTitle, { name: getCrossName(cross, lang) ?? entry.name }),
     paragraphs: [entry.text, D.crossFourGates],
