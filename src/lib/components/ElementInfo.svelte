@@ -281,6 +281,7 @@
               <span class="fact-rows" class:inline={f.inline}>
                 {#each f.rows as r}
                   <span class="fact-row">
+                    {#if r.pre}<span class="fact-pre">{r.pre}</span>{/if}
                     <button class="index-chip gold" type="button" onclick={() => onnavigate?.(r.chip.kind, r.chip.key)}>{r.chip.label}</button>
                     {#if r.note}<span class="fact-note">{r.note}</span>{/if}
                   </span>
@@ -688,6 +689,14 @@
     align-items: center;
     gap: 0.4rem;
   }
+  /* Row prefix ("sol" / "tierra" on the cross): fixed width so the chips of
+     both rows line up under each other. */
+  .fact-pre {
+    flex: none;
+    min-width: 3.1rem;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
   .fact-row {
     display: inline-flex;
     align-items: center;
@@ -761,6 +770,11 @@
 
   /* Closed-set schema table at the end of a value/concept drawer. Borderless;
      chip · phrase · optional %. */
+  .index-chip:hover,
+  .index-chip:focus-visible {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+  }
   .related {
     margin-top: 1.1rem;
     padding-top: 0.9rem;

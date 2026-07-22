@@ -176,9 +176,10 @@ export function getConceptInfo(key, chart = null, lang = getLocale()) {
     };
   }
   if (key === 'signal') {
-    // Same table as the pair drawers, so the concept "i" is also the index of
-    // every pair (this chart's type highlighted when there is one).
-    return { ...base, related: signalIndex(chart?.type, lang) };
+    // Same table as the pair drawers, but with NO current row: this is the
+    // general drawer, and highlighting the chart's type made it look like the
+    // pair drawer was open.
+    return { ...base, related: signalIndex(null, lang) };
   }
   if (key === 'center') {
     // The nine centres as chips carrying the chart's defined/open state.
@@ -307,22 +308,43 @@ export function getCrossInfo(chart, lang = getLocale()) {
   if (!entry) return null;
   const D = p.drawer;
   const [pSun, pEarth, dSun, dEarth] = cross.gates;
-  const gateRow = (g) => ({
+  // Schematic: one block per side, one row per body, so the four gates read as
+  // the two axes they are rather than as a flat list.
+  const gateRow = (pre, g) => ({
+    pre,
     chip: { label: String(g), kind: 'gate', key: String(g) },
     note: gateTheme(g, lang) ?? null
   });
   return {
-    title: fillTpl(D.crossTitle, {
-      name: getCrossName(cross, lang) ?? entry.name,
-      gates: formatCrossGates(cross, lang)
-    }),
-    paragraphs: [entry.text],
+    title: fillTpl(D.crossTitle, { name: getCrossName(cross, lang) ?? entry.name }),
+    // The angle's meaning, then THIS cross read from its own four gates.
+    paragraphs: [entry.text, crossReading(cross, lang)].filter(Boolean),
     facts: [
-      { label: D.factCrossPersonality, rows: [gateRow(pSun), gateRow(pEarth)] },
-      { label: D.factCrossDesign, rows: [gateRow(dSun), gateRow(dEarth)] }
+      {
+        label: D.factCrossPersonality,
+        rows: [gateRow(D.bodySun, pSun), gateRow(D.bodyEarth, pEarth)]
+      },
+      { label: D.factCrossDesign, rows: [gateRow(D.bodySun, dSun), gateRow(D.bodyEarth, dEarth)] }
     ],
     after: [D.crossWeight, D.deeper]
   };
+}
+
+/**
+ * A reading of THIS cross, composed from the themes of its own four gates —
+ * the same technique the channels use, rather than 192 hand-written texts. The
+ * two Personality gates carry what the life is about consciously; the two
+ * Design gates, the ground it stands on.
+ */
+function crossReading(cross, lang = getLocale()) {
+  const D = pack(lang).drawer;
+  const [pSun, pEarth, dSun, dEarth] = cross.gates;
+  const th = (g) => gateTheme(g, lang);
+  if (![pSun, pEarth, dSun, dEarth].every((g) => th(g))) return null;
+  return fillTpl(D.crossReading, {
+    pSun, pEarth, dSun, dEarth,
+    tpSun: th(pSun), tpEarth: th(pEarth), tdSun: th(dSun), tdEarth: th(dEarth)
+  });
 }
 
 /** The cross's gates in the conventional "4/49 | 23/43" notation. */

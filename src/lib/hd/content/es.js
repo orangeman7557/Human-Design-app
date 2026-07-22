@@ -118,7 +118,8 @@ export default {
       paragraphs: [
         'La **cruz de encarnación** es el tema de fondo de una vida: la dirección general hacia la que apunta el diseño de una persona. Se la suele presentar como el "propósito", pero conviene tomarla con calma — es un telón de fondo que se despliega a lo largo de los años, no una tarea concreta que haya que resolver.',
         'La componen **cuatro puertas**: el Sol y la Tierra de [Personalidad](activationCol:personality) y el Sol y la Tierra de [Diseño](activationCol:design). Son las activaciones de más peso de la carta —la literatura les atribuye la mayor parte de la impronta—, así que la cruz viene a resumir sus temas dominantes.',
-        'El **ángulo** matiza hacia dónde se dirige esa energía: la *cruz derecha* apunta a un camino personal, que se recorre a través de la propia experiencia; la *cruz izquierda*, a un camino transpersonal, que se cumple en relación con otros; y la *cruz de yuxtaposición*, a un destino más fijo y singular. El ángulo se deduce del [perfil](concept:profile).'
+        'Se llama «cruz» porque surge del **cruce de dos ejes**: el eje personalidad-diseño (consciente ↔ inconsciente) y el eje Sol-Tierra (lo que se expresa e impulsa ↔ lo que sostiene y estabiliza).',
+        'El **ángulo** matiza hacia dónde se dirige esa energía: la *cruz de ángulo derecho* apunta a un camino personal, que se recorre a través de la propia experiencia; la *cruz de ángulo izquierdo*, a un camino transpersonal, que se cumple en relación con otros; y la *cruz de yuxtaposición*, a un destino más fijo y singular. El ángulo se deduce directamente del [perfil](concept:profile) (por ejemplo, el perfil 1/3 es ángulo derecho, el perfil 5/2 es ángulo izquierdo, etc.).'
       ]
     }
   },
@@ -415,11 +416,11 @@ export default {
   cross: {
     right: {
       name: 'Cruz derecha',
-      text: 'La **cruz derecha** describe un camino **personal**: la vida se despliega sobre todo a través de la propia experiencia, y el propósito se cumple viviendo lo de uno. Es el ángulo más frecuente con diferencia. Lo que ocurre alrededor cuenta, pero el eje del recorrido es la persona misma.'
+      text: 'La **cruz de ángulo derecho** describe un camino **personal**: la vida se despliega sobre todo a través de la propia experiencia, y el propósito se cumple viviendo lo de uno. Es el ángulo más frecuente con diferencia. Lo que ocurre alrededor cuenta, pero el eje del recorrido es la persona misma.'
     },
     left: {
       name: 'Cruz izquierda',
-      text: 'La **cruz izquierda** describe un camino **transpersonal**: el propósito se cumple en relación con otros, y buena parte de lo importante llega a través de la gente que se cruza. Es un destino entrelazado, en el que los encuentros no son un accesorio sino el material con el que se construye.'
+      text: 'La **cruz de ángulo izquierdo** describe un camino **transpersonal**: el propósito se cumple en relación con otros, y buena parte de lo importante llega a través de la gente que se cruza. Es un destino entrelazado, en el que los encuentros no son un accesorio sino el material con el que se construye.'
     },
     juxtaposition: {
       name: 'Cruz de yuxtaposición',
@@ -1693,9 +1694,13 @@ export default {
     // that its own "i" used to carry now travels with each concrete definition.
     definitionIntro:
       'La **definición** describe cómo se agrupan entre sí los centros definidos de una carta: si forman un único bloque de energía o varios grupos separados. Habla de la consistencia interna —qué partes están siempre "encendidas" y enlazadas— y de cómo se integra esa energía.',
-    crossTitle: '{name} ({gates})',
-    factCrossPersonality: 'Sol y Tierra de Personalidad',
-    factCrossDesign: 'Sol y Tierra de Diseño',
+    crossTitle: '{name}',
+    factCrossPersonality: 'Personalidad',
+    factCrossDesign: 'Diseño',
+    bodySun: 'sol',
+    bodyEarth: 'tierra',
+    crossReading:
+      'En esta cruz concreta, el eje consciente cruza «{tpSun}» ([puerta {pSun}](gate:{pSun})) con «{tpEarth}» ([puerta {pEarth}](gate:{pEarth})): es el tema que la persona reconoce como suyo y el que va empujando a lo largo de la vida. Debajo, el eje inconsciente aporta «{tdSun}» ([puerta {dSun}](gate:{dSun})) sostenido por «{tdEarth}» ([puerta {dEarth}](gate:{dEarth})) — el suelo desde el que se hace todo eso, casi siempre más visible para los demás que para uno mismo. **La cruz es lo que resulta de leer los cuatro juntos**, no cada puerta por separado.',
     crossWeight:
       'Estas cuatro puertas son las activaciones de más peso de la carta: la mayor parte de la impronta se les atribuye a ellas. Leídas **juntas** —y no una a una— dan el tono de fondo de la cruz.',
     crossGatesJoin: ' | '
