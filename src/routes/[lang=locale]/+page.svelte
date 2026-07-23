@@ -753,7 +753,8 @@
   }
   .what-hd {
     text-align: center;
-    margin-top: 0.55rem;
+    /* Hugs the tagline — reads as a line break under it, not a new paragraph. */
+    margin-top: 0.15rem;
   }
   form {
     display: flex;
@@ -874,6 +875,14 @@
      moves below the time field, reading as the alternative to filling
      it in. */
   @media (max-width: 520px) {
+    /* Fit the tagline on one line so "registro" doesn't wrap. At 375px the line
+       needs a hair more than the full width at 0.9rem, so we both widen it past
+       the fields (a small negative margin, not to the edge) and trim the font a
+       touch — subtle enough not to read as a different size. */
+    .tagline {
+      margin-inline: -1rem;
+      font-size: 0.8rem;
+    }
     label span,
     .field-head {
       text-align: center;

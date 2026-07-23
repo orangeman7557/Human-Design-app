@@ -1573,7 +1573,7 @@ const overrides = {
       'Alpha is **the one who goes first**. Not by imposing, but because their voice names what the group could not yet say. This is a cross of leadership, and leadership here **is granted, not taken**.',
       '[31](gate:31) only works if there are people genuinely following. **Leading without a mandate is talking to yourself.**'
     ],
-    'of Limitation': [
+    'left:of Limitation': [
       '[Gate 32](gate:32) judges what will last and [42](gate:42) closes cycles; [56](gate:56) stimulates with stories and [60](gate:60) sets the limit.',
       'Limitation here is **the good news**: accepting the frame is what lets something finish and endure. [60](gate:60) does not cut back for the pleasure of it — it cuts back so there is a shape.',
       'The temptation is to force the limit. **What gets stretched past [60](gate:60) does not grow, it breaks.**'
@@ -1859,7 +1859,7 @@ const overrides = {
       '[Gate 59](gate:59) breaks through barriers to reach intimacy and [55](gate:55) brings spirit; [16](gate:16) and [9](gate:9) enthuse and focus.',
       'Strategy here is **knowing how to approach**: how the distance to another person gets crossed. An intimate, very concrete role; forcing it closes exactly what it meant to open.'
     ],
-    'of Limitation': [
+    'juxtaposition:of Limitation': [
       '[Gate 60](gate:60) accepts the limit so something can take shape and [56](gate:56) stimulates; [28](gate:28) and [27](gate:27) hunt for meaning and care.',
       'The limit is **the function**, and it is good news: no frame, no form. The shadow is melancholy about what does not fit — real, and not a reason to force the frame.'
     ],

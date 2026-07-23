@@ -543,7 +543,10 @@
     color: var(--text);
     border-top: 1px solid var(--border);
     border-radius: 16px 16px 0 0;
+    /* dvh so the sheet's top (grabber + header) never hides behind the mobile
+       address bar — see the same fix in InitialReport. */
     max-height: 88vh;
+    max-height: 88dvh;
     /* The panel is a bounded flex column; the info body (flex:1) fills it and
        scrolls internally, so the IA section always sits at the bottom and the
        text uses every spare pixel above it. `hidden`, not `auto`: the inner

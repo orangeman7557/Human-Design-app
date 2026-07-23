@@ -107,10 +107,22 @@ describe('per-cross interpretations', () => {
     )
   );
 
+  // A key is valid if it is a bare cross name, or an angle-qualified variant
+  // ("<angle>:<bare>") — used where the same bare name is shared by crosses of
+  // different angles with different quartets (e.g. "of Limitation"). Mirrors the
+  // lookup in getCrossEssence.
+  const keyIsValid = (key) => {
+    if (bareEn.has(key)) return true;
+    const i = key.indexOf(':');
+    if (i < 0) return false;
+    return ANGLES.includes(key.slice(0, i)) && bareEn.has(key.slice(i + 1));
+  };
+  const essenceFor = (pack, angle, bare) => pack.crossEssence?.[`${angle}:${bare}`] ?? pack.crossEssence?.[bare];
+
   it('every essence key belongs to a real cross, in both languages', () => {
     for (const [lang, pack] of [['es', es], ['en', en]]) {
       for (const key of Object.keys(pack.crossEssence ?? {})) {
-        expect(bareEn.has(key), `${lang}: "${key}" matches no cross name`).toBe(true);
+        expect(keyIsValid(key), `${lang}: "${key}" matches no cross name`).toBe(true);
       }
     }
   });
@@ -121,7 +133,7 @@ describe('per-cross interpretations', () => {
         for (let g = 1; g <= 64; g++) {
           const full = en.crossName[`${g}|${angle}`];
           const bare = full.slice(en.labels.cross[angle].length).trim();
-          expect(pack.crossEssence[bare], `${lang}: gate ${g} ${angle}`).toBeTruthy();
+          expect(essenceFor(pack, angle, bare), `${lang}: gate ${g} ${angle}`).toBeTruthy();
         }
       }
     }

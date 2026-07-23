@@ -29,8 +29,9 @@ export default {
   // knowing the system.
   whatHd: {
     link: 'What is Human Design?',
-    invite:
-      'Fill in the form above with your date, time and place of birth to calculate your own chart — it’s the way in to explore and learn more about your design.'
+    inviteLink: 'Fill in the form',
+    inviteRest:
+      ' with your date, time and place of birth to calculate your own chart — it’s the way in to explore and learn more about your design.'
   },
 
   form: {

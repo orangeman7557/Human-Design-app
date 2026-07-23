@@ -33,9 +33,10 @@
       for (const p of s.paragraphs ?? []) out.push({ text: stripLinks(p) });
     };
     push('intro', false);
-    push('ants', true);
+    // The ant analogy runs on as prose (no heading), the way the report reads it.
+    push('ants', false);
     push('experiment', true);
-    push('chart', true);
+    // The bodygraph section is left out of this intro modal on purpose.
     return out;
   });
 
@@ -74,7 +75,7 @@
           <p>{@html renderInline(b.text)}</p>
         {/if}
       {/each}
-      <p class="invite">{t('whatHd.invite', null, lang)}</p>
+      <p class="invite"><button class="invite-link" type="button" onclick={() => (open = false)}>{t('whatHd.inviteLink', null, lang)}</button>{t('whatHd.inviteRest', null, lang)}</p>
     </div>
   </div>
 {/if}
@@ -96,8 +97,7 @@
   }
   .link:hover,
   .link:focus-visible {
-    text-decoration: underline;
-    text-underline-offset: 3px;
+    color: var(--accent);
     outline: none;
   }
   .scrim {
@@ -157,14 +157,32 @@
     color: #c4c4ca;
     margin: 0.6rem 0 0;
   }
-  .subhead {
+  /* `.body p.subhead` (not just `.subhead`) so it out-specifies `.body p`'s
+     grey body colour and the section title reads in accent orange. */
+  .body p.subhead {
     font-weight: 600;
-    color: var(--text);
-    margin-top: 1.1rem !important;
+    color: var(--accent);
+    margin-top: 1.3rem;
   }
-  .invite {
-    margin-top: 1.1rem !important;
+  .body p.invite {
+    margin-top: 1.3rem;
     color: var(--text);
+  }
+  /* "Rellena el formulario" — a link that just closes the modal, dropping the
+     visitor back on the form. Accent-coloured, no underline. */
+  .invite-link {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    color: var(--accent);
+    cursor: pointer;
+  }
+  .invite-link:hover,
+  .invite-link:focus-visible {
+    text-decoration: underline;
+    outline: none;
   }
   .body :global(strong) {
     color: var(--text);

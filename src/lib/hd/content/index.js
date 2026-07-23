@@ -263,7 +263,9 @@ export function getSignalInfo(type, lang = getLocale()) {
     // Closed set, like the other value drawers: every pair, with the type it
     // belongs to as the note. The chips navigate to the other pairs.
     related: signalIndex(type, lang),
-    after: [D.signalPairNote, D.signalCanonical]
+    // The per-type pairs already read off the table below, so we don't spell
+    // them out again in prose — only the canonical-name note remains.
+    after: [D.signalCanonical]
   };
 }
 
@@ -352,7 +354,13 @@ export function getCrossEssence(cross, lang = getLocale()) {
   const full = en.crossName?.[`${cross?.gates?.[0]}|${cross?.angle}`];
   const prefix = en.labels?.cross?.[cross?.angle];
   if (!full || !prefix || !full.startsWith(prefix)) return null;
-  return pack(lang).crossEssence?.[full.slice(prefix.length).trim()] ?? null;
+  const bare = full.slice(prefix.length).trim();
+  const ce = pack(lang).crossEssence ?? {};
+  // Most bare names are unique, but a few are shared by crosses of different
+  // angles with DIFFERENT quartets (e.g. "of Limitation" is both the left-angle
+  // 32/42|56/60 and the juxtaposition 60/56|28/27). Those carry an angle-qualified
+  // key ("<angle>:<bare>"); everything else falls back to the plain bare name.
+  return ce[`${cross.angle}:${bare}`] ?? ce[bare] ?? null;
 }
 
 /**

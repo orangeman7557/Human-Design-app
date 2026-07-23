@@ -37,8 +37,9 @@ export default {
   // without knowing the system.
   whatHd: {
     link: '¿Qué es el Diseño Humano?',
-    invite:
-      'Rellena el formulario de arriba con tu fecha, hora y lugar de nacimiento para calcular tu propia carta: es la puerta de entrada para explorar y aprender más sobre tu diseño.'
+    inviteLink: 'Rellena el formulario',
+    inviteRest:
+      ' con tu fecha, hora y lugar de nacimiento para calcular tu propia carta: es la puerta de entrada para explorar y aprender más sobre tu diseño.'
   },
 
   form: {

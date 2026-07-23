@@ -325,7 +325,7 @@ export default {
       'Alfa es **el que va delante**. No por imponerse, sino porque su voz nombra lo que el grupo aún no sabía decir. Es una cruz de liderazgo, y el liderazgo aquí **se otorga, no se toma**.',
       'El [31](gate:31) solo funciona si hay quien lo siga de verdad. **Liderar sin mandato es hablar solo.**'
     ],
-    'of Limitation': [
+    'left:of Limitation': [
       'La [puerta 32](gate:32) mide lo que va a durar y la [42](gate:42) cierra ciclos; el [56](gate:56) estimula con historias y el [60](gate:60) pone el límite.',
       'Limitación aquí es **la buena noticia**: aceptar el marco es lo que permite que algo se termine y dure. El [60](gate:60) no recorta por gusto — recorta para que haya forma.',
       'La tentación es forzar el límite. **Lo que se estira más allá del [60](gate:60) no crece, se rompe.**'
@@ -611,7 +611,7 @@ export default {
       'La [puerta 59](gate:59) rompe barreras para llegar a lo íntimo y la [55](gate:55) trae el espíritu; el [16](gate:16) y el [9](gate:9) entusiasman y enfocan.',
       'Estrategia aquí es **saber acercarse**: cómo se traspasa la distancia con otra persona. Papel íntimo y muy concreto; forzarlo cierra justo lo que buscaba abrir.'
     ],
-    'of Limitation': [
+    'juxtaposition:of Limitation': [
       'La [puerta 60](gate:60) acepta el límite para que algo pueda tomar forma y la [56](gate:56) estimula; el [28](gate:28) y el [27](gate:27) buscan sentido y cuidan.',
       'El límite es **la función**, y es buena noticia: sin marco no hay forma. La sombra es la melancolía de lo que no cabe — real, y no razón para forzar el marco.'
     ],

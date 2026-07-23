@@ -332,7 +332,12 @@
     transform: translateX(-50%);
     width: 100%;
     max-width: 680px;
+    /* dvh, not vh: on mobile the overlay is anchored to the bottom, and vh is the
+       *large* viewport (address bar hidden), so a 92vh sheet pushed its top —
+       header and close button — up behind the address bar, out of reach. dvh
+       tracks the visible viewport, so the top stays on-screen. */
     height: 92vh;
+    height: 92dvh;
     display: flex;
     flex-direction: column;
     background: var(--surface);
@@ -347,6 +352,7 @@
       bottom: auto;
       transform: translate(-50%, -50%);
       height: 88vh;
+      height: 88dvh;
       border-radius: 16px;
     }
   }
