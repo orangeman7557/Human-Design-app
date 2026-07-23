@@ -680,6 +680,17 @@ corrected).
 
 ## Possible improvements (not scheduled, not part of Phase 5)
 
+- ⬜ **Initial report: scroll-spy the table of contents (author, 2026-07-23).**
+  As the reader scrolls down the report, highlight the TOC chip of the section
+  currently in view, so the index doubles as a "you are here" marker. Today the
+  TOC (`nav.toc` in `InitialReport.svelte`) only jumps to a section on click; it
+  never reflects the scroll position. Implementation notes for when it's picked
+  up: an `IntersectionObserver` over the `section[id^="report-"]` elements inside
+  the scroll container (`bodyEl`), tracking the top-most visible section and
+  toggling an `active` class on the matching `.toc-chip`; watch the handoff
+  section at the end and the smooth-scroll already wired to the chips. Keep it
+  cheap — one observer, not a scroll listener.
+
 - ⬜ **"Guía práctica de esta persona" — a second, jargon-free report (author,
   2026-07-21).** A report aimed at somebody who knows nothing about Human Design
   *and doesn't care to*: no HD vocabulary on the surface, just clear, usable
