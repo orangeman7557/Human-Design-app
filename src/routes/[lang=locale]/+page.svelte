@@ -755,6 +755,8 @@
     text-align: center;
     /* Hugs the tagline — reads as a line break under it, not a new paragraph. */
     margin-top: 0.15rem;
+    /* Same size as the tagline (the link inherits it); 0.8rem on mobile below. */
+    font-size: 0.9rem;
   }
   form {
     display: flex;
@@ -881,6 +883,9 @@
        touch — subtle enough not to read as a different size. */
     .tagline {
       margin-inline: -1rem;
+      font-size: 0.8rem;
+    }
+    .what-hd {
       font-size: 0.8rem;
     }
     label span,

@@ -91,7 +91,8 @@
     padding: 0.2rem 0.4rem;
     margin: 0;
     font-family: inherit;
-    font-size: 0.78rem;
+    /* Match the tagline's size (set on `.what-hd` in the home, responsive). */
+    font-size: inherit;
     color: var(--text);
     cursor: pointer;
   }
