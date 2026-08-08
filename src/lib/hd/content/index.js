@@ -266,7 +266,10 @@ export function getConceptInfo(key, chart = null, lang = getLocale()) {
     const D = pack(lang).drawer;
     return {
       ...base,
-      quarterList: (D.quarter ?? []).map((q) => ({ title: q.short ?? q.title, note: q.note }))
+      quarterList: {
+        heading: D.quarterListHeading,
+        rows: (D.quarter ?? []).map((q) => ({ title: q.short ?? q.title, note: q.note }))
+      }
     };
   }
   if (key === 'signal') {

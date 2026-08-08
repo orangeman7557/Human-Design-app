@@ -2808,9 +2808,10 @@ export default {
     frame: 'En el marco del Diseño Humano',
     ask: '{frame}, ¿me explicas en detalle {subject}?',
     askChart: '{frame}, para {who}, ¿me explicas en detalle {subject}?',
-    // Appended to chart-angle prompts (and the report handoff): the shareable
-    // link on its own — an AI that fetches it gets the full profile as JSON.
-    chartLink: '\n\n{url}',
+    // Chart-angle prompts (and the report handoff) drop the in-text chart data
+    // and point to the shareable link instead — an AI that opens it gets the
+    // full profile (aug 2026).
+    chartLink: '\n\nPara los datos de esta carta en concreto, consulta el enlace: {url}',
     who: 'un {type}, perfil {profile}, autoridad {authority}, {definition}, centros definidos {centers}',
     none: 'ninguno',
     side: { personality: 'Personalidad', design: 'Diseño' },
@@ -2867,6 +2868,8 @@ export default {
       channel: 'qué son los canales',
       gate: 'qué son las puertas',
       activation: 'qué son las activaciones planetarias',
+      iching: 'qué es el I Ching y cómo se relaciona con el Diseño Humano',
+      quarter: 'qué son los cuartos del mandala y qué papel tienen en las cruces de encarnación',
       signal:
         'qué son la señal de alineamiento y la señal de desalineamiento de cada tipo (la firma y el tema del no-yo)',
       cross: 'qué es la cruz de encarnación y cómo se lee'
@@ -2933,6 +2936,7 @@ export default {
     angleTag: { right: 'Der', left: 'Izq', juxtaposition: 'Yux' },
     crossIndexHeading: 'Las 192 cruces, por cuartos del mandala',
     crossIndexCols: { sun: 'Sol', name: 'Cruz', angle: 'Áng.' },
+    quarterListHeading: 'Los 4 cuartos que agrupan las 192 [cruces](concept:cross) posibles',
     // Own wording, drawn from several sources: the four quarters divide the
     // wheel into 16 gates each and name the register a life's theme plays in.
     quarter: [
@@ -2981,12 +2985,16 @@ export default {
       'Tu definición es **{label}**: tus centros definidos se reparten en **{n} grupos**, sin un canal que los una por dentro:',
     definitionGroupJoin: ' · ',
     purposeTitle: 'Tu propósito',
-    purposeSubhead: '[{name}](cross:{angle}) ({gates})',
+    purposeSubhead: 'Tu cruz es: [{name}](cross:{angle}) ({gates})',
     profileHeading: 'Perfil {profile}',
     profileIntro:
       'Tu perfil {profile} combina dos líneas: la {a}, consciente, y la {b}, inconsciente. Cada una aporta su matiz, y juntas describen tu forma de aprender, relacionarte y desplegar tu propósito.',
     closingPrompt:
       'Según el Diseño Humano soy un {type}, con perfil {profile}, autoridad {authority}, estrategia "{strategy}" y {definition}; tengo definidos los centros: {centers}. Me gustaría saber más sobre...',
+    // Used when a shareable link is available: the data lives at the link, so
+    // the prompt doesn't spell it out (aug 2026).
+    closingPromptLink:
+      'Según el Diseño Humano, me gustaría saber más sobre mi carta. Los datos completos están en este enlace: {url}. En concreto, me gustaría profundizar en...',
     noCenters: 'ninguno'
   }
 };

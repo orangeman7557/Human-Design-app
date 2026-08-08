@@ -36,6 +36,33 @@
   /** @type {HTMLDivElement | undefined} */
   let bodyEl = $state();
 
+  // Scroll-spy: the TOC chip of the section currently in view lights up (and
+  // updates as you scroll or when you click a chip). A rect-based scroll handler
+  // rather than IntersectionObserver — it doesn't depend on the scroll root's
+  // measured height, which the flex layout can report oddly mid-transition.
+  // aug 2026.
+  let activeSection = $state(null);
+  $effect(() => {
+    // Re-run once the sections are in the DOM (reading sections.length tracks it).
+    if (!open || !bodyEl || !sections.length) return;
+    const el = bodyEl;
+    const onScroll = () => {
+      const secs = [...el.querySelectorAll('section[id^="report-"]')];
+      if (!secs.length) return;
+      // The current section is the last one whose top has passed ~110px below
+      // the scroll container's top edge.
+      const mark = el.getBoundingClientRect().top + 110;
+      let current = secs[0];
+      for (const s of secs) {
+        if (s.getBoundingClientRect().top <= mark) current = s;
+      }
+      activeSection = current.id.replace('report-', '');
+    };
+    el.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+    return () => el.removeEventListener('scroll', onScroll);
+  });
+
   // ── "Saber más usando IA" handoff state (same machinery as the drawers). ──
   let aiOpen = $state(false);
   let showPrompt = $state(true); // visible by default here
@@ -199,9 +226,9 @@
 
     <nav class="toc" aria-label={t('reportUi.sectionsAria')}>
       {#each sections as s}
-        <button class="toc-chip" class:hl={s.id === 'practice'} type="button" onclick={() => scrollTo(s.id)}>{TOC[s.id] ?? s.title}</button>
+        <button class="toc-chip" class:hl={s.id === 'practice'} class:active={activeSection === s.id} type="button" onclick={() => scrollTo(s.id)}>{TOC[s.id] ?? s.title}</button>
       {/each}
-      <button class="toc-chip" type="button" onclick={() => scrollTo('handoff')}>{t('reportUi.learnMore')}</button>
+      <button class="toc-chip" class:active={activeSection === 'handoff'} type="button" onclick={() => scrollTo('handoff')}>{t('reportUi.learnMore')}</button>
     </nav>
 
     <div class="body" bind:this={bodyEl} role="presentation" onclick={navFromEvent} onkeydown={onContentKeydown}>
@@ -471,8 +498,15 @@
     outline: none;
   }
   /* "Vivir tu diseño" is the heart of the report, so its index chip is nudged
-     forward: gold text on a soft accent tint (author request aug 2026). */
+     forward with bold text — emphasis, NOT the active-chip look (author, aug
+     2026: gold-active would read as "this section is selected"). */
   .toc-chip.hl {
+    font-weight: 700;
+    color: var(--text);
+  }
+  /* The section currently in view (scroll-spy): the active-chip gold treatment.
+     Coexists with .hl (bold) when "Vivir tu diseño" is the one in view. */
+  .toc-chip.active {
     color: var(--accent);
     border-color: var(--accent);
     background: var(--accent-soft);
@@ -536,6 +570,11 @@
   }
   .rbullets li .bpar + .bpar {
     margin-top: 0.55rem;
+  }
+  /* The tail paragraph follows the sub-bullet list (not another .bpar), so it
+     needs its own top gap — a touch more air after "misalignment". */
+  .rbullets li .rsub + .bpar {
+    margin-top: 0.7rem;
   }
   /* Sub-bullets inside a bullet (alignment / misalignment under "Signals"). */
   .rsub {

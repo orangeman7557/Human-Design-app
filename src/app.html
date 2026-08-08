@@ -17,6 +17,10 @@
     %sveltekit.head%
   </head>
   <body data-sveltekit-preload-data="hover">
+    <!-- Replaced at request time by hooks.server.js for /chart share links with
+         an embedded profile fallback (readable text + JSON) that a JS client
+         strips instantly and a non-JS reader (an AI) keeps. -->
+    <!--%fallback%-->
     <div style="display: contents">%sveltekit.body%</div>
   </body>
 </html>

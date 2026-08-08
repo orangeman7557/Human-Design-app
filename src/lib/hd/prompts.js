@@ -102,8 +102,13 @@ function channelChartSubject(T, a, b, state) {
  */
 export function buildPrompts(kind, key, chart, lang = getLocale(), shareUrl = null) {
   const out = buildPromptsCore(kind, key, chart, lang);
+  // With a share link, the chart-angle prompt no longer spells out the chart's
+  // data in the text (that is the point of the link): it asks the same question
+  // as the general angle and points to the link for this chart's data. Falls
+  // back to whatever core built if there is no general text to reuse.
   if (shareUrl && out?.chart) {
-    out.chart += fillTpl(getPromptTemplates(lang).chartLink, { url: shareUrl });
+    const linkLine = fillTpl(getPromptTemplates(lang).chartLink, { url: shareUrl });
+    out.chart = (out.general || out.chart) + linkLine;
   }
   return out;
 }

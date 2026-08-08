@@ -172,9 +172,10 @@ const overrides = {
     frame: 'In the framework of Human Design',
     ask: '{frame}, can you explain {subject} in detail?',
     askChart: '{frame}, for {who}, can you explain {subject} in detail?',
-    // Appended to chart-angle prompts (and the report handoff): the shareable
-    // link on its own — an AI that fetches it gets the full profile as JSON.
-    chartLink: '\n\n{url}',
+    // Chart-angle prompts (and the report handoff) drop the in-text chart data
+    // and point to the shareable link instead — an AI that opens it gets the
+    // full profile (aug 2026).
+    chartLink: '\n\nFor this specific chart’s data, see the link: {url}',
     who: 'a {type} with a {profile} profile, {authority} authority, {definition}, and these defined centers: {centers}',
     none: 'none',
     side: { personality: 'Personality', design: 'Design' },
@@ -228,6 +229,8 @@ const overrides = {
       channel: 'what channels are',
       gate: 'what gates are',
       activation: 'what planetary activations are',
+      iching: 'what the I Ching is and how it relates to Human Design',
+      quarter: 'what the quarters of the mandala are and their role in the incarnation crosses',
       signal:
         'what the alignment signal and the misalignment signal of each type are (the signature and the not-self theme)',
       cross: 'what the incarnation cross is and how to read it'
@@ -286,6 +289,7 @@ const overrides = {
     angleTag: { right: 'R', left: 'L', juxtaposition: 'Jux' },
     crossIndexHeading: 'All 192 crosses, by quarter of the mandala',
     crossIndexCols: { sun: 'Sun', name: 'Cross', angle: 'Ang.' },
+    quarterListHeading: 'The 4 quarters that group the 192 possible [crosses](concept:cross)',
     quarter: [
       { title: 'Quarter of Initiation', short: 'of Initiation', note: 'The start: the spark, the idea with no shape yet. Purpose is sought through the **mind**.' },
       { title: 'Quarter of Civilization', short: 'of Civilization', note: 'Giving form and building what serves everyone. Purpose is sought through **form**.' },
@@ -325,12 +329,16 @@ const overrides = {
       'Your definition is **{label}**: your defined centers fall into **{n} groups**, with no channel joining them inside:',
     definitionGroupJoin: ' · ',
     purposeTitle: 'Your Purpose',
-    purposeSubhead: '[{name}](cross:{angle}) ({gates})',
+    purposeSubhead: 'Your cross is: [{name}](cross:{angle}) ({gates})',
     profileHeading: 'Profile {profile}',
     profileIntro:
       'Your {profile} profile combines two lines: the {a}, conscious, and the {b}, unconscious. Each adds its own nuance, and together they describe your way of learning, relating and unfolding your purpose.',
     closingPrompt:
       'According to Human Design I am a {type}, with a {profile} profile, {authority} authority, the "{strategy}" strategy and {definition}; my defined centers are: {centers}. I would like to know more about...',
+    // Used when a shareable link is available: the data lives at the link, so
+    // the prompt doesn't spell it out (aug 2026).
+    closingPromptLink:
+      'According to Human Design, I would like to know more about my chart. The full data is at this link: {url}. In particular, I would like to go deeper into...',
     noCenters: 'none'
   },
 

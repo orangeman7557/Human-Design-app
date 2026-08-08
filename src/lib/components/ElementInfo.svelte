@@ -412,9 +412,10 @@
         <!-- The four mandala quarters as a plain title · description table (no
              chips): the concept drawer for the quarters. -->
         <div class="related">
+          {#if info.quarterList.heading}<div class="rel-head">{@html renderInline(info.quarterList.heading)}</div>{/if}
           <table class="rel-table qtable">
             <tbody>
-              {#each info.quarterList as q}
+              {#each info.quarterList.rows as q}
                 <tr>
                   <td class="rt-qtitle">{@html renderInline(q.title)}</td>
                   <td class="rt-note">{@html renderInline(q.note)}</td>
@@ -1023,6 +1024,20 @@
     letter-spacing: 0.06em;
     color: var(--text-muted);
     margin-bottom: 0.5rem;
+  }
+  /* A link inside a table heading (e.g. "…192 cruces posibles" → cross drawer). */
+  .rel-head :global(.ilink) {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-color: #6a6a72;
+    text-underline-offset: 2px;
+    cursor: pointer;
+  }
+  .rel-head :global(.ilink:hover),
+  .rel-head :global(.ilink:focus-visible) {
+    color: var(--text);
+    text-decoration-color: var(--accent);
+    outline: none;
   }
   .rel-table {
     border-collapse: collapse;

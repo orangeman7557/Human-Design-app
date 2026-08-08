@@ -1816,25 +1816,45 @@ bump. What got fixed is in the commits and in `TASKS.md`; this records what was
 
 ## Shareable profile as JSON — measure the edge-compute cost (added 2026-08-08)
 
-The shared-chart link (`/{lang}/chart?…`) now serves the full computed profile
-as JSON to non-human requests (an AI following the link from a prompt), while a
-person clicking the same link still gets the SPA. To do that the Worker
-(`hooks.server.js`) computes the chart edge-side, which pulls `computeChart`
-(astronomy-engine, luxon) and `tz-lookup` into the Worker bundle — previously
-kept out on purpose. Tradeoff accepted by the author (2026-08-08).
+The shared-chart link (`/{lang}/chart?…`) makes the full computed profile
+readable to an AI following it from a prompt. Header-based detection of "who is
+asking" proved unreliable (a browsing AI goes through infra that rewrites
+`Sec-Fetch`/UA headers — ChatGPT got nothing), so the design changed (aug 2026):
+**no detection.** Everyone gets the same HTML with the profile embedded as a
+fallback block (readable text + JSON); a JS client strips it instantly (inline
+script, before paint), a non-JS client keeps and reads it. A client that
+explicitly sends `Accept: application/json` still gets raw JSON as a clean bonus.
+
+To do that the Worker (`hooks.server.js`) computes the chart edge-side, which
+pulls `computeChart` (astronomy-engine, luxon) and `tz-lookup` into the Worker
+bundle — previously kept out on purpose. **Consequence of the embed approach:**
+the chart is now computed for **every shared-link page view**, not only for bot
+requests (the embed has to be present in the HTML for everyone). Tradeoff
+accepted by the author (2026-08-08).
 
 **To do — estimate after the first production deploy:**
 
-- **Weight of the calculation.** Measure the CPU time of one JSON request
+- **Weight of the calculation.** Measure the CPU time of one shared-link render
   (`computeChart` runs two ephemeris passes, Personality + Design) and confirm
   it sits comfortably under Cloudflare's per-invocation CPU budget (historically
-  ~10 ms on the free plan). It only runs for bot/JSON requests, never for a
-  normal human page load.
+  ~10 ms on the free plan).
 - **Request volume we can serve without trouble.** From that per-request cost,
-  estimate up to what rate of JSON requests we stay within the plan's limits
-  (CPU + requests/day), and note the threshold at which a paid plan or an
-  isolated compute path (separate Worker / lazy route) would be warranted.
+  estimate up to what rate of shared-link views we stay within the plan's limits
+  (CPU + requests/day), and note the threshold at which a paid plan, edge
+  caching of the rendered HTML (keyed by URL), or an isolated compute path would
+  be warranted.
 
 Bundle size itself is not a concern: the added ~500 kB (uncompressed) is well
 under Cloudflare's multi-MB Worker limit, and it is the same calc code already
 shipped to every browser client-side.
+
+### Pending content — per-cross report summary (added 2026-08-08)
+
+The report's "Tu propósito" section now leads with **"Tu cruz es: <name>
+(<gates>)"** (like the type section). The author also wants a **brief, general
+one-paragraph summary of the specific cross** inserted there — no gate/quarter
+detail (that lives in the cross drawer). That means authoring ~112 unique
+summaries (the crosses share bare names, as `crossEssence` does) in **both**
+languages — a focused content pass, not a bulk auto-generation. `crossEssence`
+(already hand-written per cross) is the natural source to derive briefer
+summaries from. **Not yet done.**

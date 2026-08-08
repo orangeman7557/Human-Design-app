@@ -82,47 +82,62 @@ function chartMeta(url, lang) {
   ].join('\n    ');
 }
 
-// ── Request-kind detection for the shared-chart link (aug 2026) ──────────────
-// The SAME /<lang>/chart?… link serves the web page to a person who clicks it
-// and JSON to a programmatic client (an AI following it from a prompt). The
-// detection is behaviour-based, not a user-agent allowlist, so it doesn't rot:
-//   - `Sec-Fetch-Mode: navigate` is set by the browser engine on every
-//     top-level navigation (clicking a link, typing the URL) and can't be
-//     spoofed by a plain fetch — the robust signal for "a person opened this".
-//   - Link-preview / crawler bots are matched by their published UA tokens so
-//     unfurl thumbnails and search indexing keep getting the HTML+OG.
-//   - Anything else (no navigate, not a preview bot) is a data client and gets
-//     the JSON. AI tools that don't run JS are exactly the ones lacking
-//     `navigate`; ones that do render (headless Chromium) send it and get the
-//     full app, which works.
+// ── Shared-chart link: profile as JSON, no client detection (aug 2026) ───────
+// The SAME /<lang>/chart?… link must serve the web page to a person AND make
+// the computed profile readable to an AI following it from a prompt — WITHOUT
+// trying to detect who is asking (header-based detection proved unreliable: a
+// browsing AI goes through infra that rewrites headers, so Sec-Fetch/UA are not
+// dependable). Instead:
+//   - Everyone gets the same HTML, with the full profile embedded as a fallback
+//     block (readable text + JSON). A JS client removes it instantly (inline
+//     script, before paint); a client that can't run JS keeps and reads it.
+//   - As a clean bonus, a client that explicitly asks for JSON only
+//     (`Accept: application/json`, no text/html) gets the raw JSON directly.
+// This means the chart is computed edge-side for every shared-link view, not
+// only for bots — the accepted cost (see BACKLOG).
 
-/** True when the request looks like a real browser opening the document. */
-function isBrowserNavigation(req) {
-  const mode = req.headers.get('sec-fetch-mode');
-  if (mode) return mode === 'navigate';
-  // No Sec-Fetch-* (older browser or non-browser): treat as human only if it
-  // clearly looks like a browser asking for HTML.
-  const ua = req.headers.get('user-agent') || '';
+/** True when the client explicitly wants JSON and not HTML (a direct API/CLI
+ *  fetch), so we can skip the HTML and return the raw profile. */
+function wantsJsonOnly(req) {
   const accept = req.headers.get('accept') || '';
-  return /mozilla|applewebkit|gecko|trident/i.test(ua) && accept.includes('text/html');
+  return accept.includes('application/json') && !accept.includes('text/html');
 }
 
-// Stable tokens published by link-preview services and search crawlers.
-const PREVIEW_BOTS =
-  /facebookexternalhit|facebot|twitterbot|slackbot|slack-imgproxy|whatsapp|discordbot|telegrambot|linkedinbot|pinterest|redditbot|embedly|quora link preview|showyoubot|outbrain|vkshare|skypeuripreview|nuzzel|bitlybot|googlebot|bingbot|applebot|yandex(bot|images)|duckduckbot|baiduspider|mastodon|iframely|opengraph/i;
-
-/** True for a link-preview / crawler bot that should still get the HTML+OG. */
-function isPreviewBot(req) {
-  return PREVIEW_BOTS.test(req.headers.get('user-agent') || '');
-}
-
-/** Compute the shared chart and return it as a JSON string, or null if the
- *  params don't decode to a valid birth. */
-async function chartJson(url, lang) {
+/** Compute the shared chart's profile object, or null if the params don't
+ *  decode to a valid birth. */
+async function chartProfile(url, lang) {
   const birth = decodeBirth(url.searchParams);
   if (!birth) return null;
   const chart = await computeChart(birth);
-  return JSON.stringify(buildProfileJson(chart, birth, lang), null, 2);
+  return buildProfileJson(chart, birth, lang);
+}
+
+/** Escape text for safe embedding inside a <pre> / HTML text node. Escaping `<`
+ *  also neutralises any `</script>` inside the JSON. */
+function escHtml(s) {
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;');
+}
+
+/** The body fallback block: a human-readable summary + the full JSON, plus an
+ *  inline script that removes it immediately so JS clients never see it. */
+function fallbackBlock(profile) {
+  const b = profile.birth || {};
+  const name = b.name ? `${b.name} — ` : '';
+  const summary =
+    `${escHtml(name)}${escHtml(profile.typeLabel)}. ` +
+    `Estrategia: ${escHtml(profile.strategyLabel)}. Autoridad: ${escHtml(profile.authorityLabel)}. ` +
+    `Perfil: ${escHtml(profile.profile)}. Definición: ${escHtml(profile.definitionLabel)}. ` +
+    `Nacimiento: ${escHtml(b.date ?? '')} ${escHtml(b.time ?? '')} · ${escHtml(b.place ?? '')}.`;
+  const json = escHtml(JSON.stringify(profile, null, 2));
+  return (
+    `<div id="hd-share-fallback">` +
+    `<h1>Carta de Human Design</h1>` +
+    `<p>${summary}</p>` +
+    `<p>Perfil completo calculado (JSON):</p>` +
+    `<pre>${json}</pre>` +
+    `</div>` +
+    `<script>(function(){var e=document.getElementById('hd-share-fallback');if(e)e.parentNode.removeChild(e);})();<\/script>`
+  );
 }
 
 /** The leading path segment if it's a known language, else null. */
@@ -165,33 +180,31 @@ export async function handle({ event, resolve }) {
 
   const lang = langOf(path);
 
-  // 3. Per-chart share link (client-rendered route, so both scrapers and data
-  //    clients need edge help).
+  // 3. Per-chart share link (client-rendered route). Compute the profile once
+  //    and either return it as raw JSON (explicit JSON request) or embed it in
+  //    the page as a non-JS fallback — no client detection (see the note above).
   if (lang && path === `/${lang}/chart`) {
-    // 3a. Programmatic client following a shared link → serve JSON, not the SPA.
-    if (
-      !building &&
-      hasShareParams(url.searchParams) &&
-      !isBrowserNavigation(event.request) &&
-      !isPreviewBot(event.request)
-    ) {
-      const json = await chartJson(url, lang);
-      if (json) {
-        return new Response(json, {
-          headers: {
-            'content-type': 'application/json; charset=utf-8',
-            'cache-control': 'public, max-age=3600',
-            'access-control-allow-origin': '*'
-          }
-        });
-      }
-      // Params didn't decode: fall through to the normal page.
+    const profile =
+      !building && hasShareParams(url.searchParams) ? await chartProfile(url, lang) : null;
+
+    // 3a. A client that explicitly wants JSON only → give it the raw profile.
+    if (profile && wantsJsonOnly(event.request)) {
+      return new Response(JSON.stringify(profile, null, 2), {
+        headers: {
+          'content-type': 'application/json; charset=utf-8',
+          'cache-control': 'public, max-age=3600',
+          'access-control-allow-origin': '*'
+        }
+      });
     }
 
-    // 3b. A person (or a link-preview bot) → the page with chart-specific OG.
+    // 3b. Everyone else → the page with chart-specific OG, plus the embedded
+    //     profile fallback (stripped by JS clients, read by non-JS ones).
     const meta = chartMeta(url, lang);
+    const fallback = profile ? fallbackBlock(profile) : '';
     return resolve(event, {
-      transformPageChunk: ({ html }) => setHtmlLang(html.replace('<!--%og%-->', meta), lang)
+      transformPageChunk: ({ html }) =>
+        setHtmlLang(html.replace('<!--%og%-->', meta).replace('<!--%fallback%-->', fallback), lang)
     });
   }
 
