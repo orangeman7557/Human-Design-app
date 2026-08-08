@@ -299,6 +299,7 @@ const overrides = {
     crossFourGates:
       'What gives each cross its own character is its **four gates**: the Personality Sun and Earth — the conscious side, what a person recognises as their own — and the Design Sun and Earth — the unconscious side, the ground they act from. They are the heaviest activations in the chart, and they have to be **read together**: the meaning is in the combination, not in any one gate.',
     crossCombination: 'This cross combines gates **{gates}**:',
+    crossQuarter: 'On the mandala, it belongs to the **[{quarter}](concept:quarter)**.',
     crossGatesJoin: ' | '
   },
 
@@ -314,8 +315,11 @@ const overrides = {
     definitionPrefix: '^Definition\\s+',
     practiceTitle: 'Living Your Design',
     signalsTitle: 'Your Signals',
+    signalsBulletHead: '**[Signals](concept:signal) that you are on track** —',
+    signalAligned: 'Alignment',
+    signalMisaligned: 'Misalignment',
     definitionGroupsLead:
-      'Your definition is **{label}**: your defined centers fall into **{n} separate groups**:',
+      'Your definition is **{label}**: your defined centers fall into **{n} groups**, with no channel joining them inside:',
     definitionGroupJoin: ' · ',
     purposeTitle: 'Your Purpose',
     purposeSubhead: '[{name}](cross:{angle}) ({gates})',
@@ -409,6 +413,14 @@ const overrides = {
         'Each **hexagram** is built from **six stacked lines**, either solid (yang) or broken (yin). There are exactly 64 possible combinations of those six lines, and tradition gives each one a name and a meaning: the creative, waiting, conflict, peace, and so on.',
         'Human Design borrows that structure: the **64 gates** of the bodygraph map one-to-one onto the **64 hexagrams**, and each gate inherits the theme of its hexagram. The **six lines** of each hexagram are also what give the lines of the [profile](concept:profile) (1 through 6).',
         'Here the I Ching is used only as a **symbolic source** for those themes — the reservoir of meaning the gates draw on — not as a method of divination. It is one of the traditions Human Design combines, alongside astrology, the chakras, and the kabbalistic tree of life.'
+      ]
+    },
+    quarter: {
+      title: 'The Quarters of the Mandala',
+      paragraphs: [
+        'The **64 gates** are arranged in a circle — the *mandala* of Human Design — and that circle is divided into **four quarters** of 16 gates each. Each quarter describes a **different way a life’s purpose unfolds**, and it sits as a backdrop to the incarnation crosses that fall within it.',
+        'The four are: the **Quarter of Initiation**, where purpose is sought through the **mind** — the spark, the idea not yet in form; the **Quarter of Civilization**, through **form** — giving body to what serves everyone; the **Quarter of Duality**, through **bonding** — the meeting with the other; and the **Quarter of Mutation**, through **change** — transformation and the closing of the old.',
+        'Each chart’s [incarnation cross](concept:cross) belongs to one of these quarters (its Personality Sun gate decides which), and that quarter colours the **overall tone** in which the purpose is lived. It is not a label to work on: it is a way of placing the cross within the mandala as a whole.'
       ]
     },
     activation: {
@@ -1549,15 +1561,15 @@ const overrides = {
         'Your challenge is the mirror image of the split definitions\u2019: working well on your own makes it easy to turn inward, and harder to let outside influence in. Noticing when it is worth stepping out of your own bubble is part of your learning.'
       ],
       split: [
-        'Your defined centers fall into **two separate groups**, with no channel joining them inside. What usually follows is a **pull toward connection**: something to bridge your two halves.',
+        'What usually follows is a **pull toward connection**: something to bridge your two halves.',
         'That bridge tends to arrive through other people — whose energy completes the channel you are missing — or through transits that switch on the gate in between. It is not a shortfall. Certain company and certain places simply make you feel whole, and that happens naturally.'
       ],
       'triple-split': [
-        'Your defined centers fall into **three separate groups**. Your wiring is more intricate, and it usually takes **more variety — of people, of input** — for your parts to feel joined up.',
+        'Your wiring is more intricate, and it usually takes **more variety — of people, of input** — for your parts to feel joined up.',
         'Diverse surroundings and a certain amount of movement suit you; too much stillness can leave you feeling something has not quite come together. Knowing this helps: that need for variety is not scatteredness.'
       ],
       'quad-split': [
-        'The rarest of them: your defined centers fall into **four separate groups**. It is a highly fragmented wiring which, oddly enough, tends to ask for **more structure, space and calm** in order to come together.',
+        'The rarest of them: a highly fragmented wiring which, oddly enough, tends to ask for **more structure, space and calm** in order to come together.',
         'Far from a problem, it describes a very particular way of processing life. What helps you is **taking time** and not forcing everything into place at once: your many parts settle at their own pace.'
       ]
     },
@@ -1609,7 +1621,7 @@ const overrides = {
       trampa:
         '**The trap for your type** — What wears you down is **starting from your head** instead of waiting for something to respond to: saying yes out of obligation, out of logic, or out of fear of missing out. Get into something your energy never backed and frustration turns up — the classic Generator signal — along with the sense of being stuck in things that never quite land.',
       senales:
-        '**Signs you are on track** — Your compass is your two signals: [alignment](signal:generator), which for you is **satisfaction**, and [misalignment](signal:generator), which is **frustration**. End the day pleasantly tired, with the sense that your energy went somewhere real, and you are on track. If frustration and weariness are what you mostly feel, you have probably said yes to things your body did not.'
+        'End the day pleasantly tired, with the sense that your energy went somewhere real, and you are on track. If frustration and weariness are what you mostly feel, you have probably said yes to things your body did not.'
     },
     'manifesting-generator': {
       energia:
@@ -1617,7 +1629,7 @@ const overrides = {
       trampa:
         '**The trap for your type** — **Scattering.** Taking on too much your body never said yes to, or skipping the heads-up and running straight into other people\u2019s resistance. Start from the head instead of responding and you collect frustration, a bit of anger, and a trail of half-finished projects.',
       senales:
-        '**Signs you are on track** — Your [alignment](signal:manifesting-generator) signal is **satisfaction**, with a certain calm around you; your [misalignment](signal:manifesting-generator) one is **frustration**, usually with friction. Moving fast on what lights you up and actually finishing things means you are on track. Feeling scattered and meeting resistance everywhere usually means you said yes without your body, or you forgot to tell people.'
+        'Satisfaction usually comes with a certain calm; frustration, often with a bit of friction. Moving fast on what lights you up and actually finishing things means you are on track. Feeling scattered and meeting resistance everywhere usually means you said yes without your body, or you forgot to tell people.'
     },
     projector: {
       energia:
@@ -1628,7 +1640,7 @@ const overrides = {
       trampa:
         '**The trap for your type** — **Keeping up with everyone else**, and **offering your insight where nobody asked for it**. Working yourself flat to prove your worth, or pushing in without an invitation, brings resistance, rejection and bitterness — the signal of a Projector living against their design.',
       senales:
-        '**Signs you are on track** — Your [alignment](signal:projector) signal is **success** — being seen and recognized — and your [misalignment](signal:projector) one is **bitterness**. Being seen, being invited, having your view actually land: that is the track. Feeling invisible, drained and resentful usually means you are offering yourself where you were not called, or demanding an energy you do not have.'
+        'Success, here, is being seen and recognized. Being seen, being invited, having your view actually land: that is the track. Feeling invisible, drained and resentful usually means you are offering yourself where you were not called, or demanding an energy you do not have.'
     },
     manifestor: {
       energia:
@@ -1639,7 +1651,7 @@ const overrides = {
       trampa:
         '**The trap for your type** — Moving without **telling** the people your impact will reach. That is what fills the room with resistance and anger, and it ends up making everything harder for you. The other trap is **demanding a consistency that is not yours**, right up to burnout, instead of accepting how much rest you actually need.',
       senales:
-        '**Signs you are on track** — Your [alignment](signal:manifestor) signal is **peace**; your [misalignment](signal:manifestor) one is **anger**. Inform people and move freely and things go quiet around you. When everything turns into friction and conflict, you probably moved without warning, or you are forcing a steady pace that was never yours.'
+        'Inform people and move freely and things go quiet around you. When everything turns into friction and conflict, you probably moved without warning, or you are forcing a steady pace that was never yours.'
     },
     reflector: {
       energia:
@@ -1647,7 +1659,7 @@ const overrides = {
       trampa:
         '**The trap for your type** — Deciding in a hurry, staying in places that do not suit you, and **taking what you are reflecting for your own**: moods and pressures that actually belong to the group. **Forcing yourself to be the same every day** goes against how you work.',
       senales:
-        '**Signs you are on track** — Your [alignment](signal:reflector) signal is **surprise**, with its bit of delight; your [misalignment](signal:reflector) one is **disappointment**. Get the place and the people right and life keeps surprising you pleasantly. When disappointment is the main note, you are usually somewhere wrong, with the wrong people, or you decided too fast.'
+        'Surprise comes with its bit of delight. Get the place and the people right and life keeps surprising you pleasantly. When disappointment is the main note, you are usually somewhere wrong, with the wrong people, or you decided too fast.'
     }
   },
 

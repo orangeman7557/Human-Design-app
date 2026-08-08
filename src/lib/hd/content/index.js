@@ -51,6 +51,47 @@ export function getReportShell(lang = getLocale()) {
 }
 
 /**
+ * Connected groups of defined centres (joined by active channels), each group's
+ * centres in canonical order — so a split definition can name which centres fall
+ * together. Mirrors computeDefinition's graph in chart.js (and report.js).
+ * @param {any} chart
+ * @returns {string[][]}
+ */
+function definitionGroups(chart) {
+  const defined = chart?.definedCenters ?? [];
+  const set = new Set(defined);
+  if (set.size === 0) return [];
+  /** @type {Record<string, Set<string>>} */
+  const adj = {};
+  for (const c of defined) adj[c] = new Set();
+  for (const [g1, g2] of chart.activeChannels ?? []) {
+    const c1 = CENTER_BY_GATE[g1];
+    const c2 = CENTER_BY_GATE[g2];
+    if (c1 !== c2 && set.has(c1) && set.has(c2)) {
+      adj[c1].add(c2);
+      adj[c2].add(c1);
+    }
+  }
+  const visited = new Set();
+  const groups = [];
+  for (const start of CENTERS) {
+    if (!set.has(start) || visited.has(start)) continue;
+    const group = [];
+    const queue = [start];
+    while (queue.length) {
+      const cur = queue.shift();
+      if (visited.has(cur)) continue;
+      visited.add(cur);
+      group.push(cur);
+      for (const n of adj[cur]) if (!visited.has(n)) queue.push(n);
+    }
+    group.sort((a, b) => CENTERS.indexOf(a) - CENTERS.indexOf(b));
+    groups.push(group);
+  }
+  return groups;
+}
+
+/**
  * Explanatory content for an element, or null when none is written yet.
  * @param {string} kind  e.g. 'type'
  * @param {string} key   e.g. 'generator'
@@ -82,10 +123,19 @@ export function getElementInfo(kind, key, lang = getLocale(), chart = null) {
     const rel = relatedIndex(kind, key, lang);
     // General framing first, then this definition as a real heading inside the
     // body (accent-coloured, on its own line) so the switch from the general to
-    // the concrete is unmissable.
+    // the concrete is unmissable. For a split (2+ groups), the bullets of which
+    // centres fall together are inserted after the body's first paragraph (which
+    // states the count) — the same schematic list the report shows.
+    const body = [...entry.paragraphs];
+    const groups = definitionGroups(chart);
+    if (groups.length >= 2) {
+      const centerLbl = pack(lang).labels?.center ?? {};
+      const bullets = { bullets: groups.map((g) => g.map((c) => centerLbl[c] ?? c).join(' · ')) };
+      body.splice(1, 0, bullets);
+    }
     const withIntro = {
       ...entry,
-      paragraphs: [D.definitionIntro, { subhead: entry.title }, ...entry.paragraphs]
+      paragraphs: [D.definitionIntro, { subhead: entry.title }, ...body]
     };
     return rel ? { ...withIntro, related: rel } : withIntro;
   }
@@ -207,7 +257,7 @@ export function getConceptInfo(key, chart = null, lang = getLocale()) {
     // the same "reach any element" idea the gate and channel concepts already
     // offer. Quarters are derived from GATE_WHEEL (16 gates each, starting at
     // gate 13), so they can't drift out of step with the engine.
-    return { ...base, crossIndex: crossIndex(lang) };
+    return { ...base, crossIndex: crossIndex(lang, chart) };
   }
   if (key === 'signal') {
     // Same table as the pair drawers, but with NO current row: this is the
@@ -301,15 +351,18 @@ export function getSignalInfo(type, lang = getLocale()) {
  * cross's name, its four gates and the angle's short tag — the shape the
  * reference tables use.
  */
-function crossIndex(lang = getLocale()) {
+function crossIndex(lang = getLocale(), chart = null) {
   const p = pack(lang);
   const D = p.drawer;
   const tags = D.angleTag;
+  // The chart's own cross, so its row can be highlighted gold in the index.
+  const currentKey = chart?.cross ? `${chart.cross.gates[0]}|${chart.cross.angle}` : null;
   return {
     heading: D.crossIndexHeading,
     cols: D.crossIndexCols,
     quarters: quarterGates().map((gates, qi) => ({
-    title: D.quarter[qi].title,
+    // The quarter heading links to the quarters explainer drawer.
+    title: `[${D.quarter[qi].title}](concept:quarter)`,
     note: D.quarter[qi].note,
     rows: gates.flatMap((g) =>
       ['right', 'left', 'juxtaposition'].map((angle) => {
@@ -325,7 +378,8 @@ function crossIndex(lang = getLocale()) {
           kind: 'gate',
           key: String(g),
           // The name is a chip that opens THIS cross's own drawer.
-          crossKey: key
+          crossKey: key,
+          current: key === currentKey
         };
       })
     )
@@ -430,16 +484,24 @@ function buildCrossInfo(cross, lang = getLocale()) {
     chip: { label: String(g), kind: 'gate', key: String(g) },
     note: gateTheme(g, lang) ?? null
   });
-  // Reading order: what the ANGLE means (briefly) → why the four gates are read
-  // together → the schema itself → the interpretation of THIS cross → handoff.
+  // Which of the mandala's four quarters this cross sits in (by its Personality
+  // Sun gate), named with a link to the quarters explainer drawer.
+  const qi = quarterGates().findIndex((gs) => gs.includes(pSun));
+  const quarterLine =
+    qi >= 0 && D.crossQuarter && D.quarter?.[qi]
+      ? fillTpl(D.crossQuarter, { quarter: D.quarter[qi].title })
+      : null;
+  // Reading order: what the ANGLE means (briefly) → the quarter it sits in → why
+  // the four gates are read together → the schema → this cross's reading → handoff.
   const essence = getCrossEssence(cross, lang);
   return {
     title: fillTpl(D.crossTitle, { name: getCrossName(cross, lang) ?? entry.name }),
     paragraphs: [
       entry.text,
+      quarterLine,
       D.crossFourGates,
       fillTpl(D.crossCombination, { gates: formatCrossGates(cross, lang) })
-    ],
+    ].filter(Boolean),
     // Stack each side's rows under its own label as a bulleted list: the gate
     // titles are too long to sit beside a "Personality"/"Design" column without
     // wrapping to two lines. The intro line above spells out the four gates.

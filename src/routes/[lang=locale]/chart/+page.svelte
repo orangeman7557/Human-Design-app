@@ -131,6 +131,9 @@
       // A centre lists its channels/gates; pass the chart so the ones active
       // here show gold and the rest grey (the general centre drawer does too).
       : kind === 'center' ? getElementInfo('center', key, undefined, chart)
+      // Definition: pass the chart so a split drawer lists which centres form
+      // each group (same bullets the report shows).
+      : kind === 'definition' ? getElementInfo('definition', key, undefined, chart)
       : getElementInfo(kind, key);
   }
 

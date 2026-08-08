@@ -18,6 +18,7 @@ import {
   getPromptLabels,
   getDisplayLabels,
   getReportShell,
+  getSignalNames,
   formatCrossGates,
   getCrossName,
   fillTpl,
@@ -179,18 +180,27 @@ export function buildReport(chart, lang = getLocale()) {
   }
 
   const tr = getTypeReport(chart.type, lang);
-  // Energy · trap read as two parallel points, so they get the same simple
-  // bullets as the five types above. Signals used to be a third bullet here;
-  // it now has its own section right after (they deserve their own heading).
-  if (tr)
+  // Energy · trap · signals as three parallel bullets. The signals bullet leads
+  // with a linked "Signals" heading, then the alignment / misalignment pair as
+  // two sub-bullets, then the rest of the text (author revert, 2026-08).
+  if (tr) {
+    const names = getSignalNames(chart.type, lang);
+    const signalsBullet =
+      tr.senales && names
+        ? {
+            head: R.signalsBulletHead,
+            sub: [
+              `**${R.signalAligned}:** ${names.aligned}`,
+              `**${R.signalMisaligned}:** ${names.misaligned}`
+            ],
+            tail: tr.senales
+          }
+        : null;
     add('practice', R.practiceTitle, [
       getReportLeadIn('practice', lang),
-      { bullets: [tr.energia, tr.trampa] }
+      { bullets: [tr.energia, tr.trampa, signalsBullet].filter(Boolean) }
     ]);
-
-  // Signals — the alignment / misalignment pair, its own section (it used to be
-  // folded into "Living your design").
-  if (tr?.senales) add('signals', R.signalsTitle, [tr.senales]);
+  }
 
   // Purpose goes LAST and deliberately after "Living your design": the cross is
   // a backdrop, not a task, and putting it first invites a newcomer to fixate on

@@ -105,6 +105,14 @@ export default {
         'Aquí el I Ching se usa solo como **fuente simbólica** de esos temas —el poso de significado del que beben las puertas—, no como método de adivinación. Es una de las tradiciones que el Diseño Humano combina, junto a la astrología, los chakras y el árbol de la vida cabalístico.'
       ]
     },
+    quarter: {
+      title: 'Los cuartos del mandala',
+      paragraphs: [
+        'Las **64 puertas** se disponen en un círculo —el *mandala* del Diseño Humano—, y ese círculo se divide en **cuatro cuartos** de 16 puertas cada uno. Cada cuarto describe un **modo distinto en que se despliega el propósito** de una vida, y sirve de telón de fondo a las cruces de encarnación que caen dentro de él.',
+        'Los cuatro son: el **cuarto de la Iniciación**, donde el propósito se busca a través de la **mente** —la chispa, la idea aún sin forma—; el **cuarto de la Civilización**, a través de la **forma** —dar cuerpo a lo que sirve a todos—; el **cuarto de la Dualidad**, a través del **vínculo** —el encuentro con el otro—; y el **cuarto de la Mutación**, a través del **cambio** —la transformación y el cierre de lo viejo—.',
+        'La [cruz de encarnación](concept:cross) de cada carta pertenece a uno de estos cuartos (lo determina la puerta del Sol de Personalidad), y ese cuarto tiñe el **tono general** con el que se vive el propósito. No es una etiqueta que haya que trabajar: es una manera de situar la cruz dentro del conjunto del mandala.'
+      ]
+    },
     activation: {
       title: 'Las activaciones',
       paragraphs: [
@@ -331,7 +339,7 @@ export default {
     ],
     'of the Alpha': [
       'La [puerta 31](gate:31) lleva la voz que otros siguen y la [41](gate:41) enciende el deseo inicial; el [24](gate:24) rumia y el [44](gate:44) reconoce patrones.',
-      'Alfa es **el que va delante**. No por imponerse, sino porque su voz nombra lo que el grupo aún no sabía decir. Es una cruz de liderazgo, y el liderazgo aquí **se otorga, no se toma**.',
+      'El alfa es **el que va delante**. No por imponerse, sino porque su voz nombra lo que el grupo aún no sabía decir. Es una cruz de liderazgo, y el liderazgo aquí **se otorga, no se toma**.',
       'El [31](gate:31) solo funciona si hay quien lo siga de verdad. **Liderar sin mandato es hablar solo.**'
     ],
     'left:of Limitation': [
@@ -649,10 +657,10 @@ export default {
   // row is checked against the engine's own gate quartets by
   // src/lib/hd/cross-names.test.js — a mistyped row cannot ship silently.
   crossName: {
-    '1|right': 'Cruz de ángulo derecho de la Esfinge',
-    '2|right': 'Cruz de ángulo derecho de la Esfinge',
-    '7|right': 'Cruz de ángulo derecho de la Esfinge',
-    '13|right': 'Cruz de ángulo derecho de la Esfinge',
+    '1|right': 'Cruz de ángulo derecho de la esfinge',
+    '2|right': 'Cruz de ángulo derecho de la esfinge',
+    '7|right': 'Cruz de ángulo derecho de la esfinge',
+    '13|right': 'Cruz de ángulo derecho de la esfinge',
     '1|juxtaposition': 'Cruz de yuxtaposición de la autoexpresión',
     '1|left': 'Cruz de ángulo izquierdo del desafío',
     '2|juxtaposition': 'Cruz de yuxtaposición del impulsor',
@@ -741,7 +749,7 @@ export default {
     '30|left': 'Cruz de ángulo izquierdo de la laboriosidad',
     '31|right': 'Cruz de ángulo derecho de lo inesperado',
     '31|juxtaposition': 'Cruz de yuxtaposición de la influencia',
-    '31|left': 'Cruz de ángulo izquierdo del Alfa',
+    '31|left': 'Cruz de ángulo izquierdo del alfa',
     '32|right': 'Cruz de ángulo derecho de Maya',
     '32|juxtaposition': 'Cruz de yuxtaposición de la conservación',
     '32|left': 'Cruz de ángulo izquierdo de la limitación',
@@ -771,7 +779,7 @@ export default {
     '40|left': 'Cruz de ángulo izquierdo de la migración',
     '41|right': 'Cruz de ángulo derecho de lo inesperado',
     '41|juxtaposition': 'Cruz de yuxtaposición de la fantasía',
-    '41|left': 'Cruz de ángulo izquierdo del Alfa',
+    '41|left': 'Cruz de ángulo izquierdo del alfa',
     '42|right': 'Cruz de ángulo derecho de Maya',
     '42|juxtaposition': 'Cruz de yuxtaposición de la culminación',
     '42|left': 'Cruz de ángulo izquierdo de la limitación',
@@ -2100,15 +2108,15 @@ export default {
         'Tu reto suele ser el opuesto al de las definiciones divididas: como funcionas bien por ti mismo, puedes ensimismarte, y abrirte a la influencia ajena puede costarte. Reconocer cuándo te conviene salir de tu propia burbuja es parte de tu aprendizaje.'
       ],
       split: [
-        'Tus centros definidos forman **dos grupos separados**, sin un canal que los una por dentro. Por eso sueles experimentar una **búsqueda de conexión**: algo que tienda el puente entre tus dos partes.',
+        'Por eso sueles experimentar una **búsqueda de conexión**: algo que tienda el puente entre tus dos partes.',
         'Ese puente te llega a menudo a través de otras personas —cuya energía completa el canal que te falta— o de tránsitos planetarios que activan la puerta intermedia. Esta separación (split) no es una carencia: se trata de entender que hay compañías y entornos que te hacen sentir integrado, y esto sucede de manera natural.'
       ],
       'triple-split': [
-        'Tus centros definidos se reparten en **tres grupos** separados. Tu cableado interno es más complejo y, con frecuencia, necesitas **más variedad de estímulos y de gente** para sentir que tus partes internas se conectan.',
+        'Tu cableado interno es más complejo y, con frecuencia, necesitas **más variedad de estímulos y de gente** para sentir que tus partes internas se conectan.',
         'Sueles funcionar bien en entornos diversos y con cierto movimiento; la quietud excesiva puede dejarte la sensación de que algo no termina de juntarse. Conocer esta estructura te ayuda a no interpretar esa necesidad de variedad como dispersión.'
       ],
       'quad-split': [
-        'La más infrecuente: tus centros definidos forman **cuatro grupos** separados. Es un cableado muy fragmentado que, paradójicamente, suele pedir **más estructura, espacio y calma** para integrarse.',
+        'Es la más infrecuente: un cableado muy fragmentado que, paradójicamente, suele pedir **más estructura, espacio y calma** para integrarse.',
         'Lejos de ser un problema, describe una manera muy particular de procesar la vida. Te beneficias de **darte tiempo** y de no presionarte para resolverlo todo de golpe: tus muchas partes se ordenan a su propio ritmo.'
       ]
     },
@@ -2160,12 +2168,12 @@ export default {
     generator: {
       energia: '**Gestión de tu energía** — Tienes el [centro Sacral](center:sacral) definido: una energía de trabajo **sostenible y renovable**, hecha para emplearse a fondo cada día en lo correcto y vaciarse sanamente al llegar la noche. La clave no es ahorrarla, sino **gastarla en aquello a lo que tu cuerpo responde de verdad**: entonces el cansancio es satisfactorio y al día siguiente la carga vuelve. Forzarte en lo que no te enciende te agota sin saciar.',
       trampa: '**La trampa de tu tipo** — Tu mayor desgaste viene de **iniciar desde la mente** en vez de esperar a tener algo a lo que responder: decir que sí por obligación, por lógica o por miedo a perder la oportunidad. Cuando te metes en algo que tu energía no respaldaba, aparece la frustración —la señal clásica del Generador que vive contra su diseño— y la sensación de estar atascado en cosas que no terminan de llenar.',
-      senales: '**Señales de que vas por buen camino** — Tu brújula son tus dos señales: la de [alineamiento](signal:generator), la **satisfacción**, y la de [desalineamiento](signal:generator), la **frustración**. Si al final del día sientes un cansancio a gusto y la sensación de haber empleado bien tu energía, vas bien encaminado. Si lo que predomina es la frustración y el hartazgo, suele ser señal de que te has comprometido con cosas a las que tu cuerpo no había dicho que sí.'
+      senales: 'Si al final del día sientes un cansancio a gusto y la sensación de haber empleado bien tu energía, vas bien encaminado. Si lo que predomina es la frustración y el hartazgo, suele ser señal de que te has comprometido con cosas a las que tu cuerpo no había dicho que sí.'
     },
     'manifesting-generator': {
       energia: '**Gestión de tu energía** — Como Generador, tienes el [Sacral](center:sacral) definido: energía de trabajo **sostenible y renovable**. Pero está conectada con la [Garganta](center:throat), lo que te hace **rápido, polifacético y no lineal**: saltas pasos, haces varias cosas a la vez y avanzas a gran velocidad cuando algo te enciende de verdad. Rindes al máximo si primero esperas la **respuesta del cuerpo** y luego **informas** a quienes te rodean antes de lanzarte.',
       trampa: '**La trampa de tu tipo** — **Dispersarte**: comprometerte con demasiadas cosas a las que tu cuerpo no había dicho que sí, o saltarte el aviso a los demás y chocar con su resistencia. Cuando inicias por mente en vez de responder, acumulas frustración —y a menudo algo de enfado— y proyectos a medio terminar.',
-      senales: '**Señales de que vas por buen camino** — Tu señal de [alineamiento](signal:manifesting-generator) es la **satisfacción**, con una cierta paz alrededor; la de [desalineamiento](signal:manifesting-generator), la **frustración**, a menudo con enfado. Si avanzas rápido en lo que te enciende y dejas las cosas rematadas, vas bien; si te notas disperso y rodeado de fricción, suele ser que dijiste que sí donde el cuerpo no acompañaba, o que no informaste.'
+      senales: 'La satisfacción suele venir con una cierta paz; la frustración, a menudo con algo de enfado. Si avanzas rápido en lo que te enciende y dejas las cosas rematadas, vas bien; si te notas disperso y rodeado de fricción, suele ser que dijiste que sí donde el cuerpo no acompañaba, o que no informaste.'
     },
     projector: {
       energia: [
@@ -2173,7 +2181,7 @@ export default {
         'Tu don está en **ver, guiar y orientar** allí donde se te invita. Gestionarte bien pasa por **descansar y dosificarte** —dormir y soltar antes de quedar agotado— y por reservar tu atención para quien de verdad la valora.'
       ],
       trampa: '**La trampa de tu tipo** — **Forzarte al ritmo de los demás** y **ofrecer tu visión y esfuerzo sin que nadie te lo pida**. Trabajar hasta el agotamiento para demostrar tu valía, o insistir sin ser invitado, trae resistencia, rechazo y amargura —la señal del Proyector que vive contra su diseño—.',
-      senales: '**Señales de que vas por buen camino** — Tu señal de [alineamiento](signal:projector) es el **éxito** —ser visto y reconocido—, y la de [desalineamiento](signal:projector), la **amargura**. Cuando se te ve, se te invita y tu visión es bien recibida, vas por buen camino; cuando te sientes invisible, agotado y resentido, suele ser señal de que te ofreces donde no te han llamado o de que te exiges una energía que no tienes.'
+      senales: 'El éxito, aquí, es ser visto y reconocido. Cuando se te ve, se te invita y tu visión es bien recibida, vas por buen camino; cuando te sientes invisible, agotado y resentido, suele ser señal de que te ofreces donde no te han llamado o de que te exiges una energía que no tienes.'
     },
     manifestor: {
       energia: [
@@ -2181,12 +2189,12 @@ export default {
         'Por eso **el descanso es parte de tu método**, no tu recompensa: la mayor parte de tu tiempo no deberías estar produciendo. Respeta los ciclos de empuje y reposo, y protege tu autonomía sin aislarte.'
       ],
       trampa: '**La trampa de tu tipo** — Actuar por sorpresa **sin informar** a quienes tu impacto va a alcanzar: eso provoca resistencia, oposición y enfado alrededor, que acaba poniéndote las cosas más difíciles. La otra gran trampa es **exigirte una constancia** que no es tuya, hasta quemarte, sin aceptar tu gran necesidad de reposo.',
-      senales: '**Señales de que vas por buen camino** — Tu señal de [alineamiento](signal:manifestor) es la **paz**; la de [desalineamiento](signal:manifestor), el **enfado**. Cuando informas y te mueves con libertad, encuentras calma a tu alrededor; cuando todo se llena de resistencia y conflicto, suele ser señal de que actuaste sin avisar o de que estás forzando un ritmo continuo que no te corresponde.'
+      senales: 'Cuando informas y te mueves con libertad, encuentras calma a tu alrededor; cuando todo se llena de resistencia y conflicto, suele ser señal de que actuaste sin avisar o de que estás forzando un ritmo continuo que no te corresponde.'
     },
     reflector: {
       energia: '**Gestión de tu energía** — No tienes **ningún centro definido**: muestreas constantemente la energía de la gente y los lugares, así que **el entorno te afecta muchísimo** y tu energía varía mucho de un día a otro. Lo más importante para ti es **elegir bien dónde estás y con quién**, y no exigirte una constancia que no es propia de tu diseño. Y no cierres en caliente lo que importa: date el ciclo entero.',
       trampa: '**La trampa de tu tipo** — Decidir con prisa, quedarte en entornos que no te sientan bien e **identificarte con lo que solo estás reflejando**: tomar por tuyos estados de ánimo o presiones que en realidad son del grupo. **Forzarte a ser siempre igual** va contra tu naturaleza cambiante.',
-      senales: '**Señales de que vas por buen camino** — Tu señal de [alineamiento](signal:reflector) es la **sorpresa**, con su punto de deleite; la de [desalineamiento](signal:reflector), la **decepción**. Cuando los entornos y las compañías son los correctos, la vida te sorprende gratamente; cuando predomina la decepción, suele ser señal de que estás en el lugar o con la gente equivocados, o de que has decidido demasiado rápido.'
+      senales: 'La sorpresa viene con su punto de deleite. Cuando los entornos y las compañías son los correctos, la vida te sorprende gratamente; cuando predomina la decepción, suele ser señal de que estás en el lugar o con la gente equivocados, o de que has decidido demasiado rápido.'
     }
   },
 
@@ -2941,6 +2949,7 @@ export default {
     crossFourGates:
       'Lo que da a cada cruz su carácter propio son sus **cuatro puertas**: el Sol y la Tierra de Personalidad —lo consciente, lo que uno reconoce como suyo— y el Sol y la Tierra de Diseño —lo inconsciente, el suelo desde el que actúa—. Son las activaciones de más peso de la carta, y **hay que leerlas juntas**: el sentido está en la combinación, no en cada puerta por separado.',
     crossCombination: 'Esta cruz combina las puertas **{gates}**:',
+    crossQuarter: 'En el mandala, pertenece al **[{quarter}](concept:quarter)**.',
     crossGatesJoin: ' | '
   },
 
@@ -2959,10 +2968,13 @@ export default {
     definitionPrefix: '^Definición\\s+',
     practiceTitle: 'Vivir tu diseño',
     signalsTitle: 'Tus señales',
+    signalsBulletHead: '**[Señales](concept:signal) de que vas por buen camino** —',
+    signalAligned: 'Alineamiento',
+    signalMisaligned: 'Desalineamiento',
     // Explicit "your definition is split" statement + the concrete center groups
     // (only shown for split/triple/quad, where there is more than one group).
     definitionGroupsLead:
-      'Tu definición es **{label}**: tus centros definidos se reparten en **{n} grupos separados**:',
+      'Tu definición es **{label}**: tus centros definidos se reparten en **{n} grupos**, sin un canal que los una por dentro:',
     definitionGroupJoin: ' · ',
     purposeTitle: 'Tu propósito',
     purposeSubhead: '[{name}](cross:{angle}) ({gates})',

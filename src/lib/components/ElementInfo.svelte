@@ -392,14 +392,14 @@
         <div class="related">
           <div class="rel-head">{info.crossIndex.heading}</div>
           {#each info.crossIndex.quarters as q}
-            <p class="subhead">{q.title}</p>
+            <p class="subhead">{@html renderInline(q.title)}</p>
             <p class="para qnote">{@html renderInline(q.note)}</p>
             <table class="rel-table xtable">
               <tbody>
                 {#each q.rows as r}
                   <tr>
-                    <td class="rt-chip"><button class="index-chip" type="button" onclick={() => onnavigate?.(r.kind, r.key)}>{r.sun}</button></td>
-                    <td class="rt-note"><button class="index-chip xname-chip" type="button" onclick={() => onnavigate?.('cross', r.crossKey)}>{r.name}</button> <span class="xgates">{r.gates}</span></td>
+                    <td class="rt-chip"><button class="index-chip" class:gold={r.current} type="button" onclick={() => onnavigate?.(r.kind, r.key)}>{r.sun}</button></td>
+                    <td class="rt-note"><button class="index-chip xname-chip" class:gold={r.current} type="button" onclick={() => onnavigate?.('cross', r.crossKey)}>{r.name}</button> <span class="xgates">{r.gates}</span></td>
                     <td class="rt-pct">{r.tag}</td>
                   </tr>
                 {/each}

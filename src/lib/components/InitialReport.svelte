@@ -216,6 +216,14 @@
                   <li>
                     {#if Array.isArray(b)}
                       {#each b as par}<p class="bpar">{@html renderInline(par)}</p>{/each}
+                    {:else if b && b.head}
+                      <!-- Bullet with two sub-bullets then a tail paragraph (the
+                           signals bullet: alignment / misalignment + the rest). -->
+                      <p class="bpar">{@html renderInline(b.head)}</p>
+                      <ul class="rsub">
+                        {#each b.sub as sb}<li>{@html renderInline(sb)}</li>{/each}
+                      </ul>
+                      {#if b.tail}<p class="bpar">{@html renderInline(b.tail)}</p>{/if}
                     {:else}{@html renderInline(b)}{/if}
                   </li>
                 {/each}
@@ -520,6 +528,21 @@
   }
   .rbullets li .bpar + .bpar {
     margin-top: 0.55rem;
+  }
+  /* Sub-bullets inside a bullet (alignment / misalignment under "Signals"). */
+  .rsub {
+    margin: 0.35rem 0 0;
+    padding-left: 1.05rem;
+    list-style: circle;
+  }
+  .rsub li {
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: #c4c4ca;
+    margin: 0.15rem 0 0;
+  }
+  .rsub li::marker {
+    color: var(--text-muted);
   }
   p {
     font-size: 0.92rem;
