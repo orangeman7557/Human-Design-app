@@ -17,7 +17,12 @@ Statuses:
 The deeper context (technical trade-offs, future ideas, deferred decisions)
 lives in [`BACKLOG.md`](./BACKLOG.md).
 
-Last updated: 2026-07-23 (v1.5.1).
+Last updated: 2026-08-08 (v1.5.2).
+
+> Latest change (2026-08-08, **enlace de perfil compartible para IA + tanda de retoques de UI**): mergeado a `staging`; **`main` queda pendiente** hasta que el autor confirme en vivo que una IA recibe bien el JSON del enlace.
+> **Enlace de perfil compartible (backlog).** El mismo enlace de "compartir" (`/{lang}/chart?…`) ahora responde según **cómo** llega la petición: una persona que lo pincha (`Sec-Fetch-Mode: navigate`) o un bot de previsualización ven la web; un cliente programático (una IA que hace fetch desde un prompt) recibe el **perfil completo en JSON**. La detección es por comportamiento del navegador, no por lista de User-Agents. El JSON lleva datos de nacimiento + perfil calculado con clave técnica **y** etiqueta legible (`src/lib/hd/profile-json.js`). El Worker (`hooks.server.js`) calcula la carta en el edge — coste asumido, medición pendiente en BACKLOG. Los prompts "sobre esta carta" y el del informe terminan con el enlace (solo la URL).
+> **5 retoques de UI.** (a) chips de puertas/canales dorados solo si activos en la carta; (b) enlace a la estrategia dentro del drawer de cada tipo; (c) "instalar como app" en su propia línea del footer; (d) modales "acerca de" y "donar" separados, con enlace cruzado y "enviarme un mensaje" → formulario con "sugerencia" preseleccionada; (e) clic en una puerta del bodygraph abre su drawer.
+> **8 retoques más.** Drawer de cuartos como listado; frase de "etiqueta" eliminada; títulos de cuarto del drawer de la cruz con estilo enlace; cruz con "pertenece al cuarto … y combina las puertas …:"; "Vivir tu diseño" destacado en el índice del informe; viñeta de señales "que"→"si", acaba en ":", enlace a la pareja concreta; reflow del drawer de definición y **bug** de los grupos (solo en la definición propia).
 
 > Latest change (2026-07-23, **versión 1.5.1 — retoques + bug del informe en Android**): seis ajustes sobre la 1.5.0, cerrados con bump a **1.5.1** y merge a `staging` y a `main`.
 > **Drawer de señales — fuera la frase redundante.** El párrafo «Para un Generador el par es satisfacción y frustración; …» se retira (`D.signalPairNote` fuera del `after` de `getSignalInfo`): ya se lee en la tabla de los cinco tipos que va justo debajo. Queda solo la nota del nombre canónico.

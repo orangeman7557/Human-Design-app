@@ -172,6 +172,9 @@ const overrides = {
     frame: 'In the framework of Human Design',
     ask: '{frame}, can you explain {subject} in detail?',
     askChart: '{frame}, for {who}, can you explain {subject} in detail?',
+    // Appended to chart-angle prompts (and the report handoff): the shareable
+    // link on its own — an AI that fetches it gets the full profile as JSON.
+    chartLink: '\n\n{url}',
     who: 'a {type} with a {profile} profile, {authority} authority, {definition}, and these defined centers: {centers}',
     none: 'none',
     side: { personality: 'Personality', design: 'Design' },
@@ -284,10 +287,10 @@ const overrides = {
     crossIndexHeading: 'All 192 crosses, by quarter of the mandala',
     crossIndexCols: { sun: 'Sun', name: 'Cross', angle: 'Ang.' },
     quarter: [
-      { title: 'Quarter of Initiation', note: 'The start: the spark, the idea with no shape yet. Purpose is sought through the **mind**.' },
-      { title: 'Quarter of Civilization', note: 'Giving form and building what serves everyone. Purpose is sought through **form**.' },
-      { title: 'Quarter of Duality', note: 'Meeting the other, and what comes of it. Purpose is sought through **bonding**.' },
-      { title: 'Quarter of Mutation', note: 'Transformation, and the ending of the old. Purpose is sought through **change**.' }
+      { title: 'Quarter of Initiation', short: 'of Initiation', note: 'The start: the spark, the idea with no shape yet. Purpose is sought through the **mind**.' },
+      { title: 'Quarter of Civilization', short: 'of Civilization', note: 'Giving form and building what serves everyone. Purpose is sought through **form**.' },
+      { title: 'Quarter of Duality', short: 'of Duality', note: 'Meeting the other, and what comes of it. Purpose is sought through **bonding**.' },
+      { title: 'Quarter of Mutation', short: 'of Mutation', note: 'Transformation, and the ending of the old. Purpose is sought through **change**.' }
     ],
     crossTitle: '{name}',
     factCrossPersonality: 'Personality',
@@ -298,8 +301,8 @@ const overrides = {
       'In this particular cross, the conscious axis crosses "{tpSun}" ([gate {pSun}](gate:{pSun})) with "{tpEarth}" ([gate {pEarth}](gate:{pEarth})): the theme a person recognises as their own and keeps pushing at over a lifetime. Underneath, the unconscious axis brings "{tdSun}" ([gate {dSun}](gate:{dSun})) held up by "{tdEarth}" ([gate {dEarth}](gate:{dEarth})) — the ground all of that is done from, and usually clearer to other people than to the person themselves.',
     crossFourGates:
       'What gives each cross its own character is its **four gates**: the Personality Sun and Earth — the conscious side, what a person recognises as their own — and the Design Sun and Earth — the unconscious side, the ground they act from. They are the heaviest activations in the chart, and they have to be **read together**: the meaning is in the combination, not in any one gate.',
-    crossCombination: 'This cross combines gates **{gates}**:',
-    crossQuarter: 'On the mandala, it belongs to the **[{quarter}](concept:quarter)**.',
+    crossCombination: 'This cross belongs to the [Quarter {quarter}](concept:quarter) and combines gates **{gates}**:',
+    definitionGroupsLead: 'In your case, the groups are:',
     crossGatesJoin: ' | '
   },
 
@@ -315,7 +318,7 @@ const overrides = {
     definitionPrefix: '^Definition\\s+',
     practiceTitle: 'Living Your Design',
     signalsTitle: 'Your Signals',
-    signalsBulletHead: '**[Signals](concept:signal) that you are on track** —',
+    signalsBulletHead: '**[Signals](signal:{type}) of whether you are on track**:',
     signalAligned: 'Alignment',
     signalMisaligned: 'Misalignment',
     definitionGroupsLead:
@@ -419,8 +422,7 @@ const overrides = {
       title: 'The Quarters of the Mandala',
       paragraphs: [
         'The **64 gates** are arranged in a circle — the *mandala* of Human Design — and that circle is divided into **four quarters** of 16 gates each. Each quarter describes a **different way a life’s purpose unfolds**, and it sits as a backdrop to the incarnation crosses that fall within it.',
-        'The four are: the **Quarter of Initiation**, where purpose is sought through the **mind** — the spark, the idea not yet in form; the **Quarter of Civilization**, through **form** — giving body to what serves everyone; the **Quarter of Duality**, through **bonding** — the meeting with the other; and the **Quarter of Mutation**, through **change** — transformation and the closing of the old.',
-        'Each chart’s [incarnation cross](concept:cross) belongs to one of these quarters (its Personality Sun gate decides which), and that quarter colours the **overall tone** in which the purpose is lived. It is not a label to work on: it is a way of placing the cross within the mandala as a whole.'
+        'Each chart’s [incarnation cross](concept:cross) belongs to one of these quarters (its Personality Sun gate decides which), and that quarter colours the **overall tone** in which the purpose is lived.'
       ]
     },
     activation: {
@@ -463,7 +465,7 @@ const overrides = {
       title: 'Generator',
       paragraphs: [
         'The most common type, and the *pure* Generator: around **37% of people**. What defines it is a defined [Sacral Center](center:sacral) — the life-force engine of the system, generative and renewable. Well aligned, that building energy is steady and plentiful.',
-        'A Generator works by responding. It **reacts to what life puts in front of it** rather than starting things from the head. Commit that energy to the right thing and *satisfaction* shows up; push it where it does not belong and *frustration* does instead.',
+        'A Generator works by [responding](strategy:respond). It **reacts to what life puts in front of it** rather than starting things from the head. Commit that energy to the right thing and *satisfaction* shows up; push it where it does not belong and *frustration* does instead.',
         'In practice the Sacral answers before the mind does. Faced with something concrete — a proposal, a question, a situation — there is a gut pull toward it or away from it. **Trusting that signal**, rather than reasoning your way to an answer, is what keeps the energy well spent.'
       ]
     },
@@ -471,7 +473,7 @@ const overrides = {
       title: 'Manifesting Generator',
       paragraphs: [
         'A variant of the [Generator](type:generator) — about 33% of people, which puts all Generators together at close to 70%. A Manifesting Generator has a defined [Sacral](center:sacral) like any Generator, but it also has the [Throat](center:throat) connected to a motor center. That adds the ability to make things happen fast.',
-        'The strategy is to **respond and then inform**: wait for the sacral answer — the body\u2019s yes or no — and, once you have it, tell the people it will affect before you set off. MGs tend to be many-sided, quick and non-linear: skipping steps, running several things at once, and doubling back later to finish what was skipped.',
+        'The strategy is to [**respond and then inform**](strategy:respond-then-inform): wait for the sacral answer — the body\u2019s yes or no — and, once you have it, tell the people it will affect before you set off. MGs tend to be many-sided, quick and non-linear: skipping steps, running several things at once, and doubling back later to finish what was skipped.',
         'The trick is not to scatter. Starting things the body never said yes to is what drains an MG. When the yes is real, it moves fast and feels *satisfaction* and *peace*; when the mind pushes instead, what piles up is *frustration*, *anger* and half-finished work.'
       ]
     },
@@ -479,7 +481,7 @@ const overrides = {
       title: 'Projector',
       paragraphs: [
         'Around **20% of people**. With no defined [Sacral](center:sacral), a Projector is **not built for constant work** and cannot hold a [Generator](type:generator)\u2019s pace — so beware of trying to keep going without rest. The gift lies elsewhere: seeing other people with real depth, and knowing how to guide their energy.',
-        'The strategy is to **wait for the invitation** on the things that matter — work, love, where to live. Recognition is what lets the insight land; offering it unasked usually meets resistance. When *recognition* and *success* turn up, that is the sign of being on track. When things are off, the tell is *bitterness*.',
+        'The strategy is to [**wait for the invitation**](strategy:wait-for-invitation) on the things that matter — work, love, where to live. Recognition is what lets the insight land; offering it unasked usually meets resistance. When *recognition* and *success* turn up, that is the sign of being on track. When things are off, the tell is *bitterness*.',
         'Managing the energy means **resting and pacing**: the competition is not stamina, it is depth and mastery. Sleep and let go before you are empty, and choose carefully who gets your attention — learning to say yes or no when it counts, because not every invitation deserves a yes.'
       ]
     },
@@ -487,7 +489,7 @@ const overrides = {
       title: 'Manifestor',
       paragraphs: [
         'The most independent type, around **9% of people**. At least one motor center (the Heart or the Solar Plexus) connects to the [Throat](center:throat), but the [Sacral](center:sacral) is undefined — so the energy is not constant. It arrives in bursts, good for starting things, and then it needs rest. Quite a lot of rest.',
-        'The strategy is to **inform before acting**. Not asking permission — simply telling the people your impact will reach. It takes most of the resistance out of the room. Acting in line with it brings *peace*; skipping it brings opposition, and *anger* builds.',
+        'The strategy is to [**inform before acting**](strategy:inform-before-acting). Not asking permission — simply telling the people your impact will reach. It takes most of the resistance out of the room. Acting in line with it brings *peace*; skipping it brings opposition, and *anger* builds.',
         'A Manifestor is here to **start things and make an impact**, not to keep them running. Managing the energy means respecting the cycle of push and rest, and protecting your independence without cutting yourself off.'
       ]
     },
@@ -495,7 +497,7 @@ const overrides = {
       title: 'Reflector',
       paragraphs: [
         'The rarest type: barely **1% of people**. No center is defined — the whole bodygraph is open. That makes a Reflector an unusually sensitive mirror of the people and places around them, able to read the health of a community.',
-        'Because they are constantly sampling other people\u2019s energy, **surroundings matter enormously**: who they are with and where they are changes the experience completely. The strategy is to **wait a lunar cycle** — about 28 days — before big decisions, letting the thing be seen from every angle first.',
+        'Because they are constantly sampling other people\u2019s energy, **surroundings matter enormously**: who they are with and where they are changes the experience completely. The strategy is to [**wait a lunar cycle**](strategy:wait-lunar-cycle) — about 28 days — before big decisions, letting the thing be seen from every angle first.',
         'The main care is choosing environments well and not mistaking what is being reflected for what is theirs. In the right place with the right people, *surprise* and *delight* show up. When things are off, the tell is *disappointment*.'
       ]
     }
@@ -658,22 +660,22 @@ const overrides = {
     split: {
       title: 'Split Definition',
       paragraphs: [
-        'The defined centers fall into **two separate groups**, with no channel joining them inside. What usually follows is a **pull toward connection**: something to bridge the two halves.',
-        'That bridge tends to arrive through other people — whose energy completes the missing channel — or through transits that switch on the gate in between. The split is not a shortfall. It simply means certain company and certain places make a person feel whole, and that happens naturally.'
+        'The defined centers fall into **two separate groups**, with no channel joining them inside.',
+        'Someone with a split definition usually feels a **pull toward connection**: something to bridge the two halves. That bridge tends to arrive through other people — whose energy completes the missing channel — or through transits that switch on the gate in between. The split is not a shortfall. It simply means certain company and certain places make a person feel whole, and that happens naturally.'
       ]
     },
     'triple-split': {
       title: 'Triple Split Definition',
       paragraphs: [
-        'The defined centers fall into **three separate groups**. The wiring is more intricate, and it usually takes **more variety — of people, of input** — for the parts to feel joined up.',
-        'Diverse surroundings and a certain amount of movement suit this definition well; too much stillness can leave the sense that something has not quite come together. Knowing the structure helps: that need for variety is not scatteredness.'
+        'The defined centers fall into **three separate groups**.',
+        'The wiring is more intricate, and it usually takes **more variety — of people, of input** — for someone with this definition to feel joined up. Diverse surroundings and a certain amount of movement suit it well; too much stillness can leave the sense that something has not quite come together. Knowing the structure helps: that need for variety is not scatteredness.'
       ]
     },
     'quad-split': {
       title: 'Quadruple Split Definition',
       paragraphs: [
-        'The rarest of them: the defined centers fall into **four separate groups**. It is a highly fragmented wiring which, oddly enough, tends to ask for **more structure, space and calm** in order to come together.',
-        'Far from a problem, it describes a very particular way of processing life. What helps is **taking time** and not forcing everything into place at once: the many parts settle at their own pace.'
+        'The rarest of them: the defined centers fall into **four separate groups**.',
+        'It is a highly fragmented wiring which, oddly enough, tends to ask for **more structure, space and calm** in order to come together. Far from a problem, it describes a very particular way of processing life. What helps is **taking time** and not forcing everything into place at once: the many parts settle at their own pace.'
       ]
     }
   },

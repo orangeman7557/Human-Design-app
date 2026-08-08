@@ -28,6 +28,13 @@
   let status = $state('idle'); // 'idle' | 'sending' | 'sent' | 'error'
   let errorMsg = $state('');
 
+  // Opened from the donate modal's "send me a message" link with the suggestion
+  // type preselected (aug 2026). Exposed via bind:this from the footer.
+  export function openWith(k = 'sugerencia') {
+    kind = k;
+    open = true;
+  }
+
   function close() {
     open = false;
   }

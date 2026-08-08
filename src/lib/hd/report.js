@@ -16,6 +16,7 @@ import {
   getTypeReport,
   getCenterReport,
   getPromptLabels,
+  getPromptTemplates,
   getDisplayLabels,
   getReportShell,
   getSignalNames,
@@ -188,7 +189,7 @@ export function buildReport(chart, lang = getLocale()) {
     const signalsBullet =
       tr.senales && names
         ? {
-            head: R.signalsBulletHead,
+            head: fillTpl(R.signalsBulletHead, { type: chart.type }),
             sub: [
               `**${R.signalAligned}:** ${names.aligned}`,
               `**${R.signalMisaligned}:** ${names.misaligned}`
@@ -237,11 +238,11 @@ export function buildReport(chart, lang = getLocale()) {
  * @param {string} [lang]
  * @returns {string}
  */
-export function buildReportPrompt(chart, lang = getLocale()) {
+export function buildReportPrompt(chart, lang = getLocale(), shareUrl = null) {
   const L = getPromptLabels(lang);
   const R = getReportShell(lang);
   const centers = (chart.definedCenters ?? []).map((c) => L.center?.[c] ?? c).join(', ');
-  return fillTpl(R.closingPrompt, {
+  let prompt = fillTpl(R.closingPrompt, {
     type: L.type?.[chart.type] ?? chart.type,
     profile: chart.profile,
     authority: L.authority?.[chart.authority] ?? chart.authority,
@@ -249,4 +250,8 @@ export function buildReportPrompt(chart, lang = getLocale()) {
     definition: L.definition?.[chart.definition] ?? chart.definition,
     centers: centers || R.noCenters
   });
+  // The report handoff carries the whole chart, so it also gets the JSON link
+  // (shareable-profile, aug 2026).
+  if (shareUrl) prompt += fillTpl(getPromptTemplates(lang).chartLink, { url: shareUrl });
+  return prompt;
 }

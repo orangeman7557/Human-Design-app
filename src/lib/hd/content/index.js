@@ -123,15 +123,16 @@ export function getElementInfo(kind, key, lang = getLocale(), chart = null) {
     const rel = relatedIndex(kind, key, lang);
     // General framing first, then this definition as a real heading inside the
     // body (accent-coloured, on its own line) so the switch from the general to
-    // the concrete is unmissable. For a split (2+ groups), the bullets of which
-    // centres fall together are inserted after the body's first paragraph (which
-    // states the count) — the same schematic list the report shows.
+    // the concrete is unmissable. Only in the chart's OWN definition drawer (a
+    // split/triple/quad with 2+ groups) do we insert a lead-in + the bullets of
+    // which centres fall together — not when browsing another definition from
+    // the index, and not for single / no-definition (aug 2026 fix).
     const body = [...entry.paragraphs];
     const groups = definitionGroups(chart);
-    if (groups.length >= 2) {
+    if (groups.length >= 2 && key === chart?.definition) {
       const centerLbl = pack(lang).labels?.center ?? {};
       const bullets = { bullets: groups.map((g) => g.map((c) => centerLbl[c] ?? c).join(' · ')) };
-      body.splice(1, 0, bullets);
+      body.splice(1, 0, D.definitionGroupsLead, bullets);
     }
     const withIntro = {
       ...entry,
@@ -258,6 +259,15 @@ export function getConceptInfo(key, chart = null, lang = getLocale()) {
     // offer. Quarters are derived from GATE_WHEEL (16 gates each, starting at
     // gate 13), so they can't drift out of step with the engine.
     return { ...base, crossIndex: crossIndex(lang, chart) };
+  }
+  if (key === 'quarter') {
+    // The four quarters as a plain two-column list (short title + brief note),
+    // instead of describing them inline in prose (aug 2026).
+    const D = pack(lang).drawer;
+    return {
+      ...base,
+      quarterList: (D.quarter ?? []).map((q) => ({ title: q.short ?? q.title, note: q.note }))
+    };
   }
   if (key === 'signal') {
     // Same table as the pair drawers, but with NO current row: this is the
@@ -485,22 +495,20 @@ function buildCrossInfo(cross, lang = getLocale()) {
     note: gateTheme(g, lang) ?? null
   });
   // Which of the mandala's four quarters this cross sits in (by its Personality
-  // Sun gate), named with a link to the quarters explainer drawer.
+  // Sun gate). Its short name is folded into the "combines gates" line, which
+  // links to the quarters explainer drawer (aug 2026).
   const qi = quarterGates().findIndex((gs) => gs.includes(pSun));
-  const quarterLine =
-    qi >= 0 && D.crossQuarter && D.quarter?.[qi]
-      ? fillTpl(D.crossQuarter, { quarter: D.quarter[qi].title })
-      : null;
-  // Reading order: what the ANGLE means (briefly) → the quarter it sits in → why
-  // the four gates are read together → the schema → this cross's reading → handoff.
+  const qShort = qi >= 0 ? D.quarter?.[qi]?.short : null;
+  // Reading order: what the ANGLE means (briefly) → why the four gates are read
+  // together → the quarter it sits in + the four gates → the schema → this
+  // cross's reading → handoff.
   const essence = getCrossEssence(cross, lang);
   return {
     title: fillTpl(D.crossTitle, { name: getCrossName(cross, lang) ?? entry.name }),
     paragraphs: [
       entry.text,
-      quarterLine,
       D.crossFourGates,
-      fillTpl(D.crossCombination, { gates: formatCrossGates(cross, lang) })
+      fillTpl(D.crossCombination, { quarter: qShort ?? '', gates: formatCrossGates(cross, lang) })
     ].filter(Boolean),
     // Stack each side's rows under its own label as a bulleted list: the gate
     // titles are too long to sit beside a "Personality"/"Design" column without
@@ -573,6 +581,12 @@ export function getDisplayLabels(lang = getLocale()) {
 /** I Ching hexagram name for a gate (gate N ↔ hexagram N), or null. */
 export function getIchingName(gate, lang = getLocale()) {
   return pack(lang).iching?.[Number(gate)] ?? null;
+}
+
+/** A channel's own name (order-independent), or null. */
+export function getChannelName(a, b, lang = getLocale()) {
+  const key = Number(a) < Number(b) ? `${a}-${b}` : `${b}-${a}`;
+  return pack(lang).channel?.[key]?.name ?? null;
 }
 
 /**
@@ -716,14 +730,20 @@ export function getGateInfo(gate, chart = null, lang = getLocale()) {
   const D = p.drawer;
   const many = CHANNELS.filter(([a, b]) => a === g || b === g).length > 1;
   const pairs = CHANNELS.filter(([a, b]) => a === g || b === g);
+  // Chip gold state (aug 2026): with a chart on screen, a chip is gold only when
+  // that element is active in it — the centre defined, the channel complete, the
+  // harmonic gate active. Without a chart (concept index) `active` stays
+  // undefined, so ElementInfo keeps every chip gold.
+  const centerActive = chart ? chart.definedCenters?.includes(center) : undefined;
   const facts = [
-    { label: D.factCenter, inline: true, rows: [{ chip: { label: labels[center] ?? center, kind: 'center', key: center } }] },
+    { label: D.factCenter, inline: true, rows: [{ chip: { label: labels[center] ?? center, kind: 'center', key: center, active: centerActive } }] },
     {
       label: many ? D.factChannels : D.factChannel,
       rows: pairs.map(([a, b]) => {
         const k = `${a}-${b}`;
         const chName = p.channel?.[k]?.name;
-        return { chip: { label: k, kind: 'channel', key: k }, note: chName ?? null };
+        const active = chart ? channelState(a, b, chart) === 'complete' : undefined;
+        return { chip: { label: k, kind: 'channel', key: k, active }, note: chName ?? null };
       })
     },
     {
@@ -732,7 +752,8 @@ export function getGateInfo(gate, chart = null, lang = getLocale()) {
       rows: pairs.map(([a, b]) => {
         const h = a === g ? b : a;
         const t = gateTheme(h, lang);
-        return { chip: { label: String(h), kind: 'gate', key: String(h) }, note: t ?? null };
+        const active = chart ? chart.activeGates?.includes(h) : undefined;
+        return { chip: { label: String(h), kind: 'gate', key: String(h), active }, note: t ?? null };
       })
     }
   ];
@@ -807,20 +828,23 @@ export function getChannelInfo(pair, chart = null, lang = getLocale()) {
   // have `essence` still render as the single opening line.
   if (ch?.more) paragraphs.push(...ch.more);
 
+  // Chip gold state mirrors the gate drawer (aug 2026): with a chart, centres are
+  // gold when defined and gates when active; without one, `active` stays
+  // undefined and every chip renders gold.
   const facts = [
     {
       label: D.factCenters,
       inline: true,
       rows: [
-        { chip: { label: labels[ca] ?? ca, kind: 'center', key: ca } },
-        { chip: { label: labels[cb] ?? cb, kind: 'center', key: cb } }
+        { chip: { label: labels[ca] ?? ca, kind: 'center', key: ca, active: chart ? chart.definedCenters?.includes(ca) : undefined } },
+        { chip: { label: labels[cb] ?? cb, kind: 'center', key: cb, active: chart ? chart.definedCenters?.includes(cb) : undefined } }
       ]
     },
     {
       label: D.factGates,
       rows: [
-        { chip: { label: String(a), kind: 'gate', key: String(a) }, note: ta ?? null },
-        { chip: { label: String(b), kind: 'gate', key: String(b) }, note: tb ?? null }
+        { chip: { label: String(a), kind: 'gate', key: String(a), active: chart ? chart.activeGates?.includes(a) : undefined }, note: ta ?? null },
+        { chip: { label: String(b), kind: 'gate', key: String(b), active: chart ? chart.activeGates?.includes(b) : undefined }, note: tb ?? null }
       ]
     }
   ];

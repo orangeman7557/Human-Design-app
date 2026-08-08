@@ -232,7 +232,17 @@ export default {
     link: 'about',
     donateLink: 'donate',
     donateHeading: 'Donate',
-    donateIntro: 'If you find the app useful and feel like saying thanks or chipping in, go for it! Here are two ways:',
+    donateAria: 'Donate',
+    donateIntro: 'If you find the app useful and feel like saying thanks or chipping in, go for it!',
+    donateWays: 'Here are two ways:',
+    // Inline link in the "about" modal that opens the donate modal.
+    contribA: 'If you feel like contributing or simply saying thanks, you can do so ',
+    contribLink: 'here',
+    contribB: '.',
+    // Closing line of the donate modal → opens "report a bug" preset to a message.
+    messageA: 'You can also ',
+    messageLink: 'send me a message',
+    messageB: ' if you like.',
     aria: 'About',
     title: 'About',
     licenseA: 'Source-available project, ',

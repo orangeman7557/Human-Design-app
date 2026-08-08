@@ -18,16 +18,17 @@
    * @type {{
    *   open?: boolean,
    *   chart?: any,
+   *   shareUrl?: string | null,
    *   onclose: () => void,
    *   onnavigate?: (kind: string, key: string) => void,
    *   ondownloadpdf?: (data: { sections: any[] }) => Promise<void> | void,
    *   onshare?: () => void
    * }}
    */
-  let { open = false, chart = null, onclose, onnavigate, ondownloadpdf, onshare } = $props();
+  let { open = false, chart = null, shareUrl = null, onclose, onnavigate, ondownloadpdf, onshare } = $props();
 
   const sections = $derived(open && chart ? buildReport(chart) : []);
-  const prompt = $derived(open && chart ? buildReportPrompt(chart) : '');
+  const prompt = $derived(open && chart ? buildReportPrompt(chart, undefined, shareUrl) : '');
 
   // Short labels for the table of contents (section titles are longer).
   const TOC = $derived(t('reportUi.toc'));
@@ -198,7 +199,7 @@
 
     <nav class="toc" aria-label={t('reportUi.sectionsAria')}>
       {#each sections as s}
-        <button class="toc-chip" type="button" onclick={() => scrollTo(s.id)}>{TOC[s.id] ?? s.title}</button>
+        <button class="toc-chip" class:hl={s.id === 'practice'} type="button" onclick={() => scrollTo(s.id)}>{TOC[s.id] ?? s.title}</button>
       {/each}
       <button class="toc-chip" type="button" onclick={() => scrollTo('handoff')}>{t('reportUi.learnMore')}</button>
     </nav>
@@ -468,6 +469,13 @@
     border-color: var(--accent);
     color: var(--text);
     outline: none;
+  }
+  /* "Vivir tu diseño" is the heart of the report, so its index chip is nudged
+     forward: gold text on a soft accent tint (author request aug 2026). */
+  .toc-chip.hl {
+    color: var(--accent);
+    border-color: var(--accent);
+    background: var(--accent-soft);
   }
   .body {
     flex: 1;

@@ -94,9 +94,22 @@ function channelChartSubject(T, a, b, state) {
  * @param {string} key    element key (for 'concept', the category name; for 'profile', the "3/5" string)
  * @param {any} chart      computed chart (type, authority, strategy, profile, definedCenters, personality, design…)
  * @param {string} [lang]
+ * @param {string|null} [shareUrl] when given, the chart-angle prompt ends with a
+ *   link to this chart's shareable page (which serves the full profile as JSON
+ *   to an AI). Only the chart angle gets it — the general angle isn't about this
+ *   chart. Phase: shareable-profile (aug 2026).
  * @returns {{ general: string, chart: string | null }}
  */
-export function buildPrompts(kind, key, chart, lang = getLocale()) {
+export function buildPrompts(kind, key, chart, lang = getLocale(), shareUrl = null) {
+  const out = buildPromptsCore(kind, key, chart, lang);
+  if (shareUrl && out?.chart) {
+    out.chart += fillTpl(getPromptTemplates(lang).chartLink, { url: shareUrl });
+  }
+  return out;
+}
+
+/** @returns {{ general: string, chart: string | null }} */
+function buildPromptsCore(kind, key, chart, lang = getLocale()) {
   const L = getPromptLabels(lang);
   const T = getPromptTemplates(lang);
   const S = T.subject;

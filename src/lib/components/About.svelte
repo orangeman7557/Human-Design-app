@@ -13,19 +13,26 @@
   /**
    * @type {{
    *   version?: string,
-   *   onElement?: (kind: string, key: string) => void
+   *   onElement?: (kind: string, key: string) => void,
+   *   onMessage?: () => void
    * }}
    * onElement (chart page only) opens an element's drawer — used by the
    * "Manifestador" link. Where it's not provided (home page, no drawer system)
    * the word renders as plain text.
+   * onMessage opens the "report a bug" modal preset to a message; wired by the
+   * footer to the sibling ReportBug component.
    */
-  let { onElement, version = '' } = $props();
+  let { onElement, onMessage, version = '' } = $props();
 
   // Route-bound: the footer link renders inside the PRERENDERED home, where the
   // shared module locale races between /en and /es (see route-t.svelte.js).
   const t = routeT();
 
-  let open = $state(false);
+  // Two separate modals now (aug 2026): "acerca de" (credits + license) and
+  // "donar" (the support cards + party). The donate modal is also reachable
+  // from a link inside the about modal.
+  let aboutOpen = $state(false);
+  let donateOpen = $state(false);
 
   const COFFEE_URL = 'https://buymeacoffee.com/orangeman7557';
 
@@ -66,8 +73,18 @@
     typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   $effect(() => {
-    if (open) loadCount();
+    if (donateOpen) loadCount();
   });
+
+  function openDonate() {
+    aboutOpen = false;
+    donateOpen = true;
+  }
+
+  function sendMessage() {
+    donateOpen = false;
+    onMessage?.();
+  }
 
   async function loadCount() {
     try {
@@ -292,27 +309,29 @@
   }
 
   function openElement(kind, key) {
-    open = false;
+    aboutOpen = false;
     onElement?.(kind, key);
   }
 
   function onkeydown(e) {
-    if (e.key === 'Escape' && open) open = false;
+    if (e.key !== 'Escape') return;
+    if (donateOpen) donateOpen = false;
+    else if (aboutOpen) aboutOpen = false;
   }
 </script>
 
 <svelte:window {onkeydown} />
 
-<button class="link" type="button" onclick={() => (open = true)}>{t('about.donateLink')}</button>
+<button class="link" type="button" onclick={() => (donateOpen = true)}>{t('about.donateLink')}</button>
 <span aria-hidden="true">·</span>
-<button class="link" type="button" onclick={() => (open = true)}>{t('about.link')}</button>
+<button class="link" type="button" onclick={() => (aboutOpen = true)}>{t('about.link')}</button>
 
-{#if open}
-  <div class="scrim" onclick={() => (open = false)} role="presentation" transition:fade={{ duration: 120 }}></div>
+{#if aboutOpen}
+  <div class="scrim" onclick={() => (aboutOpen = false)} role="presentation" transition:fade={{ duration: 120 }}></div>
   <div class="modal" role="dialog" aria-modal="true" aria-label={t('about.aria')} use:focusTrap use:scrollLock transition:fly={{ y: 12, duration: 180 }}>
     <header>
       <h2>{t('about.title')}</h2>
-      <button class="close" type="button" onclick={() => (open = false)} aria-label={t('bug.close')}>✕</button>
+      <button class="close" type="button" onclick={() => (aboutOpen = false)} aria-label={t('bug.close')}>✕</button>
     </header>
 
     <div class="facts">
@@ -320,11 +339,28 @@
       <p>
         {t('about.madeA')}{#if onElement}<button type="button" class="tlink" onclick={() => openElement('type', 'manifestor')}>{t('about.madeType')}</button>{:else}{t('about.madeType')}{/if}{t('about.madeB')}
       </p>
+      <p>{t('about.contribA')}<button type="button" class="ilink-btn" onclick={openDonate}>{t('about.contribLink')}</button>{t('about.contribB')}</p>
       <p>{t('about.wish')}</p>
     </div>
 
-    <h3 class="donate-head">{t('about.donateHeading')}</h3>
+    <p class="fine">
+      {t('about.disclaimer')}
+    </p>
+
+    {#if version}<p class="fine ver">v{version}</p>{/if}
+  </div>
+{/if}
+
+{#if donateOpen}
+  <div class="scrim" onclick={() => (donateOpen = false)} role="presentation" transition:fade={{ duration: 120 }}></div>
+  <div class="modal" role="dialog" aria-modal="true" aria-label={t('about.donateAria')} use:focusTrap use:scrollLock transition:fly={{ y: 12, duration: 180 }}>
+    <header>
+      <h2>{t('about.donateHeading')}</h2>
+      <button class="close" type="button" onclick={() => (donateOpen = false)} aria-label={t('bug.close')}>✕</button>
+    </header>
+
     <p class="donate-intro">{t('about.donateIntro')}</p>
+    <p class="donate-intro donate-ways">{t('about.donateWays')}</p>
 
     <div class="support">
       <button type="button" class="scard" onclick={sendLove}>
@@ -367,11 +403,7 @@
       </p>
     {/if}
 
-    <p class="fine">
-      {t('about.disclaimer')}
-    </p>
-
-    {#if version}<p class="fine ver">v{version}</p>{/if}
+    <p class="message-line">{t('about.messageA')}<button type="button" class="ilink-btn" onclick={sendMessage}>{t('about.messageLink')}</button>{t('about.messageB')}</p>
   </div>
   <!-- Party layer: sibling of .modal (its transform would trap position:fixed
        children and its overflow would clip the confetti). -->
@@ -392,15 +424,37 @@
   .link:hover {
     color: var(--text-muted);
   }
-  /* "Donar" section heading inside the modal — same gold as the modal title. */
-  .donate-head {
-    margin: 1.2rem 0 0;
-    font-size: 1rem;
-    font-weight: 500;
-    color: var(--accent);
-  }
   .donate-intro {
-    margin: 0.4rem 0 0;
+    margin: 0.9rem 0 0;
+    font-size: 0.88rem;
+    line-height: 1.5;
+    color: #c4c4ca;
+  }
+  /* Second intro paragraph ("Aquí te propongo dos maneras:") — tighter to the
+     first, which it continues. */
+  .donate-ways {
+    margin-top: 0.5rem;
+  }
+  /* Inline text links inside the modals ("aquí" → donate, "enviarme un
+     mensaje" → report form): a discreet underline that brightens on hover,
+     matching the drawer's in-text links. */
+  .ilink-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    cursor: pointer;
+  }
+  .ilink-btn:hover {
+    color: var(--text);
+  }
+  /* Closing line of the donate modal. */
+  .message-line {
+    margin: 1rem 0 0;
     font-size: 0.88rem;
     line-height: 1.5;
     color: #c4c4ca;

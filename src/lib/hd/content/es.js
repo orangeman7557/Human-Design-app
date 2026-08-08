@@ -109,8 +109,7 @@ export default {
       title: 'Los cuartos del mandala',
       paragraphs: [
         'Las **64 puertas** se disponen en un círculo —el *mandala* del Diseño Humano—, y ese círculo se divide en **cuatro cuartos** de 16 puertas cada uno. Cada cuarto describe un **modo distinto en que se despliega el propósito** de una vida, y sirve de telón de fondo a las cruces de encarnación que caen dentro de él.',
-        'Los cuatro son: el **cuarto de la Iniciación**, donde el propósito se busca a través de la **mente** —la chispa, la idea aún sin forma—; el **cuarto de la Civilización**, a través de la **forma** —dar cuerpo a lo que sirve a todos—; el **cuarto de la Dualidad**, a través del **vínculo** —el encuentro con el otro—; y el **cuarto de la Mutación**, a través del **cambio** —la transformación y el cierre de lo viejo—.',
-        'La [cruz de encarnación](concept:cross) de cada carta pertenece a uno de estos cuartos (lo determina la puerta del Sol de Personalidad), y ese cuarto tiñe el **tono general** con el que se vive el propósito. No es una etiqueta que haya que trabajar: es una manera de situar la cruz dentro del conjunto del mandala.'
+        'La [cruz de encarnación](concept:cross) de cada carta pertenece a uno de estos cuartos (lo determina la puerta del Sol de Personalidad), y ese cuarto tiñe el **tono general** con el que se vive el propósito.'
       ]
     },
     activation: {
@@ -960,7 +959,7 @@ export default {
       title: 'Generador',
       paragraphs: [
         'Tipo mayoritario, Generador *puro*: alrededor del **~37% de la población**. Su rasgo definitorio es el [centro Sacral](center:sacral) definido: la fuente de energía vital del sistema, generativa y de carácter renovable. Su energía generadora y constructora, cuando está bien alineado, es continuada y abundante.',
-        'Opera por respuesta: **reacciona a lo que la vida le presenta** en lugar de iniciar desde la mente y lo racional. Cuando compromete su energía con lo correcto, aparece la *satisfacción*; si no se escucha bien y fuerza su energía donde no toca, aparece la *frustración*.',
+        'Su estrategia es [responder](strategy:respond): **reacciona a lo que la vida le presenta** en lugar de iniciar desde la mente y lo racional. Cuando compromete su energía con lo correcto, aparece la *satisfacción*; si no se escucha bien y fuerza su energía donde no toca, aparece la *frustración*.',
         'En la práctica, su centro Sacral responde antes que su mente: ante algo concreto —una propuesta, una pregunta, una situación— surge una reacción visceral de atracción o rechazo. **Seguir esa señal del cuerpo**, en vez de decidir desde el pensamiento y la razón, es lo que mantiene su energía bien empleada.'
       ]
     },
@@ -968,7 +967,7 @@ export default {
       title: 'Generador Manifestante',
       paragraphs: [
         'Una variante del [Generador](type:generator) —los Generadores Manifestantes suponen un ~33% de la población, y junto al resto de Generadores, cerca del 70 %—: un Generador Manifestante tiene el [Sacral](center:sacral) definido, y lo que lo diferencia de otros Generadores es que además tiene la [Garganta](center:throat) conectada a un centro motor. Eso le da la energía generadora propia de los Generadores y, además, capacidad de manifestar y materializar con rapidez.',
-        'Su estrategia es **responder y luego informar**: primero espera la respuesta sacral —el sí o el no del cuerpo— y, una vez la tiene, avisa a quienes se verán afectados antes de lanzarse. Tiende a ser polifacético, veloz y no lineal: salta pasos, hace varias cosas a la vez y a veces vuelve atrás a rematar lo que se saltó.',
+        'Su estrategia es [**responder y luego informar**](strategy:respond-then-inform): primero espera la respuesta sacral —el sí o el no del cuerpo— y, una vez la tiene, avisa a quienes se verán afectados antes de lanzarse. Tiende a ser polifacético, veloz y no lineal: salta pasos, hace varias cosas a la vez y a veces vuelve atrás a rematar lo que se saltó.',
         'La clave para gestionar su energía es no dispersarse iniciando sin haber escuchado la respuesta de su cuerpo: cuando se compromete con lo que de verdad le enciende (cuando su cuerpo dice sí), avanza rápido y siente *satisfacción* y *paz*; pero cuando fuerza empujado por la mente y las ideas, acumula *frustración*, *enfado* y trabajo a medias.'
       ]
     },
@@ -976,7 +975,7 @@ export default {
       title: 'Proyector',
       paragraphs: [
         'Cerca del **~20% de la población**. No tiene el [Sacral](center:sacral) definido, así que **no está diseñado para un trabajo constante** ni para sostener la misma energía que un [Generador](type:generator): debe cuidarse de intentar rendir de manera continuada y sin descanso. Su don es otro: ver a los demás con enorme profundidad y saber guiar y orientar la energía ajena.',
-        'Su estrategia es **esperar la invitación** para lo importante —el trabajo, el amor, el lugar donde vivir—. Necesita ser reconocido e invitado para que su sabiduría y su esfuerzo sean bien recibidos; cuando se ofrece o se mete sin que se lo pidan, lo normal es que encuentre resistencia y rechazo. Cuando en su vida aparecen el *reconocimiento* y el *éxito*, son la pista de que va por buen camino. En cambio, el síntoma que aparece cuando no vive alineado es la *amargura*.',
+        'Su estrategia es [**esperar la invitación**](strategy:wait-for-invitation) para lo importante —el trabajo, el amor, el lugar donde vivir—. Necesita ser reconocido e invitado para que su sabiduría y su esfuerzo sean bien recibidos; cuando se ofrece o se mete sin que se lo pidan, lo normal es que encuentre resistencia y rechazo. Cuando en su vida aparecen el *reconocimiento* y el *éxito*, son la pista de que va por buen camino. En cambio, el síntoma que aparece cuando no vive alineado es la *amargura*.',
         'En la gestión de su energía, su tarea es **descansar y dosificarse**: no compite en resistencia física, sino en profundidad y maestría. Su bienestar se fundamenta en dormir y soltar antes de quedar agotado, y en elegir bien a quién entrega su atención y esfuerzo: aprender a decir que sí o que no cuando toca (porque no toda invitación significa que tenga que decir que sí).'
       ]
     },
@@ -984,7 +983,7 @@ export default {
       title: 'Manifestador',
       paragraphs: [
         'El tipo más independiente, alrededor del **~9% de la población**. Tiene al menos un centro motor (el Corazón o el Plexo solar) conectado a la [Garganta](center:throat), pero el [Sacral](center:sacral) sin definir, así que su energía no es constante: llega a impulsos, que utiliza para iniciar y poner cosas en marcha, y luego necesita reposo, bastante reposo.',
-        'Su estrategia es **informar antes de actuar**. No se trata de pedir permiso, sino de avisar a quienes su impacto va a alcanzar: al hacerlo, reduce la resistencia y el rechazo que de otro modo encuentra a su alrededor. Actuar de manera alineada con su estrategia le trae *paz*; y si no lo hace, siente oposición y crece en él el *enfado*.',
+        'Su estrategia es [**informar antes de actuar**](strategy:inform-before-acting). No se trata de pedir permiso, sino de avisar a quienes su impacto va a alcanzar: al hacerlo, reduce la resistencia y el rechazo que de otro modo encuentra a su alrededor. Actuar de manera alineada con su estrategia le trae *paz*; y si no lo hace, siente oposición y crece en él el *enfado*.',
         'El Manifestador está aquí para **iniciar e impactar**, no para ejecutar de forma sostenida. Gestionar su energía pasa por respetar sus ciclos de empuje y descanso, y por proteger su autonomía sin aislarse de quienes le rodean.'
       ]
     },
@@ -992,7 +991,7 @@ export default {
       title: 'Reflector',
       paragraphs: [
         'El tipo más infrecuente: apenas el **~1% de la población**. No tiene ningún centro definido: todo su bodygraph está abierto. Eso lo convierte en un espejo extraordinariamente sensible de la gente y los lugares que lo rodean, capaz de percibir la salud de una comunidad.',
-        'Como muestrea constantemente la energía ajena, **el entorno y las compañías le afectan muchísimo**: con quién y dónde está cambia profundamente su experiencia. Su estrategia es **esperar un ciclo lunar** —unos 28 días— antes de las decisiones importantes, dejando que el asunto se vea desde muchos ángulos antes de cerrarlo.',
+        'Como muestrea constantemente la energía ajena, **el entorno y las compañías le afectan muchísimo**: con quién y dónde está cambia profundamente su experiencia. Su estrategia es [**esperar un ciclo lunar**](strategy:wait-lunar-cycle) —unos 28 días— antes de las decisiones importantes, dejando que el asunto se vea desde muchos ángulos antes de cerrarlo.',
         'Su mayor cuidado en la gestión de la energía es elegir bien los entornos y no identificarse con lo que solo está reflejando. Cuando vive alineado con su diseño, viviendo en el lugar y con las personas adecuadas, aparecen en él la *sorpresa* y el *deleite*. Si por el contrario no vive alineado, el síntoma que aparece en él es la *decepción*.'
       ]
     }
@@ -1155,22 +1154,22 @@ export default {
     split: {
       title: 'Definición split',
       paragraphs: [
-        'Los centros definidos forman **dos grupos separados**, sin un canal que los una por dentro. La persona suele experimentar una **búsqueda de conexión**: algo que tienda el puente entre sus dos partes.',
-        'Ese puente llega a menudo a través de otras personas —cuya energía completa el canal que falta— o de tránsitos planetarios que activan la puerta intermedia. Esta separación (split) no es una carencia: se trata de entender que hay compañías y entornos que la hacen sentir integrada, y esto sucede de manera natural.'
+        'Los centros definidos forman **dos grupos separados**, sin un canal que los una por dentro.',
+        'Una persona con definición split suele experimentar una **búsqueda de conexión**: algo que tienda el puente entre sus dos partes. Ese puente llega a menudo a través de otras personas —cuya energía completa el canal que falta— o de tránsitos planetarios que activan la puerta intermedia. Esta separación (split) no es una carencia: se trata de entender que hay compañías y entornos que la hacen sentir integrada, y esto sucede de manera natural.'
       ]
     },
     'triple-split': {
       title: 'Definición triple split',
       paragraphs: [
-        'Los centros definidos se reparten en **tres grupos** separados. El cableado interno es más complejo y, con frecuencia, la persona necesita **más variedad de estímulos y de gente** para sentir que sus partes internas se conectan.',
-        'Suele funcionar bien en entornos diversos y con cierto movimiento; la quietud excesiva puede dejarle la sensación de que algo no termina de juntarse. Conocer esta estructura ayuda a no interpretar esa necesidad de variedad como dispersión.'
+        'Los centros definidos se reparten en **tres grupos** separados.',
+        'El cableado interno es más complejo y, con frecuencia, una persona con esta definición necesita **más variedad de estímulos y de gente** para sentir que sus partes internas se conectan. Suele funcionar bien en entornos diversos y con cierto movimiento; la quietud excesiva puede dejarle la sensación de que algo no termina de juntarse. Conocer esta estructura ayuda a no interpretar esa necesidad de variedad como dispersión.'
       ]
     },
     'quad-split': {
       title: 'Definición cuádruple split',
       paragraphs: [
-        'La más infrecuente: los centros definidos forman **cuatro grupos** separados. Es un cableado muy fragmentado que, paradójicamente, suele pedir **más estructura, espacio y calma** para integrarse.',
-        'Lejos de ser un problema, describe una manera muy particular de procesar la vida. La persona se beneficia de **darse tiempo** y de no presionarse para resolverlo todo de golpe: sus muchas partes se ordenan a su propio ritmo.'
+        'La más infrecuente: los centros definidos forman **cuatro grupos** separados.',
+        'Es un cableado muy fragmentado que, paradójicamente, suele pedir **más estructura, espacio y calma** para integrarse. Lejos de ser un problema, describe una manera muy particular de procesar la vida. Una persona con esta definición se beneficia de **darse tiempo** y de no presionarse para resolverlo todo de golpe: sus muchas partes se ordenan a su propio ritmo.'
       ]
     }
   },
@@ -2809,6 +2808,9 @@ export default {
     frame: 'En el marco del Diseño Humano',
     ask: '{frame}, ¿me explicas en detalle {subject}?',
     askChart: '{frame}, para {who}, ¿me explicas en detalle {subject}?',
+    // Appended to chart-angle prompts (and the report handoff): the shareable
+    // link on its own — an AI that fetches it gets the full profile as JSON.
+    chartLink: '\n\n{url}',
     who: 'un {type}, perfil {profile}, autoridad {authority}, {definition}, centros definidos {centers}',
     none: 'ninguno',
     side: { personality: 'Personalidad', design: 'Diseño' },
@@ -2934,10 +2936,10 @@ export default {
     // Own wording, drawn from several sources: the four quarters divide the
     // wheel into 16 gates each and name the register a life's theme plays in.
     quarter: [
-      { title: 'Cuarto de la Iniciación', note: 'El arranque: la chispa, la idea que aún no tiene forma. El propósito se busca a través de la **mente**.' },
-      { title: 'Cuarto de la Civilización', note: 'Dar forma y construir lo que sirve a todos. El propósito se busca a través de la **forma**.' },
-      { title: 'Cuarto de la Dualidad', note: 'El encuentro con el otro y lo que sale de ahí. El propósito se busca a través del **vínculo**.' },
-      { title: 'Cuarto de la Mutación', note: 'La transformación y el cierre de lo viejo. El propósito se busca a través del **cambio**.' }
+      { title: 'Cuarto de la Iniciación', short: 'de la iniciación', note: 'El arranque: la chispa, la idea que aún no tiene forma. El propósito se busca a través de la **mente**.' },
+      { title: 'Cuarto de la Civilización', short: 'de la civilización', note: 'Dar forma y construir lo que sirve a todos. El propósito se busca a través de la **forma**.' },
+      { title: 'Cuarto de la Dualidad', short: 'de la dualidad', note: 'El encuentro con el otro y lo que sale de ahí. El propósito se busca a través del **vínculo**.' },
+      { title: 'Cuarto de la Mutación', short: 'de la mutación', note: 'La transformación y el cierre de lo viejo. El propósito se busca a través del **cambio**.' }
     ],
     crossTitle: '{name}',
     factCrossPersonality: 'Personalidad',
@@ -2948,9 +2950,11 @@ export default {
       'En esta cruz concreta, el eje consciente cruza «{tpSun}» ([puerta {pSun}](gate:{pSun})) con «{tpEarth}» ([puerta {pEarth}](gate:{pEarth})): es el tema que la persona reconoce como suyo y el que va empujando a lo largo de la vida. Debajo, el eje inconsciente aporta «{tdSun}» ([puerta {dSun}](gate:{dSun})) sostenido por «{tdEarth}» ([puerta {dEarth}](gate:{dEarth})) — el suelo desde el que se hace todo eso, casi siempre más visible para los demás que para uno mismo.',
     crossFourGates:
       'Lo que da a cada cruz su carácter propio son sus **cuatro puertas**: el Sol y la Tierra de Personalidad —lo consciente, lo que uno reconoce como suyo— y el Sol y la Tierra de Diseño —lo inconsciente, el suelo desde el que actúa—. Son las activaciones de más peso de la carta, y **hay que leerlas juntas**: el sentido está en la combinación, no en cada puerta por separado.',
-    crossCombination: 'Esta cruz combina las puertas **{gates}**:',
-    crossQuarter: 'En el mandala, pertenece al **[{quarter}](concept:quarter)**.',
-    crossGatesJoin: ' | '
+    crossCombination: 'Esta cruz pertenece al [cuarto {quarter}](concept:quarter) y combina las puertas **{gates}**:',
+    crossGatesJoin: ' | ',
+    // Lead-in to the "which centres fall in each group" bullets, shown only in
+    // the chart's OWN definition drawer (aug 2026).
+    definitionGroupsLead: 'En tu caso, los grupos son:'
   },
 
   // Initial-report assembly: section titles and the closing hand-off prompt.
@@ -2968,7 +2972,7 @@ export default {
     definitionPrefix: '^Definición\\s+',
     practiceTitle: 'Vivir tu diseño',
     signalsTitle: 'Tus señales',
-    signalsBulletHead: '**[Señales](concept:signal) de que vas por buen camino** —',
+    signalsBulletHead: '**[Señales](signal:{type}) de si vas por buen camino**:',
     signalAligned: 'Alineamiento',
     signalMisaligned: 'Desalineamiento',
     // Explicit "your definition is split" statement + the concrete center groups

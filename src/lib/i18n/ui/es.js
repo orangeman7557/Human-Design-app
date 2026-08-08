@@ -244,7 +244,17 @@ export default {
     link: 'acerca de',
     donateLink: 'donar',
     donateHeading: 'Donar',
-    donateIntro: 'Si encuentras la app útil y te nace agradecer o contribuir, ¡adelante! Aquí te propongo dos maneras:',
+    donateAria: 'Donar',
+    donateIntro: 'Si encuentras la app útil y te nace agradecer o contribuir, ¡adelante!',
+    donateWays: 'Aquí te propongo dos maneras:',
+    // Inline link in the "acerca de" modal that opens the donate modal.
+    contribA: 'Si te apetece contribuir o simplemente agradecer, puedes hacerlo ',
+    contribLink: 'aquí',
+    contribB: '.',
+    // Closing line of the donate modal → opens "notificar un fallo" preset to a message.
+    messageA: 'También puedes ',
+    messageLink: 'enviarme un mensaje',
+    messageB: ' si quieres.',
     aria: 'Acerca de',
     title: 'Acerca de',
     licenseA: 'Proyecto source-available, ',

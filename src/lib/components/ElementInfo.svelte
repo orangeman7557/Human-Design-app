@@ -408,6 +408,22 @@
           {/each}
         </div>
       {/if}
+      {#if info.quarterList}
+        <!-- The four mandala quarters as a plain title · description table (no
+             chips): the concept drawer for the quarters. -->
+        <div class="related">
+          <table class="rel-table qtable">
+            <tbody>
+              {#each info.quarterList as q}
+                <tr>
+                  <td class="rt-qtitle">{@html renderInline(q.title)}</td>
+                  <td class="rt-note">{@html renderInline(q.note)}</td>
+                </tr>
+              {/each}
+            </tbody>
+          </table>
+        </div>
+      {/if}
       {#if info.list}
         {#if info.list[0]?.note}
           <!-- Full index as "[chip] name" rows (gates / channels). -->
@@ -748,6 +764,21 @@
     color: var(--accent);
     margin: 1.1rem 0 -0.35rem;
   }
+  /* A subhead that is itself a link (the quarter titles in the 192-cross index):
+     keep the gold title look but mark it clickable with an underline + hover. */
+  .subhead :global(.ilink) {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-color: #7a6a3e;
+    text-underline-offset: 2px;
+    cursor: pointer;
+  }
+  .subhead :global(.ilink:hover),
+  .subhead :global(.ilink:focus-visible) {
+    color: var(--text);
+    text-decoration-color: var(--accent);
+    outline: none;
+  }
   .info-body .para:first-child {
     margin-top: 0;
   }
@@ -1009,6 +1040,19 @@
     font-size: 0.82rem;
     color: var(--text-muted);
     line-height: 1.35;
+  }
+  /* Quarters list: a plain title column (no chip) + its brief note. The title
+     reads as a small heading, echoing the gold subheads. */
+  .qtable td {
+    padding: 0.3rem 0.5rem 0.3rem 0;
+    vertical-align: baseline;
+  }
+  .rt-qtitle {
+    white-space: nowrap;
+    width: 1%;
+    font-size: 0.84rem;
+    font-weight: 600;
+    color: var(--accent);
   }
   .rt-pct {
     white-space: nowrap;

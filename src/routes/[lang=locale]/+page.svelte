@@ -71,6 +71,10 @@
   let date = $state('');
   let time = $state('');
 
+  // Footer: the donate modal's "send me a message" reaches into the ReportBug
+  // component to open it with the suggestion type preselected.
+  let reportBug = $state();
+
   /** @type {{ label: string, latitude: number, longitude: number, timezone: string } | null} */
   let place = $state(null);
 
@@ -682,14 +686,17 @@
 
   <footer>
     {#if install.mode}
-      <button class="install-link" type="button" onclick={onInstallClick}>{tr('install.link')}</button>
-      <span aria-hidden="true">·</span>
+      <div class="foot-install">
+        <button class="install-link" type="button" onclick={onInstallClick}>{tr('install.link')}</button>
+      </div>
     {/if}
-    <ReportBug version={version} />
-    <span aria-hidden="true">·</span>
-    <a class="foot-link" href={`/${lang}/privacy`}>{tr('footer.privacy')}</a>
-    <span aria-hidden="true">·</span>
-    <About version={version} onElement={openAuthorChartWithInfo} />
+    <div class="foot-line">
+      <ReportBug bind:this={reportBug} version={version} />
+      <span aria-hidden="true">·</span>
+      <a class="foot-link" href={`/${lang}/privacy`}>{tr('footer.privacy')}</a>
+      <span aria-hidden="true">·</span>
+      <About version={version} onElement={openAuthorChartWithInfo} onMessage={() => reportBug?.openWith('sugerencia')} />
+    </div>
   </footer>
 </main>
 
@@ -1251,6 +1258,13 @@
   }
   .foot-link:hover {
     color: var(--text-muted);
+  }
+
+  /* "Instalar como app" sits on its own line above the rest of the footer
+     links (author request aug 2026); it hides entirely when already installed
+     (the {#if install.mode} guard). */
+  .foot-install {
+    margin-bottom: 0.5rem;
   }
 
   footer {

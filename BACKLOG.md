@@ -1813,3 +1813,28 @@ bump. What got fixed is in the commits and in `TASKS.md`; this records what was
   de/en/fr/it/default); the param is now omitted and CORS (`*`) was verified.
   The file was renamed from `nominatim.js` to `geocoder.js` (2026-06-24),
   with importers, comments and docs updated.
+
+## Shareable profile as JSON — measure the edge-compute cost (added 2026-08-08)
+
+The shared-chart link (`/{lang}/chart?…`) now serves the full computed profile
+as JSON to non-human requests (an AI following the link from a prompt), while a
+person clicking the same link still gets the SPA. To do that the Worker
+(`hooks.server.js`) computes the chart edge-side, which pulls `computeChart`
+(astronomy-engine, luxon) and `tz-lookup` into the Worker bundle — previously
+kept out on purpose. Tradeoff accepted by the author (2026-08-08).
+
+**To do — estimate after the first production deploy:**
+
+- **Weight of the calculation.** Measure the CPU time of one JSON request
+  (`computeChart` runs two ephemeris passes, Personality + Design) and confirm
+  it sits comfortably under Cloudflare's per-invocation CPU budget (historically
+  ~10 ms on the free plan). It only runs for bot/JSON requests, never for a
+  normal human page load.
+- **Request volume we can serve without trouble.** From that per-request cost,
+  estimate up to what rate of JSON requests we stay within the plan's limits
+  (CPU + requests/day), and note the threshold at which a paid plan or an
+  isolated compute path (separate Worker / lazy route) would be warranted.
+
+Bundle size itself is not a concern: the added ~500 kB (uncompressed) is well
+under Cloudflare's multi-MB Worker limit, and it is the same calc code already
+shipped to every browser client-side.

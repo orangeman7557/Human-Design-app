@@ -52,18 +52,24 @@
    * `onCenterClick(event, center)` fires on tap/click — the page pins the
    * highlight there (the only way to trigger it on touch, where hover
    * doesn't exist).
+   * `onGateClick(event, gate)` fires when a gate marker is tapped/clicked; a
+   * transparent hit disc (same radius as the active gate marker) sits on top of
+   * everything so a gate opens its own drawer while the rest of the centre still
+   * opens the centre's.
    * @type {{
    *   chart: import('$lib/hd/chart.js').Chart,
    *   highlight?: { centers: string[], gates: number[], channels: string[] },
    *   onCenterHover?: ((center: string | null) => void) | null,
-   *   onCenterClick?: ((event: MouseEvent, center: string) => void) | null
+   *   onCenterClick?: ((event: MouseEvent, center: string) => void) | null,
+   *   onGateClick?: ((event: MouseEvent, gate: number) => void) | null
    * }}
    */
   let {
     chart,
     highlight = { centers: [], gates: [], channels: [] },
     onCenterHover = null,
-    onCenterClick = null
+    onCenterClick = null,
+    onGateClick = null
   } = $props();
 
   const hlCenters = $derived(new Set(highlight.centers));
@@ -384,6 +390,26 @@
         </g>
       {/each}
     </g>
+
+    <!-- ── 4. Gate hit targets (transparent, on top) ─────────────────────── -->
+    <!-- One clickable disc per gate, sized to the active gate marker (r=15), so
+         tapping a gate opens its drawer while the rest of the centre still
+         opens the centre's. Painted last so it wins over the centre shape
+         underneath. Only rendered when a handler is wired. -->
+    {#if onGateClick}
+      <g>
+        {#each gateEntries as g}
+          <circle
+            cx={g.pos.x} cy={g.pos.y} r="15"
+            fill="transparent"
+            class="gate-hit"
+            role="button"
+            aria-label={`Gate ${g.gate}`}
+            onclick={(e) => { e.stopPropagation(); onGateClick(e, g.gate); }}
+          />
+        {/each}
+      </g>
+    {/if}
   </svg>
 </div>
 
@@ -401,6 +427,10 @@
   }
 
   .center-shape {
+    cursor: pointer;
+  }
+
+  .gate-hit {
     cursor: pointer;
   }
 </style>

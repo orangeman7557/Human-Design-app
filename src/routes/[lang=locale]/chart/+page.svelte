@@ -65,6 +65,8 @@
   /** @type {any} */
   let chart = $state(null);
   let reportOpen = $state(false);
+  // Footer: donate modal's "send me a message" opens ReportBug preselected.
+  let reportBug = $state();
   /** @type {string | null} */
   let error = $state(null);
   let loading = $state(true);
@@ -73,6 +75,15 @@
   let saved = $state(false);
   /** @type {string | null} */
   let saveError = $state(null);
+
+  // The chart's own shareable link — appended to chart-angle prompts and the
+  // report handoff so the user's AI can fetch the full profile as JSON
+  // (shareable-profile, aug 2026). Null until the birth data is in.
+  const shareUrl = $derived(
+    birthData && typeof location !== 'undefined'
+      ? buildShareUrl($state.snapshot(birthData), location.origin, lang)
+      : null
+  );
 
   // Activations table shows the first 5 bodies by default (Sun/Earth/Moon +
   // both Nodes), so the nodes are visible without expanding.
@@ -142,7 +153,7 @@
   function buildEntry(catKey, kind, key) {
     const info = resolveInfo(kind, key);
     if (!info) return null;
-    return { catKey, kind, key, info, prompts: buildPrompts(kind, key, chart) };
+    return { catKey, kind, key, info, prompts: buildPrompts(kind, key, chart, lang, shareUrl) };
   }
 
   /** Is the panel open *for* this element? Tracks the stack's origin so the
@@ -192,7 +203,7 @@
       if (!l || infoStack.length === 0) return;
       infoStack = infoStack.map((e) => {
         const info = resolveInfo(e.kind, e.key);
-        return info ? { ...e, info, prompts: buildPrompts(e.kind, e.key, chart) } : e;
+        return info ? { ...e, info, prompts: buildPrompts(e.kind, e.key, chart, lang, shareUrl) } : e;
       });
     });
   });
@@ -1289,6 +1300,7 @@
         highlight={graphHighlight}
         onCenterHover={(c) => setHover(c ? { kind: 'center', center: c, gates: [] } : null)}
         onCenterClick={(e, c) => onSvgCenterClick(e, c)}
+        onGateClick={(e, gate) => openInfoFor('gate', 'gate', String(gate))}
       />
     </div>
 
@@ -1462,14 +1474,17 @@
 
     <footer>
       {#if install.mode}
-        <button class="install-link" type="button" onclick={onInstallClick}>{tr('install.link')}</button>
-        <span aria-hidden="true">·</span>
+        <div class="foot-install">
+          <button class="install-link" type="button" onclick={onInstallClick}>{tr('install.link')}</button>
+        </div>
       {/if}
-      <ReportBug version={version} />
-      <span aria-hidden="true">·</span>
-      <a class="foot-link" href={`/${lang}/privacy`}>{tr('footer.privacy')}</a>
-      <span aria-hidden="true">·</span>
-      <About version={version} onElement={(kind, key) => openInfoFor(kind, kind, key)} />
+      <div class="foot-line">
+        <ReportBug bind:this={reportBug} version={version} />
+        <span aria-hidden="true">·</span>
+        <a class="foot-link" href={`/${lang}/privacy`}>{tr('footer.privacy')}</a>
+        <span aria-hidden="true">·</span>
+        <About version={version} onElement={(kind, key) => openInfoFor(kind, kind, key)} onMessage={() => reportBug?.openWith('sugerencia')} />
+      </div>
     </footer>
   {/if}
 </main>
@@ -1489,6 +1504,7 @@
 <InitialReport
   open={reportOpen}
   {chart}
+  {shareUrl}
   onnavigate={(kind, key) => openInfoFor(CATEGORY_BY_KIND[kind] ?? '', kind, key)}
   ondownloadpdf={downloadReportPdf}
   onshare={shareReportLink}
@@ -2129,6 +2145,12 @@
     align-items: flex-start;
     gap: 0.3rem;
     margin-top: 0.2rem;
+  }
+
+  /* "Instalar como app" on its own line above the rest (author request aug
+     2026); hidden entirely when already installed. */
+  .foot-install {
+    margin-bottom: 0.5rem;
   }
 
   footer {
