@@ -173,8 +173,8 @@ export default {
     moreProfile: 'More about this profile',
     moreDefinition: 'More about this definition',
     moreSignals: 'More about these signals',
-    tipSignalAligned: 'Alignment signal',
-    tipSignalMisaligned: 'Misalignment signal',
+    tipSignalAligned: 'Alignment',
+    tipSignalMisaligned: 'Misalignment',
     moreCross: 'More about this incarnation cross',
     // Split around the info-dot glyph, which is rendered as the icon itself.
     infoHintA: 'Tap any element of the chart, then tap ',
@@ -230,6 +230,9 @@ export default {
 
   about: {
     link: 'about',
+    donateLink: 'donate',
+    donateHeading: 'Donate',
+    donateIntro: 'If you find the app useful and feel like saying thanks or chipping in, go for it! Here are two ways:',
     aria: 'About',
     title: 'About',
     licenseA: 'Source-available project, ',

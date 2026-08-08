@@ -247,8 +247,8 @@ const overrides = {
     gateTitle: 'Gate {g}: {theme}',
     gateTitlePlain: 'Gate {g}',
     gateFallback: 'Gate {g}.',
-    ichingNamed: 'Its root is hexagram {g} of the I Ching, "{name}".',
-    ichingPlain: 'It corresponds to hexagram {g} of the I Ching.',
+    ichingNamed: 'Its root is hexagram {g} of the [I Ching](concept:iching), "{name}".',
+    ichingPlain: 'It corresponds to hexagram {g} of the [I Ching](concept:iching).',
     deeper: 'For a deeper reading, you can use the "learn more using AI" option.',
     gateComplete:
       'In this chart, gate {g} is active and forms part of a complete channel: an energy contributed steadily and in an integrated way.',
@@ -348,7 +348,7 @@ const overrides = {
       title: 'Strategy',
       paragraphs: [
         '**Strategy** is how each type is meant to engage with life. It answers a very concrete question: how do you commit to something — a job, a relationship, a decision — without forcing it? Each type has its own answer.',
-        'The five: a Generator *responds* to what life puts in front of them; a Manifesting Generator *responds, then informs*; a Manifestor *informs before acting*; a Projector *waits for the invitation*; a Reflector *waits a lunar cycle*. They all point the same way: **stop initiating from your head** and trust the signal your body and your life are already giving you.',
+        'Every strategy points the same way: **stop initiating from your head** and trust the signal your body and your life are already giving you.',
         '**Following your strategy is the central experiment of Human Design.** Watch the difference between the decisions you make with it and the ones you make against it, and let that experience — not the theory — be your guide.'
       ]
     },
@@ -356,15 +356,15 @@ const overrides = {
       title: 'Authority',
       paragraphs: [
         '**Authority** is where a reliable decision comes from — which part of you gets the last word. In Human Design the mind is there to take in information and advise other people, but **it is not to be trusted for decisions about your own life**. Authority always comes from somewhere more bodily.',
-        'There are seven: emotional (Solar Plexus), sacral, splenic (Spleen), ego (Heart), self-projected (G), mental/environmental and lunar. Which one you have follows a hierarchy based on your defined centers. Some work **in the moment** (sacral and splenic); others need **time** — emotional authority asks you to ride out the wave before clarity shows up.',
+        'Which one you have follows a hierarchy based on your defined centers. Some work **in the moment** (sacral and splenic); others need **time** — emotional authority asks you to ride out the wave before clarity shows up.',
         'Authority is the most practical thing in the chart. It turns strategy into something you can actually use: before an important yes or no, it tells you which inner signal to listen for.'
       ]
     },
     profile: {
       title: 'The Profile',
       paragraphs: [
-        'The **profile** is the "how" of your path: the way you learn, relate and grow into what you are here for. It is two numbers — 3/5, for instance — taken from lines 1 to 6 of the I Ching. The first comes from the Sun/Earth of *personality*, the second from the Sun/Earth of *design*.',
-        'Each line brings its own flavor: 1- foundation and research, 2- natural talent, 3- trial and error, 4- bonds and network, 5- projection and practical leadership, 6- example and maturity. Put **two lines** together and you get a recognizable way of moving through life — more inward or more relational, more experimental or more solid.',
+        'The **profile** is the "how" of your path: the way you learn, relate and grow into what you are here for. It is two numbers — 3/5, for instance — taken from lines 1 to 6 of the [I Ching](concept:iching). The first comes from the Sun/Earth of *personality*, the second from the Sun/Earth of *design*.',
+        'Put the **two lines** together and you get a recognizable way of moving through life — more inward or more relational, more experimental or more solid.',
         'Type and authority answer *how to decide*. The profile answers *how your experience unfolds*. It tends to be the layer people recognize fastest, because it describes patterns already visible in their own history. Of the two lines, you live the first consciously and the second unconsciously — and other people usually see that second one more clearly than you do.'
       ]
     },
@@ -379,7 +379,7 @@ const overrides = {
     center: {
       title: 'The Centers',
       paragraphs: [
-        'The **centers** are the nine energy hubs of the bodygraph, each tied to a particular function. The idea comes from the chakras, but here what matters is whether a center is **defined** or **undefined** (open). The nine centers and what they do:'
+        'The **centers** are the nine energy hubs of the bodygraph, each tied to a particular function. The idea comes from the chakras, but here what matters is whether a center is **defined** or **undefined** (open). In the list below, the centers **defined in your chart** are highlighted; here are the nine and what they do:'
       ],
       after: [
         'A **defined** center works the same way every day: a consistent energy you always bring, your own and reliable. An **undefined** center is not a flaw. It is an open area that takes in and amplifies the energy of other people and of the surroundings. It is where you learn the most, and also where it is easiest to be conditioned and to mistake what is borrowed for what is yours.',
@@ -391,15 +391,24 @@ const overrides = {
       paragraphs: [
         'The **channels** are the 36 connections of the bodygraph. Each one joins two gates sitting in different centers. When both of its gates are active the channel is **complete**: it links those two centers, defines them, and creates a steady, dependable current between them.',
         'Between them, the channels decide **your type, your definition and which centers are defined**. That makes them the mechanical backbone of the chart: a channel is not an isolated trait but a constant way two areas of your energy work together.',
-        'Each channel blends the themes of its two gates (and of their I Ching hexagrams). In the index below, the channels **complete in this chart** are highlighted; tap any of them for a closer reading.'
+        'Each channel blends the themes of its two gates (and of their [I Ching](concept:iching) hexagrams). In the list below, the channels **complete in your chart** are highlighted.'
       ]
     },
     gate: {
       title: 'The Gates',
       paragraphs: [
-        'The **gates** are the 64 positions of the bodygraph a planet can switch on, one per I Ching hexagram. Each lives in a specific center and adds its own flavor of energy or character. At birth, the planets switch on a set of them.',
+        'The **gates** are the 64 positions of the bodygraph a planet can switch on, one per [I Ching](concept:iching) hexagram. Each lives in a specific center and adds its own flavor of energy or character. At birth, the planets switch on a set of them.',
         'An active gate whose partner — the gate at the other end of its channel — is missing is left **hanging**. Its theme is there, but it looks to be completed, often through someone who carries the other half. When both gates are active the channel forms and defines its two centers.',
-        'In the index below, the gates **active in this chart** are highlighted; tap any of them to see its flavor, its I Ching hexagram, and how it plays out.'
+        'In the list below, the gates **active in your chart** are highlighted.'
+      ]
+    },
+    iching: {
+      title: 'The I Ching',
+      paragraphs: [
+        'The **I Ching** (or *Book of Changes*) is an ancient Chinese text — more than two thousand years old — used both as a book of wisdom and as an oracle. At its core are **64 figures** called *hexagrams*, each describing an archetypal life situation and how it tends to change.',
+        'Each **hexagram** is built from **six stacked lines**, either solid (yang) or broken (yin). There are exactly 64 possible combinations of those six lines, and tradition gives each one a name and a meaning: the creative, waiting, conflict, peace, and so on.',
+        'Human Design borrows that structure: the **64 gates** of the bodygraph map one-to-one onto the **64 hexagrams**, and each gate inherits the theme of its hexagram. The **six lines** of each hexagram are also what give the lines of the [profile](concept:profile) (1 through 6).',
+        'Here the I Ching is used only as a **symbolic source** for those themes — the reservoir of meaning the gates draw on — not as a method of divination. It is one of the traditions Human Design combines, alongside astrology, the chakras, and the kabbalistic tree of life.'
       ]
     },
     activation: {
@@ -415,7 +424,7 @@ const overrides = {
       title: 'The Signals',
       paragraphs: [
         'The **signals** are the quickest way to check, on any given day, whether someone is living with their design or against it. They do not describe a personality trait. They are a **state you can feel**, and it shifts with how you have been deciding and acting.',
-        'Every [type](concept:type) has its own pair. The **alignment signal** shows up when you follow [your strategy](concept:strategy) and decide from [your authority](concept:authority); the **misalignment signal** is what surfaces when you do not. For a [Generator](type:generator) the pair is satisfaction and frustration; for a [Projector](type:projector), success and bitterness; for a [Manifestor](type:manifestor), peace and anger; for a [Reflector](type:reflector), surprise and disappointment.',
+        'Every [type](concept:type) has its own pair. The **alignment signal** shows up when you follow [your strategy](concept:strategy) and decide from [your authority](concept:authority); the **misalignment signal** is what surfaces when you do not.',
         'Human Design usually calls these the *signature* and the *not-self theme*. They are named as signals here because that is what they do: give you something you can check at any hour of the day without knowing anything about the system. When the misalignment one is winning, the answer is rarely to try harder — it is to look at what got decided, and how.'
       ]
     },

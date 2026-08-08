@@ -242,7 +242,18 @@
     }
     extra?.(e);
     e.stopPropagation();
-    if (!isTouch()) return;
+    if (!isTouch()) {
+      // Desktop: clicking the element opens the same drawer its hover "i" would
+      // (author request). The pointer is already over the element, so cardOver
+      // has rendered the matching "i" (inner element's, else the card concept);
+      // find it and open it. Touch keeps the tap-to-reveal below.
+      const innerEl = e.target.closest('[data-inner-key]');
+      const openFrom =
+        (innerEl ?? e.currentTarget).querySelector('[data-info-key]') ??
+        e.currentTarget.querySelector('[data-info-key]');
+      if (openFrom) openInfoFor(openFrom.dataset.infoCat, openFrom.dataset.infoKind, openFrom.dataset.infoKey);
+      return;
+    }
     const inner = e.target.closest('[data-inner-key]');
     if (inner) {
       innerReveal = innerReveal === inner.dataset.innerKey ? null : inner.dataset.innerKey;
@@ -258,6 +269,13 @@
   function onCenterChipClick(e, c) {
     const h = { kind: 'center', center: c, gates: [] };
     pin(e, h);
+    // Desktop (hover): clicking the chip opens its drawer, same as clicking the
+    // "i" that appears on hover. Touch keeps the two-step (tap highlights, the
+    // "i" opens) so a single tap can never fire a drawer by accident.
+    if (!isTouch()) {
+      openInfoFor('center', 'center', c);
+      return;
+    }
     revealForPinned(h, `center:${c}`);
   }
 
@@ -267,6 +285,13 @@
   // not left to the info-zone's cardClick, which never runs for them.
   function onChipClick(e, h, innerKey) {
     pin(e, h);
+    // Desktop: clicking the chip opens its drawer (like clicking its hover "i").
+    if (!isTouch()) {
+      const i = innerKey.indexOf(':');
+      const kind = innerKey.slice(0, i);
+      openInfoFor(kind, kind, innerKey.slice(i + 1));
+      return;
+    }
     revealForPinned(h, innerKey);
   }
 

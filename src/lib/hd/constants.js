@@ -63,6 +63,22 @@ export const GATES_BY_CENTER = {
   root:        [19, 38, 39, 41, 52, 53, 54, 58, 60]
 };
 
+// Same gates, but in the clockwise order they sit around each centre in the
+// bodygraph (derived from GATE_POSITIONS by angle around the centre's gate
+// centroid). Used to list a centre's gates/channels the way they read on the
+// chart rather than numerically.
+export const CENTER_GATE_ORDER = {
+  head:        [64, 61, 63],
+  ajna:        [47, 24, 4, 11, 43, 17],
+  throat:      [20, 16, 62, 23, 56, 35, 12, 45, 33, 8, 31],
+  g:           [10, 7, 1, 13, 25, 46, 2, 15],
+  heart:       [26, 51, 21, 40],
+  sacral:      [27, 34, 5, 14, 29, 59, 9, 3, 42],
+  spleen:      [44, 50, 32, 28, 18, 48, 57],
+  solarPlexus: [36, 30, 55, 49, 6, 37, 22],
+  root:        [58, 38, 54, 53, 60, 52, 19, 39, 41]
+};
+
 // Mapa inverso: puerta → centro. Se construye una vez al cargar.
 export const CENTER_BY_GATE = (() => {
   /** @type {Record<number, string>} */

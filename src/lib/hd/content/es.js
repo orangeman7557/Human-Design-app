@@ -39,7 +39,7 @@ export default {
       title: 'La estrategia',
       paragraphs: [
         'La **estrategia** es la forma correcta en que cada tipo debe actuar para vivir alineado. Responde a una pregunta muy concreta: ¿cómo comprometerse con algo —un trabajo, una relación, una decisión— sin forzar la situación? Cada tipo tiene la suya.',
-        'Las cinco son: el Generador *responde* a lo que la vida le presenta; el Generador Manifestante *responde y luego informa*; el Manifestador *informa antes de actuar*; el Proyector *espera la invitación*; y el Reflector *espera un ciclo lunar*. Todas comparten una misma idea: **dejar de iniciar desde la mente** y confiar en la señal del propio cuerpo y de la vida.',
+        'Todas las estrategias comparten una misma idea: **dejar de iniciar desde la mente** y confiar en la señal del propio cuerpo y de la vida.',
         '**Seguir la estrategia es, en la práctica, el experimento central del Diseño Humano**. El sistema sugiere observar la diferencia entre las decisiones tomadas a favor de la estrategia y las tomadas en contra, y usar esa experiencia —no la teoría— como guía.'
       ]
     },
@@ -47,15 +47,15 @@ export default {
       title: 'La autoridad',
       paragraphs: [
         'La **autoridad** indica desde dónde tomar una decisión de forma fiable: qué parte de uno tiene la última palabra. En Diseño Humano la mente sirve para procesar información y aconsejar a otros, pero **la mente no es de fiar para decidir sobre la propia vida**; la autoridad nace siempre de una fuente más corporal.',
-        'Hay siete: emocional (Plexo solar), sacral, esplénica (Bazo), del ego (Corazón), autoproyectada (G), mental/ambiental y lunar. Se determinan por jerarquía según los centros definidos. Algunas operan **en el momento** (la sacral y la esplénica) y otras necesitan **tiempo** (la emocional, que pide esperar a recorrer la onda emocional antes de tener claridad).',
+        'Se determinan por jerarquía según los centros definidos. Algunas operan **en el momento** (la sacral y la esplénica) y otras necesitan **tiempo** (la emocional, que pide esperar a recorrer la onda emocional antes de tener claridad).',
         'La autoridad es la herramienta más práctica de la carta: convierte la estrategia en un método concreto de decisión cotidiana. Antes de un sí o un no importante, indica a qué señal interna conviene atender.'
       ]
     },
     profile: {
       title: 'El perfil',
       paragraphs: [
-        'El **perfil** describe el "cómo" del camino de cada uno: el estilo con el que una persona aprende, se relaciona y cumple su propósito. Se compone de dos números (por ejemplo 3/5), tomados de las líneas 1 a 6 del I Ching: la primera viene del Sol/Tierra de *personalidad* y la segunda, del Sol/Tierra de *diseño*.',
-        'Cada línea aporta un matiz: 1- cimiento e investigación, 2- talento natural, 3- ensayo y error, 4- vínculos y red, 5- proyección y liderazgo práctico, 6- ejemplo y madurez. La combinación de las **dos líneas** describe una manera reconocible de moverse por la vida —más interna o más relacional, más experimental o más sólida.',
+        'El **perfil** describe el "cómo" del camino de cada uno: el estilo con el que una persona aprende, se relaciona y cumple su propósito. Se compone de dos números (por ejemplo 3/5), tomados de las líneas 1 a 6 del [I Ching](concept:iching): la primera viene del Sol/Tierra de *personalidad* y la segunda, del Sol/Tierra de *diseño*.',
+        'La combinación de las **dos líneas** describe una manera reconocible de moverse por la vida —más interna o más relacional, más experimental o más sólida.',
         'Mientras el tipo y la autoridad responden a *cómo decidir*, el perfil responde a *cómo se despliega la experiencia*. Es una de las capas más reveladoras para el autoconocimiento, porque suele describir patrones que uno ya reconoce en su propia historia. De las dos líneas, la primera se vive de manera más consciente, y la segunda, más inconsciente. La línea inconsciente resulta, en general, más visible para los demás que para uno mismo.'
       ]
     },
@@ -73,7 +73,7 @@ export default {
       // per-centre descriptions live in `centerBrief` below.
       title: 'Los centros',
       paragraphs: [
-        'Los **centros** son los nueve focos de energía del bodygraph, cada uno ligado a una función concreta. Heredan la idea de los chakras, pero aquí lo decisivo es si cada centro está **definido** o **indefinido** (abierto). Los nueve centros y sus funciones son:'
+        'Los **centros** son los nueve focos de energía del bodygraph, cada uno ligado a una función concreta. Heredan la idea de los chakras, pero aquí lo decisivo es si cada centro está **definido** o **indefinido** (abierto). En el listado de debajo, los centros **definidos en tu carta** aparecen resaltados; estos son los nueve y sus funciones:'
       ],
       after: [
         'Un centro **definido** funciona de forma fija y fiable: es una energía consistente que se aporta siempre, propia y constante. Un centro **indefinido** no es un defecto: es una zona abierta donde se recibe y amplifica la energía de los demás y del entorno; es donde más se aprende, pero también donde es fácil dejarse condicionar y confundir lo ajeno con lo propio.',
@@ -85,15 +85,24 @@ export default {
       paragraphs: [
         'Los **canales** son las 36 conexiones del bodygraph: cada uno une dos puertas situadas en centros distintos. Un canal **completo** —con sus dos puertas activas— enlaza esos dos centros, los define y crea una corriente de energía estable y fiable entre ellos.',
         'Los canales son los que, en conjunto, determinan el **tipo, la definición y qué centros están definidos**. Por eso son la columna vertebral mecánica de la carta: no describen un rasgo aislado, sino una forma constante en que dos áreas de la energía trabajan juntas.',
-        'Cada canal combina los temas de sus dos puertas (y de sus hexagramas del I Ching). En el índice de abajo, los canales **completos en esta carta** aparecen resaltados; toca cualquiera para verlo en detalle.'
+        'Cada canal combina los temas de sus dos puertas (y de sus hexagramas del [I Ching](concept:iching)). En el listado de debajo, los canales **completos en tu carta** aparecen resaltados.'
       ]
     },
     gate: {
       title: 'Las puertas',
       paragraphs: [
-        'Las **puertas** son las 64 posiciones del bodygraph que un planeta puede encender, una por cada hexagrama del I Ching. Cada puerta vive en un centro concreto y aporta un matiz específico de energía o carácter; en el nacimiento, los planetas "encienden" un conjunto de ellas.',
+        'Las **puertas** son las 64 posiciones del bodygraph que un planeta puede encender, una por cada hexagrama del [I Ching](concept:iching). Cada puerta vive en un centro concreto y aporta un matiz específico de energía o carácter; en el nacimiento, los planetas "encienden" un conjunto de ellas.',
         'Una puerta activa que no encuentra a su pareja —la del otro extremo de su canal— queda **colgante**: aporta su tema pero busca completarse, a menudo a través de otra persona que tenga la puerta complementaria. Cuando las dos puertas de un canal están activas, el canal se forma y define sus dos centros.',
-        'En el índice de abajo, las puertas **activas en esta carta** aparecen resaltadas; toca cualquiera para ver su matiz, su hexagrama del I Ching y cómo se vive.'
+        'En el listado de debajo, las puertas **activas en tu carta** aparecen resaltadas.'
+      ]
+    },
+    iching: {
+      title: 'El I Ching',
+      paragraphs: [
+        'El **I Ching** (o *Libro de las Mutaciones*) es un texto chino antiquísimo —con más de dos mil años— que se ha usado como libro de sabiduría y como oráculo. Su núcleo son **64 figuras** llamadas *hexagramas*, y cada una describe una situación arquetípica de la vida y cómo tiende a transformarse.',
+        'Cada **hexagrama** se compone de **seis líneas** apiladas, que pueden ser continuas (yang) o partidas (yin). Las combinaciones posibles de esas seis líneas son exactamente 64, y a cada una la tradición le da un nombre y un significado: lo creativo, la espera, el conflicto, la paz, etc.',
+        'El Diseño Humano toma prestada esa estructura: las **64 puertas** del bodygraph se corresponden una a una con los **64 hexagramas**, y cada puerta hereda el tema de su hexagrama. Además, las **seis líneas** de cada hexagrama son las que dan las líneas del [perfil](concept:profile) (del 1 al 6).',
+        'Aquí el I Ching se usa solo como **fuente simbólica** de esos temas —el poso de significado del que beben las puertas—, no como método de adivinación. Es una de las tradiciones que el Diseño Humano combina, junto a la astrología, los chakras y el árbol de la vida cabalístico.'
       ]
     },
     activation: {
@@ -109,7 +118,7 @@ export default {
       title: 'Las señales',
       paragraphs: [
         'Las **señales** son la forma más práctica de comprobar sobre la marcha si una persona está viviendo según su diseño o contra él. No describen un rasgo de carácter: son un **estado que se nota**, y que cambia según cómo se esté decidiendo y actuando.',
-        'Cada [tipo](concept:type) tiene su propio par. La **señal de alineamiento** aparece cuando se sigue [la estrategia](concept:strategy) y se decide desde [la autoridad](concept:authority); la **señal de desalineamiento** es lo que asoma cuando no. Para un [Generador](type:generator) el par es satisfacción y frustración; para un [Proyector](type:projector), éxito y amargura; para un [Manifestador](type:manifestor), paz y enfado; para un [Reflector](type:reflector), sorpresa y decepción.',
+        'Cada [tipo](concept:type) tiene su propio par. La **señal de alineamiento** aparece cuando se sigue [la estrategia](concept:strategy) y se decide desde [la autoridad](concept:authority); la **señal de desalineamiento** es lo que asoma cuando no.',
         'En Diseño Humano se las suele llamar la *firma* y el *tema del no-yo*. Aquí se nombran como señales porque es lo que son en la práctica: un aviso que se puede consultar en cualquier momento del día sin saber nada del sistema. Si predomina la de desalineamiento, lo que suele merecer la pena no es esforzarse más, sino revisar qué se decidió y cómo.'
       ]
     },
@@ -2172,8 +2181,8 @@ export default {
     gateTitle: 'Puerta {g}: {theme}',
     gateTitlePlain: 'Puerta {g}',
     gateFallback: 'La puerta {g}.',
-    ichingNamed: 'Su raíz es el hexagrama {g} del I Ching, "{name}".',
-    ichingPlain: 'Le corresponde el hexagrama {g} del I Ching.',
+    ichingNamed: 'Su raíz es el hexagrama {g} del [I Ching](concept:iching), "{name}".',
+    ichingPlain: 'Le corresponde el hexagrama {g} del [I Ching](concept:iching).',
     deeper: 'Para una lectura más a fondo, puedes utilizar la opción de "saber más usando IA".',
     gateComplete:
       'En esta carta, la puerta {g} está activa y forma parte de un canal completo: es una energía que se aporta de forma estable e integrada.',

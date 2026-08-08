@@ -332,7 +332,7 @@
         <div class="facts" class:aligned={info.factsAlign} class:stacked={info.factsStacked}>
           {#each info.facts as f, fi}
             <div class="fact">
-              <span class="fact-label" class:fact-shown={shownFact === `l${fi}`} onclick={() => tapFact(`l${fi}`)} role="presentation">{f.label}{#if f.tip}<sup class="fact-i" data-tip={f.tip}>i</sup>{/if}:{#if f.info}<button class="fact-dot" type="button" aria-label={f.label} onclick={() => onnavigate?.(f.info.kind, f.info.key)}>i</button>{/if}</span>
+              <span class="fact-label" class:fact-shown={shownFact === `l${fi}`} onclick={() => tapFact(`l${fi}`)} role="presentation">{#if f.tip}<span class="tipword" data-tip={f.tip}>{f.label}</span>{:else}{f.label}{/if}:{#if f.info}<button class="fact-dot" type="button" aria-label={f.label} onclick={() => onnavigate?.(f.info.kind, f.info.key)}>i</button>{/if}</span>
               <span class="fact-rows" class:inline={f.inline}>
                 {#each f.rows as r, ri}
                   <span class="fact-row">
@@ -919,33 +919,22 @@
     font-size: 0.8rem;
     color: var(--text-muted);
   }
-  /* Tiny passive "i" (superscript) with a tooltip — not the interactive
-     InfoDot; it only clarifies the label ("completa el canal"). */
-  .fact-i {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 13px;
-    height: 13px;
-    margin-left: 3px;
-    border-radius: 50%;
-    border: 1px solid #4a4a54;
-    background: var(--surface-2);
-    color: var(--text-muted);
-    font-family: Georgia, 'Times New Roman', serif;
-    font-style: italic;
-    font-size: 9px;
-    line-height: 1;
-    vertical-align: super;
+  /* A word carrying a passive tooltip (e.g. "Puerta armónica") — a dotted
+     underline hints it; hover (desktop) or a tap on the label (touch, which sets
+     .fact-shown) reveals it. Replaces the old superscript "i". */
+  .tipword {
+    text-decoration: underline dotted;
+    text-decoration-color: #5a5a64;
+    text-underline-offset: 3px;
     cursor: help;
     position: relative;
   }
-  .fact-i[data-tip]:hover::after {
+  .tipword[data-tip]:hover::after,
+  .fact-shown .tipword[data-tip]::after {
     content: attr(data-tip);
     position: absolute;
     bottom: calc(100% + 6px);
-    left: 50%;
-    transform: translateX(-50%);
+    left: 0;
     background: var(--surface-2);
     border: 1px solid var(--border);
     color: var(--text);
@@ -955,7 +944,9 @@
     font-weight: 400;
     padding: 0.3rem 0.55rem;
     border-radius: 7px;
-    white-space: pre;
+    white-space: normal;
+    width: max-content;
+    max-width: 220px;
     pointer-events: none;
     z-index: 40;
   }
@@ -966,18 +957,21 @@
     border-color: var(--accent);
     background: var(--accent-soft);
   }
-  /* The nine-centre list + the "[chip] name" full index: one item/line. */
+  /* The nine-centre list + the "[chip] name" full index. A two-column grid so
+     the notes line up under each other (like the authority/strategy table)
+     instead of starting right after each variable-width chip. */
   .cstates,
   .index-rows {
     margin-top: 1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    justify-items: start;
+    align-items: baseline;
+    column-gap: 0.6rem;
+    row-gap: 0.4rem;
   }
   .cstate {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+    display: contents;
   }
 
   /* Closed-set schema table at the end of a value/concept drawer. Borderless;

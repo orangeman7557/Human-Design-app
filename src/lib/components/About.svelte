@@ -303,7 +303,7 @@
 
 <svelte:window {onkeydown} />
 
-<button class="link" type="button" onclick={() => (open = true)}>{t('about.link')}</button>
+<button class="link" type="button" onclick={() => (open = true)}>{t('about.donateLink')}</button><span class="foot-dot" aria-hidden="true">·</span><button class="link" type="button" onclick={() => (open = true)}>{t('about.link')}</button>
 
 {#if open}
   <div class="scrim" onclick={() => (open = false)} role="presentation" transition:fade={{ duration: 120 }}></div>
@@ -320,6 +320,9 @@
       </p>
       <p>{t('about.wish')}</p>
     </div>
+
+    <h3 class="donate-head">{t('about.donateHeading')}</h3>
+    <p class="donate-intro">{t('about.donateIntro')}</p>
 
     <div class="support">
       <button type="button" class="scard" onclick={sendLove}>
@@ -386,6 +389,25 @@
   }
   .link:hover {
     color: var(--text-muted);
+  }
+  /* Separator between the "donar" and "acerca de" footer links, matching the
+     other footer dots. */
+  .foot-dot {
+    margin: 0 0.4rem;
+    opacity: 0.6;
+  }
+  /* "Donar" section heading inside the modal — same gold as the modal title. */
+  .donate-head {
+    margin: 1.2rem 0 0;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--accent);
+  }
+  .donate-intro {
+    margin: 0.4rem 0 0;
+    font-size: 0.88rem;
+    line-height: 1.5;
+    color: #c4c4ca;
   }
   /* Trailing heart glyph, twin of ReportBug's bug (same size, stroke and
      baseline); upright — only the bug gets the crawling-away tilt. */

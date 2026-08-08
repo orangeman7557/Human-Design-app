@@ -189,8 +189,8 @@ export default {
     moreProfile: 'Más información sobre este perfil',
     moreDefinition: 'Más información sobre esta definición',
     moreSignals: 'Más información sobre estas señales',
-    tipSignalAligned: 'Señal de alineamiento',
-    tipSignalMisaligned: 'Señal de desalineamiento',
+    tipSignalAligned: 'Alineamiento',
+    tipSignalMisaligned: 'Desalineamiento',
     moreCross: 'Más información sobre esta cruz de encarnación',
     // Split around the info-dot glyph, which is rendered as the icon itself.
     infoHintA: 'Toca cualquier elemento de la carta y pulsa en ',
@@ -242,6 +242,9 @@ export default {
 
   about: {
     link: 'acerca de',
+    donateLink: 'donar',
+    donateHeading: 'Donar',
+    donateIntro: 'Si encuentras la app útil y te nace agradecer o contribuir, ¡adelante! Aquí te propongo dos maneras:',
     aria: 'Acerca de',
     title: 'Acerca de',
     licenseA: 'Proyecto source-available, ',

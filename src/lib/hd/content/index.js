@@ -7,7 +7,7 @@
 
 import es from './es.js';
 import en from './en.js';
-import { CENTER_BY_GATE, CHANNELS, GATES_BY_CENTER, CENTERS, GATE_WHEEL, crossQuartet, quarterGates } from '../constants.js';
+import { CENTER_BY_GATE, CHANNELS, GATES_BY_CENTER, CENTER_GATE_ORDER, CENTERS, GATE_WHEEL, crossQuartet, quarterGates } from '../constants.js';
 import { getLocale, DEFAULT_LOCALE } from '$lib/i18n/index.svelte.js';
 
 const LANGS = { es, en };
@@ -115,8 +115,18 @@ function relatedIndex(kind, currentKeys, lang = getLocale()) {
 function centerFacts(center, lang = getLocale(), chart = null) {
   const p = pack(lang);
   const D = p.drawer;
-  const chans = CHANNELS.filter(([a, b]) => CENTER_BY_GATE[a] === center || CENTER_BY_GATE[b] === center);
-  const gates = GATES_BY_CENTER[center] ?? [];
+  // Gates and channels are listed in the centre's clockwise bodygraph order, not
+  // numerically — the order they actually read around the centre on the chart.
+  const order = CENTER_GATE_ORDER[center] ?? GATES_BY_CENTER[center] ?? [];
+  const pos = (g) => {
+    const i = order.indexOf(g);
+    return i === -1 ? 99 : i;
+  };
+  const inCenterGate = ([a, b]) => (CENTER_BY_GATE[a] === center ? a : b);
+  const chans = CHANNELS.filter(([a, b]) => CENTER_BY_GATE[a] === center || CENTER_BY_GATE[b] === center).sort(
+    (x, y) => pos(inCenterGate(x)) - pos(inCenterGate(y))
+  );
+  const gates = [...order];
   // With a chart: gold only the channels/gates active here, grey the rest. With
   // no chart (a reference view), leave them all gold (active === undefined).
   const activeGates = chart ? new Set(chart.activeGates ?? []) : null;
