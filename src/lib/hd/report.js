@@ -6,7 +6,7 @@
 // [label](kind:key) links). No AI, no calculation here — the personalised
 // substance is reused from the content library; only the assembly lives here.
 
-import { CENTERS } from './constants.js';
+import { CENTERS, CENTER_BY_GATE } from './constants.js';
 import {
   getElementInfo,
   getReportSection,
@@ -28,11 +28,56 @@ import {
  * @typedef {{ id: string, title: string, paragraphs: string[], items?: any[] }} ReportSection
  */
 
+/** The definition's short name without the "Definición " prefix ("split"). */
+function definitionBare(R, fullTitle) {
+  return String(fullTitle).replace(new RegExp(R.definitionPrefix, 'i'), '');
+}
+
 /** "Tu definición: split" (or just "Tu definición" for a Reflector). */
 function definitionTitle(R, key, fullTitle) {
   if (key === 'no-definition') return R.definitionTitleNone;
-  const bare = String(fullTitle).replace(new RegExp(R.definitionPrefix, 'i'), '');
-  return fillTpl(R.definitionTitle, { definition: bare });
+  return fillTpl(R.definitionTitle, { definition: definitionBare(R, fullTitle) });
+}
+
+/**
+ * The connected groups of defined centers (joined by active channels), each
+ * group's centers in bodygraph order — so a split definition can name which
+ * centers actually fall together. Mirrors computeDefinition's graph in chart.js.
+ * @param {any} chart
+ * @returns {string[][]}
+ */
+function definitionGroups(chart) {
+  const defined = chart.definedCenters ?? [];
+  const set = new Set(defined);
+  if (set.size === 0) return [];
+  /** @type {Record<string, Set<string>>} */
+  const adj = {};
+  for (const c of defined) adj[c] = new Set();
+  for (const [g1, g2] of chart.activeChannels ?? []) {
+    const c1 = CENTER_BY_GATE[g1];
+    const c2 = CENTER_BY_GATE[g2];
+    if (c1 !== c2 && set.has(c1) && set.has(c2)) {
+      adj[c1].add(c2);
+      adj[c2].add(c1);
+    }
+  }
+  const visited = new Set();
+  const groups = [];
+  for (const start of CENTERS) {
+    if (!set.has(start) || visited.has(start)) continue;
+    const group = [];
+    const queue = [start];
+    while (queue.length) {
+      const cur = queue.shift();
+      if (visited.has(cur)) continue;
+      visited.add(cur);
+      group.push(cur);
+      for (const n of adj[cur]) if (!visited.has(n)) queue.push(n);
+    }
+    group.sort((a, b) => CENTERS.indexOf(a) - CENTERS.indexOf(b));
+    groups.push(group);
+  }
+  return groups;
 }
 
 /**
@@ -110,18 +155,42 @@ export function buildReport(chart, lang = getLocale()) {
 
   const def = getElementInfo('definition', chart.definition, lang);
   const defBody = getReportBody('definition', chart.definition, lang);
-  if (def && defBody) add('definition', definitionTitle(R, chart.definition, def.title), [getReportLeadIn('definition', lang), ...defBody]);
+  if (def && defBody) {
+    // For a split (2+ groups): after the general lead-in, state the definition
+    // explicitly and list which centers actually fall into each group, then the
+    // explanation. Single / no-definition keep the plain lead-in + body.
+    const groups = definitionGroups(chart);
+    const centerLbl = getDisplayLabels(lang).center ?? {};
+    const groupsBlock =
+      groups.length >= 2
+        ? [
+            fillTpl(R.definitionGroupsLead, {
+              label: definitionBare(R, def.title),
+              n: groups.length
+            }),
+            { bullets: groups.map((g) => g.map((c) => centerLbl[c] ?? c).join(R.definitionGroupJoin)) }
+          ]
+        : [];
+    add('definition', definitionTitle(R, chart.definition, def.title), [
+      getReportLeadIn('definition', lang),
+      ...groupsBlock,
+      ...defBody
+    ]);
+  }
 
   const tr = getTypeReport(chart.type, lang);
-  // Energy · trap · signals read as three parallel points, so they get the same
-  // simple bullets as the five types above. The signals bullet names the two
-  // summary fields and links to their drawers, so the two don't say the same
-  // thing twice.
+  // Energy · trap read as two parallel points, so they get the same simple
+  // bullets as the five types above. Signals used to be a third bullet here;
+  // it now has its own section right after (they deserve their own heading).
   if (tr)
     add('practice', R.practiceTitle, [
       getReportLeadIn('practice', lang),
-      { bullets: [tr.energia, tr.trampa, tr.senales] }
+      { bullets: [tr.energia, tr.trampa] }
     ]);
+
+  // Signals — the alignment / misalignment pair, its own section (it used to be
+  // folded into "Living your design").
+  if (tr?.senales) add('signals', R.signalsTitle, [tr.senales]);
 
   // Purpose goes LAST and deliberately after "Living your design": the cross is
   // a backdrop, not a task, and putting it first invites a newcomer to fixate on

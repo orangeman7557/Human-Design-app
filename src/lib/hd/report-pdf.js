@@ -85,7 +85,7 @@ function makeLayout(doc) {
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(8);
     doc.setTextColor(...C.accent);
-    doc.text('hdchart.app', PAGE_W / 2, 30, { align: 'center', charSpace: 0.8 });
+    doc.text('HDchart.app', PAGE_W / 2, 30, { align: 'center', charSpace: 0.8 });
     doc.setFont(font.fontName, font.fontStyle);
     doc.setFontSize(size);
     doc.setTextColor(color);
@@ -165,7 +165,7 @@ function makeLayout(doc) {
 /** Place the cover image fit to the content box, preserving aspect; returns nothing. */
 function drawCover(doc, L, image) {
   if (!image?.dataUrl || !image.width || !image.height) return;
-  // Top-aligned just under the hdchart.app header (not vertically centred):
+  // Top-aligned just under the HDchart.app header (not vertically centred):
   // a wide cover left a big empty band above the chart's name.
   const coverTop = 44;
   const maxW = CONTENT_W;

@@ -282,10 +282,10 @@ export default {
     angleGeneral: 'Info general',
     angleHint: 'Esta selección determina el prompt que se usa.',
     switchAi: 'Cambiar IA',
-    openAi: 'Abrir IA',
+    openAi: 'Usar IA',
     copyPrompt: 'Copiar prompt',
     copied: 'Copiado',
-    showPrompt: 'Ver/editar el prompt',
+    showPrompt: 'Ver/editar prompt',
     hidePrompt: 'Ocultar prompt',
     otherNote: 'Para otras IA, usa "Copiar prompt" y pégalo donde quieras.'
   },
@@ -317,7 +317,7 @@ export default {
       'Este informe es una primera impresión. Para profundizar en lo que más te interese, lleva tu carta a tu IA: el prompt ya lleva tus datos esenciales; complétalo con lo que quieras explorar.',
     pdfDefined: 'DEFINIDO',
     pdfOpen: 'INDEFINIDO',
-    showPrompt: 'Ver/editar el prompt',
+    showPrompt: 'Ver/editar prompt',
     hidePrompt: 'Ocultar prompt'
   },
 

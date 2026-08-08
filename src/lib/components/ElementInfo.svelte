@@ -329,7 +329,7 @@
         <!-- Schematic identity block (gates/channels/centres): one row per
              element, gold chips aligned left under a shared label. Rows with a
              note stack one per line; note-less rows (centres) go inline. -->
-        <div class="facts" class:aligned={info.factsAlign}>
+        <div class="facts" class:aligned={info.factsAlign} class:stacked={info.factsStacked}>
           {#each info.facts as f, fi}
             <div class="fact">
               <span class="fact-label" class:fact-shown={shownFact === `l${fi}`} onclick={() => tapFact(`l${fi}`)} role="presentation">{f.label}{#if f.tip}<sup class="fact-i" data-tip={f.tip}>i</sup>{/if}:{#if f.info}<button class="fact-dot" type="button" aria-label={f.label} onclick={() => onnavigate?.(f.info.kind, f.info.key)}>i</button>{/if}</span>
@@ -337,7 +337,7 @@
                 {#each f.rows as r, ri}
                   <span class="fact-row">
                     {#if r.pre}<span class="fact-pre" class:fact-shown={shownFact === `r${fi}-${ri}`} onclick={() => tapFact(`r${fi}-${ri}`)} role="presentation">{r.pre}{#if r.info}<button class="fact-dot" type="button" aria-label={r.pre} onclick={() => onnavigate?.(r.info.kind, r.info.key)}>i</button>{/if}</span>{/if}
-                    <button class="index-chip gold" type="button" onclick={() => onnavigate?.(r.chip.kind, r.chip.key)}>{r.chip.label}</button>
+                    <button class="index-chip" class:gold={r.chip.active !== false} type="button" onclick={() => onnavigate?.(r.chip.kind, r.chip.key)}>{r.chip.label}</button>
                     {#if r.note}<span class="fact-note">{r.note}</span>{/if}
                   </span>
                 {/each}
@@ -352,7 +352,8 @@
           {#each info.centerStates as it}
             <div class="cstate">
               <button
-                class="index-chip gold"
+                class="index-chip"
+                class:gold={it.defined}
                 type="button"
                 onclick={() => onnavigate?.(it.kind, it.key)}
               >{it.label}</button>
@@ -413,7 +414,7 @@
           <div class="index-rows">
             {#each info.list as item}
               <div class="cstate">
-                <button class="index-chip" type="button" onclick={() => onnavigate?.(item.kind, item.key)}>{item.label}</button>
+                <button class="index-chip" class:gold={item.active} type="button" onclick={() => onnavigate?.(item.kind, item.key)}>{item.label}</button>
                 <span class="fact-note">{item.note}</span>
               </div>
             {/each}
@@ -825,6 +826,32 @@
   .facts.aligned .fact-label {
     width: 6.6rem;
   }
+  /* Stacked variant (the cross): the side name sits on its own line and its two
+     rows hang below as a bulleted list, so a long gate title has the full width
+     and never wraps under a "Personality"/"Design" column. */
+  .facts.stacked {
+    gap: 0.9rem;
+  }
+  .facts.stacked .fact {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.3rem;
+  }
+  .facts.stacked .fact-label {
+    padding-top: 0;
+    color: var(--text);
+    font-size: 0.82rem;
+  }
+  .facts.stacked .fact-rows {
+    gap: 0.32rem;
+    padding-left: 0.15rem;
+  }
+  .facts.stacked .fact-row::before {
+    content: '•';
+    color: var(--text-muted);
+    align-self: baseline;
+    margin-right: 0.05rem;
+  }
   .fact-rows {
     display: flex;
     flex-direction: column;
@@ -861,7 +888,10 @@
     cursor: pointer;
     vertical-align: middle;
   }
-  .fact-row:hover .fact-dot,
+  /* Reveal each "i" only from its own label — hovering the gate chip in the same
+     row must NOT light up the sun/earth "i" (that made the chip feel like it
+     triggered the planet info). */
+  .fact-pre:hover .fact-dot,
   .fact-label:hover .fact-dot,
   .fact-dot:focus-visible,
   .fact-shown .fact-dot {

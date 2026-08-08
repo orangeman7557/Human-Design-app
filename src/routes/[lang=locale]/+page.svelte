@@ -929,6 +929,17 @@
     }
   }
 
+  /* Tablet range (incl. iPad portrait): the absolute top-right checkbox can ride
+     over the time field on iOS Safari (its label metrics differ just enough).
+     Drop it below the field, in flow, the same way mobile does — overlap-proof
+     whatever the text width. Desktop (wider) keeps the classic top-right spot. */
+  @media (min-width: 521px) and (max-width: 834px) {
+    .check {
+      position: static;
+      margin-top: 0.3rem;
+    }
+  }
+
   .slider-block {
     background: var(--surface);
     border: 1px solid var(--border);

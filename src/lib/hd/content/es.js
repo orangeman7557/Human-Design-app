@@ -85,7 +85,7 @@ export default {
       paragraphs: [
         'Los **canales** son las 36 conexiones del bodygraph: cada uno une dos puertas situadas en centros distintos. Un canal **completo** —con sus dos puertas activas— enlaza esos dos centros, los define y crea una corriente de energía estable y fiable entre ellos.',
         'Los canales son los que, en conjunto, determinan el **tipo, la definición y qué centros están definidos**. Por eso son la columna vertebral mecánica de la carta: no describen un rasgo aislado, sino una forma constante en que dos áreas de la energía trabajan juntas.',
-        'Cada canal combina los temas de sus dos puertas (y de sus hexagramas del I Ching). Para una lectura detallada de un canal concreto, puedes utilizar la opción de "saber más usando IA".'
+        'Cada canal combina los temas de sus dos puertas (y de sus hexagramas del I Ching). En el índice de abajo, los canales **completos en esta carta** aparecen resaltados; toca cualquiera para verlo en detalle.'
       ]
     },
     gate: {
@@ -93,7 +93,7 @@ export default {
       paragraphs: [
         'Las **puertas** son las 64 posiciones del bodygraph que un planeta puede encender, una por cada hexagrama del I Ching. Cada puerta vive en un centro concreto y aporta un matiz específico de energía o carácter; en el nacimiento, los planetas "encienden" un conjunto de ellas.',
         'Una puerta activa que no encuentra a su pareja —la del otro extremo de su canal— queda **colgante**: aporta su tema pero busca completarse, a menudo a través de otra persona que tenga la puerta complementaria. Cuando las dos puertas de un canal están activas, el canal se forma y define sus dos centros.',
-        'Para profundizar en una puerta concreta —su matiz, su hexagrama del I Ching y cómo se vive— puedes utilizar la opción de "saber más usando IA".'
+        'En el índice de abajo, las puertas **activas en esta carta** aparecen resaltadas; toca cualquiera para ver su matiz, su hexagrama del I Ching y cómo se vive.'
       ]
     },
     activation: {
@@ -1447,7 +1447,7 @@ export default {
     ants: {
       title: 'La analogía de las hormigas',
       paragraphs: [
-        'En cierta forma, podemos usar a las hormigas como símil: en un hormiguero no hay una "hormiga genérica", hay exploradoras que salen a rastrear, soldados construidas para defender, obreras que mantienen el nido y una reina cuya función es otra por completo. Ninguna es mejor; cada una está hecha para una forma de operar distinta, y el hormiguero funciona precisamente porque no son todas iguales. Pedirle a una exploradora que haga el trabajo de una soldado es agotarla en algo para lo que no está diseñada.',
+        'Para explicar el Diseño Humano, podemos usar a las hormigas como símil: en un hormiguero no hay una "hormiga genérica", hay exploradoras que salen a rastrear, soldados construidas para defender, obreras que mantienen el nido y una reina cuya función es otra por completo. Ninguna es mejor; cada una está hecha para una forma de operar distinta, y el hormiguero funciona precisamente porque no son todas iguales. Pedirle a una exploradora que haga el trabajo de una soldado es agotarla en algo para lo que no está diseñada.',
         'Con las personas pasa algo parecido: tenemos maneras distintas de actuar y de relacionarnos en función de nuestra propia energía y diseño. El error habitual es suponer que todos deberíamos rendir, decidir o arrancar igual. El Diseño Humano propone lo contrario, y a esas diferentes maneras las llama [tipos](section:type). Lo valioso del marco es esa mirada: **deja de medirte con la vara de otro diseño**.'
       ]
     },
@@ -2231,6 +2231,7 @@ export default {
       'En esta cruz concreta, el eje consciente cruza «{tpSun}» ([puerta {pSun}](gate:{pSun})) con «{tpEarth}» ([puerta {pEarth}](gate:{pEarth})): es el tema que la persona reconoce como suyo y el que va empujando a lo largo de la vida. Debajo, el eje inconsciente aporta «{tdSun}» ([puerta {dSun}](gate:{dSun})) sostenido por «{tdEarth}» ([puerta {dEarth}](gate:{dEarth})) — el suelo desde el que se hace todo eso, casi siempre más visible para los demás que para uno mismo.',
     crossFourGates:
       'Lo que da a cada cruz su carácter propio son sus **cuatro puertas**: el Sol y la Tierra de Personalidad —lo consciente, lo que uno reconoce como suyo— y el Sol y la Tierra de Diseño —lo inconsciente, el suelo desde el que actúa—. Son las activaciones de más peso de la carta, y **hay que leerlas juntas**: el sentido está en la combinación, no en cada puerta por separado.',
+    crossCombination: 'Esta cruz combina las puertas **{gates}**:',
     crossGatesJoin: ' | '
   },
 
@@ -2248,6 +2249,12 @@ export default {
     // Stripped from the definition's full title so it isn't repeated.
     definitionPrefix: '^Definición\\s+',
     practiceTitle: 'Vivir tu diseño',
+    signalsTitle: 'Tus señales',
+    // Explicit "your definition is split" statement + the concrete center groups
+    // (only shown for split/triple/quad, where there is more than one group).
+    definitionGroupsLead:
+      'Tu definición es **{label}**: tus centros definidos se reparten en **{n} grupos separados**:',
+    definitionGroupJoin: ' · ',
     purposeTitle: 'Tu propósito',
     purposeSubhead: '[{name}](cross:{angle}) ({gates})',
     profileHeading: 'Perfil {profile}',

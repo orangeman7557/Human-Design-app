@@ -298,6 +298,7 @@ const overrides = {
       'In this particular cross, the conscious axis crosses "{tpSun}" ([gate {pSun}](gate:{pSun})) with "{tpEarth}" ([gate {pEarth}](gate:{pEarth})): the theme a person recognises as their own and keeps pushing at over a lifetime. Underneath, the unconscious axis brings "{tdSun}" ([gate {dSun}](gate:{dSun})) held up by "{tdEarth}" ([gate {dEarth}](gate:{dEarth})) — the ground all of that is done from, and usually clearer to other people than to the person themselves.',
     crossFourGates:
       'What gives each cross its own character is its **four gates**: the Personality Sun and Earth — the conscious side, what a person recognises as their own — and the Design Sun and Earth — the unconscious side, the ground they act from. They are the heaviest activations in the chart, and they have to be **read together**: the meaning is in the combination, not in any one gate.',
+    crossCombination: 'This cross combines gates **{gates}**:',
     crossGatesJoin: ' | '
   },
 
@@ -312,6 +313,10 @@ const overrides = {
     definitionTitleNone: 'Your Definition',
     definitionPrefix: '^Definition\\s+',
     practiceTitle: 'Living Your Design',
+    signalsTitle: 'Your Signals',
+    definitionGroupsLead:
+      'Your definition is **{label}**: your defined centers fall into **{n} separate groups**:',
+    definitionGroupJoin: ' · ',
     purposeTitle: 'Your Purpose',
     purposeSubhead: '[{name}](cross:{angle}) ({gates})',
     profileHeading: 'Profile {profile}',
@@ -386,7 +391,7 @@ const overrides = {
       paragraphs: [
         'The **channels** are the 36 connections of the bodygraph. Each one joins two gates sitting in different centers. When both of its gates are active the channel is **complete**: it links those two centers, defines them, and creates a steady, dependable current between them.',
         'Between them, the channels decide **your type, your definition and which centers are defined**. That makes them the mechanical backbone of the chart: a channel is not an isolated trait but a constant way two areas of your energy work together.',
-        'Each channel blends the themes of its two gates (and of their I Ching hexagrams). For a close reading of a particular channel, use the "learn more using AI" option.'
+        'Each channel blends the themes of its two gates (and of their I Ching hexagrams). In the index below, the channels **complete in this chart** are highlighted; tap any of them for a closer reading.'
       ]
     },
     gate: {
@@ -394,7 +399,7 @@ const overrides = {
       paragraphs: [
         'The **gates** are the 64 positions of the bodygraph a planet can switch on, one per I Ching hexagram. Each lives in a specific center and adds its own flavor of energy or character. At birth, the planets switch on a set of them.',
         'An active gate whose partner — the gate at the other end of its channel — is missing is left **hanging**. Its theme is there, but it looks to be completed, often through someone who carries the other half. When both gates are active the channel forms and defines its two centers.',
-        'To go deeper into a particular gate — its flavor, its hexagram, how it plays out — use the "learn more using AI" option.'
+        'In the index below, the gates **active in this chart** are highlighted; tap any of them to see its flavor, its I Ching hexagram, and how it plays out.'
       ]
     },
     activation: {

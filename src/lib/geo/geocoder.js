@@ -25,6 +25,78 @@ const PREFERRED_COUNTRY_BY_LANG = { es: 'es' };
 // falls through to the default, which returns local-language names.
 const PHOTON_LANGS = new Set(['de', 'en', 'fr', 'it']);
 
+// Spanish exonyms. Because Photon rejects `lang=es`, the Spanish path uses its
+// default index, which matches only local/official names — so a Spanish exonym
+// for a foreign city ("Nueva York", "Londres", "Múnich") matches nothing: the
+// city's OSM name is "New York" / "London" / "München". English is spared this,
+// since Photon accepts `lang=en` and indexes English names. So for the Spanish
+// UI we map the well-known exonyms to their English name and run a second lookup
+// with `lang=en` (which resolves them correctly), surfacing those results first.
+// Only unambiguous famous cities are listed — names that also belong to a real
+// Spanish-speaking town (Colonia, Florencia, Ginebra, Atenas…) are left out so
+// we never bury the place the user actually means.
+const ES_EXONYMS = {
+  'nueva york': 'New York',
+  'nueva orleans': 'New Orleans',
+  'filadelfia': 'Philadelphia',
+  'londres': 'London',
+  'edimburgo': 'Edinburgh',
+  'munich': 'Munich',
+  'hamburgo': 'Hamburg',
+  'francfort': 'Frankfurt',
+  'frankfurt': 'Frankfurt',
+  'nuremberg': 'Nuremberg',
+  'aquisgran': 'Aachen',
+  'milan': 'Milan',
+  'napoles': 'Naples',
+  'turin': 'Turin',
+  'venecia': 'Venice',
+  'genova': 'Genoa',
+  'basilea': 'Basel',
+  'viena': 'Vienna',
+  'praga': 'Prague',
+  'varsovia': 'Warsaw',
+  'cracovia': 'Krakow',
+  'bucarest': 'Bucharest',
+  'belgrado': 'Belgrade',
+  'moscu': 'Moscow',
+  'san petersburgo': 'Saint Petersburg',
+  'lisboa': 'Lisbon',
+  'oporto': 'Porto',
+  'burdeos': 'Bordeaux',
+  'marsella': 'Marseille',
+  'niza': 'Nice',
+  'estrasburgo': 'Strasbourg',
+  'brujas': 'Bruges',
+  'amberes': 'Antwerp',
+  'bruselas': 'Brussels',
+  'la haya': 'The Hague',
+  'roterdam': 'Rotterdam',
+  'estocolmo': 'Stockholm',
+  'copenhague': 'Copenhagen',
+  'gotemburgo': 'Gothenburg',
+  'estambul': 'Istanbul',
+  'esmirna': 'Izmir',
+  'damasco': 'Damascus',
+  'jerusalen': 'Jerusalem',
+  'el cairo': 'Cairo',
+  'pekin': 'Beijing',
+  'tokio': 'Tokyo',
+  'seul': 'Seoul',
+  'bombay': 'Mumbai',
+  'calcuta': 'Kolkata',
+  'nueva delhi': 'New Delhi',
+  'ciudad del cabo': 'Cape Town'
+};
+
+/** Lowercase and strip diacritics so "Múnich" and "munich" hit the same key. */
+const normalize = (s) =>
+  s
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .trim();
+
 // OSM `place` values we accept as birth-places. Restricting to settlements
 // (server-side, via `osm_tag`) is what keeps regions, counties and POIs out
 // of the suggestions — the old Nominatim path leaked "Valencia County" and
@@ -48,6 +120,36 @@ const PLACE_TAGS = ['city', 'town', 'village', 'hamlet', 'municipality'];
  * @returns {Promise<Place[]>}
  */
 export async function searchPlaces(query, signal, lang) {
+  const places = await rawSearch(query, signal, PHOTON_LANGS.has(lang) ? lang : undefined);
+
+  // Spanish exonym rescue: when the whole query is a known exonym, look the city
+  // up by its English name (which Photon resolves) and surface those hits first,
+  // so "Nueva York" finally offers New York, USA. Fires only on an exact full
+  // match, so it costs at most one extra request and only once the word is typed.
+  if (lang === 'es') {
+    const endonym = ES_EXONYMS[normalize(query)];
+    if (endonym) {
+      const extra = await rawSearch(endonym, signal, 'en');
+      // Flag so ranking floats these above the preferred-country bias: without
+      // it "Múnich" would surface the Spanish hamlet Muñico ahead of Munich.
+      for (const p of extra) p._exonym = true;
+      places.unshift(...extra);
+    }
+  }
+
+  return dedupeAndRank(places, PREFERRED_COUNTRY_BY_LANG[lang] ?? null, normalize(query)).slice(0, 6);
+}
+
+/**
+ * One Photon lookup → filtered `Place[]` carrying the hidden ranking fields
+ * (`_value`, `_countryCode`), before dedup/rank/slice. Kept separate so callers
+ * can merge several lookups (e.g. the exonym rescue) and rank the union once.
+ *
+ * @param {string} query
+ * @param {AbortSignal} [signal]
+ * @param {string} [photonLang] - already validated against PHOTON_LANGS.
+ */
+async function rawSearch(query, signal, photonLang) {
   const params = new URLSearchParams({
     q: query,
     // Over-fetch (more than we show) so client-side dedup and re-rank have
@@ -56,7 +158,7 @@ export async function searchPlaces(query, signal, lang) {
   });
   // Ask Photon for names in the UI language when it supports it (English etc.),
   // so results read "Madrid, Spain" rather than "Madrid, España".
-  if (PHOTON_LANGS.has(lang)) params.set('lang', lang);
+  if (photonLang) params.set('lang', photonLang);
   // Multiple `osm_tag` values are OR-combined, so this keeps only settlements.
   for (const tag of PLACE_TAGS) params.append('osm_tag', `place:${tag}`);
 
@@ -67,10 +169,9 @@ export async function searchPlaces(query, signal, lang) {
   const json = await res.json();
   // Features without a label or without real coordinates are dropped: NaN
   // coords would make the timezone lookup throw when the place is picked.
-  const places = (json.features ?? [])
+  return (json.features ?? [])
     .map(toPlace)
     .filter((p) => p.label && Number.isFinite(p.latitude) && Number.isFinite(p.longitude));
-  return dedupeAndRank(places, PREFERRED_COUNTRY_BY_LANG[lang] ?? null).slice(0, 6);
 }
 
 /**
@@ -94,6 +195,7 @@ function toPlace(feature) {
     label,
     latitude: lat,
     longitude: lon,
+    _name: placeName ?? '',
     _value: props.osm_value || props.type,
     _countryCode: (props.countrycode ?? props.country_code ?? '').toLowerCase()
   };
@@ -106,16 +208,25 @@ function toPlace(feature) {
  * relevance order within ties):
  *   - Settlements before anything else (a guard — the server filter should
  *     already have excluded non-settlements).
+ *   - An exact name match (accents folded) before mere prefix/substring hits,
+ *     so typing a city's full name floats it above longer homonyms whatever
+ *     Photon's own order — and "Málaga" / "malaga" rank identically.
  *   - Preferred-country entries before the rest, so a homonym in Spain wins
  *     a tie against one abroad without hiding the foreign option.
  *
  * Dedup is by exact label after ranking, so the highest-ranked entry for a
  * given label survives.
  */
-function dedupeAndRank(places, preferredCountry = null) {
+function dedupeAndRank(places, preferredCountry = null, normQuery = '') {
   const score = (p) => {
+    // Exonym-rescued hits are the city the user spelled out — always first,
+    // ahead of every other signal. Constant score keeps their own order.
+    if (p._exonym) return -100;
     let s = 0;
     if (!PLACE_TAGS.includes(p._value)) s += 10;
+    // Accent-insensitive exact-name match: "malaga" and "málaga" both land here,
+    // so the actual city beats hamlets that merely start with the same letters.
+    if (normQuery && normalize(p._name) === normQuery) s -= 4;
     if (preferredCountry && p._countryCode !== preferredCountry) s += 5;
     return s;
   };

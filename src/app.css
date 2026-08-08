@@ -30,6 +30,13 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* iOS standalone PWA uses a translucent status bar (viewport-fit=cover), so the
+   page would slide under the clock/battery. Pad the top by the safe-area inset
+   so the header clears it; 0 on every non-notched device. */
+body {
+  padding-top: env(safe-area-inset-top);
+}
+
 a {
   color: var(--accent);
 }

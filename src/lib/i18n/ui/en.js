@@ -272,10 +272,10 @@ export default {
     angleGeneral: 'General Info',
     angleHint: 'This selection determines the prompt that is used.',
     switchAi: 'Change AI',
-    openAi: 'Open AI',
+    openAi: 'Use AI',
     copyPrompt: 'Copy Prompt',
     copied: 'Copied',
-    showPrompt: 'View/Edit the Prompt',
+    showPrompt: 'view/edit prompt',
     hidePrompt: 'Hide Prompt',
     otherNote: 'For other AIs, use "Copy prompt" and paste it wherever you like.'
   },
@@ -306,7 +306,7 @@ export default {
       'This report is a first impression. To go deeper into whatever interests you most, take your chart to your AI: the prompt already carries your essential data; complete it with whatever you want to explore.',
     pdfDefined: 'DEFINED',
     pdfOpen: 'UNDEFINED',
-    showPrompt: 'View/Edit the Prompt',
+    showPrompt: 'view/edit prompt',
     hidePrompt: 'Hide Prompt'
   },
 

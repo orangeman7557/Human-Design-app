@@ -139,6 +139,26 @@ export async function listCharts() {
   return db.charts.orderBy('sortOrder').toArray();
 }
 
+/**
+ * The saved chart matching these birth data (same date/time/timezone/coords),
+ * or null. Used to mark an opened chart as already saved. Name is ignored — the
+ * chart is the same whatever it was saved as.
+ * @param {Object} birth same shape the form writes to sessionStorage
+ * @returns {Promise<SavedChart | null>}
+ */
+export async function findSavedChart(birth) {
+  if (!birth) return null;
+  const same = (b) =>
+    b &&
+    b.date === birth.date &&
+    b.time === birth.time &&
+    b.timezone === birth.timezone &&
+    b.latitude === birth.latitude &&
+    b.longitude === birth.longitude;
+  const all = await db.charts.toArray();
+  return all.find((c) => same(c.birth)) ?? null;
+}
+
 /** @param {number} id @param {string} name */
 export async function renameChart(id, name) {
   await db.charts.update(id, { name });

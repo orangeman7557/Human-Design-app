@@ -6,7 +6,7 @@
   import { computeChart } from '$lib/hd/chart.js';
   import { CENTERS, PLANETS, CENTER_BY_GATE, CHANNELS } from '$lib/hd/constants.js';
   import { toBlob } from 'html-to-image';
-  import { saveChart } from '$lib/db/charts.js';
+  import { saveChart, findSavedChart } from '$lib/db/charts.js';
   import Bodygraph from '$lib/components/Bodygraph.svelte';
   import ElementInfo from '$lib/components/ElementInfo.svelte';
   import InitialReport from '$lib/components/InitialReport.svelte';
@@ -128,6 +128,9 @@
       // The chart's own cross has no key ("<angle>" from the card); a "<gate>|<angle>"
       // key (from the 192-cross index) opens that specific cross instead.
       : kind === 'cross' ? (String(key).includes('|') ? getCrossInfoByKey(key) : getCrossInfo(chart))
+      // A centre lists its channels/gates; pass the chart so the ones active
+      // here show gold and the rest grey (the general centre drawer does too).
+      : kind === 'center' ? getElementInfo('center', key, undefined, chart)
       : getElementInfo(kind, key);
   }
 
@@ -783,6 +786,14 @@
       }
       birthData = birth;
       chart = await computeChart(birth);
+      // If this chart is already in the saved list, open it marked as saved
+      // (the save button shows "Guardada", disabled) instead of inviting a
+      // duplicate save.
+      try {
+        if (await findSavedChart(birth)) saved = true;
+      } catch {
+        // DB unavailable (private mode): just leave it as unsaved.
+      }
       // A shared "report" link (…&r=1) asks us to land with the initial report
       // already open.
       if (params.get('r') === '1') reportOpen = true;
@@ -877,7 +888,7 @@
 <main bind:this={captureEl} class:capturing={sharing} class:pdf-shot={pdfShot}>
   <!-- Export-only brand line: shows in the shared/downloaded PNG (not the PDF
        cover, which gets a native header in report-pdf.js). -->
-  <div class="export-brand" aria-hidden="true">hdchart.app</div>
+  <div class="export-brand" aria-hidden="true">HDchart.app</div>
   <header
     bind:this={headerEl}
     class:hdr-full={hdrMode === 'full'}
@@ -1332,9 +1343,7 @@
               {#each hangingGates as g}
                 <span class="cc-wrap" data-inner-key={`gate:${g}`}>
                   <span
-                    class="chip"
-                    class:on={chart.definedCenters.includes(CENTER_BY_GATE[g])}
-                    class:soft={!chart.definedCenters.includes(CENTER_BY_GATE[g])}
+                    class="chip on"
                     role="presentation"
                     class:focus={relatedToHoverCenter(g)}
                     class:selected={sameHover(hover, { kind: 'gate', gates: [g] })}
@@ -1676,7 +1685,10 @@
     cursor: pointer;
     line-height: 1;
   }
-  @media (max-width: 680px) {
+  /* Shown on narrow screens AND on any device without hover (touch): on desktop
+     the "i" is discovered by hovering, but a touch tablet wider than 680px (iPad)
+     has no hover, so it needs the hint just as much as a phone does. */
+  @media (max-width: 680px), (hover: none) {
     .info-hint {
       display: flex;
     }

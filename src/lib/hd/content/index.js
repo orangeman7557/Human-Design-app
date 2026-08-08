@@ -57,18 +57,19 @@ export function getReportShell(lang = getLocale()) {
  * @param {string} [lang]
  * @returns {{ title: string, paragraphs: string[] } | null}
  */
-export function getElementInfo(kind, key, lang = getLocale()) {
+export function getElementInfo(kind, key, lang = getLocale(), chart = null) {
   const entry = pack(lang)[kind]?.[key];
   if (!entry) return null;
   // Centres are stored split (fn/defined/open) — Phase 7. The chip "i" shows the
   // function plus both states; the report uses getCenterReport for just one.
   // A centre also lists its channels and gates as a schematic facts block, in
-  // the same style as the gate/channel drawers (text audit, jul 2026).
+  // the same style as the gate/channel drawers (text audit, jul 2026). When a
+  // chart is supplied, its channels/gates active here are gold, the rest grey.
   if (kind === 'center') {
     return {
       title: entry.title,
       paragraphs: [entry.fn, entry.defined, entry.open],
-      facts: centerFacts(key, lang)
+      facts: centerFacts(key, lang, chart)
     };
   }
   // Closed-set categories append the full set of possibilities (text audit,
@@ -111,25 +112,35 @@ function relatedIndex(kind, currentKeys, lang = getLocale()) {
 
 /** A centre's schematic facts: its channels (with names) and its gates (with
  *  themes), each a clickable chip row — mirrors the gate/channel drawers. */
-function centerFacts(center, lang = getLocale()) {
+function centerFacts(center, lang = getLocale(), chart = null) {
   const p = pack(lang);
   const D = p.drawer;
   const chans = CHANNELS.filter(([a, b]) => CENTER_BY_GATE[a] === center || CENTER_BY_GATE[b] === center);
   const gates = GATES_BY_CENTER[center] ?? [];
+  // With a chart: gold only the channels/gates active here, grey the rest. With
+  // no chart (a reference view), leave them all gold (active === undefined).
+  const activeGates = chart ? new Set(chart.activeGates ?? []) : null;
+  const activeChans = chart ? new Set((chart.activeChannels ?? []).map(([a, b]) => `${a}-${b}`)) : null;
   return [
     {
       label: D.factChannels,
       rows: chans.map(([a, b]) => {
         const k = `${a}-${b}`;
         const name = p.channel?.[k]?.name;
-        return { chip: { label: k, kind: 'channel', key: k }, note: name ?? null };
+        return {
+          chip: { label: k, kind: 'channel', key: k, active: activeChans ? activeChans.has(k) : undefined },
+          note: name ?? null
+        };
       })
     },
     {
       label: D.factGates,
       rows: gates.map((g) => {
         const t = gateTheme(g, lang);
-        return { chip: { label: String(g), kind: 'gate', key: String(g) }, note: t ?? null };
+        return {
+          chip: { label: String(g), kind: 'gate', key: String(g), active: activeGates ? activeGates.has(g) : undefined },
+          note: t ?? null
+        };
       })
     }
   ];
@@ -153,25 +164,31 @@ export function getConceptInfo(key, chart = null, lang = getLocale()) {
   if (!base) return null;
   const p = pack(lang);
   if (key === 'channel') {
-    // Full index as "[chip] name" rows (text audit, jul 2026).
+    // Full index as "[chip] name" rows (text audit, jul 2026). Channels active
+    // in this chart get the gold chip so they stand out from the reference list.
+    const active = new Set((chart?.activeChannels ?? []).map(([a, b]) => `${a}-${b}`));
     return {
       ...base,
       list: CHANNELS.map(([a, b]) => ({
         label: `${a}-${b}`,
         kind: 'channel',
         key: `${a}-${b}`,
-        note: p.channel?.[`${a}-${b}`]?.name ?? null
+        note: p.channel?.[`${a}-${b}`]?.name ?? null,
+        active: active.has(`${a}-${b}`)
       }))
     };
   }
   if (key === 'gate') {
+    // Gates active in this chart get the gold chip (same idea as the channels).
+    const active = new Set(chart?.activeGates ?? []);
     return {
       ...base,
       list: Array.from({ length: 64 }, (_, i) => ({
         label: `${i + 1}`,
         kind: 'gate',
         key: `${i + 1}`,
-        note: gateTheme(i + 1, lang)
+        note: gateTheme(i + 1, lang),
+        active: active.has(i + 1)
       }))
     };
   }
@@ -408,10 +425,15 @@ function buildCrossInfo(cross, lang = getLocale()) {
   const essence = getCrossEssence(cross, lang);
   return {
     title: fillTpl(D.crossTitle, { name: getCrossName(cross, lang) ?? entry.name }),
-    paragraphs: [entry.text, D.crossFourGates],
-    // Wide, fixed-width fact labels so Personality/Design rows align (sol/tierra
-    // under each other). Other drawers keep the label snug to the chips.
-    factsAlign: true,
+    paragraphs: [
+      entry.text,
+      D.crossFourGates,
+      fillTpl(D.crossCombination, { gates: formatCrossGates(cross, lang) })
+    ],
+    // Stack each side's rows under its own label as a bulleted list: the gate
+    // titles are too long to sit beside a "Personality"/"Design" column without
+    // wrapping to two lines. The intro line above spells out the four gates.
+    factsStacked: true,
     facts: [
       {
         label: D.factCrossPersonality,

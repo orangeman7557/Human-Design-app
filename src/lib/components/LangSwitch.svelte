@@ -101,7 +101,8 @@
      riding along over the content. */
   .lang-switch {
     position: absolute;
-    top: 0;
+    /* Clear the iOS translucent status bar (see body padding in app.css). */
+    top: env(safe-area-inset-top);
     left: 0;
     right: 0;
     z-index: 30;

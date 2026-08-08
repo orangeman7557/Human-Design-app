@@ -58,7 +58,7 @@
 <style>
   .env-badge {
     position: fixed;
-    top: 0;
+    top: env(safe-area-inset-top);
     left: 50%;
     transform: translateX(-50%);
     z-index: 1000;
