@@ -685,7 +685,10 @@ export function getGateInfo(gate, chart = null, lang = getLocale()) {
   const title = theme
     ? fillTpl(D.gateTitle, { g, theme: cap(theme) })
     : fillTpl(D.gateTitlePlain, { g });
-  return { title, paragraphs: [entry?.text ?? fillTpl(D.gateFallback, { g })], facts, after };
+  // `more` holds the extra paragraphs of the expanded entries (aug 2026);
+  // entries that only have `text` still render as a single paragraph.
+  const paragraphs = [entry?.text ?? fillTpl(D.gateFallback, { g }), ...(entry?.more ?? [])];
+  return { title, paragraphs, facts, after };
 }
 
 /** A channel's state in a chart: 'complete' | 'half' | 'none', or null if no chart. */
@@ -738,6 +741,9 @@ export function getChannelInfo(pair, chart = null, lang = getLocale()) {
   } else if (ta && tb) {
     paragraphs.push(fillTpl(D.channelPair, { ta, tb, a, b }));
   }
+  // Extra paragraphs of the expanded entries (aug 2026); channels that only
+  // have `essence` still render as the single opening line.
+  if (ch?.more) paragraphs.push(...ch.more);
 
   const facts = [
     {

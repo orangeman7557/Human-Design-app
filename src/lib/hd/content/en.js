@@ -339,7 +339,7 @@ const overrides = {
     type: {
       title: 'The Types',
       paragraphs: [
-        '**Type** is the first and most important thing a chart tells you: how a person\u2019s energy is built to meet the world. There are five — [Generator](type:generator), [Manifesting Generator](type:manifesting-generator), [Projector](type:projector), [Manifestor](type:manifestor) and [Reflector](type:reflector) — decided by which centers are defined and how they connect to the [Throat](center:throat).',
+        '**Type** is the first and most important thing a chart tells you: how a person\u2019s energy is built to meet the world. There are five, decided by which centers are defined and how they connect to the [Throat](center:throat).',
         'Type matters for one very practical reason: each one has its own healthy way of **spending energy and making decisions**. Living by your own design instead of copying another type is what the system links to less friction and less exhaustion.',
         'It is not a personality label or a horoscope. It is a mechanical description of how energy works in a given person. Use it as a mirror: notice whether the way you move through life matches the way the chart says you are built.'
       ]
@@ -846,70 +846,518 @@ const overrides = {
 
   // ── The 64 gates: short theme + own-voice essence with a gift/shadow polarity ──
   gate: {
-    1: { theme: 'Creative Expression', text: '**Creating out of who you are** — an expression that copies no one. At its best it inspires; at its worst it turns inward into melancholy when it cannot find a way out into the world.' },
-    2: { theme: 'Receptive Direction', text: '**Knowing where to go without forcing it** — letting the course surface instead of imposing one. Its gift is a natural sense of direction that gives movement meaning; its shadow, feeling lost whenever it tries to steer by willpower alone.' },
-    3: { theme: 'Order in the New', text: '**Making order out of a beginning**, back when there is still no shape to hold on to. Its gift is knowing how to get something started and give it structure; its shadow, the frustration and the stalling that come from wanting to move faster than the thing allows.' },
-    4: { theme: 'Mental Answers', text: '**The mind reaching for an answer** to a question left open. Its gift is working out solutions that hold together logically; its shadow, the pressure to have the answer already, and mistaking a hypothesis for a certainty.' },
-    5: { theme: 'Fixed Rhythms', text: '**Rhythm and habit** — the energy that keeps a routine and a pace of its own. Its gift is the reliability of a rhythm that anchors the day; its shadow, the anxiety when that rhythm breaks.' },
-    6: { theme: 'Intimacy and Friction', text: '**The border of closeness**: when to open and when to shut. Its gift is an emotional life that creates real intimacy; its shadow, conflict and reactivity when that border is drawn by whatever mood is passing through.' },
-    7: { theme: 'Leadership and Direction', text: '**Guiding toward what comes next**, often from the back rather than the front. Its gift is a natural authority people choose to follow; its shadow, the urge to control the course, or to take it by force.' },
-    8: { theme: 'Contribution', text: '**Bringing something of your own** that makes a difference, and giving a voice to what matters. Its gift is an authenticity others want to join; its shadow, contributing for the recognition and coming away empty.' },
-    9: { theme: 'Focus on Detail', text: '**Narrowing in** on the details that get something finished. Its gift is an attention that sees things through; its shadow, disappearing into the small stuff, or scattering.' },
-    10: { theme: 'Self-love', text: '**Being true to yourself** — behaving as who you actually are. Its gift is an authenticity that does not sell itself out; its shadow, self-criticism, or bending out of shape to fit in.' },
-    11: { theme: 'Ideas', text: '**A mind full of ideas**, there to be shared and to make sense of experience. Its gift is a conceptual richness that sparks things in other people; its shadow, the pressure to act on every idea, when ideas are for sharing more than for doing.' },
-    12: { theme: 'Cautious Expression', text: '**Speaking when the mood and the moment are right.** Its gift is a word that lands and moves people at exactly the right instant; its shadow, speaking out of tune, or holding back out of caution.' },
-    13: { theme: 'Listening', text: '**Listening and remembering** — taking in other people\u2019s stories and secrets and making sense of them. Its gift is an ear that invites trust; its shadow, carrying what others put down.' },
-    14: { theme: 'Power for Resources', text: '**Fuel for work and resources** — the drive that gives someone\u2019s own effort real power. Its gift is a generative force that multiplies; its shadow, working hard with no reason behind it and no values steering it.' },
-    15: { theme: 'Love of Diversity', text: '**A love of people in all their extremes** — an attraction to different rhythms and different ways of living. Its gift is making room for what is unlike itself; its shadow, an erratic rhythm, or judging everyone else\u2019s.' },
-    16: { theme: 'Enthusiasm and Skill', text: '**Enthusiasm and skill** — talent that shows itself and sharpens with practice. Its gift is an enthusiasm that catches, and mastery at the end of it; its shadow, enthusiasm with nothing underneath.' },
-    17: { theme: 'Opinions', text: '**The mind forming opinions**, running ahead in order to organize. Its gift is opinions that give things a shape; its shadow, presenting a point of view as a fact.' },
-    18: { theme: 'Correction', text: '**The instinct to fix what has gone crooked.** Its gift is a sharp eye that improves and protects; its shadow, criticism that never stops, and perfectionism.' },
-    19: { theme: 'Sensitivity to Needs', text: '**Picking up what people need**, materially and emotionally. Its gift is a fine ear for what is missing; its shadow, neediness of its own, or a sensitivity turned raw.' },
-    20: { theme: 'The Now', text: '**The present moment** — awareness and expression in the same breath. Its gift is action that is spontaneous and exactly right; its shadow, busyness, or talking without being there.' },
-    21: { theme: 'Control', text: '**The will to run your own territory** and your own resources. Its gift is a legitimate authority over what is yours; its shadow, wanting to control everything, or feeling controlled.' },
-    22: { theme: 'Grace', text: '**Charm and emotional openness** — knowing how to listen and how to let someone in. Its gift is an emotional presence that draws people; its shadow, closing up when the mood is not there.' },
-    23: { theme: 'Assimilation', text: '**Turning what you know into something simple.** Its gift is making the complicated clear — the moment it clicks for someone else; its shadow, saying it at the wrong time and not being understood.' },
-    24: { theme: 'Rationalization', text: '**The mind circling back** to the same thought until it yields. Its gift is the insight that only comes from going over it again; its shadow, the loop with no way out.' },
-    25: { theme: 'Universal Love', text: '**Innocence, and love that wants nothing back.** Its gift is a clean, unconditional devotion; its shadow, losing that innocence to hurt or to ego.' },
-    26: { theme: 'Persuasive Transmission', text: '**Making the case** — the will to communicate something and give it worth. Its gift is a power of persuasion that moves people; its shadow, manipulation and half-truths.' },
-    27: { theme: 'Care', text: '**Taking care of others** and holding them up. Its gift is a care that genuinely nourishes; its shadow, smothering, or giving until there is nothing left.' },
-    28: { theme: 'The Search for Meaning', text: '**Betting on something worth it** — the search for a life with meaning in it. Its gift is finding a purpose worth the fight; its shadow, fighting for its own sake, and the fear of a life that means nothing.' },
-    29: { theme: 'Commitment', text: '**Saying yes and seeing it through.** Its gift is a persistence that finishes what it starts; its shadow, saying yes too often, or where it never should have.' },
-    30: { theme: 'Desire', text: '**Desire and longing** — the fire of wanting that drives a life of experience. Its gift is a passion that fuels everything; its shadow, being eaten by cravings that never settle.' },
-    31: { theme: 'Leadership Through the Voice', text: '**Speaking for a group** and standing for it. Its gift is leadership other people elect to follow; its shadow, leading without a real mandate, or out of plain ambition.' },
-    32: { theme: 'Continuity', text: '**An instinct for what will last** — and for what has to change in order to. Its gift is a nose for lasting value; its shadow, a fear of failure and of change that freezes everything.' },
-    33: { theme: 'Retreat and the Telling', text: '**Stepping away, then telling it back.** Its gift is a wisdom shared after time to reflect on it; its shadow, not honoring the need to withdraw — or telling too much, or too little.' },
-    34: { theme: 'Power', text: '**Raw power** — an independent force that is always busy. Its gift is enormous productive capacity; its shadow, busyness for its own sake, and moving before anything was answered.' },
-    35: { theme: 'Hunger for Experience', text: '**Wanting to have done everything** and to keep moving. Its gift is an appetite for life that pushes forward; its shadow, the restlessness of never arriving.' },
-    36: { theme: 'Crisis and the New', text: '**Emotional upheaval, and what it opens.** Its gift is growth through intensity; its shadow, diving into drama or crisis unprepared.' },
-    37: { theme: 'Friendship and Agreements', text: '**Warmth that builds a family** — the bonds and agreements that hold a group together. Its gift is an affection that creates belonging; its shadow, dependency, or agreements quietly broken.' },
-    38: { theme: 'Struggle with Meaning', text: '**Standing up for something that matters.** Its gift is persistence with a purpose behind it; its shadow, fighting for the sake of it, or sheer stubbornness.' },
-    39: { theme: 'Provocation', text: '**Poking at the mood** to get at what is really going on. Its gift is provocation that brings spirit to the surface; its shadow, needling for nothing, or plain moodiness.' },
-    40: { theme: 'Giving and Rest', text: '**Providing, then withdrawing to recover.** Its gift is a generosity that also knows how to stop; its shadow, working without pause — or refusing to give at all.' },
-    41: { theme: 'The Imagination That Starts Desire', text: '**The daydream that starts everything** — every new experience is imagined before it is lived. Its gift is a fantasy that opens doors; its shadow, imagination cut loose from reality, or the ache of a want with nowhere to go.' },
-    42: { theme: 'Completion', text: '**Finishing what was begun** and closing the cycle. Its gift is the capacity to see things through to the end; its shadow, starting without finishing, or a fear of endings.' },
-    43: { theme: 'Mental Intuition', text: '**Knowing something before anyone else does**, and all at once. Its gift is an original insight that changes the picture; its shadow, insisting on saying it at the wrong moment and being met with blank faces.' },
-    44: { theme: 'The Instinct for the Past', text: '**Reading what has happened before** — patterns, people, timing. Its gift is a nose for who and when; its shadow, the fear that the past is about to repeat.' },
-    45: { theme: 'The Voice of Resources', text: '**The voice that gathers and shares out** what belongs to everyone. Its gift is stewardship that takes care of the group; its shadow, hoarding, or a sense of entitlement.' },
-    46: { theme: 'Love of the Body', text: '**Being at home in a body**, and in the right place. Its gift is the knack of being where you need to be when you need to be there; its shadow, neglecting the body, or driving it too hard.' },
-    47: { theme: 'Mental Realization', text: '**The push to make sense of confusion** until it finally clicks. Its gift is turning a mess into understanding; its shadow, getting stuck in the feeling that none of it means anything.' },
-    48: { theme: 'Depth', text: '**A well to draw from** — depth of talent and of knowing. Its gift is having what the situation was missing; its shadow, the fear of not being enough, or not being ready.' },
-    49: { theme: 'Principles', text: '**Principles, and revolution when they are crossed** — the yes or no that decides who belongs. Its gift is transforming relationships from a clear place; its shadow, rejection turned rigid, or upheaval without care.' },
-    50: { theme: 'Values', text: '**Guarding what keeps a group well** — the values and the rules underneath it. Its gift is a keeper of values other people rest on; its shadow, over-responsibility, and the fear of letting everyone down.' },
-    51: { theme: 'Impulse and Shock', text: '**Going first** — the jolt that wakes everyone up. Its gift is a courage that shakes others into motion; its shadow, competitiveness, or plain recklessness.' },
-    52: { theme: 'Stillness and Focus', text: '**Stopping in order to see the whole.** Its gift is a calm that makes concentration possible; its shadow, inertia — or the restlessness of not being able to sit still.' },
-    53: { theme: 'Beginnings', text: '**Starting new cycles** — the pressure and the fuel to begin. Its gift is the push that gets new things moving; its shadow, beginning endlessly and completing nothing.' },
-    54: { theme: 'Ambition', text: '**The drive to rise**, materially and spiritually. Its gift is an ambition that lifts everything with it; its shadow, chasing the climb for someone else\u2019s approval, or overreaching.' },
-    55: { theme: 'Abundance of Spirit', text: '**Emotional richness, and faith.** Its gift is a depth of feeling and a faith that carries; its shadow, letting melancholy or the swing of a mood make the decisions.' },
-    56: { theme: 'The Stimulating Story', text: '**The story that holds a room** — ideas and experience told so they land. Its gift is a telling that opens horizons; its shadow, embellishing, or losing the thread.' },
-    57: { theme: 'Intuition in the Now', text: '**Instinct that cuts straight through the present.** Its gift is a quiet, unerring knowing in the instant; its shadow, a fear of the future that stops everything.' },
-    58: { theme: 'Vitality and Improvement', text: '**The joy of being alive**, and the push to make things better. Its gift is a vitality that fuels improvement; its shadow, restlessness, or criticism with the joy taken out of it.' },
-    59: { theme: 'Intimacy', text: '**Getting through someone\u2019s defenses** to make a real bond, sexual included. Its gift is the power to create closeness; its shadow, building walls — or walking straight through someone else\u2019s.' },
-    60: { theme: 'Accepting the Limit', text: '**Taking the limit as a starting point.** Its gift is turning constraint into possibility; its shadow, getting stuck in the limit and sinking with it.' },
-    61: { theme: 'Inner Truth', text: '**The pressure to know the unknowable.** Its gift is an inspiration that goes looking for the bottom of things; its shadow, the mental strain of needing to know it all.' },
-    62: { theme: 'Detail and Order', text: '**Naming things and putting them in order**, so they can be said precisely. Its gift is a clear, well-ordered way of explaining; its shadow, drowning in detail, or over-explaining.' },
-    63: { theme: 'Doubt', text: '**The pressure to question and check.** Its gift is a healthy doubt that tests things properly; its shadow, suspicion that corrodes, and anxiety.' },
-    64: { theme: 'Fertile Confusion', text: '**A press of half-processed images** looking for a way to arrange themselves. Its gift is a richness of imagery that finally resolves into understanding; its shadow, the overwhelm of trying to force it before it is ready.' }
+    1: {
+      theme: 'Creative Expression',
+      text: '**Creating out of who you are** — an expression that copies no one. At its best it inspires; at its worst it turns inward into melancholy when it cannot find a way out into the world.',
+      more: [
+        'When you carry it, something of yours needs a way out: a way of doing, saying or seeing that is not quite like anyone else\'s. It does not arrive on demand or because you sat down to look for it — it comes on its own schedule, and when it comes it wants room.',
+        'The hard part is the waiting. With no outlet, that energy turns inward and becomes melancholy. That is not a flaw in you; it is the cost of carrying something original. Give it a way out, however small, rather than forcing it into existence.'
+      ]
+    },
+    2: {
+      theme: 'Receptive Direction',
+      text: '**Knowing where to go without forcing it** — letting the course surface instead of imposing one. Its gift is a natural sense of direction that gives movement meaning; its shadow, feeling lost whenever it tries to steer by willpower alone.',
+      more: [
+        'When you carry it, you tend to know which way to go before you can say why. It is not a plan, it is a compass: you sense which direction makes sense and which does not, with the reasons arriving later, if at all.',
+        'The usual mistake is steering by willpower, picking the course with your head. That is when you get lost. Your direction works when you let it surface and trust it, not when you impose it.'
+      ]
+    },
+    3: {
+      theme: 'Order in the New',
+      text: '**Making order out of a beginning**, back when there is still no shape to hold on to. Its gift is knowing how to get something started and give it structure; its shadow, the frustration and the stalling that come from wanting to move faster than the thing allows.',
+      more: [
+        'When you carry it, your ground is the start: that stretch where something new exists but has no shape yet. You know how to move inside the initial mess and give it a structure it did not have, however slow and untidy the process is.',
+        'The difficulty is pacing. This energy pushes for things to set *now*, and new things do not set now. When you stall or get frustrated, it is almost always because you are asking the process for a speed it does not have.'
+      ]
+    },
+    4: {
+      theme: 'Mental Answers',
+      text: '**The mind reaching for an answer** to a question left open. Its gift is working out solutions that hold together logically; its shadow, the pressure to have the answer already, and mistaking a hypothesis for a certainty.',
+      more: [
+        'When you carry it, your mind manufactures answers: put an open question in front of it and it starts producing hypotheses, formulas, possible explanations. It is a genuinely useful engine for everyone else, because it offers ways out where others only see the problem.',
+        'The risk is mistaking a hypothesis for a certainty. The pressure to have the answer *already* makes you grab the first one that sounds right. What you have are *possible* answers: worth a great deal as a proposal, very little as a verdict.'
+      ]
+    },
+    5: {
+      theme: 'Fixed Rhythms',
+      text: '**Rhythm and habit** — the energy that keeps a routine and a pace of its own. Its gift is the reliability of a rhythm that anchors the day; its shadow, the anxiety when that rhythm breaks.',
+      more: [
+        'When you carry it, you need a rhythm of your own: habits, hours, small rituals that give the day its shape. It is not rigidity or fussiness; it is how your energy stays steady and available.',
+        'Which is why having your rhythm broken hits you so hard. When the day gets knocked out of shape, a restlessness shows up that is hard to explain to anyone who does not work this way. Protecting your rhythm is not a whim, it is maintenance.'
+      ]
+    },
+    6: {
+      theme: 'Intimacy and Friction',
+      text: '**The border of closeness**: when to open and when to shut. Its gift is an emotional life that creates real intimacy; its shadow, conflict and reactivity when that border is drawn by whatever mood is passing through.',
+      more: [
+        'When you carry it, you are managing one very specific border: when you open to someone and when you close. That door does not sit in the same place all the time — it moves with your emotional weather, which is why on a single day you can want closeness and then not be able to stand anyone.',
+        'Conflict comes from deciding that border in the heat of the moment. Opening or closing on the emotion of the day creates friction around you. Giving it time before you open or close is what turns this energy into real closeness rather than collision.'
+      ]
+    },
+    7: {
+      theme: 'Leadership and Direction',
+      text: '**Guiding toward what comes next**, often from the back rather than the front. Its gift is a natural authority people choose to follow; its shadow, the urge to control the course, or to take it by force.',
+      more: [
+        'When you carry it, you tend to end up giving the group direction whether or not you set out to. You see where it would be good to go and you point at it, often from the second row and without needing to hold the title.',
+        'Its shadow is grabbing the wheel. This energy has authority when it is granted, not when it is taken: pushing to lead usually achieves the opposite, and people stop following.'
+      ]
+    },
+    8: {
+      theme: 'Contribution',
+      text: '**Bringing something of your own** that makes a difference, and giving a voice to what matters. Its gift is an authenticity others want to join; its shadow, contributing for the recognition and coming away empty.',
+      more: [
+        'When you carry it, contributing something of your own — and having it register — matters to you. This is not about being seen: it is about giving voice to what you think is worth it, in a way that invites others in.',
+        'It hollows out when recognition becomes the motive. Contributing to be noticed leaves an empty feeling even when it goes well. What sustains this energy is that the contribution genuinely matters to you, applauded or not.'
+      ]
+    },
+    9: {
+      theme: 'Focus on Detail',
+      text: '**Narrowing in** on the details that get something finished. Its gift is an attention that sees things through; its shadow, disappearing into the small stuff, or scattering.',
+      more: [
+        'When you carry it, you have an uncommon power of concentration: you can hold your attention on the detail that has to be right for something to actually get finished. It is quiet, practical energy — the kind that completes what others leave at 90%.',
+        'Its flip side is getting lost in small things. The same focus that finishes can trap you in an irrelevant detail for hours. It is worth lifting your eyes now and then to check that the detail still serves the whole.'
+      ]
+    },
+    10: {
+      theme: 'Self-love',
+      text: '**Being true to yourself** — behaving as who you actually are. Its gift is an authenticity that does not sell itself out; its shadow, self-criticism, or bending out of shape to fit in.',
+      more: [
+        'When you carry it, there is a demand running underneath: behave in line with who you are. It is not a nice idea, it is nearly physical — when you betray yourself to fit in, your body knows before your head does.',
+        'Its shadow has two faces: contorting yourself to please, or flipping to the other side and beating yourself up for falling short. Neither is self-love. This energy holds when you treat yourself with the same decency you would show anyone else.'
+      ]
+    },
+    11: {
+      theme: 'Ideas',
+      text: '**A mind full of ideas**, there to be shared and to make sense of experience. Its gift is a conceptual richness that sparks things in other people; its shadow, the pressure to act on every idea, when ideas are for sharing more than for doing.',
+      more: [
+        'When you carry it, your head fills with ideas: images, connections, ways of framing what is happening. It is a real richness, and much of its point is to be **shared** — ideas are stimulation for others, not a work plan for you.',
+        'The usual drain is believing every idea must be executed. That is where the pressure starts: you pile up mental projects going nowhere and end up feeling in debt to yourself. Ideas are for thinking and telling; very few of them ask for action.'
+      ]
+    },
+    12: {
+      theme: 'Cautious Expression',
+      text: '**Speaking when the mood and the moment are right.** Its gift is a word that lands and moves people at exactly the right instant; its shadow, speaking out of tune, or holding back out of caution.',
+      more: [
+        'When you carry it, your words depend heavily on timing. There are days when what comes out has a depth that moves whoever hears it, and days when it simply is not there — and forcing it does not work.',
+        'The caution this energy brings is not shyness: it is a sense of the right moment. Speaking out of time takes the shine off what you had to say. Waiting for the moment when the mood is with you is what makes it land.'
+      ]
+    },
+    13: {
+      theme: 'Listening',
+      text: '**Listening and remembering** — taking in other people\u2019s stories and secrets and making sense of them. Its gift is an ear that invites trust; its shadow, carrying what others put down.',
+      more: [
+        'When you carry it, people tell you things. Without setting out to, you end up being the place where others leave their stories and sometimes their secrets, and you have a good ear for finding the sense in them and handing it back.',
+        'The weight comes from keeping everything you are handed. Listening does not oblige you to carry. Learning to receive without holding on is what keeps this energy a gift rather than a load.'
+      ]
+    },
+    14: {
+      theme: 'Power for Resources',
+      text: '**Fuel for work and resources** — the drive that gives someone\u2019s own effort real power. Its gift is a generative force that multiplies; its shadow, working hard with no reason behind it and no values steering it.',
+      more: [
+        'When you carry it, you have a drive that generates resources and can sustain your own work with real force. It is energy that prospers, and it tends to pull others along in its wake.',
+        'The question that orders it is not *how much* but *what for*. With no direction you care about, this drive gets spent accumulating for its own sake and ends up feeling empty. With a reason behind it, it is one of the most fertile energies in the chart.'
+      ]
+    },
+    15: {
+      theme: 'Love of Diversity',
+      text: '**A love of people in all their extremes** — an attraction to different rhythms and different ways of living. Its gift is making room for what is unlike itself; its shadow, an erratic rhythm, or judging everyone else\u2019s.',
+      more: [
+        'When you carry it, human variety draws you: different rhythms, ways of living unlike your own, people who fall outside the average. You have room for what is different without needing to tame it.',
+        'Your own rhythm, though, is anything but regular: you can swing from intense stretches to periods of almost nothing. That is not inconsistency, it is your beat. What is worth watching is judging other people\'s rhythm by yours.'
+      ]
+    },
+    16: {
+      theme: 'Enthusiasm and Skill',
+      text: '**Enthusiasm and skill** — talent that shows itself and sharpens with practice. Its gift is an enthusiasm that catches, and mastery at the end of it; its shadow, enthusiasm with nothing underneath.',
+      more: [
+        'When you carry it, enthusiasm is your fuel: when something grabs you, you throw yourself in and learn fast, and that enthusiasm is catching for whoever is nearby.',
+        'Its shadow is enthusiasm with nothing under it — leaping at something on the high and finding out the craft was missing. This energy is at its best when the impulse turns into repeated practice: that is where talent becomes real skill.'
+      ]
+    },
+    17: {
+      theme: 'Opinions',
+      text: '**The mind forming opinions**, running ahead in order to organize. Its gift is opinions that give things a shape; its shadow, presenting a point of view as a fact.',
+      more: [
+        'When you carry it, your mind forms opinions readily: it spots a pattern, gets ahead of it and proposes how something ought to be organised. Used well, it is energy that structures and saves everyone else work.',
+        'Trouble starts when a view is presented as a fact. An opinion offered as an opinion opens a conversation; offered as truth, it invites resistance. The only difference is in how you say it.'
+      ]
+    },
+    18: {
+      theme: 'Correction',
+      text: '**The instinct to fix what has gone crooked.** Its gift is a sharp eye that improves and protects; its shadow, criticism that never stops, and perfectionism.',
+      more: [
+        'When you carry it, you spot what has gone crooked before anyone else: the flaw in the plan, the crack in the argument, the thing that has been quietly degrading while no one looked. It is protective energy, even when it does not come across that way.',
+        'Its shadow is never switching off. Correcting around the clock — and above all correcting yourself — turns a gift into attrition. The knack is choosing what deserves the correction: not everything improvable needs improving today.'
+      ]
+    },
+    19: {
+      theme: 'Sensitivity to Needs',
+      text: '**Picking up what people need**, materially and emotionally. Its gift is a fine ear for what is missing; its shadow, neediness of its own, or a sensitivity turned raw.',
+      more: [
+        'When you carry it, you pick up what people need before they ask: the practical support, the bit of affection, whatever is missing for someone to be all right. It is a very fine sensitivity and very useful to any group.',
+        'The cost is that you feel your own needs at full volume too, and telling yours from other people\'s can be hard. Naming what you need — instead of waiting to be read — is what keeps this energy from turning into demand.'
+      ]
+    },
+    20: {
+      theme: 'The Now',
+      text: '**The present moment** — awareness and expression in the same breath. Its gift is action that is spontaneous and exactly right; its shadow, busyness, or talking without being there.',
+      more: [
+        'When you carry it, you live pressed right up against the present: you perceive and act in the moment, without the detour of thinking it through first. When you are genuinely present, what comes out is on target.',
+        'Its flip side is busyness: doing and talking on autopilot, filling the moment instead of inhabiting it. The difference between the two is not speed, it is whether you are actually there when you act.'
+      ]
+    },
+    21: {
+      theme: 'Control',
+      text: '**The will to run your own territory** and your own resources. Its gift is a legitimate authority over what is yours; its shadow, wanting to control everything, or feeling controlled.',
+      more: [
+        'When you carry it, you need to run your own affairs: your time, your money, your space, your way of doing things. It is not a hunger for power over anyone; it is that being decided for sits very badly with you.',
+        'It bends in two directions: trying to control what is not yours to control, or living with the sense of being controlled. Marking out what your territory actually is — and letting the rest go — is what turns this into healthy authority.'
+      ]
+    },
+    22: {
+      theme: 'Grace',
+      text: '**Charm and emotional openness** — knowing how to listen and how to let someone in. Its gift is an emotional presence that draws people; its shadow, closing up when the mood is not there.',
+      more: [
+        'When you carry it, you have an emotional openness that draws people in: you listen well, you make room, and you create a climate where people open up. The charm is not put on, and it works.',
+        'It depends on mood, and that has to be accepted. When the feeling is not there, the move is to withdraw, not to fake availability. Forcing grace when it is absent leaves a grimace.'
+      ]
+    },
+    23: {
+      theme: 'Assimilation',
+      text: '**Turning what you know into something simple.** Its gift is making the complicated clear — the moment it clicks for someone else; its shadow, saying it at the wrong time and not being understood.',
+      more: [
+        'When you carry it, you can take something only you see clearly and put it into plain words. When you get it right, there is that *click* where everyone suddenly understands.',
+        'And when the timing is off, the very same thing sounds like eccentricity. It is not that you are wrong: you arrived before there was a question. Almost all of this energy\'s effectiveness is in the when.'
+      ]
+    },
+    24: {
+      theme: 'Rationalization',
+      text: '**The mind circling back** to the same thought until it yields. Its gift is the insight that only comes from going over it again; its shadow, the loop with no way out.',
+      more: [
+        'When you carry it, your mind returns to the same thing again and again. It circles, wanders off, comes back — and on one of those passes, unannounced, the understanding that would not come simply arrives.',
+        'The drain comes from demanding a conclusion on every pass. This process does not speed up: chewing things over is how it works. Letting it run without forcing yourself to close the matter is what lets the clarity show up.'
+      ]
+    },
+    25: {
+      theme: 'Universal Love',
+      text: '**Innocence, and love that wants nothing back.** Its gift is a clean, unconditional devotion; its shadow, losing that innocence to hurt or to ego.',
+      more: [
+        'When you carry it, you have access to a kind of love that does not discriminate: a love of life itself, not of what life hands you. It can turn up with strangers, with animals, with anything.',
+        'The hard part is that the same innocence is exposed. When the world hits back, you can harden all at once so as never to feel it again. Recovering that openness after a blow is this energy\'s long work.'
+      ]
+    },
+    26: {
+      theme: 'Persuasive Transmission',
+      text: '**Making the case** — the will to communicate something and give it worth. Its gift is a power of persuasion that moves people; its shadow, manipulation and half-truths.',
+      more: [
+        'When you carry it, you know how to sell what is worth selling: to present, to persuade, to put something — yours or someone else\'s — in front of the people who should see it. It is pure willpower channelled into words.',
+        'The edge is the stretched truth. This energy can exaggerate without noticing, and that is where trust breaks. It persuades just as well telling it straight; it simply takes more effort.'
+      ]
+    },
+    27: {
+      theme: 'Care',
+      text: '**Taking care of others** and holding them up. Its gift is a care that genuinely nourishes; its shadow, smothering, or giving until there is nothing left.',
+      more: [
+        'When you carry it, caring comes naturally: feeding, holding, taking charge of whoever needs it. It is nourishing and very concrete energy — actually taking responsibility, not just saying you care.',
+        'Its limit is your own. You are so good at caring that you can end up with nothing left, and then feel guilty for stopping. Caring for yourself takes nothing from anyone: it is what makes carrying on possible.'
+      ]
+    },
+    28: {
+      theme: 'The Search for Meaning',
+      text: '**Betting on something worth it** — the search for a life with meaning in it. Its gift is finding a purpose worth the fight; its shadow, fighting for its own sake, and the fear of a life that means nothing.',
+      more: [
+        'When you carry it, living for its own sake is not enough: you need what you do to mean something. That search takes you into intense experiences, including the frightening ones.',
+        'Underneath this energy is a wrestle with meaninglessness, and it does not resolve once and for all. It is worth telling apart the risk that teaches from the risk that only wears you out: the first gives you meaning, the second just leaves you tired.'
+      ]
+    },
+    29: {
+      theme: 'Commitment',
+      text: '**Saying yes and seeing it through.** Its gift is a persistence that finishes what it starts; its shadow, saying yes too often, or where it never should have.',
+      more: [
+        'When you carry it, your capacity to commit is enormous: when you say yes, you go all the way in and see it through even when the road turns bad.',
+        'Which is exactly why the yes is the delicate part. This energy says yes easily, and then you spend years holding up what you accepted in two seconds. Before you commit, check the yes came from your body and not from momentum.'
+      ]
+    },
+    30: {
+      theme: 'Desire',
+      text: '**Desire and longing** — the fire of wanting that drives a life of experience. Its gift is a passion that fuels everything; its shadow, being eaten by cravings that never settle.',
+      more: [
+        'When you carry it, desire moves you: there are things that burn in you and that you want to live. That intensity is what takes you into experiences you would otherwise never touch.',
+        'It is also what burns. The longing can turn insatiable, or leave you stuck in the fantasy of what has not arrived yet. Feeling the desire without automatically obeying it is what makes it liveable.'
+      ]
+    },
+    31: {
+      theme: 'Leadership Through the Voice',
+      text: '**Speaking for a group** and standing for it. Its gift is leadership other people elect to follow; its shadow, leading without a real mandate, or out of plain ambition.',
+      more: [
+        'When you carry it, you speak and the group listens: you have a voice that naturally moves to the front and proposes where to go. It is leadership by word, not by rank.',
+        'Its condition is the same as any healthy leadership: that people want to hear you. When the voice imposes itself without being asked for, it stops guiding and starts ordering — and the group backs away.'
+      ]
+    },
+    32: {
+      theme: 'Continuity',
+      text: '**An instinct for what will last** — and for what has to change in order to. Its gift is a nose for lasting value; its shadow, a fear of failure and of change that freezes everything.',
+      more: [
+        'When you carry it, you have an unusual nose for what will last and what will not. It is conservative instinct in the good sense: it protects what deserves to be sustained from being wrecked.',
+        'Its shadow is fear of failure, which can freeze you before you start. Caution informs well and decides badly: use it to calibrate the pace, not to avoid moving.'
+      ]
+    },
+    33: {
+      theme: 'Retreat and the Telling',
+      text: '**Stepping away, then telling it back.** Its gift is a wisdom shared after time to reflect on it; its shadow, not honoring the need to withdraw — or telling too much, or too little.',
+      more: [
+        'When you carry it, you need to withdraw in order to digest what you have lived — and what you can later tell comes out of that retreat. You are one of the people who turn experience into a story with a point.',
+        'The retreat is part of the process, not an escape. Without it, experience piles up unsorted and you never get anything clear out of it. And what you have not digested yet is better left untold for now.'
+      ]
+    },
+    34: {
+      theme: 'Power',
+      text: '**Raw power** — an independent force that is always busy. Its gift is enormous productive capacity; its shadow, busyness for its own sake, and moving before anything was answered.',
+      more: [
+        'When you carry it, you have notable physical power: when something genuinely moves you, you produce a force that looks excessive to other people. It is the purest energy of the [Sacral](center:sacral).',
+        'It is also solitary energy: it works when you are busy with what is yours, not when you lend it to what is not. Being busy is not the same as being well spent.'
+      ]
+    },
+    35: {
+      theme: 'Hunger for Experience',
+      text: '**Wanting to have done everything** and to keep moving. Its gift is an appetite for life that pushes forward; its shadow, the restlessness of never arriving.',
+      more: [
+        'When you carry it, you want to try everything: the new calls you and repeating the familiar bores you senseless. You collect experiences at a rate that makes other people dizzy.',
+        'The sediment comes afterwards. This energy is off looking for the next experience before it has taken anything from the last, which can leave a sense of having lived a lot and learned little. Stopping to look back is what turns experience into wisdom.'
+      ]
+    },
+    36: {
+      theme: 'Crisis and the New',
+      text: '**Emotional upheaval, and what it opens.** Its gift is growth through intensity; its shadow, diving into drama or crisis unprepared.',
+      more: [
+        'When you carry it, life keeps putting you into crisis and unexplored ground — and that is precisely where you learn what cannot be learned any other way.',
+        'The wear comes from going into everything indiscriminately, or diving at the new out of sheer emotional restlessness. Experience teaches when it arrives in its own time; chased desperately, it only exhausts.'
+      ]
+    },
+    37: {
+      theme: 'Friendship and Agreements',
+      text: '**Warmth that builds a family** — the bonds and agreements that hold a group together. Its gift is an affection that creates belonging; its shadow, dependency, or agreements quietly broken.',
+      more: [
+        'When you carry it, agreements matter to you: loyalty, the explicit bargain, knowing who has committed to what. It is the energy of family and of tribe, in the broadest sense.',
+        'Be careful with bargains accepted half-heartedly to keep the peace. Those always come back with interest. An agreement only holds if you actually wanted to sign it.'
+      ]
+    },
+    38: {
+      theme: 'Struggle with Meaning',
+      text: '**Standing up for something that matters.** Its gift is persistence with a purpose behind it; its shadow, fighting for the sake of it, or sheer stubbornness.',
+      more: [
+        'When you carry it, your capacity to stand your ground is enormous: when something is worth it, you hold on through difficulty far past what looks reasonable.',
+        'The key question is always what you are fighting for. The same energy poured into a battle that does not matter turns into stubbornness and pure attrition. Choosing the fight well is half of it.'
+      ]
+    },
+    39: {
+      theme: 'Provocation',
+      text: '**Poking at the mood** to get at what is really going on. Its gift is provocation that brings spirit to the surface; its shadow, needling for nothing, or plain moodiness.',
+      more: [
+        'When you carry it, you provoke: without meaning to, your presence pushes people to move something, to react, to release whatever they had stuck.',
+        'It is an uncomfortable and often valuable role. Its shadow is provoking for its own sake, or doing it out of your own bad mood. Provoking so something comes unstuck is not the same as needling.'
+      ]
+    },
+    40: {
+      theme: 'Giving and Rest',
+      text: '**Providing, then withdrawing to recover.** Its gift is a generosity that also knows how to stop; its shadow, working without pause — or refusing to give at all.',
+      more: [
+        'When you carry it, you have a will to work and an equally clear right to rest: you give what is yours, and then you need to withdraw and recover. The two go together.',
+        'The usual wear is giving more than was agreed and ending up feeling nobody gives back. This energy works on a fair exchange: what you put in against what you get, with the rest included in the deal.'
+      ]
+    },
+    41: {
+      theme: 'The Imagination That Starts Desire',
+      text: '**The daydream that starts everything** — every new experience is imagined before it is lived. Its gift is a fantasy that opens doors; its shadow, imagination cut loose from reality, or the ache of a want with nowhere to go.',
+      more: [
+        'When you carry it, you are the start of everything that has not happened yet: the fantasy, the daydream, the \'what if\' that sets a new desire going. It is the system\'s initial spark.',
+        'Its pressure is wanting something different and not knowing what. That restlessness does not always have to be resolved by acting: often it is just imagination looking for a way out.'
+      ]
+    },
+    42: {
+      theme: 'Completion',
+      text: '**Finishing what was begun** and closing the cycle. Its gift is the capacity to see things through to the end; its shadow, starting without finishing, or a fear of endings.',
+      more: [
+        'When you carry it, your part is to close: to take processes already under way through to the end and finish them properly. You have staying power for exactly the last stretch, the one that most often gets stuck.',
+        'Its difficulty is getting into cycles that were never yours and then not being able to leave until they are done. Before you go in, look at whether you actually wanted to: once inside, walking away half-finished will cost you.'
+      ]
+    },
+    43: {
+      theme: 'Mental Intuition',
+      text: '**Knowing something before anyone else does**, and all at once. Its gift is an original insight that changes the picture; its shadow, insisting on saying it at the wrong moment and being met with blank faces.',
+      more: [
+        'When you carry it, understanding arrives suddenly and hard to explain: you know something all at once, without the logical path to back it up. It is a singular way of knowing, and it usually runs ahead.',
+        'The problem is translation. What is crystal clear inside can sound outlandish outside if you drop it unprepared. Finding the words and the moment is what turns this insight into something others can use.'
+      ]
+    },
+    44: {
+      theme: 'The Instinct for the Past',
+      text: '**Reading what has happened before** — patterns, people, timing. Its gift is a nose for who and when; its shadow, the fear that the past is about to repeat.',
+      more: [
+        'When you carry it, you smell people\'s past: you sense what someone is about, whether they can be trusted, what history they bring. It is a fast instinct, and it is usually right.',
+        'Its shadow is the fear it drags along: it can flag patterns that no longer exist and make you suspicious with no present cause. Listen to the warning, but check it against what is actually in front of you today.'
+      ]
+    },
+    45: {
+      theme: 'The Voice of Resources',
+      text: '**The voice that gathers and shares out** what belongs to everyone. Its gift is stewardship that takes care of the group; its shadow, hoarding, or a sense of entitlement.',
+      more: [
+        'When you carry it, you have a voice for the material and the shared: you know how to talk about resources, to distribute and administer what belongs to everyone. It is natural authority over the common pot.',
+        'It bends when that authority turns into ownership, or when things are administered without consulting the group. What sustains this energy is that the distribution be *felt* as fair, not merely be efficient.'
+      ]
+    },
+    46: {
+      theme: 'Love of the Body',
+      text: '**Being at home in a body**, and in the right place. Its gift is the knack of being where you need to be when you need to be there; its shadow, neglecting the body, or driving it too hard.',
+      more: [
+        'When you carry it, you have a good relationship with being here: you like your body, the physical, the experience of being alive. And you tend to have the luck of being in the right place at the right time.',
+        'That luck is not pure chance: it depends heavily on whether you are at ease in your own body. Mistreat or despise it and the sense of being where you should be goes with it.'
+      ]
+    },
+    47: {
+      theme: 'Mental Realization',
+      text: '**The push to make sense of confusion** until it finally clicks. Its gift is turning a mess into understanding; its shadow, getting stuck in the feeling that none of it means anything.',
+      more: [
+        'When you carry it, your mind works with disordered material: memories, loose images, pieces of experience that do not fit together yet. And at some point, on its own, it finds the sense.',
+        'In the meantime the feeling is confusion, and that is normal. The pressure to make sense of it *now* is the one thing that makes the process worse. Understanding here arrives late and arrives by itself.'
+      ]
+    },
+    48: {
+      theme: 'Depth',
+      text: '**A well to draw from** — depth of talent and of knowing. Its gift is having what the situation was missing; its shadow, the fear of not being enough, or not being ready.',
+      more: [
+        'When you carry it, you have a well of depth to draw on when it is needed: a knowing that is not theoretical but sits in the instinct.',
+        'Its constant companion is the feeling of not knowing enough. That feeling is nearly always false, and it is what keeps pushing you deeper. Do not wait to feel ready, because that feeling is not coming.'
+      ]
+    },
+    49: {
+      theme: 'Principles',
+      text: '**Principles, and revolution when they are crossed** — the yes or no that decides who belongs. Its gift is transforming relationships from a clear place; its shadow, rejection turned rigid, or upheaval without care.',
+      more: [
+        'When you carry it, your principles are clear to you and you notice at once when someone crosses them. It is the energy that decides what is acceptable and what breaks a bond.',
+        'Its shadow is the abrupt break: cutting all at once when tension has built up without any warning given. Saying where your line is, in time, prevents most of those breaks.'
+      ]
+    },
+    50: {
+      theme: 'Values',
+      text: '**Guarding what keeps a group well** — the values and the rules underneath it. Its gift is a keeper of values other people rest on; its shadow, over-responsibility, and the fear of letting everyone down.',
+      more: [
+        'When you carry it, you hold the group\'s values: you sense what keeps a family or a team healthy, and also what is rotting it. There is something of the guardian in this energy.',
+        'The weight is feeling responsible for everyone. This energy can take on the care of an entire group until it is spent. Your responsibility is the values, not carrying the consequences single-handed.'
+      ]
+    },
+    51: {
+      theme: 'Impulse and Shock',
+      text: '**Going first** — the jolt that wakes everyone up. Its gift is a courage that shakes others into motion; its shadow, competitiveness, or plain recklessness.',
+      more: [
+        'When you carry it, you have the nerve to go where others do not, and a particular relationship with shock: life\'s blows rearrange you rather than sink you.',
+        'Its flip side is competitiveness and collision for its own sake. This energy wakes people up — you and them — when there is a point behind it; without one, it just leaves people shaken for no reason.'
+      ]
+    },
+    52: {
+      theme: 'Stillness and Focus',
+      text: '**Stopping in order to see the whole.** Its gift is a calm that makes concentration possible; its shadow, inertia — or the restlessness of not being able to sit still.',
+      more: [
+        'When you carry it, you know how to sit still. That stillness is not passivity: it is what lets you concentrate and see in detail what would escape you in motion.',
+        'Tension shows up when your body wants to stop and you make it carry on, or the other way round. This energy runs in cycles of stillness and movement; forcing the wrong one is what makes it uncomfortable.'
+      ]
+    },
+    53: {
+      theme: 'Beginnings',
+      text: '**Starting new cycles** — the pressure and the fuel to begin. Its gift is the push that gets new things moving; its shadow, beginning endlessly and completing nothing.',
+      more: [
+        'When you carry it, you start things: you feel the pressure to begin new cycles, and you feel it almost physically when something has stayed the same for too long.',
+        'Starting does not oblige you to finish — the ending is not always yours. What is worth checking is whether you are beginning something that genuinely wants to begin, or just because you cannot bear the stillness.'
+      ]
+    },
+    54: {
+      theme: 'Ambition',
+      text: '**The drive to rise**, materially and spiritually. Its gift is an ambition that lifts everything with it; its shadow, chasing the climb for someone else\u2019s approval, or overreaching.',
+      more: [
+        'When you carry it, you have ambition and an appetite to rise: to improve your position, your circumstances, your place in things. It is a powerful engine of transformation.',
+        'It bends when the climb becomes the only aim and you forget why you wanted to climb. And much of this ascent depends on being recognised by others, which is not fully in your hands.'
+      ]
+    },
+    55: {
+      theme: 'Abundance of Spirit',
+      text: '**Emotional richness, and faith.** Its gift is a depth of feeling and a faith that carries; its shadow, letting melancholy or the swing of a mood make the decisions.',
+      more: [
+        'When you carry it, your mood has a very wide range: you go from fullness to emptiness with no clear outside cause, and that swing is yours, not a problem to be solved.',
+        'The long lesson is to stop justifying each state and to stop deciding at the extremes. The mood will drop and it will come back up. What you decide in the meantime is what is worth watching.'
+      ]
+    },
+    56: {
+      theme: 'The Stimulating Story',
+      text: '**The story that holds a room** — ideas and experience told so they land. Its gift is a telling that opens horizons; its shadow, embellishing, or losing the thread.',
+      more: [
+        'When you carry it, you know how to tell a story: you hold people with words, you keep them awake, you turn what you have lived into something worth hearing.',
+        'Its shadow is telling for the sake of telling. Stimulation with nothing underneath becomes noise, and it shows. What gives a story its weight is having actually lived what you are telling.'
+      ]
+    },
+    57: {
+      theme: 'Intuition in the Now',
+      text: '**Instinct that cuts straight through the present.** Its gift is a quiet, unerring knowing in the instant; its shadow, a fear of the future that stops everything.',
+      more: [
+        'When you carry it, you have a very fine ear for the present: you sense the danger or the health of a situation instantly, and you are almost always right.',
+        'It is a warning that sounds **once**. Start analysing it and it is gone. Which is why this energy asks you to trust the first signal, even when you cannot justify it.'
+      ]
+    },
+    58: {
+      theme: 'Vitality and Improvement',
+      text: '**The joy of being alive**, and the push to make things better. Its gift is a vitality that fuels improvement; its shadow, restlessness, or criticism with the joy taken out of it.',
+      more: [
+        'When you carry it, there is a background joy at being alive, and out of it comes a push to improve what is around you: what works badly bothers you and you want it fixed.',
+        'When that joy goes missing, it usually means you are correcting too much — yourself or everyone else. The vitality comes first; the improvement comes out of it, not the other way round.'
+      ]
+    },
+    59: {
+      theme: 'Intimacy',
+      text: '**Getting through someone\u2019s defenses** to make a real bond, sexual included. Its gift is the power to create closeness; its shadow, building walls — or walking straight through someone else\u2019s.',
+      more: [
+        'When you carry it, you know how to cross the distance to another person: you break through barriers and reach intimacy with an ease others find hard.',
+        'Its care is the other person\'s pace. This energy can move closer faster than the other can hold, and forcing intimacy closes exactly what you were trying to open.'
+      ]
+    },
+    60: {
+      theme: 'Accepting the Limit',
+      text: '**Taking the limit as a starting point.** Its gift is turning constraint into possibility; its shadow, getting stuck in the limit and sinking with it.',
+      more: [
+        'When you carry it, you live with limits: what there is, what cannot be, the concrete restriction. And out of accepting it comes mutation — something new that only appears inside the frame.',
+        'Its feeling is a melancholy for what does not fit, and it is real. It does not need fixing, and the frame does not need forcing. Nearly everything this energy produces is born precisely from having accepted the limit.'
+      ]
+    },
+    61: {
+      theme: 'Inner Truth',
+      text: '**The pressure to know the unknowable.** Its gift is an inspiration that goes looking for the bottom of things; its shadow, the mental strain of needing to know it all.',
+      more: [
+        'When you carry it, there is a pressure to know: to understand the bottom of things, the final why. It is not light curiosity, it is a restlessness that pushes.',
+        'And it guarantees no answer. That is the hard part: the pressure exists whether or not a conclusion does. Holding the question without manufacturing an answer to calm yourself is exactly what this energy asks.'
+      ]
+    },
+    62: {
+      theme: 'Detail and Order',
+      text: '**Naming things and putting them in order**, so they can be said precisely. Its gift is a clear, well-ordered way of explaining; its shadow, drowning in detail, or over-explaining.',
+      more: [
+        'When you carry it, you bring order: you name things, you classify, you give structure to detail so it can be handled. It is an enormous and fairly unrecognised contribution.',
+        'Its risk is the detail hiding the whole. When you find yourself arguing over a triviality, it is usually a sign to look up and check what the matter was actually about.'
+      ]
+    },
+    63: {
+      theme: 'Doubt',
+      text: '**The pressure to question and check.** Its gift is a healthy doubt that tests things properly; its shadow, suspicion that corrodes, and anxiety.',
+      more: [
+        'When you carry it, you doubt whatever is put in front of you: you look for the flaw, the crack, the thing that does not add up. It is an invaluable filter — someone has to ask whether this really works.',
+        'Turned inward, though, it paralyses: doubting yourself without pause protects nothing. This doubt earns its keep applied outward, not when it becomes self-criticism.'
+      ]
+    },
+    64: {
+      theme: 'Fertile Confusion',
+      text: '**A press of half-processed images** looking for a way to arrange themselves. Its gift is a richness of imagery that finally resolves into understanding; its shadow, the overwhelm of trying to force it before it is ready.',
+      more: [
+        'When you carry it, your head fills with unsorted images: fragments, memories, loose scenes that do not mean anything yet. It is raw material waiting to set.',
+        'That state of confusion is **normal here**, not a fault. The order comes on its own, in its own time, and nearly always once you have stopped pushing for it. Forcing it is the one thing that makes it worse.'
+      ]
+    },
   },
 
   // ── Initial report (second person, addressed to the chart's owner) ───────
@@ -987,30 +1435,30 @@ const overrides = {
 
     type: {
       generator: [
-        'You are the most common type — about **37% of the population** — and a *pure* Generator. What defines you is a defined [Sacral Center](center:sacral), the life-force engine of the whole system. When you are living your design, that building energy is steady, and there is plenty of it.',
-        'You work by **responding**. Life puts something in front of you and your body answers — the opposite of talking yourself into things from your head. Commit your energy where the answer was yes and you feel *satisfaction*. Force it where there was no answer and you get *frustration* instead.',
-        'In practice your Sacral answers before your mind catches up. Something concrete turns up — a proposal, a question, a situation — and there is a pull toward it, or away from it. **Trusting that pull**, rather than reasoning your way to a decision, is what keeps your energy well spent.'
+        'You carry your **own engine**. That is the short version: a working energy that spends itself over the day and refills overnight, built to be poured into whatever genuinely grabs you. You are also the most common type — roughly **a third of people** are pure Generators.',
+        'That engine is a defined [Sacral Center](center:sacral), the life-force of the whole system. It is not a stop-start energy: it is steady, and it pays off when it is aimed at something concrete that pulls you, rather than spread across obligations that leave you cold. Which is why your way of getting things right is not planning it all out from your head, but **reacting to what life puts in front of you**.',
+        'In practice your body speaks before your mind catches up: something concrete turns up — a proposal, a question, a situation — and there is a pull toward it, or an almost physical push away. That reaction is more reliable than any reasoning you do afterwards. How to use it day to day is in [your strategy](section:strategy); how to tell whether you are getting it right, in [your signals](section:signals).'
       ],
       'manifesting-generator': [
-        'You are a particular kind of [Generator](type:generator), and there are a lot of you: Manifesting Generators are **33% of the population**, and all the Generators together come to nearly 70%. Like any Generator, you have a defined [Sacral](center:sacral). What sets you apart is that your [Throat](center:throat) is wired to a motor — so you get to make things happen, and fast.',
-        'Your strategy has two steps: **respond, then inform**. First wait for the sacral answer, your body\u2019s yes or no. Then, before you set off, tell the people it will affect. You are usually many-sided, quick and non-linear: you skip steps, run several things at once, and double back later to finish what you skipped.',
-        'The thing to watch is **scattering**. Start something your body never agreed to and you pay for it. Go with a genuine yes and you move fast and land in *satisfaction*, with a certain calm around you. Push from the head instead and you collect *frustration*, some *anger*, and a pile of things left half-done.'
+        'You are a [Generator](type:generator) with a shortcut. You have the same **working engine** they do, plus a direct line from that engine to action: when something lights you up, you do not just have energy for it — you **start fast and make it real**. There are a lot of you, close to a third of the population.',
+        'The mechanics are that direct line: a defined [Sacral](center:sacral) — the engine — with your [Throat](center:throat) wired to a motor — the outlet. Hence the way you move: **many-sided, quick and non-linear**. You skip steps, run several things at once, and double back later to finish what you left. It is not disorder or a lack of staying power; it is how you get there sooner.',
+        'Your particular way of wearing yourself out is the opposite one: throwing yourself at something that was never yours and ending up with several things half-done. When to start — and who is worth telling first — is in [your strategy](section:strategy); whether you are on track or scattered, in [your signals](section:signals).'
       ],
       projector: [
-        'Projectors are close to **20% of the population**. With no defined [Sacral](center:sacral), **you are not built for constant work**, and you cannot hold a [Generator](type:generator)\u2019s pace — trying to is the fastest way to burn yourself out. Your gift is a different one: you see other people with unusual depth, and you know how to guide and direct their energy.',
-        'Your strategy is to **wait for the invitation** on the things that matter — work, love, where you live. Your insight and your effort land when someone asked for them; offer them unasked and you tend to meet resistance instead. *Recognition* and *success* are the sign you are on track. *Bitterness* is the sign you are not.',
-        'Managing your energy comes down mostly to **resting in time**: you do not compete on stamina, you compete on depth. Like the Manifestor, **rest is part of your method and not a prize** — sleep and let go **before** you are empty, and withdraw when you feel it without asking permission. And be careful who gets your attention and your effort: not every invitation deserves a yes. All of this gets concrete later on, in [living your design](section:practice).'
+        'The first thing worth knowing is that **you are not built for the pace most people run at**. You carry no constant working engine, so competing on hours and stamina is a race that was never yours — and measuring yourself by that yardstick is the source of nearly all your exhaustion. Projectors are close to **one in five people**.',
+        'What you do have is different, and it is considerable: **you see people with unusual depth**. You catch how someone works, where they are wasting their energy and what would help — often before they see it themselves. Your [Sacral](center:sacral) is undefined, and that same openness is what lets you read others from the inside. Guiding and directing is your real contribution.',
+        'The condition is that the seeing be **asked for**: offered unbidden it meets resistance; received when you are called on, it changes people. How to handle that is in [your strategy](section:strategy), and whether it is working, in [your signals](section:signals). One thing is not negotiable: **rest is part of your method**, not a prize — sleep and let go *before* you are empty.'
       ],
       manifestor: [
-        'You are the most independent type, around **9% of the population**. At least one motor — the Heart or the Solar Plexus — is wired to your [Throat](center:throat), but your [Sacral](center:sacral) is undefined. So your energy is not constant: it arrives in bursts you use to start things, and then it needs rest. Often quite a lot of rest.',
-        'Your strategy is to **inform before you act**. Not asking permission — just telling the people your move is about to reach. It sounds like a small thing and it changes everything, because most of the resistance you meet is a reaction to being surprised. Inform, and you get *peace*. Skip it, and you get opposition, and *anger* builds.',
-        'You are here to **start things and make an impact**, not to grind them out. And that leads to the most important thing, and the one least often said plainly: **rest is not your reward, it is your method**. You are not designed to create continuously. Some put a healthy Manifestor ratio at around **70-80% rest** against time spent initiating — the exact figure matters less than the point: **most of your time should not be spent producing**. Your impact comes from a few well-charged moves, not many at half power.',
-        'In practice: **go to bed tired, not empty**. Wait until there is nothing left and the next burst arrives late and weak. And do not measure your rest against a Generator, because next to one you will always look like you are doing very little — that is not laziness, it is your design. All of this gets concrete later on, in [living your design](section:practice).'
+        'You are built to **start things**: to set in motion what would not have got going without you. You are the most independent of all the types, and one of the least common — around **one person in ten**.',
+        'Your energy **arrives in bursts**, not in a steady stream. A motor is wired to your [Throat](center:throat), and that is exactly what lets you set off on your own without waiting for anyone; but your [Sacral](center:sacral) is undefined, so there is no source refilling itself each day. You push hard, and then you need to stop. Quite a lot.',
+        'Hence the most important thing, and the one least often said plainly: **rest is not your reward, it is your method**. You are not designed to produce continuously; your impact comes from a few well-charged moves, not many at half power. In practice: **go to bed tired, not empty**, and do not measure your rest against a Generator — next to one you will always look like you are doing very little, and that is not laziness, it is your design.',
+        'And because what you do reaches other people whether you like it or not, there is a specific way of moving that keeps you from hitting them head-on: it is in [your strategy](section:strategy). Whether it is working, [your signals](section:signals) will tell you.'
       ],
       reflector: [
-        'You are the rarest type — Reflectors are barely **1% of the population**. Not one of your centers is defined; your whole bodygraph is open. That makes you an extraordinarily sensitive mirror of the people and places around you, and it lets you feel the health of a community from the inside.',
-        'Because you are constantly sampling everyone else\u2019s energy, **where you are and who you are with matters enormously** — it changes your experience completely. So your strategy is to **wait a lunar cycle**, about 28 days, before anything important. Give the question time to be seen from every angle before you settle it.',
-        'The care you need most is in **choosing your environments**, and in not mistaking what you are reflecting for what is yours. In the right place, with the right people, life keeps bringing you *surprise* and delight. When *disappointment* is the main note, it is usually the place or the company — not you.'
+        'You work in a way that is radically unlike everyone else: **you carry nothing fixed inside**. Not one defined center, the whole bodygraph open. You are by far the rarest type — barely **one person in a hundred**.',
+        'Far from being a lack, that total openness is your instrument. Having no constant energy of your own, you **take in and amplify the energy of those around you**, and that makes you an extraordinarily fine mirror: you can feel how a group, a house or a place is doing, because you are literally living it from the inside. Sensing the health of a community is a gift almost nobody else has.',
+        'The flip side is that **your surroundings and your company change you enormously**: who you are with and where you are alters your whole experience of a day. So choosing your places and your people is not one detail among others, it is the central one — and it is worth not mistaking what you are only reflecting for what is yours. On the big decisions you also run on your own, slower clock: that is in [your strategy](section:strategy), and in [your signals](section:signals), how to tell whether you are in the right place.'
       ],
     },
     strategy: {
@@ -1271,42 +1719,294 @@ const overrides = {
   },
 
   channel: {
-    '1-8': { name: 'Channel of Inspiration', essence: 'a creative identity that needs a voice, and inspires others by example rather than by argument.' },
-    '2-14': { name: 'Channel of the Beat', essence: 'an inner compass for where to point one\u2019s life force and one\u2019s resources.' },
-    '3-60': { name: 'Channel of Mutation', essence: 'the pulse of change, turning a limit into the start of something new.' },
-    '4-63': { name: 'Channel of Logic', essence: 'a mind that begins in doubt and works its way toward answers that hold up.' },
-    '5-15': { name: 'Channel of Rhythm', essence: 'a natural rhythm of one\u2019s own that, kept open to difference, falls in step with life.' },
-    '6-59': { name: 'Channel of Intimacy', essence: 'the power to break through barriers and form a bond, and the sense of when to open and when to close.' },
-    '7-31': { name: 'Channel of Leadership', essence: 'the one who gives a group its direction, and finds the voice to lead it there.' },
-    '9-52': { name: 'Channel of Concentration', essence: 'the stillness that lets attention narrow onto detail until the work is finished.' },
-    '10-20': { name: 'Channel of Awakening', essence: 'self-love expressed in the present — being who you are, right now.' },
-    '10-34': { name: 'Channel of Exploration', essence: 'the strength to act on your own convictions and stay true to yourself.' },
-    '10-57': { name: 'Channel of Survival', essence: 'instinct in the service of wellbeing, and of the right way to live in a body.' },
-    '11-56': { name: 'Channel of Curiosity', essence: 'a mind full of ideas looking for stories to carry them.' },
-    '12-22': { name: 'Channel of Openness', essence: 'an emotional expression that opens up and moves people, when the mood and the moment are right.' },
-    '13-33': { name: 'Channel of the Prodigal', essence: 'gathering what has been lived and, after time away, telling it back as a witness.' },
-    '16-48': { name: 'Channel of Talent', essence: 'deep talent that turns into mastery through enthusiasm and repetition.' },
-    '17-62': { name: 'Channel of Acceptance', essence: 'opinions ordered into facts and detail, so things can be organized and anticipated.' },
-    '18-58': { name: 'Channel of Judgment', essence: 'the vitality that pushes to fix and improve whatever has gone crooked.' },
-    '19-49': { name: 'Channel of Synthesis', essence: 'a sensitivity to what people need, and bonds decided by deep principles.' },
-    '20-34': { name: 'Channel of Charisma', essence: 'power turned straight into action — thinking and doing without a gap between them.' },
-    '20-57': { name: 'Channel of the Brain Wave', essence: 'a sharp intuition that catches the knowing of the instant and says it out loud.' },
-    '21-45': { name: 'Channel of Money', essence: 'the will to control resources, and the voice that shares them out for the group.' },
-    '23-43': { name: 'Channel of Structuring', essence: 'individual knowing turned into ideas other people can actually follow.' },
-    '24-61': { name: 'Channel of Awareness', essence: 'the pressure to know the unknowable, turning it over until it gives up its meaning.' },
-    '25-51': { name: 'Channel of Initiation', essence: 'the shock that starts things, driven by a love that asks for nothing back.' },
-    '26-44': { name: 'Channel of Surrender', essence: 'an instinct that reads the past, and the power of persuasion to pass it on.' },
-    '27-50': { name: 'Channel of Preservation', essence: 'care that holds others up, guided by the values that keep a group safe.' },
-    '28-38': { name: 'Channel of Struggle', essence: 'the stubbornness to fight and take risks for a life worth having.' },
-    '29-46': { name: 'Channel of Discovery', essence: 'wholehearted commitment that, put into the body, thrives where others give up.' },
-    '30-41': { name: 'Channel of Recognition', essence: 'the imagination and longing that light the appetite for new experience.' },
-    '32-54': { name: 'Channel of Transformation', essence: 'ambition to rise, steered by an instinct for what will last.' },
-    '34-57': { name: 'Channel of Power', essence: 'raw strength at the service of instinct — power as sheer presence.' },
-    '35-36': { name: 'Channel of Transience', essence: 'a hunger for experience that, through emotional highs and lows, keeps moving on to the next thing.' },
-    '37-40': { name: 'Channel of Community', essence: 'the warmth that builds community through agreements — giving freely, and knowing when to step away and recover.' },
-    '39-55': { name: 'Channel of Emotion', essence: 'provocation that stirs the mood, to bring spirit up to the surface.' },
-    '42-53': { name: 'Channel of Maturation', essence: 'the energy of cycles: starting things and carrying them through, and ripening in the process.' },
-    '47-64': { name: 'Channel of Abstraction', essence: 'a press of half-formed images working themselves into sense.' }
+    '1-8': {
+      name: 'Channel of Inspiration',
+      essence: 'a creative identity that needs a voice, and inspires others by example rather than by argument.',
+      more: [
+        'When you have it complete, doing your own thing is not enough: it needs to be seen. This channel joins something original to a voice that carries it outward, which is why you tend to end up an example — not for what you preach, but for how you do what you do.',
+        'The wear comes from forcing originality on demand, or expecting recognition straight away. What is yours surfaces at its own pace and finds its people over time; pushing usually spoils it.'
+      ]
+    },
+    '2-14': {
+      name: 'Channel of the Beat',
+      essence: 'an inner compass for where to point one\u2019s life force and one\u2019s resources.',
+      more: [
+        'When you have it complete, direction and fuel sit in the same circuit: you know where your energy is going and you have plenty of force to take it there. It is one of the channels most tied to prosperity and resources.',
+        'Its condition is not forcing the course with your head. Direction here is recognised, not calculated; decide the destination by argument and the fuel is still there but stops paying off.'
+      ]
+    },
+    '3-60': {
+      name: 'Channel of Mutation',
+      essence: 'the pulse of change, turning a limit into the start of something new.',
+      more: [
+        'When you have it complete, your life runs on mutations: stretches where nothing moves, followed by abrupt jumps. That pulse is not you being erratic, it is literally how this channel works.',
+        'The hard part is the waiting, which feels like being stuck. It is not: it is the part of the cycle where something is forming. Pushing during that phase is what produces the frustration, not the wait itself.'
+      ]
+    },
+    '4-63': {
+      name: 'Channel of Logic',
+      essence: 'a mind that begins in doubt and works its way toward answers that hold up.',
+      more: [
+        'When you have it complete, you have a mind built to doubt and then hunt for the formula that settles the doubt. It is a continuous logical engine, and what it produces are hypotheses other people can use.',
+        'Be careful about believing your own answers too soon. This channel pushes to close, and a hypothesis presented as certainty loses exactly what made it valuable. Offer it as what it is and it carries more weight.'
+      ]
+    },
+    '5-15': {
+      name: 'Channel of Rhythm',
+      essence: 'a natural rhythm of one\u2019s own that, kept open to difference, falls in step with life.',
+      more: [
+        'When you have it complete, you have a strongly marked rhythm of your own and, at the same time, an openness to other people\'s. The combination is peculiar: you need your routines, but you cannot bear them being identical forever.',
+        'Which is why your beat can look erratic from outside. It is not: it alternates consistency and variation. What genuinely throws you is having a rhythm imposed that is not yours.'
+      ]
+    },
+    '6-59': {
+      name: 'Channel of Intimacy',
+      essence: 'the power to break through barriers and form a bond, and the sense of when to open and when to close.',
+      more: [
+        'When you have it complete, you have an uncommon capacity to create intimacy: you know how to close the distance and reach what is near, while also deciding when that door opens and closes.',
+        'It is the channel most tied to intimacy, in the reproductive sense too. Its care is the other person\'s pace and your own emotional weather: moving close in the heat of the moment, or shutting suddenly, is what breaks what you were building.'
+      ]
+    },
+    '7-31': {
+      name: 'Channel of Leadership',
+      essence: 'the one who gives a group its direction, and finds the voice to lead it there.',
+      more: [
+        'When you have it complete, you have voice and direction at once: you see where it would be good to go and you can say it so the group listens. It is the classic leadership circuit.',
+        'And it depends entirely on being chosen. This leadership works when it is given; taken by force it becomes ordering, and people back away. Your authority is on loan from the group, and that is not a weakness.'
+      ]
+    },
+    '9-52': {
+      name: 'Channel of Concentration',
+      essence: 'the stillness that lets attention narrow onto detail until the work is finished.',
+      more: [
+        'When you have it complete, your concentration is out of the ordinary: you can sit still and hold focus on detail far longer than most people manage.',
+        'The price is that starting and stopping cost you. This channel needs to settle into its stillness to deliver, and once inside, interruptions pull you all the way out. Protect those stretches if you want the concentration to show up.'
+      ]
+    },
+    '10-20': {
+      name: 'Channel of Awakening',
+      essence: 'self-love expressed in the present — being who you are, right now.',
+      more: [
+        'When you have it complete, there is a clear demand: **be yourself, and be it now**. This channel joins fidelity to who you are with expression in the present moment, leaving no room for rehearsal.',
+        'Its difficulty is that it allows no posturing. Act the way you think you should instead of the way you are and it shows instantly, and it sits badly with you. The awakening here is very concrete: behaving as yourself in real time.'
+      ]
+    },
+    '10-34': {
+      name: 'Channel of Exploration',
+      essence: 'the strength to act on your own convictions and stay true to yourself.',
+      more: [
+        'When you have it complete, you have the force to follow your own convictions: the power of the [Sacral](center:sacral) put to the service of being true to yourself. It is a deeply individual channel.',
+        'And for that reason a solitary one. This energy delivers when you spend it on what is yours; lent to what is not, it turns into pointless activity and an odd kind of tiredness.'
+      ]
+    },
+    '10-57': {
+      name: 'Channel of Survival',
+      essence: 'instinct in the service of wellbeing, and of the right way to live in a body.',
+      more: [
+        'When you have it complete, you have a finely tuned instinct for surviving as yourself: the ear of the [Spleen](center:spleen) warning you in the moment, joined to fidelity to who you are.',
+        'The warning comes once and without arguments. Start reasoning about it and it is gone. Learning to trust that first impulse — especially when it says no — is this channel\'s work.'
+      ]
+    },
+    '11-56': {
+      name: 'Channel of Curiosity',
+      essence: 'a mind full of ideas looking for stories to carry them.',
+      more: [
+        'When you have it complete, you are a storyteller: you gather ideas and turn them into narrative that stimulates whoever is listening. It is a channel of constant search for meaning through what gets told.',
+        'Its trap is taking ideas as a plan. Here ideas are for sharing, not executing; turning them into personal obligations is the source of nearly all its wear.'
+      ]
+    },
+    '12-22': {
+      name: 'Channel of Openness',
+      essence: 'an emotional expression that opens up and moves people, when the mood and the moment are right.',
+      more: [
+        'When you have it complete, your emotional expression has real reach: when the mood is with you, what you say touches people in a way others cannot manage.',
+        'It depends on mood and that is not negotiable. There are moments to speak and moments to withdraw, and forcing the first when it is the second spoils the effect. Reading the moment is the whole technique here.'
+      ]
+    },
+    '13-33': {
+      name: 'Channel of the Prodigal',
+      essence: 'gathering what has been lived and, after time away, telling it back as a witness.',
+      more: [
+        'When you have it complete, you gather what people tell you and, after withdrawing to digest it, hand it back turned into something meaningful. You are a kind of memory for the group.',
+        'The retreat is not optional: without it, what you gather piles up unsorted. And one thing is worth minding — not everything confided to you is there to be told, even though you have the gift for telling.'
+      ]
+    },
+    '16-48': {
+      name: 'Channel of Talent',
+      essence: 'deep talent that turns into mastery through enthusiasm and repetition.',
+      more: [
+        'When you have it complete, talent and enthusiasm sit on top of a well of depth: when something grabs you, you do not just leap in, you end up genuinely good at it.',
+        'The usual obstacle is the feeling of not being ready, which here is essentially permanent. It is not going away. This channel\'s mastery is built by practising, not by waiting to feel prepared.'
+      ]
+    },
+    '17-62': {
+      name: 'Channel of Acceptance',
+      essence: 'opinions ordered into facts and detail, so things can be organized and anticipated.',
+      more: [
+        'When you have it complete, you organise: you form opinions and back them with ordered detail, which makes them very convincing and very useful for structuring anything.',
+        'Its shadow is presenting as fact what is still a view, however well argued. The same opinion offered as an opinion opens a debate; offered as truth, it closes doors.'
+      ]
+    },
+    '18-58': {
+      name: 'Channel of Judgment',
+      essence: 'the vitality that pushes to fix and improve whatever has gone crooked.',
+      more: [
+        'When you have it complete, a background joy translates into an appetite for making things better: you see what is failing and you want it fixed, which can benefit everyone around you.',
+        'The limit is continuous correction. When the criticism does not stop — outward or inward — the joy feeding it disappears, and that is the moment to stop: the vitality comes first.'
+      ]
+    },
+    '19-49': {
+      name: 'Channel of Synthesis',
+      essence: 'a sensitivity to what people need, and bonds decided by deep principles.',
+      more: [
+        'When you have it complete, you have a very fine sensitivity to what people need and to the principles that hold a bond together. You notice immediately when something in an agreement has broken.',
+        'Its risk is the abrupt break. Tension builds silently and one day you cut all at once. Saying in time what you need and where your line is prevents most of those ruptures.'
+      ]
+    },
+    '20-34': {
+      name: 'Channel of Charisma',
+      essence: 'power turned straight into action — thinking and doing without a gap between them.',
+      more: [
+        'When you have it complete, you have charisma in the most literal sense: energy converted into action and presence in the moment. When you are busy with what is yours, people notice.',
+        'It is not energy to display or to lend to just anything. Charisma here is a side effect of doing what is actually yours; chase it directly and it goes out.'
+      ]
+    },
+    '20-57': {
+      name: 'Channel of the Brain Wave',
+      essence: 'a sharp intuition that catches the knowing of the instant and says it out loud.',
+      more: [
+        'When you have it complete, you have intuition in real time: you perceive and act in the same instant, without passing through reasoning. It is one of the fastest circuits in the chart.',
+        'Its demand is presence. This sharpness only works if you are genuinely here; distracted, the warning goes unnoticed. And since it comes once, analysing it afterwards will not bring it back.'
+      ]
+    },
+    '21-45': {
+      name: 'Channel of Money',
+      essence: 'the will to control resources, and the voice that shares them out for the group.',
+      more: [
+        'When you have it complete, you have authority over material things: you know how to administer resources and also how to claim control of what is yours. It is the channel most tied to money and management.',
+        'Its tension is between controlling and sharing. Administering what is common well means consulting the group; administering it as though it were yours generates exactly the resistance you wanted to avoid.'
+      ]
+    },
+    '23-43': {
+      name: 'Channel of Structuring',
+      essence: 'individual knowing turned into ideas other people can actually follow.',
+      more: [
+        'When you have it complete, you have singular insights and the ability to translate them into words others understand. It is the channel of *genius* — and equally of being misunderstood.',
+        'It all comes down to timing. The same thing said in time produces a click; said out of time it sounds like eccentricity. It is not that you are wrong: you arrived before the question existed.'
+      ]
+    },
+    '24-61': {
+      name: 'Channel of Awareness',
+      essence: 'the pressure to know the unknowable, turning it over until it gives up its meaning.',
+      more: [
+        'When you have it complete, your mind hunts for the bottom of things and returns to the same question over and over until, unannounced, the understanding arrives.',
+        'It is a mental pressure that guarantees no answer, and that is its hard point. Holding the question without manufacturing conclusions to calm yourself is exactly what this channel asks — and what almost nobody does.'
+      ]
+    },
+    '25-51': {
+      name: 'Channel of Initiation',
+      essence: 'the shock that starts things, driven by a love that asks for nothing back.',
+      more: [
+        'When you have it complete, you have the nerve to go where others do not, and a singular relationship with shocks: they rearrange you rather than sink you. It is the classic channel of initiation.',
+        'Its hard face is that the path tends to run through frights and losses. What is asked here is not to avoid them, but not to lose your innocence afterwards — which is the genuinely difficult part.'
+      ]
+    },
+    '26-44': {
+      name: 'Channel of Surrender',
+      essence: 'an instinct that reads the past, and the power of persuasion to pass it on.',
+      more: [
+        'When you have it complete, you join a nose for people with the ability to persuade: you know who you are dealing with and you know how to put things to them. It is a very effective channel in business.',
+        'Its edge is the stretched truth. The same skill that convinces can exaggerate without noticing, and there goes the trust that was your best asset. Telling it straight convinces just as well, it only takes more work.'
+      ]
+    },
+    '27-50': {
+      name: 'Channel of Preservation',
+      essence: 'care that holds others up, guided by the values that keep a group safe.',
+      more: [
+        'When you have it complete, you care for people and hold the group\'s values at the same time: it is the circuit of nurturing and of responsibility toward others in its most concrete form.',
+        'The weight is obvious: you can end up carrying everyone\'s wellbeing. Caring without emptying yourself requires a limit, and that limit does not make you a worse carer — it is what lets you keep being one.'
+      ]
+    },
+    '28-38': {
+      name: 'Channel of Struggle',
+      essence: 'the stubbornness to fight and take risks for a life worth having.',
+      more: [
+        'When you have it complete, you have the staying power to fight for what you judge worth it, and a deep need for life to mean something.',
+        'The question that orders everything is what you are fighting for. The same tenacity poured into a meaningless battle turns into sheer stubbornness and attrition. Here, choosing the fight well is literally choosing your life well.'
+      ]
+    },
+    '29-46': {
+      name: 'Channel of Discovery',
+      essence: 'wholehearted commitment that, put into the body, thrives where others give up.',
+      more: [
+        'When you have it complete, you commit all the way in and tend to turn up in the right place at the right time. It is the channel of discovery: you get in, and the learning comes out of that.',
+        'Its care is what you say yes to, because this channel says yes very easily and then holds on for years. And its luck depends on being at ease in your body: neglect it and the luck goes out.'
+      ]
+    },
+    '30-41': {
+      name: 'Channel of Recognition',
+      essence: 'the imagination and longing that light the appetite for new experience.',
+      more: [
+        'When you have it complete, you hold the start of desire: the imagination that lights something new and the emotional intensity to chase it. It is the engine of everything that has not happened yet.',
+        'Its tension is wanting something without knowing quite what. That pressure does not always call for action — often it is just imagination looking for a way out, and mistaking it for an order leads to experiences you did not want.'
+      ]
+    },
+    '32-54': {
+      name: 'Channel of Transformation',
+      essence: 'ambition to rise, steered by an instinct for what will last.',
+      more: [
+        'When you have it complete, you have ambition and a good nose for what will last: you want to rise, and you can also tell what has legs from what does not.',
+        'Its brake is fear of failure, which can freeze you before you start. And part of it is out of your hands: much of this ascent depends on someone recognising you. Preparing yourself, though, is entirely yours.'
+      ]
+    },
+    '34-57': {
+      name: 'Channel of Power',
+      essence: 'raw strength at the service of instinct — power as sheer presence.',
+      more: [
+        'When you have it complete, power and instinct sit in the same circuit: force to act and a fine ear telling you when. It is a very powerful channel in practical terms.',
+        'Its key is respecting the instinctive warning before spending the force. Act first and listen afterwards, and that same power gets spent in directions that were never yours.'
+      ]
+    },
+    '35-36': {
+      name: 'Channel of Transience',
+      essence: 'a hunger for experience that, through emotional highs and lows, keeps moving on to the next thing.',
+      more: [
+        'When you have it complete, you hunt experience without pause: the new calls you, and so you pile up a lifetime\'s worth of living that would take others several. It is the channel of the transitory.',
+        'Its wear is coming away with nothing settled. This circuit runs to the next experience before digesting the last, and that is where the sense of having lived a lot and learned little comes from. Stopping to look back is what changes it.'
+      ]
+    },
+    '37-40': {
+      name: 'Channel of Community',
+      essence: 'the warmth that builds community through agreements — giving freely, and knowing when to step away and recover.',
+      more: [
+        'When you have it complete, you work by agreements: you give what is yours and expect the other side to hold up theirs. It is the channel of community and family, in its most practical sense.',
+        'Everything depends on the bargain being explicit and genuinely wanted. An agreement accepted half-heartedly — or simply assumed — always comes back with interest. And rest is part of the deal, not a concession.'
+      ]
+    },
+    '39-55': {
+      name: 'Channel of Emotion',
+      essence: 'provocation that stirs the mood, to bring spirit up to the surface.',
+      more: [
+        'When you have it complete, you have an enormous emotional range and the ability to provoke in others exactly what needs moving. It is a channel closely tied to spirit and to art.',
+        'Its mood swing has no external cause and needs no explaining. What matters is not deciding at the extremes: neither in fullness nor in emptiness are you seeing the whole situation.'
+      ]
+    },
+    '42-53': {
+      name: 'Channel of Maturation',
+      essence: 'the energy of cycles: starting things and carrying them through, and ripening in the process.',
+      more: [
+        'When you have it complete, you live in cycles: something begins, matures and closes, and you need to travel the whole arc to get the meaning out of it.',
+        'The difficulty is that you cannot skip phases or step out halfway without paying for it. Before entering a cycle, look at whether you actually wanted to — because once inside, leaving it unfinished sits badly with you.'
+      ]
+    },
+    '47-64': {
+      name: 'Channel of Abstraction',
+      essence: 'a press of half-formed images working themselves into sense.',
+      more: [
+        'When you have it complete, your mind works with disordered material — images, memories, scraps — until, on its own, it finds the sense. It is the channel of abstraction.',
+        'The normal state here is confusion, and it is not a fault. Understanding arrives late and arrives by itself; the pressure to get it *now* is the only thing that muddies the process.'
+      ]
+    },
   },
 
   // Short keynote per center, shown next to the chips in the centers drawer.

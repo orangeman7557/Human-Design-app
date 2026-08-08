@@ -30,7 +30,7 @@ export default {
     type: {
       title: 'Los tipos',
       paragraphs: [
-        'El **tipo** es la primera y más importante distinción de una carta: describe cómo está diseñada la energía de la persona para interactuar con el mundo. Hay cinco —[Generador](type:generator), [Generador Manifestante](type:manifesting-generator), [Proyector](type:projector), [Manifestador](type:manifestor) y [Reflector](type:reflector)— y se determinan por qué centros están definidos y cómo se conectan con la [Garganta](center:throat).',
+        'El **tipo** es la primera y más importante distinción de una carta: describe cómo está diseñada la energía de la persona para interactuar con el mundo. Hay cinco, y se determinan por qué centros están definidos y cómo se conectan con la [Garganta](center:throat).',
         'Conocer el tipo importa sobre todo por una razón práctica: cada uno tiene una forma propia y sana de **gestionar su energía y tomar decisiones**. Vivir según el diseño propio —en lugar de imitar a otros tipos— es lo que el sistema asocia con menos resistencia y desgaste.',
         'No es una etiqueta de personalidad ni un horóscopo, sino una descripción mecánica de cómo funciona la energía de cada uno. El valor está en usarlo como espejo: observar si la manera propia de moverse por la vida coincide con la que la carta sugiere.'
       ]
@@ -1375,70 +1375,518 @@ export default {
   // the gate is active or not; getGateInfo appends a personalised state coda.
   // `theme` is a short noun phrase used to compose channel descriptions.
   gate: {
-    1: { theme: 'la expresión creativa', text: 'La puerta 1 es la energía de **crear desde la propia identidad**: una expresión original que no imita a nadie. En su mejor versión inspira a los demás; en su sombra, se repliega en la melancolía cuando no encuentra cómo salir al mundo.' },
-    2: { theme: 'la dirección receptiva', text: 'La puerta 2 es la **dirección receptiva**: saber hacia dónde ir sin forzarlo, dejando que el rumbo emerja en vez de imponerlo. Su don es una orientación natural que da sentido al movimiento; su sombra, sentirse perdido cuando intenta dirigir desde la pura voluntad.' },
-    3: { theme: 'el orden en lo nuevo', text: 'La puerta 3 es la energía de **poner orden en lo nuevo**: arrancar algo desde el caos del comienzo, cuando aún no hay forma. Su don es saber iniciar y estructurar lo que empieza; su sombra, la frustración y el bloqueo cuando se quiere ir más rápido de lo que el proceso permite.' },
-    4: { theme: 'las respuestas mentales', text: 'La puerta 4 es la mente que **busca respuestas y fórmulas** ante las preguntas abiertas. Su don es conceptualizar soluciones lógicas; su sombra, la presión por tener ya una respuesta, confundiendo una hipótesis con una certeza.' },
-    5: { theme: 'los ritmos fijos', text: 'La puerta 5 son los **ritmos y los hábitos fijos**: la energía que sostiene rutinas constantes y un compás propio. Su don es la fiabilidad de un ritmo natural que ancla el día; su sombra, la ansiedad cuando ese ritmo se rompe.' },
-    6: { theme: 'la intimidad y la fricción', text: 'La puerta 6 regula la **intimidad y la fricción emocional**: cuándo abrirse y cuándo cerrarse, la frontera de lo íntimo. Su don es una emocionalidad que crea cercanía profunda; su sombra, el conflicto y la reactividad cuando esa frontera se gestiona desde la emoción del momento.' },
-    7: { theme: 'el liderazgo y la dirección', text: 'La puerta 7 es el **papel de guía hacia el futuro**: la capacidad de dar dirección y liderar, a menudo desde un segundo plano. Su don es una autoridad natural que otros quieren seguir; su sombra, la necesidad de controlar el rumbo o de imponerse.' },
-    8: { theme: 'la contribución', text: 'La puerta 8 es la **contribución**: aportar algo propio que marque una diferencia y dar voz a lo que importa. Su don es una expresión auténtica que invita a otros a sumarse; su sombra, contribuir buscando reconocimiento y quedarse en lo vacío.' },
-    9: { theme: 'el foco en el detalle', text: 'La puerta 9 es la energía del **foco y la concentración** en los detalles que hacen falta para llevar algo a término. Su don es una atención sostenida que completa; su sombra, perderse en lo pequeño o dispersarse.' },
-    10: { theme: 'el amor propio', text: 'La puerta 10 es el **amor propio y la fidelidad a uno mismo**: comportarse de acuerdo con lo que se es. Su don es una autenticidad que no se traiciona; su sombra, la autocrítica o contorsionarse para encajar.' },
-    11: { theme: 'las ideas', text: 'La puerta 11 es la mente **llena de ideas** para compartir y dar sentido a la experiencia. Su don es una riqueza conceptual estimulante; su sombra, la presión por llevar cada idea a la acción, cuando las ideas están para compartirse más que para ejecutarse.' },
-    12: { theme: 'la expresión cauta', text: 'La puerta 12 es la **expresión cauta**: hablar cuando el ánimo y el momento son los adecuados. Su don es una palabra que emociona y conmueve en su instante justo; su sombra, hablar fuera de tono o callar por reparo.' },
-    13: { theme: 'la escucha', text: 'La puerta 13 es la **escucha y la memoria**: recoger las historias y los secretos de los demás y darles sentido. Su don es un oído que invita a confiar y orienta; su sombra, cargar con lo que otros depositan.' },
-    14: { theme: 'el poder para los recursos', text: 'La puerta 14 es la **energía para generar y dirigir recursos**: el empuje que da poder al trabajo propio. Su don es una fuerza generadora que prospera; su sombra, trabajar sin un porqué o sin valores que la guíen.' },
-    15: { theme: 'el amor a la diversidad', text: 'La puerta 15 es el **amor a la humanidad y a sus extremos**: una atracción por la diversidad de ritmos y formas de vivir. Su don es acoger lo distinto y encontrar el flujo adecuado; su sombra, un ritmo errático o juzgar el ritmo ajeno.' },
-    16: { theme: 'el entusiasmo y la destreza', text: 'La puerta 16 es el **entusiasmo y la destreza**: el talento que se expresa y se afina con la práctica. Su don es un entusiasmo contagioso y la maestría; su sombra, el entusiasmo vacío sin fondo ni preparación.' },
-    17: { theme: 'las opiniones', text: 'La puerta 17 es la mente que **forma opiniones** y se anticipa para organizar. Su don son opiniones útiles que estructuran; su sombra, presentar como hechos lo que son solo pareceres.' },
-    18: { theme: 'la corrección', text: 'La puerta 18 es el instinto de **corregir y mejorar** lo que se ha torcido. Su don es una mirada aguda que perfecciona y protege; su sombra, la crítica incesante y el perfeccionismo.' },
-    19: { theme: 'la sensibilidad a las necesidades', text: 'La puerta 19 es la **sensibilidad a las necesidades**: captar lo que la gente y la comunidad necesitan, también lo material y afectivo. Su don es una fina sintonía con lo que hace falta; su sombra, la necesidad excesiva o la hipersensibilidad.' },
-    20: { theme: 'el ahora', text: 'La puerta 20 es el **ahora**: la conciencia y la expresión del momento presente. Su don es una acción espontánea y certera en el instante; su sombra, el ajetreo o el hablar sin presencia.' },
-    21: { theme: 'el control', text: 'La puerta 21 es la **voluntad de controlar** los propios recursos y el propio territorio. Su don es una autoridad legítima sobre lo que es suyo; su sombra, querer controlarlo todo o sentirse controlado.' },
-    22: { theme: 'la gracia', text: 'La puerta 22 es la **gracia y la apertura emocional**: el encanto social que sabe escuchar y abrirse. Su don es una emocionalidad que atrae y conecta; su sombra, el retraimiento cuando el ánimo no acompaña.' },
-    23: { theme: 'la asimilación', text: 'La puerta 23 es la **asimilación**: traducir un saber individual a algo simple y comprensible. Su don es hacer claro lo complejo, esos "clics" que otros entienden; su sombra, hablar a destiempo y no ser comprendido.' },
-    24: { theme: 'la racionalización', text: 'La puerta 24 es la mente que **vuelve una y otra vez sobre un pensamiento** hasta darle sentido. Su don es la revelación que nace de revisar; su sombra, el bucle obsesivo del que no se sale.' },
-    25: { theme: 'el amor universal', text: 'La puerta 25 es la **inocencia y el amor universal**: un querer puro que no espera nada a cambio. Su don es una entrega limpia y desinteresada; su sombra, perder esa inocencia por herida o por ego.' },
-    26: { theme: 'la transmisión persuasiva', text: 'La puerta 26 es la **transmisión persuasiva**: la voluntad de comunicar y poner en valor, de "vender" una idea. Su don es un poder de convicción que mueve; su sombra, la manipulación y las medias verdades.' },
-    27: { theme: 'el cuidado', text: 'La puerta 27 es el **cuidado y la nutrición**: la energía de hacerse cargo y sostener a otros. Su don es un cuidado que nutre de verdad; su sombra, sobreproteger o darse hasta agotarse.' },
-    28: { theme: 'la búsqueda de sentido', text: 'La puerta 28 es la **búsqueda de sentido**: el juego de arriesgarse por algo que merezca la pena. Su don es encontrar un propósito por el que valga la pena luchar; su sombra, la lucha por la lucha y el miedo a una vida sin sentido.' },
-    29: { theme: 'el compromiso', text: 'La puerta 29 es el **compromiso**: la energía de decir sí y perseverar hasta el final. Su don es una entrega que cumple lo que empieza; su sombra, comprometerse en exceso o decir sí donde no tocaba.' },
-    30: { theme: 'el deseo', text: 'La puerta 30 es el **deseo y el anhelo**: el fuego de las expectativas que impulsa a vivir experiencias. Su don es una pasión que da combustible a la vida; su sombra, dejarse consumir por ansias que no se sacian.' },
-    31: { theme: 'el liderazgo por la voz', text: 'La puerta 31 es el **liderazgo por la voz**: la influencia de quien habla por un grupo y lo representa. Su don es un liderazgo que otros eligen seguir; su sombra, liderar sin mandato real o por mera ambición.' },
-    32: { theme: 'la continuidad', text: 'La puerta 32 es el instinto de **continuidad**: olfatear qué perdura y qué hay que adaptar para que dure. Su don es un instinto para el valor duradero; su sombra, el miedo al fracaso y al cambio que paraliza.' },
-    33: { theme: 'el retiro y el relato', text: 'La puerta 33 es el **retiro y el relato**: apartarse para luego contar lo vivido. Su don es una sabiduría que se comparte tras la reflexión; su sombra, no honrar la necesidad de retirarse, o contar de más o de menos.' },
-    34: { theme: 'el poder', text: 'La puerta 34 es el **poder puro**: la fuerza independiente, siempre atareada en hacer. Su don es una potencia productiva enorme; su sombra, el ajetreo por el ajetreo, ponerse en marcha sin haber respondido.' },
-    35: { theme: 'el ansia de experiencia', text: 'La puerta 35 es el **ansia de experiencia y de progreso**: el impulso de probarlo todo y avanzar. Su don es un hambre de vivir que empuja hacia adelante; su sombra, la inquietud de nunca quedar satisfecho.' },
-    36: { theme: 'la crisis y lo nuevo', text: 'La puerta 36 es la **crisis emocional y lo nuevo**: el vaivén que lleva a experiencias inéditas. Su don es crecer a través de la intensidad emocional; su sombra, lanzarse al drama o a la crisis sin estar preparado.' },
-    37: { theme: 'la amistad y los pactos', text: 'La puerta 37 es la **amistad y la comunidad**: la calidez que une a través de pactos y acuerdos. Su don es un afecto que crea familia y pertenencia; su sombra, la dependencia o los pactos rotos.' },
-    38: { theme: 'la lucha con sentido', text: 'La puerta 38 es la **lucha por lo que vale la pena**: la tenacidad de plantar cara por una causa. Su don es una perseverancia con propósito; su sombra, pelear por pelear o la cabezonería.' },
-    39: { theme: 'la provocación', text: 'La puerta 39 es la **provocación**: remover la emoción ajena para sacar a la luz lo que de verdad importa. Su don es provocar para revelar el espíritu; su sombra, la provocación gratuita o el malhumor.' },
-    40: { theme: 'la entrega y el descanso', text: 'La puerta 40 es la **entrega y la soledad**: trabajar y proveer para luego retirarse a reponerse. Su don es una generosidad que sabe también descansar; su sombra, el exceso de trabajo sin pausa, o negarse a dar.' },
-    41: { theme: 'la imaginación que inicia el deseo', text: 'La puerta 41 es la **imaginación que inicia el deseo**: el comienzo de toda nueva experiencia, soñada antes de vivirse. Su don es una fantasía que abre experiencias nuevas; su sombra, una imaginación desconectada de la realidad o la presión de un anhelo no saciado.' },
-    42: { theme: 'la culminación', text: 'La puerta 42 es la **culminación**: la energía de cerrar ciclos y llevar las cosas hasta el final. Su don es la capacidad de completar lo empezado; su sombra, empezar sin terminar o el miedo a los finales.' },
-    43: { theme: 'la intuición mental', text: 'La puerta 43 es la **intuición mental**: un saber individual que llega como un fogonazo, adelantado a los demás. Su don es una idea original y reveladora; su sombra, empeñarse en decirla a destiempo y que no la entiendan.' },
-    44: { theme: 'el instinto del pasado', text: 'La puerta 44 es el **instinto que lee el pasado**: una alerta para reconocer patrones, personas y oportunidades. Su don es un olfato para la gente y el momento; su sombra, el miedo a que el pasado se repita.' },
-    45: { theme: 'la voz de los recursos', text: 'La puerta 45 es la **voz que reúne y reparte los recursos**: el "yo tengo" de quien administra lo común. Su don es una administración generosa que cuida del grupo; su sombra, el acaparamiento o el sentirse con derecho a todo.' },
-    46: { theme: 'el amor al cuerpo', text: 'La puerta 46 es el **amor al cuerpo y el buen estar**: la determinación de habitar el cuerpo y de estar en el lugar correcto. Su don es una serendipia que pone en el sitio justo en el momento justo; su sombra, descuidar o forzar el cuerpo.' },
-    47: { theme: 'la realización mental', text: 'La puerta 47 es la **realización**: la presión mental por dar sentido a la confusión hasta que llega el "ajá". Su don es resolver lo confuso en una comprensión clara; su sombra, quedarse atrapado en la sensación de opresión o sinsentido.' },
-    48: { theme: 'la profundidad', text: 'La puerta 48 es la **profundidad**: un pozo de talento y sabiduría del que sacar soluciones. Su don es una hondura que aporta lo que falta; su sombra, el miedo a no ser suficiente o a no estar listo.' },
-    49: { theme: 'los principios', text: 'La puerta 49 son los **principios y la revolución**: aceptar o rechazar según valores profundos. Su don es transformar los vínculos desde principios claros; su sombra, el rechazo rígido o la revolución sin sensibilidad.' },
-    50: { theme: 'los valores', text: 'La puerta 50 son los **valores y la responsabilidad**: el cuidado de las normas que protegen el bienestar del grupo. Su don es una guarda de valores que sostiene a los demás; su sombra, la sobre-responsabilidad y el miedo a fallar al grupo.' },
-    51: { theme: 'el impulso y el choque', text: 'La puerta 51 es el **impulso de ser el primero**: la iniciativa que sacude y despierta. Su don es un coraje que espabila a otros; su sombra, la competitividad o la temeridad.' },
-    52: { theme: 'la quietud y el foco', text: 'La puerta 52 es la **quietud y la concentración**: la presión de parar para enfocar y ver el conjunto. Su don es una calma que permite concentrarse; su sombra, la inercia o la inquietud de no saber estarse quieto.' },
-    53: { theme: 'los comienzos', text: 'La puerta 53 son los **comienzos**: la presión y la energía para iniciar nuevos ciclos. Su don es el empuje para arrancar lo nuevo; su sombra, empezar sin descanso sin llegar a completar.' },
-    54: { theme: 'la ambición', text: 'La puerta 54 es la **ambición**: el impulso de ascender, en lo material y en lo espiritual. Su don es una ambición que eleva; su sombra, perseguir el ascenso por la aprobación ajena o pasarse de la raya.' },
-    55: { theme: 'la abundancia del ánimo', text: 'La puerta 55 es el **espíritu y la abundancia emocional**: la riqueza de los estados de ánimo y la fe. Su don es una hondura emocional y una fe que sostienen; su sombra, dejar que la melancolía o el vaivén del ánimo decidan.' },
-    56: { theme: 'el relato estimulante', text: 'La puerta 56 es el **relato que estimula**: contar ideas y experiencias que enganchan. Su don es una narración cautivadora que abre horizontes; su sombra, adornar de más o la atención que divaga.' },
-    57: { theme: 'la intuición en el ahora', text: 'La puerta 57 es la **intuición aguda en el ahora**: una claridad instintiva que penetra el presente. Su don es un saber sutil y certero en el instante; su sombra, el miedo al futuro que paraliza.' },
-    58: { theme: 'la vitalidad y la mejora', text: 'La puerta 58 es la **vitalidad y la alegría de vivir**: la energía que empuja a mejorar las cosas. Su don es un gozo vital que impulsa la corrección; su sombra, la inquietud o la crítica sin alegría.' },
-    59: { theme: 'la intimidad', text: 'La puerta 59 es la **intimidad**: la energía para romper barreras y crear vínculo, también sexual. Su don es el poder de generar cercanía y unión; su sombra, levantar muros o invadir en la intimidad.' },
-    60: { theme: 'la aceptación del límite', text: 'La puerta 60 es la **aceptación del límite**: convertir la restricción en semilla de lo nuevo. Su don es transformar los límites en posibilidad; su sombra, quedarse atascado en la limitación y la melancolía.' },
-    61: { theme: 'la verdad interior', text: 'La puerta 61 es la **verdad interior y el misterio**: la presión por conocer lo que no se puede saber del todo. Su don es una inspiración que busca el fondo de las cosas; su sombra, la presión mental de querer saberlo todo.' },
-    62: { theme: 'el detalle y el orden', text: 'La puerta 62 es el **detalle y la organización**: poner nombre y orden a las cosas para expresarlas con precisión. Su don es una expresión clara y ordenada; su sombra, perderse en el detalle o explicarse de más.' },
-    63: { theme: 'la duda', text: 'La puerta 63 es la **duda**: la presión que empuja a cuestionar y verificar. Su don es una duda sana que pone a prueba; su sombra, la sospecha que corroe y la ansiedad.' },
-    64: { theme: 'la confusión fértil', text: 'La puerta 64 es la **confusión que busca sentido**: una presión de imágenes sin procesar que pugnan por ordenarse. Su don es una riqueza de imágenes que acaba en comprensión; su sombra, el agobio de querer resolver la confusión antes de tiempo.' }
+    1: {
+      theme: 'la expresión creativa',
+      text: 'La puerta 1 es la energía de **crear desde la propia identidad**: una expresión original que no imita a nadie. En su mejor versión inspira a los demás; en su sombra, se repliega en la melancolía cuando no encuentra cómo salir al mundo.',
+      more: [
+        'Cuando la tienes activa, hay algo tuyo que necesita salir: una forma propia de hacer, de decir o de mirar que no se parece del todo a la de nadie. No llega por encargo ni cuando te sientas a buscarla; aparece a su ritmo, y cuando aparece pide paso.',
+        'Su lado difícil es la espera. Si no encuentras por dónde sacarlo, esa energía se vuelve hacia dentro y se convierte en melancolía. No es un fallo tuyo: es el precio de tener algo original dentro. Dale una salida —aunque sea pequeña— antes que forzarla a existir.'
+      ]
+    },
+    2: {
+      theme: 'la dirección receptiva',
+      text: 'La puerta 2 es la **dirección receptiva**: saber hacia dónde ir sin forzarlo, dejando que el rumbo emerja en vez de imponerlo. Su don es una orientación natural que da sentido al movimiento; su sombra, sentirse perdido cuando intenta dirigir desde la pura voluntad.',
+      more: [
+        'Cuando la tienes activa, sueles saber hacia dónde ir antes de poder explicar por qué. No es un plan trazado, es una brújula: notas qué dirección tiene sentido y cuál no, aunque los argumentos lleguen después (o no lleguen).',
+        'El error típico es intentar dirigirte a base de voluntad, decidiendo el rumbo con la cabeza. Ahí es cuando te pierdes. Tu dirección funciona cuando la dejas emerger y confías en ella, no cuando la impones.'
+      ]
+    },
+    3: {
+      theme: 'el orden en lo nuevo',
+      text: 'La puerta 3 es la energía de **poner orden en lo nuevo**: arrancar algo desde el caos del comienzo, cuando aún no hay forma. Su don es saber iniciar y estructurar lo que empieza; su sombra, la frustración y el bloqueo cuando se quiere ir más rápido de lo que el proceso permite.',
+      more: [
+        'Cuando la tienes activa, tu terreno es el arranque: ese momento en que algo nuevo existe pero todavía no tiene forma. Sabes moverte en el caos inicial y darle una estructura que antes no estaba, aunque el proceso sea lento y desordenado.',
+        'La dificultad está en el ritmo. Esta energía empuja a que las cosas cuajen ya, y las cosas nuevas no cuajan ya. Cuando te bloqueas o te frustras, casi siempre es que estás pidiéndole al proceso una velocidad que no tiene.'
+      ]
+    },
+    4: {
+      theme: 'las respuestas mentales',
+      text: 'La puerta 4 es la mente que **busca respuestas y fórmulas** ante las preguntas abiertas. Su don es conceptualizar soluciones lógicas; su sombra, la presión por tener ya una respuesta, confundiendo una hipótesis con una certeza.',
+      more: [
+        'Cuando la tienes activa, tu mente fabrica respuestas: ante una duda abierta se pone a producir hipótesis, fórmulas y posibles explicaciones. Es un motor mental muy útil para el resto, porque ofrece salidas donde otros solo ven el problema.',
+        'El riesgo es confundir una hipótesis con una certeza. La presión por tener ya la respuesta hace que te agarres a la primera que suene bien. Lo que tienes son *posibles* respuestas: valen mucho como propuesta y poco como veredicto.'
+      ]
+    },
+    5: {
+      theme: 'los ritmos fijos',
+      text: 'La puerta 5 son los **ritmos y los hábitos fijos**: la energía que sostiene rutinas constantes y un compás propio. Su don es la fiabilidad de un ritmo natural que ancla el día; su sombra, la ansiedad cuando ese ritmo se rompe.',
+      more: [
+        'Cuando la tienes activa, necesitas un compás propio: hábitos, horarios, pequeños rituales que ordenan el día. No es rigidez ni manía; es la forma en que tu energía se mantiene estable y disponible.',
+        'Por eso te afecta tanto que te rompan el ritmo. Cuando el día se descoloca, aparece una inquietud difícil de explicar a quien no funciona así. Proteger tu compás no es un capricho: es mantenimiento.'
+      ]
+    },
+    6: {
+      theme: 'la intimidad y la fricción',
+      text: 'La puerta 6 regula la **intimidad y la fricción emocional**: cuándo abrirse y cuándo cerrarse, la frontera de lo íntimo. Su don es una emocionalidad que crea cercanía profunda; su sombra, el conflicto y la reactividad cuando esa frontera se gestiona desde la emoción del momento.',
+      more: [
+        'Cuando la tienes activa, gestionas una frontera muy concreta: cuándo te abres a alguien y cuándo te cierras. Esa puerta no está siempre en el mismo sitio — se mueve con tu estado emocional, y por eso un mismo día puedes querer intimidad y al rato no soportar a nadie.',
+        'El conflicto llega cuando decides esa frontera en caliente. Abrirte o cerrarte según la emoción del momento genera fricción alrededor. Darte tiempo antes de abrir o de cerrar es lo que convierte esta energía en cercanía real en vez de en choque.'
+      ]
+    },
+    7: {
+      theme: 'el liderazgo y la dirección',
+      text: 'La puerta 7 es el **papel de guía hacia el futuro**: la capacidad de dar dirección y liderar, a menudo desde un segundo plano. Su don es una autoridad natural que otros quieren seguir; su sombra, la necesidad de controlar el rumbo o de imponerse.',
+      more: [
+        'Cuando la tienes activa, sueles acabar orientando al grupo aunque no lo hayas buscado. Ves hacia dónde conviene ir y lo señalas, muchas veces desde un segundo plano y sin necesidad de ocupar el puesto de mando.',
+        'Su sombra es querer llevar el timón a la fuerza. Esta energía tiene autoridad cuando se la reconocen, no cuando se la toma: empujar para dirigir suele conseguir justo lo contrario, que dejen de seguirte.'
+      ]
+    },
+    8: {
+      theme: 'la contribución',
+      text: 'La puerta 8 es la **contribución**: aportar algo propio que marque una diferencia y dar voz a lo que importa. Su don es una expresión auténtica que invita a otros a sumarse; su sombra, contribuir buscando reconocimiento y quedarse en lo vacío.',
+      more: [
+        'Cuando la tienes activa, te importa aportar algo propio y que ese algo se note. No hablamos de figurar: hablamos de dar voz a lo que consideras que vale la pena y hacerlo de una manera que invite a otros a sumarse.',
+        'Se vacía cuando el móvil pasa a ser el reconocimiento. Contribuir para que te vean deja una sensación hueca, aunque salga bien. Lo que sostiene esta energía es que la aportación te importe de verdad, la aplaudan o no.'
+      ]
+    },
+    9: {
+      theme: 'el foco en el detalle',
+      text: 'La puerta 9 es la energía del **foco y la concentración** en los detalles que hacen falta para llevar algo a término. Su don es una atención sostenida que completa; su sombra, perderse en lo pequeño o dispersarse.',
+      more: [
+        'Cuando la tienes activa, tienes una capacidad de concentración poco común: puedes sostener la atención en el detalle que hace falta para que algo llegue a terminarse. Es una energía silenciosa y muy práctica, la que remata lo que otros dejan al 90%.',
+        'Su reverso es perderte en lo pequeño. El mismo foco que completa puede atascarte en un detalle irrelevante durante horas. Merece la pena levantar la vista de vez en cuando y comprobar que el detalle sigue sirviendo al conjunto.'
+      ]
+    },
+    10: {
+      theme: 'el amor propio',
+      text: 'La puerta 10 es el **amor propio y la fidelidad a uno mismo**: comportarse de acuerdo con lo que se es. Su don es una autenticidad que no se traiciona; su sombra, la autocrítica o contorsionarse para encajar.',
+      more: [
+        'Cuando la tienes activa, hay una exigencia de fondo: comportarte de acuerdo con lo que eres. No es una idea bonita, es casi física — cuando te traicionas para encajar, lo notas en el cuerpo antes que en la cabeza.',
+        'Su sombra tiene dos caras: contorsionarte para agradar, o pasarte al otro lado y machacarte por no estar a la altura. Ninguna de las dos es amor propio. Esta energía se sostiene cuando te tratas con la misma decencia con la que tratarías a otro.'
+      ]
+    },
+    11: {
+      theme: 'las ideas',
+      text: 'La puerta 11 es la mente **llena de ideas** para compartir y dar sentido a la experiencia. Su don es una riqueza conceptual estimulante; su sombra, la presión por llevar cada idea a la acción, cuando las ideas están para compartirse más que para ejecutarse.',
+      more: [
+        'Cuando la tienes activa, la cabeza se te llena de ideas: imágenes, conexiones, formas de contar lo que pasa. Es una riqueza real, y buena parte de su sentido es **compartirla** — las ideas son estímulo para otros, no un plan de trabajo para ti.',
+        'El desgaste típico es creer que cada idea hay que ejecutarla. Ahí empieza la presión: acumulas proyectos mentales que no van a ninguna parte y te sientes en deuda contigo mismo. Las ideas están para pensarlas y contarlas; muy pocas piden acción.'
+      ]
+    },
+    12: {
+      theme: 'la expresión cauta',
+      text: 'La puerta 12 es la **expresión cauta**: hablar cuando el ánimo y el momento son los adecuados. Su don es una palabra que emociona y conmueve en su instante justo; su sombra, hablar fuera de tono o callar por reparo.',
+      more: [
+        'Cuando la tienes activa, tu palabra depende mucho del momento. Hay días en que sale con una hondura que emociona a quien te escucha, y días en que sencillamente no está — y forzarla no funciona.',
+        'La prudencia que trae esta energía no es timidez: es sentido de la oportunidad. Hablar a destiempo desluce lo que tenías que decir. Esperar al momento en que el ánimo acompaña es lo que hace que se escuche.'
+      ]
+    },
+    13: {
+      theme: 'la escucha',
+      text: 'La puerta 13 es la **escucha y la memoria**: recoger las historias y los secretos de los demás y darles sentido. Su don es un oído que invita a confiar y orienta; su sombra, cargar con lo que otros depositan.',
+      more: [
+        'Cuando la tienes activa, la gente te cuenta cosas. Sin proponértelo acabas siendo el sitio donde otros dejan sus historias y a veces sus secretos, y tienes buen oído para encontrarles sentido y devolverlo.',
+        'El peso llega cuando te quedas con todo lo que te dejan. Escuchar no obliga a cargar. Aprender a recibir sin quedarte con ello es lo que mantiene esta energía como un don en vez de como una mochila.'
+      ]
+    },
+    14: {
+      theme: 'el poder para los recursos',
+      text: 'La puerta 14 es la **energía para generar y dirigir recursos**: el empuje que da poder al trabajo propio. Su don es una fuerza generadora que prospera; su sombra, trabajar sin un porqué o sin valores que la guíen.',
+      more: [
+        'Cuando la tienes activa, tienes un empuje capaz de generar recursos y de sostener el trabajo propio con una fuerza notable. Es una energía que prospera y que suele arrastrar a otros a su paso.',
+        'La pregunta que la ordena no es *cuánto*, sino *para qué*. Sin una dirección que te importe, este empuje se gasta en acumular por acumular y acaba resultando vacío. Con un porqué detrás, es de las energías más fértiles de la carta.'
+      ]
+    },
+    15: {
+      theme: 'el amor a la diversidad',
+      text: 'La puerta 15 es el **amor a la humanidad y a sus extremos**: una atracción por la diversidad de ritmos y formas de vivir. Su don es acoger lo distinto y encontrar el flujo adecuado; su sombra, un ritmo errático o juzgar el ritmo ajeno.',
+      more: [
+        'Cuando la tienes activa, te atrae la variedad humana: los ritmos distintos, las formas de vivir que no se parecen a la tuya, la gente que se sale de la media. Tienes sitio para lo diferente sin necesidad de domesticarlo.',
+        'Tu propio ritmo, en cambio, es todo menos regular: puedes pasar de rachas intensísimas a periodos de casi nada. No es incoherencia, es tu compás. Lo que sí conviene vigilar es juzgar el ritmo ajeno con la vara del tuyo.'
+      ]
+    },
+    16: {
+      theme: 'el entusiasmo y la destreza',
+      text: 'La puerta 16 es el **entusiasmo y la destreza**: el talento que se expresa y se afina con la práctica. Su don es un entusiasmo contagioso y la maestría; su sombra, el entusiasmo vacío sin fondo ni preparación.',
+      more: [
+        'Cuando la tienes activa, el entusiasmo es tu combustible: cuando algo te engancha te lanzas y aprendes rápido, y ese entusiasmo se contagia a quien tienes cerca.',
+        'Su sombra es el entusiasmo sin fondo — lanzarse a algo por el subidón y descubrir que faltaba oficio. Esta energía da lo mejor cuando el impulso se convierte en práctica repetida: ahí es donde el talento se vuelve destreza de verdad.'
+      ]
+    },
+    17: {
+      theme: 'las opiniones',
+      text: 'La puerta 17 es la mente que **forma opiniones** y se anticipa para organizar. Su don son opiniones útiles que estructuran; su sombra, presentar como hechos lo que son solo pareceres.',
+      more: [
+        'Cuando la tienes activa, tu mente forma opiniones con facilidad: ve un patrón, se adelanta y propone cómo debería organizarse algo. Bien usada, es una energía que estructura y ahorra trabajo a los demás.',
+        'El problema aparece al presentar como hecho lo que es un parecer. Una opinión ofrecida como opinión abre conversación; ofrecida como verdad, provoca resistencia. La diferencia está solo en cómo la dices.'
+      ]
+    },
+    18: {
+      theme: 'la corrección',
+      text: 'La puerta 18 es el instinto de **corregir y mejorar** lo que se ha torcido. Su don es una mirada aguda que perfecciona y protege; su sombra, la crítica incesante y el perfeccionismo.',
+      more: [
+        'Cuando la tienes activa, detectas lo que está torcido antes que nadie: el fallo en el plan, la grieta en el argumento, lo que se ha ido degradando sin que nadie lo mirase. Es una energía protectora, aunque no siempre lo parezca.',
+        'Su sombra es no apagarse nunca. Corregir a todas horas —y sobre todo corregirte a ti— convierte un don en desgaste. La clave es elegir qué merece la corrección: no todo lo mejorable necesita ser mejorado hoy.'
+      ]
+    },
+    19: {
+      theme: 'la sensibilidad a las necesidades',
+      text: 'La puerta 19 es la **sensibilidad a las necesidades**: captar lo que la gente y la comunidad necesitan, también lo material y afectivo. Su don es una fina sintonía con lo que hace falta; su sombra, la necesidad excesiva o la hipersensibilidad.',
+      more: [
+        'Cuando la tienes activa, captas lo que la gente necesita antes de que lo pida: el apoyo material, el gesto afectivo, lo que falta para que alguien esté bien. Es una sensibilidad muy fina y muy útil para cualquier grupo.',
+        'El coste es que también sientes tus propias necesidades a lo grande, y puede costarte distinguir las tuyas de las ajenas. Nombrar lo que necesitas —en vez de esperar a que lo adivinen— es lo que evita que esta energía se vuelva demanda.'
+      ]
+    },
+    20: {
+      theme: 'el ahora',
+      text: 'La puerta 20 es el **ahora**: la conciencia y la expresión del momento presente. Su don es una acción espontánea y certera en el instante; su sombra, el ajetreo o el hablar sin presencia.',
+      more: [
+        'Cuando la tienes activa, vives muy pegado al presente: percibes y actúas en el instante, sin el rodeo de pensarlo primero. Cuando estás realmente presente, lo que sale es certero.',
+        'Su reverso es el ajetreo: hacer y hablar por inercia, llenando el momento en vez de habitarlo. La diferencia entre una cosa y otra no es la velocidad, es si estás ahí de verdad cuando actúas.'
+      ]
+    },
+    21: {
+      theme: 'el control',
+      text: 'La puerta 21 es la **voluntad de controlar** los propios recursos y el propio territorio. Su don es una autoridad legítima sobre lo que es suyo; su sombra, querer controlarlo todo o sentirse controlado.',
+      more: [
+        'Cuando la tienes activa, necesitas mandar sobre lo tuyo: tu tiempo, tu dinero, tu espacio, tu manera de hacer las cosas. No es afán de poder sobre nadie; es que te sienta muy mal que decidan por ti.',
+        'Se tuerce en dos direcciones: intentar controlar lo que no te corresponde, o vivir con la sensación de estar controlado. Delimitar bien cuál es tu territorio —y soltar el resto— es lo que convierte esta energía en autoridad sana.'
+      ]
+    },
+    22: {
+      theme: 'la gracia',
+      text: 'La puerta 22 es la **gracia y la apertura emocional**: el encanto social que sabe escuchar y abrirse. Su don es una emocionalidad que atrae y conecta; su sombra, el retraimiento cuando el ánimo no acompaña.',
+      more: [
+        'Cuando la tienes activa, tienes una apertura emocional que engancha: sabes escuchar, das espacio y creas un clima en el que la gente se abre. Es un encanto que no se finge, y funciona.',
+        'Depende del ánimo, y eso hay que aceptarlo. Cuando la emoción no acompaña, lo que toca es retirarte, no fingir disponibilidad. Forzar la gracia cuando no está la deja en mueca.'
+      ]
+    },
+    23: {
+      theme: 'la asimilación',
+      text: 'La puerta 23 es la **asimilación**: traducir un saber individual a algo simple y comprensible. Su don es hacer claro lo complejo, esos "clics" que otros entienden; su sombra, hablar a destiempo y no ser comprendido.',
+      more: [
+        'Cuando la tienes activa, tienes la capacidad de coger algo que solo tú ves con claridad y traducirlo a palabras simples. Cuando aciertas, se produce ese *clic* en el que de pronto los demás entienden.',
+        'Y cuando no aciertas con el momento, lo mismo suena a rareza. No es que te falte razón: es que llegaste antes de que hubiera pregunta. La eficacia de esta energía está casi toda en el cuándo.'
+      ]
+    },
+    24: {
+      theme: 'la racionalización',
+      text: 'La puerta 24 es la mente que **vuelve una y otra vez sobre un pensamiento** hasta darle sentido. Su don es la revelación que nace de revisar; su sombra, el bucle obsesivo del que no se sale.',
+      more: [
+        'Cuando la tienes activa, tu mente vuelve una y otra vez a lo mismo. Da vueltas, se aleja, regresa — y en alguna de esas vueltas, sin avisar, aparece la comprensión que no llegaba.',
+        'El desgaste viene de exigirle una conclusión a cada vuelta. Este proceso no se acelera: rumiar es su forma de trabajar. Dejarlo hacer sin obligarte a cerrar el tema es lo que permite que la claridad aparezca.'
+      ]
+    },
+    25: {
+      theme: 'el amor universal',
+      text: 'La puerta 25 es la **inocencia y el amor universal**: un querer puro que no espera nada a cambio. Su don es una entrega limpia y desinteresada; su sombra, perder esa inocencia por herida o por ego.',
+      more: [
+        'Cuando la tienes activa, tienes acceso a un cariño que no discrimina: un amor por la vida en sí, no por lo que la vida te dé. Puede aparecer con desconocidos, con animales, con lo que sea.',
+        'Su parte dura es que esa misma inocencia se expone. Cuando el mundo te devuelve un golpe, puedes endurecerte de golpe para no volver a sentirlo. Recuperar la apertura después de un golpe es el trabajo largo de esta energía.'
+      ]
+    },
+    26: {
+      theme: 'la transmisión persuasiva',
+      text: 'La puerta 26 es la **transmisión persuasiva**: la voluntad de comunicar y poner en valor, de "vender" una idea. Su don es un poder de convicción que mueve; su sombra, la manipulación y las medias verdades.',
+      more: [
+        'Cuando la tienes activa, sabes vender lo que vale: presentar, convencer, poner en valor algo —tuyo o ajeno— para que llegue a quien tiene que llegar. Es pura fuerza de voluntad puesta en la palabra.',
+        'El filo está en el estiramiento de la verdad. Esta energía puede exagerar sin darse cuenta, y ahí es donde se rompe la confianza. Convence igual de bien contando lo que hay; simplemente cuesta más.'
+      ]
+    },
+    27: {
+      theme: 'el cuidado',
+      text: 'La puerta 27 es el **cuidado y la nutrición**: la energía de hacerse cargo y sostener a otros. Su don es un cuidado que nutre de verdad; su sombra, sobreproteger o darse hasta agotarse.',
+      more: [
+        'Cuando la tienes activa, cuidar te sale solo: alimentar, sostener, ocuparte de quien lo necesita. Es una energía nutricia y muy concreta — de hacerse cargo de verdad, no de decir que te importa.',
+        'Su límite es el propio. Se te da tan bien cuidar que puedes quedarte sin nada, y encima sentirte culpable si paras. Cuidarte a ti no es quitarle nada a nadie: es lo que hace sostenible seguir cuidando.'
+      ]
+    },
+    28: {
+      theme: 'la búsqueda de sentido',
+      text: 'La puerta 28 es la **búsqueda de sentido**: el juego de arriesgarse por algo que merezca la pena. Su don es encontrar un propósito por el que valga la pena luchar; su sombra, la lucha por la lucha y el miedo a una vida sin sentido.',
+      more: [
+        'Cuando la tienes activa, no te vale vivir por vivir: necesitas que lo que haces signifique algo. Esa búsqueda te lleva a meterte en experiencias intensas, incluidas las que dan miedo.',
+        'El fondo de esta energía es una lucha con el sinsentido, y no se resuelve de una vez. Merece la pena distinguir el riesgo que enseña del que solo desgasta: el primero te da sentido, el segundo solo te deja cansado.'
+      ]
+    },
+    29: {
+      theme: 'el compromiso',
+      text: 'La puerta 29 es el **compromiso**: la energía de decir sí y perseverar hasta el final. Su don es una entrega que cumple lo que empieza; su sombra, comprometerse en exceso o decir sí donde no tocaba.',
+      more: [
+        'Cuando la tienes activa, tienes una capacidad enorme de entrega: cuando dices que sí, te metes de lleno y llegas hasta el final aunque el camino se ponga difícil.',
+        'Justo por eso, el sí es lo delicado. Esta energía dice que sí con facilidad, y luego te toca sostener durante años lo que aceptaste en dos segundos. Antes de comprometerte, comprueba que el sí venía del cuerpo y no de la inercia.'
+      ]
+    },
+    30: {
+      theme: 'el deseo',
+      text: 'La puerta 30 es el **deseo y el anhelo**: el fuego de las expectativas que impulsa a vivir experiencias. Su don es una pasión que da combustible a la vida; su sombra, dejarse consumir por ansias que no se sacian.',
+      more: [
+        'Cuando la tienes activa, el deseo te mueve: hay cosas que te arden por dentro y que quieres vivir. Esa intensidad es lo que te lleva a experiencias que de otro modo no tocarías.',
+        'Y también es lo que quema. El anhelo puede volverse insaciable, o dejarte atrapado en la fantasía de lo que aún no ha llegado. Sentir el deseo sin obedecerlo automáticamente es lo que lo hace habitable.'
+      ]
+    },
+    31: {
+      theme: 'el liderazgo por la voz',
+      text: 'La puerta 31 es el **liderazgo por la voz**: la influencia de quien habla por un grupo y lo representa. Su don es un liderazgo que otros eligen seguir; su sombra, liderar sin mandato real o por mera ambición.',
+      more: [
+        'Cuando la tienes activa, hablas y el grupo escucha: tienes una voz que naturalmente se pone al frente y propone hacia dónde ir. Es liderazgo por la palabra, no por el cargo.',
+        'Su condición es la misma que la de cualquier liderazgo sano: que te quieran escuchar. Cuando la voz se impone sin haber sido pedida, deja de guiar y empieza a mandar — y el grupo se aparta.'
+      ]
+    },
+    32: {
+      theme: 'la continuidad',
+      text: 'La puerta 32 es el instinto de **continuidad**: olfatear qué perdura y qué hay que adaptar para que dure. Su don es un instinto para el valor duradero; su sombra, el miedo al fracaso y al cambio que paraliza.',
+      more: [
+        'Cuando la tienes activa, tienes un olfato poco común para saber qué va a durar y qué no. Es un instinto conservador en el buen sentido: protege de la ruina lo que merece la pena sostener.',
+        'Su sombra es el miedo al fracaso, que puede paralizarte antes de empezar. La prudencia informa bien y decide mal: úsala para calibrar el paso, no para no darlo.'
+      ]
+    },
+    33: {
+      theme: 'el retiro y el relato',
+      text: 'La puerta 33 es el **retiro y el relato**: apartarse para luego contar lo vivido. Su don es una sabiduría que se comparte tras la reflexión; su sombra, no honrar la necesidad de retirarse, o contar de más o de menos.',
+      more: [
+        'Cuando la tienes activa, necesitas retirarte para digerir lo vivido — y de esa retirada sale lo que luego puedes contar. Eres de quienes convierten la experiencia en relato con sentido.',
+        'El retiro es parte del proceso, no una huida. Si no te lo das, la experiencia se acumula sin ordenarse y no llegas a sacar nada en claro de ella. Y lo que aún no has digerido, mejor no contarlo todavía.'
+      ]
+    },
+    34: {
+      theme: 'el poder',
+      text: 'La puerta 34 es el **poder puro**: la fuerza independiente, siempre atareada en hacer. Su don es una potencia productiva enorme; su sombra, el ajetreo por el ajetreo, ponerse en marcha sin haber respondido.',
+      more: [
+        'Cuando la tienes activa, tienes una potencia física notable: cuando algo te mueve de verdad, sacas una fuerza que a otros les parece desmedida. Es la energía más pura del [Sacral](center:sacral).',
+        'Es también una energía solitaria: funciona cuando te ocupas de lo tuyo, no cuando la pones al servicio de lo que no te corresponde. Estar ocupado no es lo mismo que estar empleándote bien.'
+      ]
+    },
+    35: {
+      theme: 'el ansia de experiencia',
+      text: 'La puerta 35 es el **ansia de experiencia y de progreso**: el impulso de probarlo todo y avanzar. Su don es un hambre de vivir que empuja hacia adelante; su sombra, la inquietud de nunca quedar satisfecho.',
+      more: [
+        'Cuando la tienes activa, quieres probarlo todo: lo nuevo te llama y te aburre soberanamente repetir lo ya conocido. Acumulas experiencias a un ritmo que a otros les marea.',
+        'El poso llega después. Esta energía busca la siguiente experiencia antes de haber sacado nada de la anterior, y por eso puede dejar una sensación de haber vivido mucho y aprendido poco. Pararte a mirar atrás es lo que convierte la experiencia en sabiduría.'
+      ]
+    },
+    36: {
+      theme: 'la crisis y lo nuevo',
+      text: 'La puerta 36 es la **crisis emocional y lo nuevo**: el vaivén que lleva a experiencias inéditas. Su don es crecer a través de la intensidad emocional; su sombra, lanzarse al drama o a la crisis sin estar preparado.',
+      more: [
+        'Cuando la tienes activa, la vida te mete en crisis y en terreno no explorado — y ahí es, precisamente, donde aprendes lo que no se aprende de otra manera.',
+        'El desgaste viene de meterte en todo sin criterio, o de tirarte a lo nuevo por pura inquietud emocional. La experiencia enseña cuando llega a su tiempo; buscada a la desesperada, solo agota.'
+      ]
+    },
+    37: {
+      theme: 'la amistad y los pactos',
+      text: 'La puerta 37 es la **amistad y la comunidad**: la calidez que une a través de pactos y acuerdos. Su don es un afecto que crea familia y pertenencia; su sombra, la dependencia o los pactos rotos.',
+      more: [
+        'Cuando la tienes activa, los acuerdos te importan: la lealtad, el pacto explícito, saber quién se compromete a qué. Es la energía de la familia y de la tribu, en el sentido más amplio.',
+        'Cuidado con los pactos aceptados sin ganas para no romper la armonía. Esos se cobran caros, siempre. Un acuerdo solo sostiene si de verdad querías firmarlo.'
+      ]
+    },
+    38: {
+      theme: 'la lucha con sentido',
+      text: 'La puerta 38 es la **lucha por lo que vale la pena**: la tenacidad de plantar cara por una causa. Su don es una perseverancia con propósito; su sombra, pelear por pelear o la cabezonería.',
+      more: [
+        'Cuando la tienes activa, tienes una capacidad enorme de plantar cara: cuando algo merece la pena, te sostienes en la dificultad mucho más allá de lo razonable.',
+        'La pregunta clave es siempre por qué peleas. La misma energía puesta en una batalla que no importa se convierte en cabezonería y desgaste puro. Elegir bien la lucha es la mitad del asunto.'
+      ]
+    },
+    39: {
+      theme: 'la provocación',
+      text: 'La puerta 39 es la **provocación**: remover la emoción ajena para sacar a la luz lo que de verdad importa. Su don es provocar para revelar el espíritu; su sombra, la provocación gratuita o el malhumor.',
+      more: [
+        'Cuando la tienes activa, provocas: sin proponértelo, tu presencia empuja a los demás a mover algo, a reaccionar, a soltar lo que tenían atascado.',
+        'Es un papel incómodo y a menudo valioso. Su sombra es provocar por provocar, o hacerlo desde tu propio malhumor. Provocar para que algo se destrabe no es lo mismo que picar.'
+      ]
+    },
+    40: {
+      theme: 'la entrega y el descanso',
+      text: 'La puerta 40 es la **entrega y la soledad**: trabajar y proveer para luego retirarse a reponerse. Su don es una generosidad que sabe también descansar; su sombra, el exceso de trabajo sin pausa, o negarse a dar.',
+      more: [
+        'Cuando la tienes activa, tienes voluntad de trabajo y también un derecho claro al descanso: das lo tuyo, y después necesitas retirarte a recuperarte. Las dos cosas van juntas.',
+        'El desgaste típico es dar más de lo pactado y acabar sintiendo que nadie lo devuelve. Esta energía funciona en un intercambio justo: lo que aportas a cambio de lo que recibes, y el descanso incluido en el trato.'
+      ]
+    },
+    41: {
+      theme: 'la imaginación que inicia el deseo',
+      text: 'La puerta 41 es la **imaginación que inicia el deseo**: el comienzo de toda nueva experiencia, soñada antes de vivirse. Su don es una fantasía que abre experiencias nuevas; su sombra, una imaginación desconectada de la realidad o la presión de un anhelo no saciado.',
+      more: [
+        'Cuando la tienes activa, eres el arranque de todo lo que aún no ha pasado: la fantasía, la ilusión, el «y si...» que pone en marcha un deseo nuevo. Es la chispa inicial del sistema.',
+        'Su presión es sentir que quieres algo distinto y no saber el qué. Esa inquietud no siempre hay que resolverla actuando: muchas veces es solo imaginación buscando por dónde salir.'
+      ]
+    },
+    42: {
+      theme: 'la culminación',
+      text: 'La puerta 42 es la **culminación**: la energía de cerrar ciclos y llevar las cosas hasta el final. Su don es la capacidad de completar lo empezado; su sombra, empezar sin terminar o el miedo a los finales.',
+      more: [
+        'Cuando la tienes activa, tu papel es cerrar: llevar hasta el final los procesos que ya están en marcha y darles remate. Tienes aguante justo para la última parte, que es la que más se atraganta.',
+        'Su dificultad es meterte en ciclos que no eran tuyos y luego no poder salir hasta terminarlos. Antes de entrar, mira si de verdad querías entrar: una vez dentro, te va a costar dejarlo a medias.'
+      ]
+    },
+    43: {
+      theme: 'la intuición mental',
+      text: 'La puerta 43 es la **intuición mental**: un saber individual que llega como un fogonazo, adelantado a los demás. Su don es una idea original y reveladora; su sombra, empeñarse en decirla a destiempo y que no la entiendan.',
+      more: [
+        'Cuando la tienes activa, te llegan comprensiones repentinas y difíciles de explicar: sabes algo de golpe, sin el camino lógico que lo respalde. Es una manera singular de conocer, y suele adelantarse.',
+        'El problema es traducirlo. Lo que dentro está clarísimo puede sonar fuera a extravagancia si lo sueltas sin preparar. Encontrar las palabras y el momento es lo que convierte esta intuición en algo que otros pueden usar.'
+      ]
+    },
+    44: {
+      theme: 'el instinto del pasado',
+      text: 'La puerta 44 es el **instinto que lee el pasado**: una alerta para reconocer patrones, personas y oportunidades. Su don es un olfato para la gente y el momento; su sombra, el miedo a que el pasado se repita.',
+      more: [
+        'Cuando la tienes activa, hueles el pasado de la gente: percibes de qué va alguien, si es de fiar, qué historia trae. Es un instinto rápido, y suele acertar.',
+        'Su sombra es el miedo que arrastra: puede alertarte de patrones que ya no existen y hacerte desconfiar sin motivo actual. Escucha el aviso, pero contrástalo con lo que tienes delante hoy.'
+      ]
+    },
+    45: {
+      theme: 'la voz de los recursos',
+      text: 'La puerta 45 es la **voz que reúne y reparte los recursos**: el "yo tengo" de quien administra lo común. Su don es una administración generosa que cuida del grupo; su sombra, el acaparamiento o el sentirse con derecho a todo.',
+      more: [
+        'Cuando la tienes activa, tienes voz para lo material y lo compartido: sabes hablar de recursos, repartir y administrar lo que es de todos. Es una autoridad natural sobre lo común.',
+        'Se tuerce cuando esa autoridad se vuelve posesión, o cuando se administra sin contar con el grupo. Lo que sostiene esta energía es que el reparto se perciba justo, no solo que sea eficaz.'
+      ]
+    },
+    46: {
+      theme: 'el amor al cuerpo',
+      text: 'La puerta 46 es el **amor al cuerpo y el buen estar**: la determinación de habitar el cuerpo y de estar en el lugar correcto. Su don es una serendipia que pone en el sitio justo en el momento justo; su sombra, descuidar o forzar el cuerpo.',
+      more: [
+        'Cuando la tienes activa, tienes una relación buena con estar aquí: te gusta el cuerpo, lo físico, la experiencia de estar vivo. Y sueles tener suerte de estar en el sitio justo en el momento justo.',
+        'Esa suerte no es azar puro: depende mucho de si estás a gusto en tu propio cuerpo. Cuando lo maltratas o lo desprecias, la sensación de estar donde toca desaparece con él.'
+      ]
+    },
+    47: {
+      theme: 'la realización mental',
+      text: 'La puerta 47 es la **realización**: la presión mental por dar sentido a la confusión hasta que llega el "ajá". Su don es resolver lo confuso en una comprensión clara; su sombra, quedarse atrapado en la sensación de opresión o sinsentido.',
+      more: [
+        'Cuando la tienes activa, tu mente trabaja con material desordenado: recuerdos, imágenes sueltas, pedazos de experiencia que aún no encajan. Y en algún momento, sola, encuentra el sentido.',
+        'Mientras tanto, la sensación es de confusión, y es normal. La presión por darle sentido *ya* es lo único que empeora el proceso. La comprensión aquí llega tarde y llega sola.'
+      ]
+    },
+    48: {
+      theme: 'la profundidad',
+      text: 'La puerta 48 es la **profundidad**: un pozo de talento y sabiduría del que sacar soluciones. Su don es una hondura que aporta lo que falta; su sombra, el miedo a no ser suficiente o a no estar listo.',
+      more: [
+        'Cuando la tienes activa, tienes un pozo de profundidad del que sacar cuando hace falta: un saber que no es teórico, sino que está en el instinto.',
+        'Su compañera constante es la sensación de no saber lo suficiente. Es casi siempre falsa, y es lo que empuja a seguir profundizando. No esperes a sentirte preparado, porque esa sensación no va a llegar.'
+      ]
+    },
+    49: {
+      theme: 'los principios',
+      text: 'La puerta 49 son los **principios y la revolución**: aceptar o rechazar según valores profundos. Su don es transformar los vínculos desde principios claros; su sombra, el rechazo rígido o la revolución sin sensibilidad.',
+      more: [
+        'Cuando la tienes activa, tienes claros tus principios y notas enseguida cuándo alguien los cruza. Es la energía que decide qué se acepta y qué rompe un vínculo.',
+        'Su sombra es la ruptura brusca: cortar de golpe cuando la tensión se acumula sin haber avisado antes. Decir a tiempo dónde está tu límite evita la mayoría de esos cortes.'
+      ]
+    },
+    50: {
+      theme: 'los valores',
+      text: 'La puerta 50 son los **valores y la responsabilidad**: el cuidado de las normas que protegen el bienestar del grupo. Su don es una guarda de valores que sostiene a los demás; su sombra, la sobre-responsabilidad y el miedo a fallar al grupo.',
+      more: [
+        'Cuando la tienes activa, sostienes los valores del grupo: notas lo que mantiene sana a una familia o a un equipo, y también lo que la está pudriendo. Hay algo de guardián en esta energía.',
+        'El peso es sentirte responsable de todos. Esta energía puede echarse encima el cuidado del grupo entero hasta agotarse. Tu responsabilidad son los valores, no cargar tú solo con las consecuencias.'
+      ]
+    },
+    51: {
+      theme: 'el impulso y el choque',
+      text: 'La puerta 51 es el **impulso de ser el primero**: la iniciativa que sacude y despierta. Su don es un coraje que espabila a otros; su sombra, la competitividad o la temeridad.',
+      more: [
+        'Cuando la tienes activa, tienes valor para ir donde otros no van, y una relación particular con el susto: los golpes de la vida te reordenan en vez de hundirte.',
+        'Su reverso es la competitividad y el choque por el choque. Esta energía provoca despertares —en ti y en los demás— cuando tiene un sentido detrás; sin él, solo deja gente sacudida sin motivo.'
+      ]
+    },
+    52: {
+      theme: 'la quietud y el foco',
+      text: 'La puerta 52 es la **quietud y la concentración**: la presión de parar para enfocar y ver el conjunto. Su don es una calma que permite concentrarse; su sombra, la inercia o la inquietud de no saber estarse quieto.',
+      more: [
+        'Cuando la tienes activa, sabes quedarte quieto. Esa quietud no es pasividad: es la que te permite concentrarte y ver con detalle lo que en movimiento se te escaparía.',
+        'La tensión aparece cuando el cuerpo quiere parar y tú te obligas a seguir, o al revés. Esta energía funciona por ciclos de quietud y movimiento; forzar el que no toca es lo que la vuelve incómoda.'
+      ]
+    },
+    53: {
+      theme: 'los comienzos',
+      text: 'La puerta 53 son los **comienzos**: la presión y la energía para iniciar nuevos ciclos. Su don es el empuje para arrancar lo nuevo; su sombra, empezar sin descanso sin llegar a completar.',
+      more: [
+        'Cuando la tienes activa, empiezas cosas: tienes la presión de arrancar ciclos nuevos, y la sientes de forma casi física cuando algo lleva demasiado tiempo igual.',
+        'Iniciar no obliga a terminar — el final no es siempre tuyo. Lo que sí conviene mirar es si estás empezando por algo que de verdad quiere empezar o solo por no aguantar la quietud.'
+      ]
+    },
+    54: {
+      theme: 'la ambición',
+      text: 'La puerta 54 es la **ambición**: el impulso de ascender, en lo material y en lo espiritual. Su don es una ambición que eleva; su sombra, perseguir el ascenso por la aprobación ajena o pasarse de la raya.',
+      more: [
+        'Cuando la tienes activa, tienes ambición y ganas de subir: de mejorar tu posición, tus circunstancias, tu lugar en las cosas. Es un motor de transformación muy potente.',
+        'Se tuerce cuando la subida se convierte en el único objetivo y te olvidas de por qué querías subir. Y buena parte de este ascenso depende de ser reconocido por otros, algo que no controlas del todo.'
+      ]
+    },
+    55: {
+      theme: 'la abundancia del ánimo',
+      text: 'La puerta 55 es el **espíritu y la abundancia emocional**: la riqueza de los estados de ánimo y la fe. Su don es una hondura emocional y una fe que sostienen; su sombra, dejar que la melancolía o el vaivén del ánimo decidan.',
+      more: [
+        'Cuando la tienes activa, tu ánimo tiene un rango muy amplio: pasas de la plenitud al vacío sin causa externa clara, y esa oscilación es tuya, no un problema a resolver.',
+        'El aprendizaje largo es dejar de justificar cada estado y de decidir en los extremos. El ánimo va a bajar y va a volver a subir. Lo que decides mientras tanto es lo que conviene vigilar.'
+      ]
+    },
+    56: {
+      theme: 'el relato estimulante',
+      text: 'La puerta 56 es el **relato que estimula**: contar ideas y experiencias que enganchan. Su don es una narración cautivadora que abre horizontes; su sombra, adornar de más o la atención que divaga.',
+      more: [
+        'Cuando la tienes activa, sabes contar: enganchas con la palabra, mantienes despierta a la gente, sabes convertir lo vivido en una historia que se escucha.',
+        'Su sombra es contar por contar. Estimular sin nada debajo se convierte en ruido, y se nota. Lo que da peso al relato es haber vivido de verdad lo que cuentas.'
+      ]
+    },
+    57: {
+      theme: 'la intuición en el ahora',
+      text: 'La puerta 57 es la **intuición aguda en el ahora**: una claridad instintiva que penetra el presente. Su don es un saber sutil y certero en el instante; su sombra, el miedo al futuro que paraliza.',
+      more: [
+        'Cuando la tienes activa, tienes un oído muy fino para el presente: percibes el peligro y la salud de una situación al instante, y casi siempre aciertas.',
+        'Es un aviso que suena **una sola vez**. Si te pones a analizarlo, se borra. Por eso esta energía pide fiarte del primer aviso, aunque no puedas justificarlo.'
+      ]
+    },
+    58: {
+      theme: 'la vitalidad y la mejora',
+      text: 'La puerta 58 es la **vitalidad y la alegría de vivir**: la energía que empuja a mejorar las cosas. Su don es un gozo vital que impulsa la corrección; su sombra, la inquietud o la crítica sin alegría.',
+      more: [
+        'Cuando la tienes activa, tienes una alegría de fondo por estar vivo, y de ahí sale un empuje a mejorar lo que te rodea: te molesta lo que funciona mal y quieres arreglarlo.',
+        'Cuando esa alegría desaparece, suele ser señal de que estás corrigiendo demasiado, a ti o a los demás. La vitalidad viene primero; la mejora sale de ella y no al revés.'
+      ]
+    },
+    59: {
+      theme: 'la intimidad',
+      text: 'La puerta 59 es la **intimidad**: la energía para romper barreras y crear vínculo, también sexual. Su don es el poder de generar cercanía y unión; su sombra, levantar muros o invadir en la intimidad.',
+      more: [
+        'Cuando la tienes activa, sabes traspasar la distancia con otra persona: rompes barreras y llegas a lo íntimo con una facilidad que a otros les cuesta.',
+        'Su cuidado es el ritmo del otro. Esta energía puede acercarse más rápido de lo que la otra persona puede sostener, y forzar la intimidad cierra justo lo que querías abrir.'
+      ]
+    },
+    60: {
+      theme: 'la aceptación del límite',
+      text: 'La puerta 60 es la **aceptación del límite**: convertir la restricción en semilla de lo nuevo. Su don es transformar los límites en posibilidad; su sombra, quedarse atascado en la limitación y la melancolía.',
+      more: [
+        'Cuando la tienes activa, convives con el límite: lo que hay, lo que no puede ser, la restricción concreta. Y de aceptarla sale la mutación — algo nuevo que solo aparece dentro del marco.',
+        'Su emoción es una melancolía de lo que no cabe, y es real. No hace falta arreglarla ni forzar el marco. Casi todo lo que esta energía produce nace precisamente de haber aceptado el límite.'
+      ]
+    },
+    61: {
+      theme: 'la verdad interior',
+      text: 'La puerta 61 es la **verdad interior y el misterio**: la presión por conocer lo que no se puede saber del todo. Su don es una inspiración que busca el fondo de las cosas; su sombra, la presión mental de querer saberlo todo.',
+      more: [
+        'Cuando la tienes activa, hay una presión por saber: por entender el fondo de las cosas, el porqué último. No es curiosidad ligera, es una inquietud que empuja.',
+        'Y no garantiza respuesta. Esa es la parte dura: la presión existe aunque no haya conclusión. Sostener la pregunta sin fabricar una respuesta para calmarte es exactamente lo que esta energía pide.'
+      ]
+    },
+    62: {
+      theme: 'el detalle y el orden',
+      text: 'La puerta 62 es el **detalle y la organización**: poner nombre y orden a las cosas para expresarlas con precisión. Su don es una expresión clara y ordenada; su sombra, perderse en el detalle o explicarse de más.',
+      more: [
+        'Cuando la tienes activa, ordenas: pones nombre, clasificas, das estructura al detalle para que las cosas se puedan manejar. Es una aportación enorme y bastante poco reconocida.',
+        'Su riesgo es que el detalle tape el conjunto. Cuando te encuentres discutiendo por una minucia, suele ser señal de que conviene levantar la vista y mirar de qué iba el asunto.'
+      ]
+    },
+    63: {
+      theme: 'la duda',
+      text: 'La puerta 63 es la **duda**: la presión que empuja a cuestionar y verificar. Su don es una duda sana que pone a prueba; su sombra, la sospecha que corroe y la ansiedad.',
+      more: [
+        'Cuando la tienes activa, dudas de todo lo que te presentan: buscas el fallo, la grieta, lo que no cuadra. Es un filtro valiosísimo — alguien tiene que preguntar si esto funciona de verdad.',
+        'Dirigida hacia dentro, en cambio, paraliza: dudar de ti mismo sin parar no protege de nada. Esta duda sirve cuando se aplica a lo de fuera, no cuando se convierte en autocrítica.'
+      ]
+    },
+    64: {
+      theme: 'la confusión fértil',
+      text: 'La puerta 64 es la **confusión que busca sentido**: una presión de imágenes sin procesar que pugnan por ordenarse. Su don es una riqueza de imágenes que acaba en comprensión; su sombra, el agobio de querer resolver la confusión antes de tiempo.',
+      more: [
+        'Cuando la tienes activa, tu cabeza se llena de imágenes sin ordenar: fragmentos, recuerdos, escenas sueltas que aún no significan nada. Es material en bruto esperando a cuajar.',
+        'Ese estado de confusión es **normal aquí**, no un fallo. El orden llega solo, a su tiempo, y casi siempre cuando has dejado de empujarlo. Forzarlo es lo único que lo empeora.'
+      ]
+    },
   },
 
   // Initial report (Phase 7). General-frame sections (Parte A) + the shared
@@ -1536,30 +1984,30 @@ export default {
     // section title + lead-in already set the frame). ──
     type: {
       generator: [
-        'Eres el tipo mayoritario, Generador *puro*: los Generadores sois alrededor del **~37%** de la población. Tu rasgo definitorio es el [centro Sacral](center:sacral) definido: la fuente de energía vital del sistema, generativa y de carácter renovable. Tu energía generadora y constructora, cuando estás bien alineado, es continuada y abundante.',
-        'Operas por respuesta: **reaccionas a lo que la vida te presenta** en lugar de iniciar desde la mente y lo racional. Cuando comprometes tu energía con lo correcto, aparece la *satisfacción*; si no te escuchas bien y fuerzas tu energía donde no toca, aparece la *frustración*.',
-        'En la práctica, tu centro Sacral responde antes que tu mente: ante algo concreto —una propuesta, una pregunta, una situación— surge una reacción visceral de atracción o rechazo. **Seguir esa señal del cuerpo**, en vez de decidir desde el pensamiento y la razón, es lo que mantiene tu energía bien empleada.'
+        'Llevas dentro un **motor propio**. Es la manera más corta de decirlo: tienes una energía de trabajo que se gasta durante el día y se recarga por la noche, hecha para emplearse a fondo en aquello que de verdad te engancha. Eres, además, el tipo más común — alrededor de **un tercio de las personas** son Generadores puros.',
+        'Ese motor es el [centro Sacral](center:sacral) definido, la fuente de energía vital del sistema. No es una energía de arranques y parones: es continua, y rinde cuando se dirige hacia algo concreto que te atrae, no cuando se reparte en obligaciones que no te dicen nada. Por eso tu forma de acertar no es planificarlo todo desde la cabeza, sino **reaccionar a lo que la vida te va poniendo delante**.',
+        'En la práctica, tu cuerpo se pronuncia antes que tu mente: ante algo concreto —una propuesta, una pregunta, una situación— aparece un tirón de atracción o un rechazo casi físico, y esa reacción es más fiable que cualquier razonamiento posterior. Cómo usar eso en el día a día lo tienes en [tu estrategia](section:strategy); y para saber si estás acertando, en [tus señales](section:signals).'
       ],
       'manifesting-generator': [
-        'Eres un tipo concreto de [Generador](type:generator) —los Generadores Manifestantes sois un ~33% de la población, y junto al resto de Generadores, sumáis cerca del 70 %—: tienes el [Sacral](center:sacral) definido, y lo que te diferencia de otros Generadores es que además tienes la [Garganta](center:throat) conectada a un centro motor. Eso te da la energía generadora propia de los Generadores y, además, capacidad de manifestar y materializar con rapidez.',
-        'Tu estrategia es **responder y luego informar**: primero esperas la respuesta sacral —el sí o el no del cuerpo— y, una vez la tienes, avisas a quienes se verán afectados antes de lanzarte. Tiendes a ser polifacético, veloz y no lineal: saltas pasos, haces varias cosas a la vez y a veces vuelves atrás a rematar lo que te saltaste.',
-        'La clave para gestionar tu energía es no dispersarte iniciando sin haber escuchado la respuesta de tu cuerpo: cuando te comprometes con lo que de verdad te enciende (cuando tu cuerpo dice sí), avanzas rápido y sientes *satisfacción* y *paz*; pero cuando fuerzas empujado por la mente y las ideas, acumulas *frustración*, *enfado* y trabajo a medias.'
+        'Eres un [Generador](type:generator) con un atajo. Tienes el mismo **motor de trabajo** que ellos, pero además una vía directa entre ese motor y la acción: cuando algo te enciende, no solo tienes energía para ello, sino que **arrancas rápido y lo materializas**. Sois cerca de un tercio de la población.',
+        'La mecánica es esa vía directa: el [Sacral](center:sacral) definido —el motor— con la [Garganta](center:throat) conectada a un centro motor —la salida—. De ahí tu manera de moverte, **polifacética, veloz y no lineal**: saltas pasos, llevas varias cosas a la vez y a veces vuelves atrás a rematar lo que te dejaste. No es desorden ni falta de constancia; es tu forma de llegar antes.',
+        'Tu desgaste típico es el contrario: lanzarte a lo que no te correspondía y acabar con varias cosas a medias. Cuándo arrancar —y a quién conviene avisar antes— lo tienes en [tu estrategia](section:strategy); y si vas por buen camino o te has dispersado, en [tus señales](section:signals).'
       ],
       projector: [
-        'Los Proyectores sois cerca del **~20% de la población**. No tienes el [Sacral](center:sacral) definido, así que **no estás diseñado para un trabajo constante** ni para sostener la misma energía que un [Generador](type:generator); por eso, cuidado con intentar rendir de manera continuada y sin descanso. Tu don es otro: ver a los demás con enorme profundidad y saber guiar y orientar la energía ajena.',
-        'Tu estrategia es **esperar la invitación** para lo importante —el trabajo, el amor, el lugar donde vivir—. Necesitas ser invitado para que tu sabiduría y esfuerzo sean bien recibidos; cuando te ofreces o te metes sin que te lo pidan, lo normal es que encuentres resistencia y rechazo. Cuando en tu vida aparecen el *reconocimiento* y el *éxito*, son la pista de que vas por buen camino. En cambio, el síntoma que aparece cuando no estás viviendo alineado es la *amargura*.',
-        'Gestionar tu energía es, sobre todo, **descansar a tiempo**: no compites en resistencia física, sino en profundidad y maestría. Igual que el Manifestador, **el descanso es parte de tu método y no un premio** — dormir y soltar **antes** de quedar agotado, y retirarte cuando lo notas sin pedir permiso. Y elegir con cuidado a quién le das tu atención y tu esfuerzo: no toda invitación merece un sí. Todo esto se concreta más adelante, en [vivir tu diseño](section:practice).'
+        'Lo primero que conviene que sepas es que **no estás hecho para el ritmo con el que funciona la mayoría**. No llevas un motor de trabajo constante, así que competir en horas y en aguante es una carrera que no te toca correr — y medirte con esa vara es la fuente de casi todo tu desgaste. Sois cerca de **una de cada cinco personas**.',
+        'Lo tuyo es otra cosa, y es enorme: **ves a la gente con una profundidad poco común**. Captas cómo funciona el otro, dónde está desperdiciando su energía y qué le vendría bien, a menudo antes de que él mismo lo vea. No tienes el [Sacral](center:sacral) definido, y esa misma apertura es la que te permite leer a los demás desde dentro. Guiar y orientar es tu aportación real.',
+        'La condición es que esa mirada sea **pedida**: ofrecida sin que nadie la haya buscado, encuentra resistencia; recibida cuando se te llama, cambia a la gente. Cómo se maneja eso lo tienes en [tu estrategia](section:strategy), y si estás acertando o no, en [tus señales](section:signals). Y una cosa que no es negociable: **descansar es parte de tu método**, no un premio — dormir y soltar *antes* de quedar agotado.'
       ],
       manifestor: [
-        'Eres el tipo más independiente, alrededor del **~9% de la población**. Tienes al menos un centro motor (el Corazón o el Plexo solar) conectado a la [Garganta](center:throat), pero el [Sacral](center:sacral) sin definir, así que tu energía no es constante: llega a impulsos, que utilizas para iniciar y poner cosas en marcha, y luego necesitas reposo, bastante reposo.',
-        'Tu estrategia es **informar antes de actuar**. No se trata de pedir permiso, sino de avisar a quienes tu impacto va a alcanzar: al hacerlo, reduces la resistencia y el rechazo que de otro modo encuentras a tu alrededor. Actuar de manera alineada con tu estrategia te trae *paz*; y si no lo haces, sientes oposición y crece en ti el *enfado*.',
-        'Estás aquí para **iniciar y generar impacto**, no para ejecutar de forma sostenida. Y de ahí sale lo más importante y lo que menos se dice: **el descanso no es tu recompensa, es tu método**. No estás diseñado para crear de forma continua. Hay quien sitúa la proporción sana de un Manifestador en torno a un **70-80% de reposo** frente al tiempo de iniciar — la cifra exacta importa menos que la idea: **la mayor parte de tu tiempo no deberías estar produciendo**. Tu impacto sale de pocos movimientos bien cargados, no de muchos a media potencia.',
-        'En la práctica: **acuéstate cansado, no agotado**. Si esperas a quedarte sin nada para parar, el siguiente impulso llega tarde y flojo. Y no midas tu descanso con la vara de un Generador, porque a su lado siempre vas a parecer que haces poco — no es pereza, es tu diseño. Todo esto se concreta más adelante, en [vivir tu diseño](section:practice).'
+        'Estás hecho para **iniciar**: para poner en marcha cosas que sin ti no habrían arrancado. Eres el tipo más independiente de todos, y también uno de los menos frecuentes — alrededor de **una de cada diez personas**.',
+        'Tu energía **llega a impulsos**, no en un caudal constante. Tienes un motor conectado a la [Garganta](center:throat), y eso es justo lo que te permite arrancar por tu cuenta sin esperar a nadie; pero no tienes el [Sacral](center:sacral) definido, así que no hay una fuente que se rellene sola cada día. Empujas fuerte, y luego necesitas parar. Bastante.',
+        'De ahí lo más importante y lo que menos se dice: **el descanso no es tu recompensa, es tu método**. No estás diseñado para producir de forma continua; tu impacto sale de pocos movimientos bien cargados, no de muchos a media potencia. En la práctica: **acuéstate cansado, no agotado**, y no midas tu descanso con la vara de un Generador — a su lado siempre parecerá que haces poco, y no es pereza, es tu diseño.',
+        'Y como lo que haces alcanza a otros te guste o no, hay una forma concreta de moverte para no chocar de frente con ellos: la tienes en [tu estrategia](section:strategy). Si está funcionando o no, te lo dirán [tus señales](section:signals).'
       ],
       reflector: [
-        'Eres el tipo más infrecuente: los Reflectores sois apenas el **~1% de la población**. No tienes ningún centro definido: todo tu bodygraph está abierto. Eso te convierte en un espejo extraordinariamente sensible de la gente y los lugares que te rodean, capaz de percibir la salud de una comunidad.',
-        'Como muestreas constantemente la energía ajena, **el entorno y las compañías te afectan muchísimo**: con quién y dónde estás cambia profundamente tu experiencia. Tu estrategia es **esperar un ciclo lunar** —unos 28 días— antes de las decisiones importantes, dejando que el asunto se vea desde muchos ángulos antes de cerrarlo.',
-        'Tu mayor cuidado en la gestión de la energía es elegir bien los entornos y no identificarte con lo que solo estás reflejando. Cuando vives alineado con tu diseño, viviendo en el lugar y con las personas adecuadas, aparecen en ti la *sorpresa* y el *deleite*. Si por el contrario no vives alineado, el síntoma que aparece en ti es la *decepción*.'
+        'Funcionas de una manera radicalmente distinta a todos los demás: **no llevas nada fijo dentro**. Ningún centro definido, todo el bodygraph abierto. Eres, con diferencia, el tipo más raro — apenas **una de cada cien personas**.',
+        'Lejos de ser una carencia, esa apertura total es tu instrumento. Al no tener una energía propia constante, **tomas y amplificas la de quienes te rodean**, y eso te convierte en un espejo extraordinariamente fino: puedes sentir cómo está un grupo, una casa o un lugar, porque literalmente lo estás viviendo por dentro. Percibir la salud de una comunidad es un don que casi nadie tiene.',
+        'La contrapartida es que **el entorno y las compañías te cambian muchísimo**: con quién estás y dónde estás altera por completo tu experiencia del día. Por eso elegir bien tus lugares y tu gente no es un detalle más, es lo central — y conviene que no te identifiques con lo que solo estás reflejando. Con las decisiones importantes tienes además un tiempo propio, más lento que el de los demás: lo tienes en [tu estrategia](section:strategy), y en [tus señales](section:signals), cómo saber si estás en el sitio correcto.'
       ]
     },
     strategy: {
@@ -1822,42 +2270,294 @@ export default {
   // centres it joins (replaces the older "conviene leer juntas…" line). Keyed
   // minor-gate-first to match CHANNELS.
   channel: {
-    '1-8': { name: 'canal de la inspiración', essence: 'la creatividad de la propia identidad que necesita una voz para inspirar a los demás siendo un modelo a seguir.' },
-    '2-14': { name: 'canal del latido', essence: 'una dirección interior que orienta hacia dónde dirigir la energía vital y los recursos propios.' },
-    '3-60': { name: 'canal de la mutación', essence: 'el pulso del cambio, que transforma la limitación en el comienzo de algo nuevo.' },
-    '4-63': { name: 'canal de la lógica', essence: 'la mente que parte de la duda para buscar respuestas y fórmulas que la resuelvan.' },
-    '5-15': { name: 'canal del ritmo', essence: 'un ritmo natural propio que, abierto a la diversidad, sintoniza con el flujo de la vida.' },
-    '6-59': { name: 'canal de la intimidad', essence: 'la energía de romper barreras y crear vínculo, gestionando cuándo abrirse y cuándo cerrarse.' },
-    '7-31': { name: 'canal del liderazgo', essence: 'el papel de guía que da dirección al futuro y encuentra la voz para liderar a un grupo.' },
-    '9-52': { name: 'canal de la concentración', essence: 'la quietud que permite concentrar la energía en el detalle hasta llevar algo a término.' },
-    '10-20': { name: 'canal del despertar', essence: 'el amor propio que se expresa en el presente, siendo fiel a uno mismo aquí y ahora.' },
-    '10-34': { name: 'canal de la exploración', essence: 'la fuerza de actuar según las propias convicciones, siendo fiel a uno mismo.' },
-    '10-57': { name: 'canal de la supervivencia', essence: 'la intuición al servicio del bienestar y de la forma correcta de habitar el cuerpo.' },
-    '11-56': { name: 'canal de la curiosidad', essence: 'la mente llena de ideas que busca contarlas en relatos que estimulan y dan sentido.' },
-    '12-22': { name: 'canal de la apertura', essence: 'la expresión emocional que se abre y conmueve cuando el ánimo y el momento son los justos.' },
-    '13-33': { name: 'canal del pródigo', essence: 'recoger lo vivido y, tras el retiro, compartirlo como testigo para los demás.' },
-    '16-48': { name: 'canal del talento', essence: 'el talento profundo que, con entusiasmo y práctica, madura hasta la maestría.' },
-    '17-62': { name: 'canal de la aceptación', essence: 'las opiniones que se ordenan en datos y detalles para organizar y anticiparse.' },
-    '18-58': { name: 'canal del juicio', essence: 'la vitalidad que empuja a corregir y perfeccionar lo que se ha torcido.' },
-    '19-49': { name: 'canal de la síntesis', essence: 'la sensibilidad a las necesidades que decide los vínculos desde principios profundos.' },
-    '20-34': { name: 'canal del carisma', essence: 'el poder que se vuelve acción en el presente, pensando y haciendo sin demora.' },
-    '20-57': { name: 'canal de la onda cerebral', essence: 'la intuición aguda que capta y expresa el saber certero del instante.' },
-    '21-45': { name: 'canal del dinero', essence: 'la voluntad de controlar los recursos y la voz que los administra para el grupo.' },
-    '23-43': { name: 'canal de la estructuración', essence: 'el saber individual que se traduce en ideas claras y comprensibles para los demás.' },
-    '24-61': { name: 'canal de la conciencia', essence: 'la presión por conocer el misterio, dándole vueltas hasta que revela su sentido.' },
-    '25-51': { name: 'canal de la iniciación', essence: 'el impulso que inicia y sacude, movido por un amor puro que despierta el espíritu.' },
-    '26-44': { name: 'canal de la entrega', essence: 'el instinto que lee el pasado y lo transmite con poder de convicción.' },
-    '27-50': { name: 'canal de la preservación', essence: 'el cuidado que sostiene a otros guiado por los valores que protegen al grupo.' },
-    '28-38': { name: 'canal de la lucha', essence: 'la tenacidad de luchar y arriesgarse por una vida que merezca la pena.' },
-    '29-46': { name: 'canal del descubrimiento', essence: 'la entrega comprometida que, puesta en el cuerpo, prospera donde otros fracasan.' },
-    '30-41': { name: 'canal del reconocimiento', essence: 'la imaginación y el anhelo que encienden el deseo de vivir nuevas experiencias.' },
-    '32-54': { name: 'canal de la transformación', essence: 'la ambición de ascender guiada por el instinto de lo que perdura.' },
-    '34-57': { name: 'canal del poder', essence: 'la fuerza pura al servicio del instinto, un poder que es presencia en el momento.' },
-    '35-36': { name: 'canal de la transitoriedad', essence: 'el hambre de experiencia que, entre altibajos emocionales, empuja a probarlo todo y progresar.' },
-    '37-40': { name: 'canal de la comunidad', essence: 'la calidez que crea comunidad mediante pactos, dándose y sabiendo también retirarse a reponerse.' },
-    '39-55': { name: 'canal de la emoción', essence: 'la provocación que remueve el ánimo y su abundancia para hacer aflorar el espíritu.' },
-    '42-53': { name: 'canal de la maduración', essence: 'la energía de los ciclos: iniciar y llevar hasta el final para madurar con la experiencia.' },
-    '47-64': { name: 'canal de la abstracción', essence: 'la presión de imágenes confusas que pugna por ordenarse hasta llegar a la comprensión.' }
+    '1-8': {
+      name: 'canal de la inspiración',
+      essence: 'la creatividad de la propia identidad que necesita una voz para inspirar a los demás siendo un modelo a seguir.',
+      more: [
+        'Cuando lo tienes completo, no basta con que hagas lo tuyo: necesitas que se vea. Este canal une algo original con una voz que lo saca fuera, y por eso sueles acabar siendo un ejemplo — no por lo que predicas, sino por cómo haces lo que haces.',
+        'El desgaste llega si te fuerzas a producir originalidad a demanda, o si esperas que el reconocimiento sea inmediato. Lo tuyo aparece a su ritmo y encuentra a su gente con el tiempo; empujarlo suele estropearlo.'
+      ]
+    },
+    '2-14': {
+      name: 'canal del latido',
+      essence: 'una dirección interior que orienta hacia dónde dirigir la energía vital y los recursos propios.',
+      more: [
+        'Cuando lo tienes completo, tienes dirección y combustible en el mismo circuito: sabes hacia dónde va tu energía y tienes fuerza de sobra para llevarla ahí. Es uno de los canales más ligados a la prosperidad y a los recursos.',
+        'Su condición es no forzar el rumbo con la cabeza. La dirección aquí se reconoce, no se calcula; cuando decides el destino por argumentos, el combustible sigue estando pero deja de rendir.'
+      ]
+    },
+    '3-60': {
+      name: 'canal de la mutación',
+      essence: 'el pulso del cambio, que transforma la limitación en el comienzo de algo nuevo.',
+      more: [
+        'Cuando lo tienes completo, tu vida funciona por mutaciones: rachas en que nada se mueve seguidas de saltos bruscos. Ese pulso no es irregularidad tuya, es literalmente cómo trabaja este canal.',
+        'Lo difícil son las esperas, que se sienten como estancamiento. Y no lo son: son la parte del ciclo en que algo se está gestando. Empujar durante esa fase es lo que produce la frustración, no la espera en sí.'
+      ]
+    },
+    '4-63': {
+      name: 'canal de la lógica',
+      essence: 'la mente que parte de la duda para buscar respuestas y fórmulas que la resuelvan.',
+      more: [
+        'Cuando lo tienes completo, tienes una mente hecha para dudar y luego buscar la fórmula que resuelva esa duda. Es un motor lógico continuo, y su producto son hipótesis útiles para los demás.',
+        'Ojo con creerte tus propias respuestas antes de tiempo. Este canal presiona por cerrar, y una hipótesis presentada como certeza pierde justo lo que la hacía valiosa. Ofrécela como lo que es y ganará peso.'
+      ]
+    },
+    '5-15': {
+      name: 'canal del ritmo',
+      essence: 'un ritmo natural propio que, abierto a la diversidad, sintoniza con el flujo de la vida.',
+      more: [
+        'Cuando lo tienes completo, tienes un ritmo propio muy marcado y, a la vez, apertura a los ritmos ajenos. La combinación es peculiar: necesitas tus rutinas, pero no soportas que sean siempre idénticas.',
+        'Por eso tu compás puede parecer errático desde fuera. No lo es: alterna constancia y variación. Lo que sí te descoloca de verdad es que te impongan un ritmo que no es el tuyo.'
+      ]
+    },
+    '6-59': {
+      name: 'canal de la intimidad',
+      essence: 'la energía de romper barreras y crear vínculo, gestionando cuándo abrirse y cuándo cerrarse.',
+      more: [
+        'Cuando lo tienes completo, tienes una capacidad poco común para crear intimidad: sabes romper la distancia y llegar a lo cercano, y a la vez decides cuándo se abre y cuándo se cierra esa puerta.',
+        'Es el canal más ligado a la intimidad, también en el sentido reproductivo. Su cuidado está en el ritmo del otro y en el tuyo emocional: acercarte en caliente, o cerrarte de golpe, es lo que rompe lo que estabas construyendo.'
+      ]
+    },
+    '7-31': {
+      name: 'canal del liderazgo',
+      essence: 'el papel de guía que da dirección al futuro y encuentra la voz para liderar a un grupo.',
+      more: [
+        'Cuando lo tienes completo, tienes voz y dirección a la vez: ves hacia dónde conviene ir y además sabes decirlo de manera que el grupo escuche. Es el circuito clásico del liderazgo.',
+        'Y depende por entero de ser elegido. Este liderazgo funciona cuando te lo dan; tomado por la fuerza, se convierte en mandar y la gente se aparta. Tu autoridad es prestada por el grupo, y eso no es una debilidad.'
+      ]
+    },
+    '9-52': {
+      name: 'canal de la concentración',
+      essence: 'la quietud que permite concentrar la energía en el detalle hasta llevar algo a término.',
+      more: [
+        'Cuando lo tienes completo, tienes una concentración fuera de lo común: puedes quedarte quieto y sostener el foco en el detalle durante mucho más tiempo que la mayoría.',
+        'El precio es que arrancar y parar te cuesta. Este canal necesita entrar en su quietud para rendir, y una vez dentro, las interrupciones te sacan por completo. Protege esos tramos si quieres que la concentración aparezca.'
+      ]
+    },
+    '10-20': {
+      name: 'canal del despertar',
+      essence: 'el amor propio que se expresa en el presente, siendo fiel a uno mismo aquí y ahora.',
+      more: [
+        'Cuando lo tienes completo, hay una exigencia clara: **ser tú mismo, y serlo ahora**. Este canal une la fidelidad a lo que eres con la expresión del momento presente, sin margen para el ensayo.',
+        'Su dificultad es que no admite postureo. Cuando actúas como crees que deberías en vez de como eres, se nota inmediatamente y te sienta mal. Aquí el despertar es muy concreto: comportarte como tú en tiempo real.'
+      ]
+    },
+    '10-34': {
+      name: 'canal de la exploración',
+      essence: 'la fuerza de actuar según las propias convicciones, siendo fiel a uno mismo.',
+      more: [
+        'Cuando lo tienes completo, tienes fuerza para seguir tus propias convicciones: la potencia del [Sacral](center:sacral) puesta al servicio de ser fiel a lo que eres. Es un canal profundamente individual.',
+        'Y por eso mismo es solitario. Esta energía rinde cuando la empleas en lo tuyo; puesta al servicio de lo que no te corresponde, se convierte en actividad sin sentido y en cansancio raro.'
+      ]
+    },
+    '10-57': {
+      name: 'canal de la supervivencia',
+      essence: 'la intuición al servicio del bienestar y de la forma correcta de habitar el cuerpo.',
+      more: [
+        'Cuando lo tienes completo, tienes un instinto muy afinado para sobrevivir siendo tú: el oído del [Bazo](center:spleen) avisando en el momento, unido a la fidelidad a ti mismo.',
+        'El aviso llega una sola vez y sin argumentos. Si te pones a razonarlo, desaparece. Aprender a fiarte de ese primer impulso —sobre todo cuando dice que no— es el trabajo de este canal.'
+      ]
+    },
+    '11-56': {
+      name: 'canal de la curiosidad',
+      essence: 'la mente llena de ideas que busca contarlas en relatos que estimulan y dan sentido.',
+      more: [
+        'Cuando lo tienes completo, eres un contador de historias: recoges ideas y las conviertes en relato que estimula a quien escucha. Es un canal de búsqueda constante de sentido a través de lo que se cuenta.',
+        'Su trampa es tomarte las ideas como un plan. Aquí las ideas están para compartirse, no para ejecutarse; convertirlas en obligaciones personales es la fuente de casi todo su desgaste.'
+      ]
+    },
+    '12-22': {
+      name: 'canal de la apertura',
+      essence: 'la expresión emocional que se abre y conmueve cuando el ánimo y el momento son los justos.',
+      more: [
+        'Cuando lo tienes completo, tienes una expresión emocional con mucho alcance: cuando el ánimo acompaña, lo que dices toca a la gente de una manera que otros no consiguen.',
+        'Depende del estado de ánimo y eso no se negocia. Hay momentos para hablar y momentos para retirarse, y forzar el primero cuando toca el segundo estropea el efecto. La escucha del momento es aquí toda la técnica.'
+      ]
+    },
+    '13-33': {
+      name: 'canal del pródigo',
+      essence: 'recoger lo vivido y, tras el retiro, compartirlo como testigo para los demás.',
+      more: [
+        'Cuando lo tienes completo, recoges lo que la gente te cuenta y, tras retirarte a digerirlo, lo devuelves convertido en algo con sentido. Eres una especie de memoria del grupo.',
+        'El retiro no es opcional: sin él, lo que recoges se acumula sin ordenarse. Y hay algo que conviene cuidar — no todo lo que te confían está para ser contado, aunque tengas el don de contarlo.'
+      ]
+    },
+    '16-48': {
+      name: 'canal del talento',
+      essence: 'el talento profundo que, con entusiasmo y práctica, madura hasta la maestría.',
+      more: [
+        'Cuando lo tienes completo, tienes talento y entusiasmo unidos a un pozo de profundidad: cuando algo te engancha, no solo te lanzas, sino que llegas a hacerlo muy bien.',
+        'El obstáculo típico es la sensación de no estar preparado, que aquí es prácticamente permanente. No va a irse. La maestría de este canal se construye practicando, no esperando a sentirte listo.'
+      ]
+    },
+    '17-62': {
+      name: 'canal de la aceptación',
+      essence: 'las opiniones que se ordenan en datos y detalles para organizar y anticiparse.',
+      more: [
+        'Cuando lo tienes completo, organizas: formas opiniones y las respaldas con detalles ordenados, lo que las hace muy convincentes y muy útiles para estructurar cualquier asunto.',
+        'Su sombra es presentar como hecho lo que sigue siendo un parecer, por bien argumentado que esté. La misma opinión ofrecida como opinión abre debate; ofrecida como verdad, cierra puertas.'
+      ]
+    },
+    '18-58': {
+      name: 'canal del juicio',
+      essence: 'la vitalidad que empuja a corregir y perfeccionar lo que se ha torcido.',
+      more: [
+        'Cuando lo tienes completo, tienes una alegría de fondo que se traduce en ganas de mejorar las cosas: ves lo que falla y quieres arreglarlo, y eso puede beneficiar mucho a quien te rodea.',
+        'El límite es la corrección continua. Cuando la crítica no para —hacia fuera o hacia dentro— la alegría que la alimentaba desaparece, y ahí es cuando conviene parar: la vitalidad va primero.'
+      ]
+    },
+    '19-49': {
+      name: 'canal de la síntesis',
+      essence: 'la sensibilidad a las necesidades que decide los vínculos desde principios profundos.',
+      more: [
+        'Cuando lo tienes completo, tienes una sensibilidad muy fina para lo que la gente necesita y para los principios que sostienen un vínculo. Notas enseguida cuándo algo se ha roto en un acuerdo.',
+        'Su riesgo es la ruptura brusca. La tensión se acumula en silencio y un día cortas de golpe. Decir a tiempo lo que necesitas y dónde está tu límite evita la mayoría de esas rupturas.'
+      ]
+    },
+    '20-34': {
+      name: 'canal del carisma',
+      essence: 'el poder que se vuelve acción en el presente, pensando y haciendo sin demora.',
+      more: [
+        'Cuando lo tienes completo, tienes carisma en el sentido más literal: energía que se convierte en acción y en presencia en el momento. Cuando estás ocupado en lo tuyo, la gente lo nota.',
+        'No es una energía para exhibir ni para poner al servicio de cualquier cosa. El carisma aquí es un efecto secundario de estar haciendo lo que te corresponde; buscarlo directamente lo apaga.'
+      ]
+    },
+    '20-57': {
+      name: 'canal de la onda cerebral',
+      essence: 'la intuición aguda que capta y expresa el saber certero del instante.',
+      more: [
+        'Cuando lo tienes completo, tienes intuición en tiempo real: percibes y actúas en el mismo instante, sin pasar por el razonamiento. Es de los circuitos más rápidos de la carta.',
+        'Su exigencia es la presencia. Esta agudeza solo funciona si estás realmente aquí; distraído, el aviso pasa desapercibido. Y como llega una sola vez, analizarlo después no lo recupera.'
+      ]
+    },
+    '21-45': {
+      name: 'canal del dinero',
+      essence: 'la voluntad de controlar los recursos y la voz que los administra para el grupo.',
+      more: [
+        'Cuando lo tienes completo, tienes autoridad sobre lo material: sabes administrar recursos y también reclamar el control de lo tuyo. Es el canal más ligado al dinero y a la gestión.',
+        'Su tensión es entre controlar y compartir. Administrar bien lo común exige contar con el grupo; administrarlo como si fuera tuyo genera justo la resistencia que querías evitar.'
+      ]
+    },
+    '23-43': {
+      name: 'canal de la estructuración',
+      essence: 'el saber individual que se traduce en ideas claras y comprensibles para los demás.',
+      more: [
+        'Cuando lo tienes completo, tienes comprensiones singulares y la capacidad de traducirlas a palabras que otros entienden. Es el canal del *genio* — y también el de la incomprensión.',
+        'Todo depende del momento. Lo mismo que dicho a tiempo produce un clic, dicho a destiempo suena a rareza. No es que te falte razón: es que llegaste antes de que existiera la pregunta.'
+      ]
+    },
+    '24-61': {
+      name: 'canal de la conciencia',
+      essence: 'la presión por conocer el misterio, dándole vueltas hasta que revela su sentido.',
+      more: [
+        'Cuando lo tienes completo, tu mente busca el fondo de las cosas y vuelve una y otra vez sobre lo mismo hasta que, sin avisar, aparece la comprensión.',
+        'Es una presión mental que no garantiza respuesta, y ese es su punto difícil. Sostener la pregunta sin fabricar conclusiones para calmarte es exactamente lo que este canal pide — y lo que casi nadie hace.'
+      ]
+    },
+    '25-51': {
+      name: 'canal de la iniciación',
+      essence: 'el impulso que inicia y sacude, movido por un amor puro que despierta el espíritu.',
+      more: [
+        'Cuando lo tienes completo, tienes valor para ir donde otros no van, y una relación singular con los golpes: te reordenan en vez de hundirte. Es el canal clásico de la iniciación.',
+        'Su cara difícil es que ese camino suele pasar por sustos y pérdidas. Lo que aquí se pide no es evitarlos, sino no perder la inocencia después — que es lo verdaderamente difícil.'
+      ]
+    },
+    '26-44': {
+      name: 'canal de la entrega',
+      essence: 'el instinto que lee el pasado y lo transmite con poder de convicción.',
+      more: [
+        'Cuando lo tienes completo, unes el olfato para las personas con la capacidad de persuadir: sabes con quién tratas y sabes cómo presentarle las cosas. Es un canal muy eficaz en los negocios.',
+        'Su filo es la verdad estirada. La misma habilidad que convence puede exagerar sin darse cuenta, y ahí se rompe la confianza que era tu mejor activo. Contarlo recto convence igual, solo que cuesta más.'
+      ]
+    },
+    '27-50': {
+      name: 'canal de la preservación',
+      essence: 'el cuidado que sostiene a otros guiado por los valores que protegen al grupo.',
+      more: [
+        'Cuando lo tienes completo, cuidas y sostienes los valores del grupo a la vez: es el circuito de la crianza y de la responsabilidad hacia los demás en su forma más concreta.',
+        'El peso es evidente: puedes acabar cargando con el bienestar de todos. Cuidar sin quedarte vacío exige poner un límite, y ese límite no te hace peor cuidador — es lo que te permite seguir siéndolo.'
+      ]
+    },
+    '28-38': {
+      name: 'canal de la lucha',
+      essence: 'la tenacidad de luchar y arriesgarse por una vida que merezca la pena.',
+      more: [
+        'Cuando lo tienes completo, tienes aguante para pelear por lo que consideras que merece la pena, y una necesidad de fondo de que la vida signifique algo.',
+        'La pregunta que lo ordena todo es por qué peleas. La misma tenacidad puesta en una batalla sin sentido se convierte en pura terquedad y desgaste. Aquí elegir bien la lucha es literalmente elegir bien la vida.'
+      ]
+    },
+    '29-46': {
+      name: 'canal del descubrimiento',
+      essence: 'la entrega comprometida que, puesta en el cuerpo, prospera donde otros fracasan.',
+      more: [
+        'Cuando lo tienes completo, te comprometes a fondo y sueles aparecer en el sitio justo en el momento justo. Es el canal del descubrimiento: te metes, y de ahí sale el aprendizaje.',
+        'Su cuidado está en a qué dices que sí, porque este canal dice que sí con mucha facilidad y luego sostiene durante años. Y su suerte depende de estar a gusto en tu cuerpo: descuidarlo la apaga.'
+      ]
+    },
+    '30-41': {
+      name: 'canal del reconocimiento',
+      essence: 'la imaginación y el anhelo que encienden el deseo de vivir nuevas experiencias.',
+      more: [
+        'Cuando lo tienes completo, tienes el arranque del deseo: la imaginación que enciende algo nuevo y la intensidad emocional para perseguirlo. Es el motor de todo lo que aún no ha pasado.',
+        'Su tensión es querer algo sin saber exactamente el qué. Esa presión no siempre pide acción — muchas veces es solo imaginación buscando salida, y confundirla con una orden lleva a experiencias que no querías.'
+      ]
+    },
+    '32-54': {
+      name: 'canal de la transformación',
+      essence: 'la ambición de ascender guiada por el instinto de lo que perdura.',
+      more: [
+        'Cuando lo tienes completo, tienes ambición y buen olfato para lo que va a durar: quieres subir, y además sabes distinguir lo que tiene recorrido de lo que no.',
+        'Su freno es el miedo al fracaso, que puede paralizarte antes de empezar. Y hay una parte que no controlas: buena parte de este ascenso depende de que alguien te reconozca. Prepararte sí depende de ti.'
+      ]
+    },
+    '34-57': {
+      name: 'canal del poder',
+      essence: 'la fuerza pura al servicio del instinto, un poder que es presencia en el momento.',
+      more: [
+        'Cuando lo tienes completo, tienes potencia e instinto en el mismo circuito: fuerza para actuar y un oído fino que te dice cuándo. Es un canal muy poderoso en lo práctico.',
+        'Su clave está en respetar el aviso instintivo antes de emplear la fuerza. Cuando actúas primero y escuchas después, esta misma potencia se gasta en direcciones que no te correspondían.'
+      ]
+    },
+    '35-36': {
+      name: 'canal de la transitoriedad',
+      essence: 'el hambre de experiencia que, entre altibajos emocionales, empuja a probarlo todo y progresar.',
+      more: [
+        'Cuando lo tienes completo, buscas experiencia sin parar: lo nuevo te llama, y por eso acumulas vivencias que a otros les llevarían varias vidas. Es el canal de lo transitorio.',
+        'Su desgaste es no sacar nada en claro. Este circuito corre a la siguiente experiencia antes de digerir la anterior, y ahí aparece la sensación de haber vivido mucho y no haber aprendido. Parar a mirar atrás es lo que lo cambia.'
+      ]
+    },
+    '37-40': {
+      name: 'canal de la comunidad',
+      essence: 'la calidez que crea comunidad mediante pactos, dándose y sabiendo también retirarse a reponerse.',
+      more: [
+        'Cuando lo tienes completo, funcionas por acuerdos: das lo tuyo y esperas que la otra parte cumpla lo suyo. Es el canal de la comunidad y de la familia, en su sentido más práctico.',
+        'Todo depende de que el pacto sea explícito y querido. Un acuerdo aceptado sin ganas —o dado por supuesto— se cobra caro, siempre. Y el descanso forma parte del trato, no es una concesión.'
+      ]
+    },
+    '39-55': {
+      name: 'canal de la emoción',
+      essence: 'la provocación que remueve el ánimo y su abundancia para hacer aflorar el espíritu.',
+      more: [
+        'Cuando lo tienes completo, tienes un rango emocional amplísimo y la capacidad de provocar en otros justo lo que necesitan mover. Es un canal muy ligado al espíritu y al arte.',
+        'Su oscilación de ánimo no tiene causa externa y no hay que explicarla. Lo importante es no tomar decisiones en los extremos: ni en la plenitud ni en el vacío estás viendo la situación completa.'
+      ]
+    },
+    '42-53': {
+      name: 'canal de la maduración',
+      essence: 'la energía de los ciclos: iniciar y llevar hasta el final para madurar con la experiencia.',
+      more: [
+        'Cuando lo tienes completo, vives por ciclos: algo empieza, madura y se cierra, y necesitas recorrer ese recorrido entero para sacarle el sentido.',
+        'La dificultad es que no puedes saltarte fases ni salirte a mitad sin pagarlo. Antes de entrar en un ciclo, mira si de verdad querías entrar — porque una vez dentro, dejarlo a medias te sienta mal.'
+      ]
+    },
+    '47-64': {
+      name: 'canal de la abstracción',
+      essence: 'la presión de imágenes confusas que pugna por ordenarse hasta llegar a la comprensión.',
+      more: [
+        'Cuando lo tienes completo, tu mente trabaja con material desordenado —imágenes, recuerdos, retazos— hasta que, sola, encuentra el sentido. Es el canal de la abstracción.',
+        'El estado normal aquí es la confusión, y no es un fallo. La comprensión llega tarde y llega sola; la presión por entenderlo *ya* es lo único que enturbia el proceso.'
+      ]
+    },
   },
 
   // One-line function of each centre, for the nine-centre chip list in the
