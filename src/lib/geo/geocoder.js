@@ -20,6 +20,36 @@ const ENDPOINT = 'https://photon.komoot.io/api/';
 // still pick any result.
 const PREFERRED_COUNTRY_BY_LANG = { es: 'es' };
 
+// Photon location bias per UI language. Photon buries big cities under short
+// exact-name hamlets for a short prefix ("mala" doesn't surface Málaga even in
+// the top 40), but a location bias pulls nearby places up — so for the Spanish
+// UI we nudge toward Spain and Málaga rides up on "mala". Exact foreign matches
+// (Berlin, London, Paris) still win, so it doesn't hurt international searches.
+const PREFERRED_LATLON_BY_LANG = { es: { lat: 40, lon: -3.5 } };
+
+// Settlement prominence, low = more prominent. A big city buried under hamlets
+// of the same prefix (Málaga vs Malaguilla/Malagón) rises once its type outranks
+// theirs. Spanish big cities are often tagged `municipality`, so it sits high.
+const SETTLEMENT_RANK = { city: 0, municipality: 1, town: 2, village: 3, hamlet: 4 };
+
+// Major Spanish cities (provincial capitals + the biggest towns). Photon's
+// typeahead buries them under same-prefix hamlets — "mala" never surfaces Málaga
+// at any depth or bias — so for the Spanish UI, when the input is a prefix of one
+// of these, we look it up by name and float it to the top. Same reliable trick as
+// the exonym rescue; the list is small and only the prefix has to match.
+const MAJOR_ES_CITIES = [
+  'Madrid', 'Barcelona', 'Valencia', 'Sevilla', 'Zaragoza', 'Málaga', 'Murcia',
+  'Palma', 'Bilbao', 'Alicante', 'Córdoba', 'Valladolid', 'Vigo', 'Gijón',
+  'Granada', 'Elche', 'Oviedo', 'Badalona', 'Cartagena', 'Terrassa', 'Sabadell',
+  'Móstoles', 'Pamplona', 'Almería', 'Santander', 'Burgos', 'Albacete',
+  'Salamanca', 'Huelva', 'Logroño', 'Badajoz', 'León', 'Tarragona', 'Cádiz',
+  'Lleida', 'Marbella', 'Jaén', 'Ourense', 'Girona', 'Cáceres', 'Toledo',
+  'Cuenca', 'Ávila', 'Segovia', 'Soria', 'Zamora', 'Palencia', 'Lugo',
+  'Pontevedra', 'Guadalajara', 'Ciudad Real', 'Teruel', 'Huesca', 'Castellón',
+  'Melilla', 'Ceuta', 'San Sebastián', 'Vitoria', 'A Coruña', 'Las Palmas',
+  'Santa Cruz de Tenerife', 'Jerez de la Frontera', 'Santiago de Compostela'
+];
+
 // Photon accepts de/en/fr/it (and default); it rejects lang=es with HTTP 400
 // (see the header note). So we only forward languages Photon supports; Spanish
 // falls through to the default, which returns local-language names.
@@ -120,20 +150,43 @@ const PLACE_TAGS = ['city', 'town', 'village', 'hamlet', 'municipality'];
  * @returns {Promise<Place[]>}
  */
 export async function searchPlaces(query, signal, lang) {
-  const places = await rawSearch(query, signal, PHOTON_LANGS.has(lang) ? lang : undefined);
+  const places = await rawSearch(
+    query,
+    signal,
+    PHOTON_LANGS.has(lang) ? lang : undefined,
+    PREFERRED_LATLON_BY_LANG[lang] ?? null
+  );
 
-  // Spanish exonym rescue: when the whole query is a known exonym, look the city
-  // up by its English name (which Photon resolves) and surface those hits first,
-  // so "Nueva York" finally offers New York, USA. Fires only on an exact full
-  // match, so it costs at most one extra request and only once the word is typed.
+  // Spanish rescues (both flag hits with `_priority` so ranking floats them above
+  // the preferred-country bias — without it "Múnich" surfaces the hamlet Muñico
+  // ahead of Munich).
   if (lang === 'es') {
-    const endonym = ES_EXONYMS[normalize(query)];
+    const nq = normalize(query);
+    const endonym = ES_EXONYMS[nq];
     if (endonym) {
+      // Exonym: the whole query is a known exonym → look the city up by its
+      // English name (which Photon resolves) so "Nueva York" offers New York, USA.
       const extra = await rawSearch(endonym, signal, 'en');
-      // Flag so ranking floats these above the preferred-country bias: without
-      // it "Múnich" would surface the Spanish hamlet Muñico ahead of Munich.
-      for (const p of extra) p._exonym = true;
+      for (const p of extra) p._priority = true;
       places.unshift(...extra);
+    } else if (nq.length >= 3) {
+      // Major-city prefix: the input is the start of a big Spanish city Photon
+      // won't surface on its own ("mala" → Málaga). Look each match up by name
+      // (Spain-biased) and float its own ES hit to the top. Capped so a broad
+      // prefix ("san") makes at most a few extra requests.
+      const matches = MAJOR_ES_CITIES.filter((c) => normalize(c).startsWith(nq)).slice(0, 3);
+      const hits = [];
+      for (const city of matches) {
+        const extra = await rawSearch(city, signal, undefined, PREFERRED_LATLON_BY_LANG.es);
+        const hit =
+          extra.find((p) => p._countryCode === 'es' && normalize(p._name) === normalize(city)) ??
+          extra.find((p) => p._countryCode === 'es');
+        if (hit) {
+          hit._priority = true;
+          hits.push(hit);
+        }
+      }
+      places.unshift(...hits);
     }
   }
 
@@ -149,7 +202,7 @@ export async function searchPlaces(query, signal, lang) {
  * @param {AbortSignal} [signal]
  * @param {string} [photonLang] - already validated against PHOTON_LANGS.
  */
-async function rawSearch(query, signal, photonLang) {
+async function rawSearch(query, signal, photonLang, bias = null) {
   const params = new URLSearchParams({
     q: query,
     // Over-fetch (more than we show) so client-side dedup and re-rank have
@@ -159,6 +212,11 @@ async function rawSearch(query, signal, photonLang) {
   // Ask Photon for names in the UI language when it supports it (English etc.),
   // so results read "Madrid, Spain" rather than "Madrid, España".
   if (photonLang) params.set('lang', photonLang);
+  // Optional location bias so nearby settlements rank higher (see PREFERRED_LATLON).
+  if (bias) {
+    params.set('lat', String(bias.lat));
+    params.set('lon', String(bias.lon));
+  }
   // Multiple `osm_tag` values are OR-combined, so this keeps only settlements.
   for (const tag of PLACE_TAGS) params.append('osm_tag', `place:${tag}`);
 
@@ -219,15 +277,19 @@ function toPlace(feature) {
  */
 function dedupeAndRank(places, preferredCountry = null, normQuery = '') {
   const score = (p) => {
-    // Exonym-rescued hits are the city the user spelled out — always first,
-    // ahead of every other signal. Constant score keeps their own order.
-    if (p._exonym) return -100;
+    // Rescued hits (exonym or major-city prefix) are the city the user meant —
+    // always first, ahead of every other signal. Constant keeps their own order.
+    if (p._priority) return -100;
     let s = 0;
     if (!PLACE_TAGS.includes(p._value)) s += 10;
     // Accent-insensitive exact-name match: "malaga" and "málaga" both land here,
     // so the actual city beats hamlets that merely start with the same letters.
     if (normQuery && normalize(p._name) === normQuery) s -= 4;
     if (preferredCountry && p._countryCode !== preferredCountry) s += 5;
+    // Prominence tiebreaker (weaker than the country bias): among same-country
+    // prefix hits, a city/municipality outranks a village/hamlet, so "mala"
+    // surfaces Málaga above Malaguilla/Malagón.
+    s += SETTLEMENT_RANK[p._value] ?? 4;
     return s;
   };
   const sorted = [...places].sort((a, b) => score(a) - score(b));
