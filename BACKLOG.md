@@ -680,6 +680,19 @@ corrected).
 
 ## Possible improvements (not scheduled, not part of Phase 5)
 
+- ⬜ **Cross drawers: name the mandala quarter + a quarters explainer drawer
+  (author, 2026-08).** Each incarnation-cross description should say which of the
+  four quarters of the mandala it belongs to (Initiation / Civilization /
+  Duality / Mutation), and that label should link to a new explainer drawer of
+  the four quarters — the same pattern as the [I Ching](concept:iching) drawer
+  added this session. The quarters are already derived from `GATE_WHEEL`
+  (`crossQuartet()` / `quarterGates()` in `constants.js`, and the 192-cross index
+  already groups by quarter with a per-quarter note in the `cross` concept), so
+  the data exists; this is (a) a `concept:quarter` (or four keyed entries) with
+  3–4 paragraphs each in ES/EN, (b) wiring `buildCrossInfo` to compute the
+  quarter of the chart's cross and add a linked line, and (c) linking the
+  quarter names in the 192-cross index. Keep the impersonal drawer voice.
+
 - ⬜ **Initial report: scroll-spy the table of contents (author, 2026-07-23).**
   As the reader scrolls down the report, highlight the TOC chip of the section
   currently in view, so the index doubles as a "you are here" marker. Today the

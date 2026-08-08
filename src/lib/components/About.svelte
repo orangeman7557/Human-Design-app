@@ -303,7 +303,9 @@
 
 <svelte:window {onkeydown} />
 
-<button class="link" type="button" onclick={() => (open = true)}>{t('about.donateLink')}</button><span class="foot-dot" aria-hidden="true">·</span><button class="link" type="button" onclick={() => (open = true)}>{t('about.link')}</button>
+<button class="link" type="button" onclick={() => (open = true)}>{t('about.donateLink')}</button>
+<span aria-hidden="true">·</span>
+<button class="link" type="button" onclick={() => (open = true)}>{t('about.link')}</button>
 
 {#if open}
   <div class="scrim" onclick={() => (open = false)} role="presentation" transition:fade={{ duration: 120 }}></div>
@@ -389,12 +391,6 @@
   }
   .link:hover {
     color: var(--text-muted);
-  }
-  /* Separator between the "donar" and "acerca de" footer links, matching the
-     other footer dots. */
-  .foot-dot {
-    margin: 0 0.4rem;
-    opacity: 0.6;
   }
   /* "Donar" section heading inside the modal — same gold as the modal title. */
   .donate-head {

@@ -251,11 +251,11 @@ const overrides = {
     ichingPlain: 'It corresponds to hexagram {g} of the [I Ching](concept:iching).',
     deeper: 'For a deeper reading, you can use the "learn more using AI" option.',
     gateComplete:
-      'In this chart, gate {g} is active and forms part of a complete channel: an energy contributed steadily and in an integrated way.',
+      'In your chart, gate {g} is active and forms part of a complete channel: an energy you contribute steadily and in an integrated way.',
     gateHanging:
-      'In this chart, gate {g} is active but hanging: its theme is present, and its other half is only completed occasionally — with certain people or during certain transits.',
+      'In your chart, gate {g} is active but hanging: its theme is present in you, and its other half is only completed occasionally — with certain people or during certain transits.',
     gateInactive:
-      'In this chart, gate {g} is not active: it is an energy recognized and received from others and from the environment, rather than a constant of one’s own.',
+      'In your chart, gate {g} is not active: it is an energy you recognize and receive from others and from the environment, rather than a constant of your own.',
     channelTitle: '{a}-{b}: {name}',
     channelTitlePlain: 'Channel {a}-{b}',
     channelIs: 'This is the **{name}**: {essence}',
@@ -264,11 +264,11 @@ const overrides = {
     channelBoth:
       'With both of its gates active, the channel is complete: it defines the two centers it connects and creates a steady current of energy between them.',
     channelComplete:
-      'In this chart, channel {a}-{b} is complete: a current contributed steadily and in an integrated way.',
+      'In your chart, channel {a}-{b} is complete: a current you contribute steadily and in an integrated way.',
     channelHalf:
-      'In this chart, one of the two gates of channel {a}-{b} is active ([gate {on}](gate:{on})) but not the other ([gate {off}](gate:{off})): a half channel that is completed occasionally, with someone who has the missing gate or during certain transits.',
+      'In your chart, you have one of the two gates of channel {a}-{b} active ([gate {on}](gate:{on})) but not the other ([gate {off}](gate:{off})): a half channel that is completed occasionally, with someone who has the missing gate or during certain transits.',
     channelNone:
-      'In this chart, neither of the two gates of channel {a}-{b} is active: a current found mostly in other people.',
+      'In your chart, neither of the two gates of channel {a}-{b} is active: a current you find mostly in other people.',
     profileTitle: 'Profile {profile}',
     profileIntro:
       'Profile {profile} combines two lines: the {a}, conscious, and the {b}, unconscious. Each adds its own nuance, and together they describe a way of learning, of relating and of unfolding one’s purpose.',

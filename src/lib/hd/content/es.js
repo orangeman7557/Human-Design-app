@@ -2885,11 +2885,11 @@ export default {
     ichingPlain: 'Le corresponde el hexagrama {g} del [I Ching](concept:iching).',
     deeper: 'Para una lectura más a fondo, puedes utilizar la opción de "saber más usando IA".',
     gateComplete:
-      'En esta carta, la puerta {g} está activa y forma parte de un canal completo: es una energía que se aporta de forma estable e integrada.',
+      'En tu carta, la puerta {g} está activa y forma parte de un canal completo: es una energía que aportas de forma estable e integrada.',
     gateHanging:
-      'En esta carta, la puerta {g} está activa pero colgante: su tema está presente, y su otra mitad solo se completa de forma puntual, con ciertas personas o en ciertos tránsitos.',
+      'En tu carta, la puerta {g} está activa pero colgante: su tema está presente en ti, y su otra mitad solo se completa de forma puntual, con ciertas personas o en ciertos tránsitos.',
     gateInactive:
-      'En esta carta, la puerta {g} no está activa: es una energía que se reconoce y se recibe de los demás y del entorno, más que una constante propia.',
+      'En tu carta, la puerta {g} no está activa: es una energía que reconoces y recibes de los demás y del entorno, más que una constante propia.',
     channelTitle: '{a}-{b}: {name}',
     channelTitlePlain: 'Canal {a}-{b}',
     channelIs: 'Es el **{name}**: {essence}',
@@ -2898,11 +2898,11 @@ export default {
     channelBoth:
       'Con sus dos puertas activas, el canal queda completo: define los dos centros que conecta y crea una corriente de energía estable entre ellos.',
     channelComplete:
-      'En esta carta, el canal {a}-{b} está completo: es una corriente que se aporta de forma estable e integrada.',
+      'En tu carta, el canal {a}-{b} está completo: es una corriente que aportas de forma estable e integrada.',
     channelHalf:
-      'En esta carta, del canal {a}-{b} está activa una de sus dos puertas (la [puerta {on}](gate:{on})) pero no la otra (la [puerta {off}](gate:{off})): es un medio canal que se completa de forma puntual, con quien tenga la puerta que falta o en ciertos tránsitos.',
+      'En tu carta, del canal {a}-{b} tienes activa una de sus dos puertas (la [puerta {on}](gate:{on})) pero no la otra (la [puerta {off}](gate:{off})): es un medio canal que se completa de forma puntual, con quien tenga la puerta que falta o en ciertos tránsitos.',
     channelNone:
-      'En esta carta, ninguna de las dos puertas del canal {a}-{b} está activa: es una corriente que se encuentra sobre todo en los demás.',
+      'En tu carta, ninguna de las dos puertas del canal {a}-{b} está activa: es una corriente que encuentras sobre todo en los demás.',
     profileTitle: 'Perfil {profile}',
     profileIntro:
       'El perfil {profile} combina dos líneas: la {a}, consciente, y la {b}, inconsciente. Cada una aporta su matiz, y juntas describen una forma de aprender, de relacionarse y de desplegar el propósito.',
