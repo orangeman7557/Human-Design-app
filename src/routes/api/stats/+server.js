@@ -53,7 +53,7 @@ export async function GET({ url, platform }) {
       if (k === '_puts') continue;
       totals[k] = nz(totals[k]) + nz(v);
     }
-    series.push({ date: d.date, chart: nz(doc.chart), open: nz(doc.open) });
+    series.push({ date: d.date, chart: nz(doc.chart), open: nz(doc.open), device: nz(doc.device) });
     if (d.date === today) writesToday = nz(doc._puts);
   });
 

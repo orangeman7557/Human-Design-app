@@ -50,10 +50,56 @@
   const writePct = $derived(data ? Math.min(100, (data.writesToday / data.writeLimit) * 100) : 0);
   const writeLevel = $derived(writePct >= 90 ? 'red' : writePct >= 70 ? 'amber' : 'ok');
 
-  const maxBar = $derived(
-    data && data.series.length ? Math.max(1, ...data.series.map((d) => d.chart)) : 1
-  );
   const fmt = (n) => (n ?? 0).toLocaleString('es-ES');
+
+  // Daily line chart: three series on one shared y-axis. They're all counts
+  // per day in the same unit (new devices / opens / charts created), so a
+  // single scale keeps them directly comparable — three axes would distort
+  // that comparison rather than help it.
+  const LINES = [
+    { key: 'chart', label: 'cartas', color: 'var(--accent)' },
+    { key: 'open', label: 'aperturas', color: '#6ec48a' },
+    { key: 'device', label: 'dispositivos', color: '#e84672' }
+  ];
+  const CW = 640;
+  const CH = 200;
+  const PAD = { t: 14, r: 12, b: 24, l: 30 };
+  const innerW = CW - PAD.l - PAD.r;
+  const innerH = CH - PAD.t - PAD.b;
+
+  const yMax = $derived(
+    data && data.series.length
+      ? Math.max(1, ...data.series.flatMap((d) => [d.chart, d.open, d.device]))
+      : 1
+  );
+
+  function coords(key) {
+    const s = data?.series ?? [];
+    const n = s.length;
+    return s.map((d, i) => ({
+      x: PAD.l + (n > 1 ? (i * innerW) / (n - 1) : innerW / 2),
+      y: PAD.t + innerH - (d[key] / yMax) * innerH
+    }));
+  }
+  const asPoints = (key) => coords(key).map((p) => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ');
+
+  const dayLabel = (iso) => {
+    const [, m, d] = iso.split('-');
+    return `${Number(d)}/${Number(m)}`;
+  };
+  const xLabels = $derived.by(() => {
+    const s = data?.series ?? [];
+    if (!s.length) return [];
+    const n = s.length;
+    const idxs = n <= 2 ? s.map((_, i) => i) : [0, Math.floor((n - 1) / 2), n - 1];
+    return idxs.map((i) => ({
+      x: PAD.l + (n > 1 ? (i * innerW) / (n - 1) : innerW / 2),
+      label: dayLabel(s[i].date)
+    }));
+  });
+
+  const OPEN_TIP =
+    'Cada vez que se carga la app (una visita): incluye recargas y reaperturas. No es lo mismo que dispositivos, que cuenta cada navegador una sola vez.';
 </script>
 
 <svelte:head>
@@ -63,6 +109,12 @@
 
 <main>
   <header>
+    <a class="back" href="/" aria-label="Volver a la home">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12" />
+        <polyline points="12 19 5 12 12 5" />
+      </svg>
+    </a>
     <h1>Uso — <span class="env-name">{env === 'staging' ? 'staging (prueba)' : 'producción'}</span></h1>
     <div class="toggle" role="group" aria-label="Fuente de datos">
       <button class:active={env === 'prod'} onclick={() => setEnv('prod')}>producción</button>
@@ -86,13 +138,30 @@
     </section>
 
     <section class="card">
-      <div class="card-head"><span>Cartas · últimos {data.series.length} días</span></div>
-      {#if data.series.length}
-        <div class="spark" aria-hidden="true">
-          {#each data.series as d}
-            <div class="bar" style="height:{Math.max(3, (d.chart / maxBar) * 100)}%" title="{d.date}: {d.chart}"></div>
+      <div class="card-head">
+        <span>Uso diario · últimos {data.series.length} días</span>
+        <span class="legend">
+          {#each LINES as l}
+            <span class="lg"><i style="background:{l.color}"></i>{l.label}</span>
           {/each}
-        </div>
+        </span>
+      </div>
+      {#if data.series.length}
+        <svg class="chart" viewBox="0 0 {CW} {CH}" role="img" aria-label="Uso diario por día">
+          <line class="gridline" x1={PAD.l} y1={PAD.t} x2={CW - PAD.r} y2={PAD.t} />
+          <line class="gridline" x1={PAD.l} y1={CH - PAD.b} x2={CW - PAD.r} y2={CH - PAD.b} />
+          <text class="axis" x={PAD.l - 5} y={PAD.t + 4} text-anchor="end">{yMax}</text>
+          <text class="axis" x={PAD.l - 5} y={CH - PAD.b} text-anchor="end">0</text>
+          {#each xLabels as xl}
+            <text class="axis" x={xl.x} y={CH - 7} text-anchor="middle">{xl.label}</text>
+          {/each}
+          {#each LINES as l}
+            <polyline fill="none" stroke={l.color} stroke-width="2" stroke-linejoin="round" points={asPoints(l.key)} />
+            {#each coords(l.key) as p}
+              <circle cx={p.x} cy={p.y} r="2.2" fill={l.color} />
+            {/each}
+          {/each}
+        </svg>
       {:else}
         <p class="muted small">Sin datos todavía.</p>
       {/if}
@@ -112,7 +181,7 @@
       <div class="card">
         <div class="card-head"><span>Otros</span></div>
         <ul class="rows">
-          <li><span>Aperturas</span><b>{fmt(data.totals.open)}</b></li>
+          <li><span class="tip" title={OPEN_TIP}>Aperturas</span><b>{fmt(data.totals.open)}</b></li>
           <li><span>Guardadas</span><b>{fmt(data.totals.save)}</b></li>
           <li><span>Instalaciones (PWA)</span><b>{fmt(data.installs)}</b></li>
           <li><span>Informe abierto</span><b>{fmt(data.totals.report)}</b></li>
@@ -125,7 +194,7 @@
     </section>
 
     <section class="card lang-row">
-      <span>Idioma</span>
+      <span class="tip" title="Aperturas contadas según el idioma activo en cada carga de la app.">Idioma <em>· aperturas</em></span>
       <span class="chips">
         <span class="chip">es · {fmt(data.langs.es)}</span>
         <span class="chip">en · {fmt(data.langs.en)}</span>
@@ -157,10 +226,28 @@
   header {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
+    gap: 0.75rem;
     flex-wrap: wrap;
     margin-bottom: 1.5rem;
+  }
+  .back {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    width: 2.1rem;
+    height: 2.1rem;
+    border-radius: 50%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+  }
+  .back:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  header .toggle {
+    margin-left: auto;
   }
   h1 {
     font-size: 1.15rem;
@@ -225,24 +312,56 @@
     margin-bottom: 1rem;
   }
   .card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
     font-size: 0.72rem;
     text-transform: uppercase;
     letter-spacing: 0.06em;
     color: var(--text-muted);
     margin-bottom: 0.7rem;
   }
-  .spark {
-    display: flex;
-    align-items: flex-end;
-    gap: 2px;
-    height: 64px;
+  .legend {
+    display: inline-flex;
+    gap: 0.7rem;
+    text-transform: none;
+    letter-spacing: 0;
   }
-  .bar {
-    flex: 1;
-    min-width: 2px;
-    background: var(--accent);
-    border-radius: 2px 2px 0 0;
-    opacity: 0.85;
+  .lg {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+  .lg i {
+    width: 10px;
+    height: 3px;
+    border-radius: 2px;
+    display: inline-block;
+  }
+  .chart {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  .chart .gridline {
+    stroke: var(--border);
+    stroke-width: 1;
+  }
+  .chart .axis {
+    fill: var(--text-muted);
+    font-size: 11px;
+  }
+  .tip {
+    text-decoration: underline dotted var(--text-muted);
+    text-underline-offset: 3px;
+    cursor: help;
+  }
+  .tip em {
+    font-style: normal;
+    color: #82828a;
+    text-decoration: none;
   }
   .grid {
     display: grid;
