@@ -24,6 +24,7 @@
   import { install, promptInstall } from '$lib/pwa/install.svelte.js';
   import { dialog } from '$lib/components/dialog.svelte.js';
   import { cityCountry } from '$lib/geo/place.js';
+  import { track } from '$lib/analytics.js';
   import {
     listCharts,
     renameChart,
@@ -292,6 +293,10 @@
         placeLabel: place.label
       };
       sessionStorage.setItem('birthData', JSON.stringify(birth));
+      // A chart created from the form (not a shared-link open or a re-opened
+      // saved chart). `notime` additionally flags the unknown-time path.
+      track('chart');
+      if (unknownTime) track('notime');
       goto(`/${lang}/chart`);
     } catch (e) {
       error = e instanceof Error ? e.message : String(e);

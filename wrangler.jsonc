@@ -20,8 +20,12 @@
   },
   // Global "send love" counter (About modal → /api/love). KV namespace
   // "hd-love", created 2026-07-03 in the Cloudflare dashboard.
+  // STATS: anonymous aggregate usage counters (/api/stat write, /api/stats
+  // read). KV namespace "hd-stats", created 2026-08-10 in the dashboard. Keys
+  // are lazy — the Worker creates them on first write, none to pre-create.
   "kv_namespaces": [
-    { "binding": "LOVE", "id": "93a9c82535d44143bd16b10147ddde29" }
+    { "binding": "LOVE", "id": "93a9c82535d44143bd16b10147ddde29" },
+    { "binding": "STATS", "id": "2986ac17637a417f9b790ea8f1e99499" }
   ],
   // Staging — deployed by Workers Builds from the `staging` branch with
   // `npx wrangler deploy --env staging`. Top-level keys (main, assets,
@@ -38,9 +42,15 @@
       // love-senders-staging, so staging never touches the real counters
       // (2026-07-06; replaces the old plan of a separate namespace, whose
       // creation hung in the dashboard).
-      "vars": { "LOVE_KEY_SUFFIX": "-staging" },
+      // STATS_KEY_SUFFIX keeps staging's usage counters in their own keys
+      // (stat:YYYY-MM-DD:staging), so test traffic never inflates the real
+      // numbers. The dashboard reads production keys by default and staging's
+      // via ?env=staging (routes/api/stats). The dashboard itself is served
+      // only on this staging host.
+      "vars": { "LOVE_KEY_SUFFIX": "-staging", "STATS_KEY_SUFFIX": ":staging" },
       "kv_namespaces": [
-        { "binding": "LOVE", "id": "93a9c82535d44143bd16b10147ddde29" }
+        { "binding": "LOVE", "id": "93a9c82535d44143bd16b10147ddde29" },
+        { "binding": "STATS", "id": "2986ac17637a417f9b790ea8f1e99499" }
       ]
     }
   }

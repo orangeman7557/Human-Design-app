@@ -367,7 +367,7 @@ export default {
   privacy: {
     seoTitle: 'Privacidad · Human Design Chart',
     seoDesc:
-      'Cómo trata tus datos la app de Human Design Chart: la carta se calcula en tu dispositivo, sin cuentas, sin analítica y sin venta de datos.',
+      'Cómo trata tus datos la app de Human Design Chart: la carta se calcula en tu dispositivo, sin cuentas y sin venta de datos; el uso solo se mide con contadores anónimos y agregados.',
     back: '← volver',
     home: 'inicio',
     title: 'Privacidad',
@@ -381,14 +381,15 @@ export default {
     l2: '**Formulario para reportar fallos.** Si decides usarlo, se envía lo que escribas (y, opcionalmente, tu nombre y email) junto con datos técnicos de tu navegador, a través del servicio [Web3Forms](https://web3forms.com/), para que podamos leer tu mensaje. Esto solo ocurre si tú lo envías.',
     l3: '**Llevar tu carta a una IA.** Si usas la opción de consultar tu carta con una IA, la app abre el servicio de IA que elijas con un texto de tu carta ya preparado. A partir de ahí tus datos se rigen por la política de privacidad de ese servicio, no por esta.',
     l4: '**Copia de seguridad de tus cartas.** Al crearse o restaurarse la copia descrita arriba, tus cartas guardadas viajan cifradas hasta nuestro servidor, que las devuelve convertidas en la cookie y **no las almacena**: no hay ninguna base de datos ni registro de tus cartas en el servidor. Fuera de esos dos momentos, la cookie con tus cartas no se envía al navegar por la app.',
+    l5: '**Medición de uso anónima.** Para saber cuánta gente usa la app y hacernos una idea general de su uso (visitas, cartas calculadas, idioma), la app envía unos **contadores agregados y anónimos**. No llevan cookies, ni identificadores, ni ningún dato de tu carta o de tu nacimiento: solo suman «esto ha ocurrido una vez». No se puede reconstruir con ellos quién eres ni qué carta miraste, y no intervienen terceros.',
     h3: 'Alojamiento',
     p4: 'La app se sirve a través de **Cloudflare**. Como cualquier servidor web, su red puede registrar de forma temporal datos técnicos de la conexión (como la dirección IP) por seguridad y funcionamiento. No usamos esos registros para identificarte ni para seguirte.',
     h4: 'Lo que no hacemos',
-    p5: 'No usamos cookies de seguimiento, ni analítica, ni publicidad — la única cookie de la app es la copia de seguridad técnica descrita arriba. No hay cuentas de usuario. No vendemos ni cedemos tus datos a terceros.',
+    p5: 'No usamos cookies de seguimiento, ni publicidad, ni perfiles individuales. La única cookie de la app es la copia de seguridad técnica descrita arriba, y la única medición es la de los contadores anónimos y agregados que se explican más arriba (sin identificarte y sin terceros). No hay cuentas de usuario. No vendemos ni cedemos tus datos a terceros.',
     h5: 'Tus derechos',
     p6: 'Como los datos de tu carta viven en tu dispositivo, tienes el control directo: puedes consultarlos, modificarlos o borrarlos en cualquier momento desde la app. Conforme al Reglamento General de Protección de Datos (RGPD) y a la normativa española y europea, tienes derecho de acceso, rectificación, supresión, oposición y portabilidad sobre cualquier dato personal. Para ejercerlos, o para cualquier duda sobre privacidad, escríbenos con el botón **«notificar un fallo»** de aquí abajo.',
     controller: 'Responsable: Javi G.O., autor de la app.',
-    updated: 'Última actualización: 7 de julio de 2026.'
+    updated: 'Última actualización: 10 de agosto de 2026.'
   },
 
   category: {

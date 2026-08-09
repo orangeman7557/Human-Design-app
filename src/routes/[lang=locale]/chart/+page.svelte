@@ -20,6 +20,7 @@
   import { t } from '$lib/i18n/index.svelte.js';
   import { buildPrompts } from '$lib/hd/prompts.js';
   import { buildShareUrl, decodeBirth, hasShareParams } from '$lib/hd/share-link.js';
+  import { track } from '$lib/analytics.js';
   import { goto } from '$app/navigation';
   import { page } from '$app/stores';
   // Active language for building URLs — from the route param (SSR-safe).
@@ -647,12 +648,14 @@
   async function shareLink() {
     if (!birthData) return;
     shareError = null;
+    track('sharelink');
     await doShareUrl(buildShareUrl($state.snapshot(birthData), location.origin));
   }
   // Same link, but with `r=1` so the recipient lands with the report open.
   async function shareReportLink() {
     if (!birthData) return;
     shareError = null;
+    track('sharelink');
     await doShareUrl(buildShareUrl($state.snapshot(birthData), location.origin) + '&r=1');
   }
 
@@ -660,6 +663,7 @@
     if (!captureEl || sharing) return;
     sharing = true;
     shareError = null;
+    track('share');
     try {
       downloadBlob(await captureBlob());
     } catch (e) {
@@ -943,7 +947,7 @@
     <div class="title-wrap">
       <h1>{birthData?.name?.trim() || tr('chart.untitled')}</h1>
       {#if chart}
-        <button class="report-btn" type="button" onclick={() => (reportOpen = true)} aria-label={tr('chart.reportAria')}>
+        <button class="report-btn" type="button" onclick={() => { reportOpen = true; track('report'); }} aria-label={tr('chart.reportAria')}>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
             <polyline points="14 2 14 8 20 8" />

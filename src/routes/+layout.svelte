@@ -7,6 +7,7 @@
   import LangSwitch from '$lib/components/LangSwitch.svelte';
   import { getLocale } from '$lib/i18n/index.svelte.js';
   import { ensureBackupRestored } from '$lib/db/charts.js';
+  import { trackOpen } from '$lib/analytics.js';
   let { children } = $props();
 
   // Environment badge driven by the hostname at runtime, not by a build flag:
@@ -41,13 +42,25 @@
   // the user can act. The home additionally awaits it before listing.
   onMount(() => {
     ensureBackupRestored();
+    // One anonymous "open" per app load: a visit, a first-seen device (once
+    // ever), and the active language. Buffered and sent on page hide.
+    trackOpen(getLocale());
   });
 </script>
 
 <LangSwitch {contentMax} />
 
 {#if staging}
-  <div class="env-badge">staging</div>
+  <div class="env-badge">
+    <span>staging</span>
+    <a class="stats-link" href="/stats" aria-label="Panel de uso" title="Panel de uso">
+      <svg viewBox="0 0 24 24" width="12" height="12" aria-hidden="true">
+        <rect x="3" y="13" width="4" height="8" rx="1" fill="currentColor" />
+        <rect x="10" y="8" width="4" height="13" rx="1" fill="currentColor" />
+        <rect x="17" y="4" width="4" height="17" rx="1" fill="currentColor" />
+      </svg>
+    </a>
+  </div>
 {/if}
 
 {@render children()}
@@ -62,8 +75,10 @@
     left: 50%;
     transform: translateX(-50%);
     z-index: 1000;
-    pointer-events: none;
-    padding: 0.12rem 0.65rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.12rem 0.55rem;
     border: 1px solid var(--accent);
     border-top: none;
     border-radius: 0 0 10px 10px;
@@ -73,5 +88,20 @@
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.08em;
+  }
+  /* The badge itself ignores pointer events (it overlays the top of the page);
+     only the dashboard link is clickable. */
+  .env-badge > span {
+    pointer-events: none;
+  }
+  .stats-link {
+    display: inline-flex;
+    align-items: center;
+    color: var(--accent);
+    opacity: 0.8;
+    pointer-events: auto;
+  }
+  .stats-link:hover {
+    opacity: 1;
   }
 </style>

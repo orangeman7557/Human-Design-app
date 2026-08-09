@@ -9,6 +9,7 @@
 
 import Dexie from 'dexie';
 import { encodeCharts, decodeCharts, backupMarkerPresent } from './backup.js';
+import { track } from '$lib/analytics.js';
 
 const db = new Dexie('human-design-charts');
 
@@ -158,6 +159,7 @@ export async function saveChart(name, birth, type) {
     type
   });
   scheduleBackupSync();
+  track('save');
   return id;
 }
 

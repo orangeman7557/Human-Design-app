@@ -355,7 +355,7 @@ export default {
   privacy: {
     seoTitle: 'Privacy · Human Design Chart',
     seoDesc:
-      'How the Human Design Chart app handles your data: your chart is calculated on your device, with no accounts, no analytics and no data selling.',
+      'How the Human Design Chart app handles your data: your chart is calculated on your device, with no accounts and no data selling; usage is measured only with anonymous, aggregate counters.',
     back: '← back',
     home: 'home',
     title: 'Privacy',
@@ -369,14 +369,15 @@ export default {
     l2: '**Bug report form.** If you choose to use it, whatever you write (and, optionally, your name and email) is sent together with technical details about your browser, via the [Web3Forms](https://web3forms.com/) service, so that we can read your message. This only happens if you submit it.',
     l3: '**Taking your chart to an AI.** If you use the option to explore your chart with an AI, the app opens the AI service you choose with a text of your chart already prepared. From that point on, your data is governed by that service’s privacy policy, not by this one.',
     l4: '**Backup of your charts.** When the backup described above is created or restored, your saved charts travel encrypted to our server, which returns them converted into the cookie and **does not store them**: there is no database and no record of your charts on the server. Outside those two moments, the cookie holding your charts is not sent as you browse the app.',
+    l5: '**Anonymous usage measurement.** To know roughly how many people use the app and get a general sense of how it is used (visits, charts calculated, language), the app sends a few **aggregate, anonymous counters**. They carry no cookies, no identifiers and nothing from your chart or your birth details: they only add up "this happened once". They cannot be used to work out who you are or which chart you looked at, and no third parties are involved.',
     h3: 'Hosting',
     p4: 'The app is served through **Cloudflare**. Like any web server, its network may temporarily log technical connection data (such as the IP address) for security and operational purposes. We do not use those logs to identify or track you.',
     h4: 'What We Don’t Do',
-    p5: 'We use no tracking cookies, no analytics and no advertising — the app’s only cookie is the technical backup described above. There are no user accounts. We do not sell or share your data with third parties.',
+    p5: 'We use no tracking cookies, no advertising and no individual profiling. The app’s only cookie is the technical backup described above, and the only measurement is the anonymous, aggregate counting described above (with no way to identify you and no third parties). There are no user accounts. We do not sell or share your data with third parties.',
     h5: 'Your Rights',
     p6: 'Because your chart data lives on your device, you are in direct control: you can view, change or delete it at any time from within the app. Under the EU General Data Protection Regulation (GDPR) and Spanish data protection law, you have the right to access, rectify and erase your personal data, to object to and restrict its processing, and to data portability. To exercise those rights, or for any privacy question, write to us using the **“report a bug”** button below.',
     controller: 'Data controller: Javi G.O., the author of the app.',
-    updated: 'Last updated: 7 July 2026.'
+    updated: 'Last updated: 10 August 2026.'
   },
 
   category: {

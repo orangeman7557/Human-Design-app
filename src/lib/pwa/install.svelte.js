@@ -12,6 +12,8 @@
 //   'ios'    → any iOS browser: show manual instructions
 //   null     → nothing to offer (already installed, or unsupported browser)
 
+import { track } from '$lib/analytics.js';
+
 let deferred = null;
 
 export const install = $state({ mode: /** @type {'prompt' | 'ios' | null} */ (null) });
@@ -49,6 +51,7 @@ if (typeof window !== 'undefined' && !isStandalone()) {
   window.addEventListener('appinstalled', () => {
     deferred = null;
     install.mode = null;
+    track('install');
   });
 }
 

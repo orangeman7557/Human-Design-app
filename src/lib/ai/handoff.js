@@ -12,6 +12,8 @@
 // button. Sourced from the brands' public marks. Order confirmed with the
 // author: Claude, ChatGPT, Perplexity.
 
+import { track } from '$lib/analytics.js';
+
 /** @type {{ id: string, label: string, url: (prompt: string) => string, icon: string }[]} */
 export const AIS = [
   {
@@ -79,5 +81,6 @@ export function setPreferredAngle(angle) {
 
 /** Open an AI in a new tab with the prompt prefilled. */
 export function openAI(ai, prompt) {
+  track('ai');
   window.open(ai.url(prompt), '_blank', 'noopener');
 }

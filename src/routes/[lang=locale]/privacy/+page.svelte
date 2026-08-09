@@ -61,7 +61,7 @@
   <section>
     <h2>{tr('privacy.h2')}</h2>
     <ul>
-      {#each ['l1', 'l2', 'l3', 'l4'] as key}
+      {#each ['l1', 'l2', 'l3', 'l4', 'l5'] as key}
         <li>{@html md(tr('privacy.' + key))}</li>
       {/each}
     </ul>
