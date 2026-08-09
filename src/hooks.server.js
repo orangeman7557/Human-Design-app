@@ -130,6 +130,12 @@ function fallbackBlock(profile) {
     `Nacimiento: ${escHtml(b.date ?? '')} ${escHtml(b.time ?? '')} · ${escHtml(b.place ?? '')}.`;
   const json = escHtml(JSON.stringify(profile, null, 2));
   return (
+    // TEMPORARY diagnostic (aug 2026): a persistent marker that is NOT removed by
+    // JS, placed before the removable profile. If an AI reads THIS on /chart but
+    // not the profile below, its browser runs JS and the removal script is what
+    // strips the profile (that's the difference vs the JS-less /ai-test route).
+    // Remove once the AI-access question is settled.
+    `<h1>AI_CHART_TEST_123456</h1><pre>{"chart_test":true}</pre>` +
     `<div id="hd-share-fallback">` +
     `<h1>Carta de Human Design</h1>` +
     `<p>${summary}</p>` +
