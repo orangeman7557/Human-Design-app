@@ -8,9 +8,16 @@
 // is recovered from the coordinates with tz-lookup, exactly as it was resolved
 // when the form was filled in — so the URL stays short.
 //
-// Param keys are terse on purpose: n=name, d=YYYYMMDD, t=HHMM, la/lo=coords,
-// p=short place label (shown in the chart's birth subtitle and the export
-// filename; the calc itself only needs the coordinates).
+// Param keys are terse on purpose: n=name, d=YYYYMMDD or YYYYMMDDHHMM (the time
+// rides inside `d`), la/lo=coords, p=short place label (shown in the chart's
+// birth subtitle and the export filename; the calc itself only needs the
+// coordinates).
+//
+// The time used to travel in its own `t=HHMM` param, but some clients'
+// URL-cleaning stripped a bare single-letter `t` (aug 2026), which silently
+// reset the birth time to 00:00 and threw off the whole chart. Folding it into
+// `d` removes that failure mode (and shortens the URL). Old links with a
+// separate `t` still decode.
 
 import { cityCountry } from '$lib/geo/place.js';
 import { timezoneFor } from '$lib/geo/timezone.js';
@@ -28,8 +35,11 @@ function shortCoord(n) {
 export function encodeBirth(birth) {
   const p = new URLSearchParams();
   if (birth?.name) p.set('n', birth.name);
-  if (birth?.date) p.set('d', String(birth.date).replace(/-/g, ''));
-  if (birth?.time) p.set('t', String(birth.time).replace(':', ''));
+  if (birth?.date) {
+    const d = String(birth.date).replace(/-/g, '');
+    const t = birth?.time ? String(birth.time).replace(':', '') : '';
+    p.set('d', d + t);
+  }
   if (birth?.latitude != null) p.set('la', shortCoord(birth.latitude));
   if (birth?.longitude != null) p.set('lo', shortCoord(birth.longitude));
   const place = cityCountry(birth?.placeLabel);
@@ -59,11 +69,15 @@ export function hasShareParams(params) {
  * @param {URLSearchParams} params
  */
 export function decodeBirth(params) {
-  const d = params.get('d');
-  if (!d || !/^\d{8}$/.test(d)) return null;
+  // `d` is YYYYMMDD (date only) or YYYYMMDDHHMM (time folded in). Old links kept
+  // the time in a separate `t=HHMM`, so fall back to that when `d` is 8 digits.
+  const dRaw = params.get('d') || '';
+  const dm = dRaw.match(/^(\d{8})(\d{4})?$/);
+  if (!dm) return null;
+  const d = dm[1];
   const date = `${d.slice(0, 4)}-${d.slice(4, 6)}-${d.slice(6, 8)}`;
 
-  const t = (params.get('t') || '').padStart(4, '0');
+  const t = (dm[2] || params.get('t') || '').padStart(4, '0');
   const time = /^\d{4}$/.test(t) ? `${t.slice(0, 2)}:${t.slice(2, 4)}` : '00:00';
 
   const latitude = Number(params.get('la'));

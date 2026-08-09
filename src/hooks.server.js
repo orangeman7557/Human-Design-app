@@ -164,6 +164,19 @@ export async function handle({ event, resolve }) {
   // paths have a page and nothing links to them, and touching url.search then
   // throws — so skip the redirect logic while building.
   if (!building) {
+    // TEMPORARY diagnostic (aug 2026): a dead-simple, plain-HTML route — no
+    // framework, no JS, no detection — to isolate whether an AI browsing tool
+    // can read ANY HTML the Worker serves. Remove once shared-link access is
+    // sorted. (Suggested by ChatGPT while debugging why it couldn't read the
+    // embedded profile.)
+    if (path === '/ai-test' || path === '/es/ai-test' || path === '/en/ai-test') {
+      return new Response(
+        '<!doctype html><html lang="en"><head><meta charset="utf-8"><title>AI test</title></head>' +
+          '<body><h1>AI_TEST_123456</h1><pre>{"hello":"world","source":"cloudflare-worker","number":123456}</pre></body></html>',
+        { headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'no-store' } }
+      );
+    }
+
     // 1. Bare root → negotiate a language and redirect.
     if (path === '/') {
       const lang = negotiateLocale(event.cookies.get('hdl'), event.request.headers.get('accept-language'));
