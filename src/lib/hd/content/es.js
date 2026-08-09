@@ -2090,7 +2090,7 @@ export default {
         'Mucha gente la reconoce mirando hacia atrás, no hacia delante. Así que léela con curiosidad, no como una tarea pendiente.'
       ],
       outro:
-        'Y aquí está lo importante: **el propósito no se persigue, se cumple viviendo tu diseño**. No hay nada que hacer con esta cruz salvo reconocerla. Lo que de verdad cambia tu día a día es lo de la sección anterior —actuar según [tu estrategia](section:strategy) y decidir desde [tu autoridad](section:authority)—; si eso está en su sitio, el resto se ocupa solo.'
+        'Y aquí algo importante en lo que conviene insistir: **el propósito no se persigue, se cumple viviendo tu diseño**. No hay nada que hacer con esta cruz salvo reconocerla. Lo que de verdad cambia tu día a día es lo de la sección anterior —actuar según [tu estrategia](section:strategy) y decidir desde [tu autoridad](section:authority)—; si eso está en su sitio, el resto se ocupa solo.'
     },
     // Second-person bodies for the cross angle (the impersonal versions live in
     // the `cross` block, which feeds the drawer).
@@ -2929,7 +2929,7 @@ export default {
     // Chart-angle prompts (and the report handoff) drop the in-text chart data
     // and point to the shareable link instead — an AI that opens it gets the
     // full profile (aug 2026).
-    chartLink: '\n\nPara los datos de esta carta en concreto, consulta el enlace: {url}',
+    chartLink: '\n\nDatos de la carta: {url}',
     who: 'un {type}, perfil {profile}, autoridad {authority}, {definition}, centros definidos {centers}',
     none: 'ninguno',
     side: { personality: 'Personalidad', design: 'Diseño' },

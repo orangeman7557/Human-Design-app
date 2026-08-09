@@ -175,7 +175,7 @@ const overrides = {
     // Chart-angle prompts (and the report handoff) drop the in-text chart data
     // and point to the shareable link instead — an AI that opens it gets the
     // full profile (aug 2026).
-    chartLink: '\n\nFor this specific chart’s data, see the link: {url}',
+    chartLink: '\n\nChart data: {url}',
     who: 'a {type} with a {profile} profile, {authority} authority, {definition}, and these defined centers: {centers}',
     none: 'none',
     side: { personality: 'Personality', design: 'Design' },
