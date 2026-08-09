@@ -74,11 +74,39 @@ export default {
   saved: {
     heading: 'Saved Charts',
     empty: 'No saved charts yet.',
+    noMatches: 'No charts match your search.',
     rename: 'Rename',
     delete: 'Delete',
+    labelsAria: 'Labels',
+    searchPlaceholder: 'Search…',
+    searchAria: 'Search charts',
+    searchRecents: 'Recent',
+    searchLabels: 'Labels',
     localNote: 'Charts are saved on this device.',
     export: 'Export Charts',
     import: 'Import Charts'
+  },
+
+  labels: {
+    defaults: ['Family', 'Partner', 'Friends', 'Work', 'Study'],
+    manage: 'Create / edit labels…',
+    managerTitle: 'Labels',
+    managerSubtitle: 'Create, rename, reorder and delete your labels.',
+    managerAria: 'Manage labels',
+    menuAria: 'Chart labels',
+    add: 'Add',
+    newPlaceholder: 'New label…',
+    close: 'Close',
+    rename: 'Rename',
+    delete: 'Delete',
+    renameTitle: 'Rename Label',
+    renamePlaceholder: 'Label name',
+    renameConfirm: 'Save',
+    deleteTitle: 'Delete Label',
+    deleteMessage: 'Delete the label "{name}"? It will be removed from all charts.',
+    deleteConfirm: 'Delete',
+    duplicate: 'A label with that name already exists.',
+    emptyList: 'No labels yet. Create the first one below.'
   },
 
   dialog: {

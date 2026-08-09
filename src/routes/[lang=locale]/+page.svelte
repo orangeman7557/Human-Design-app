@@ -32,9 +32,13 @@
     importCharts,
     reorderCharts,
     setChartType,
-    ensureBackupRestored
+    ensureBackupRestored,
+    listLabels,
+    seedDefaultLabels,
+    setChartLabels
   } from '$lib/db/charts.js';
   import StorageInfo from '$lib/components/StorageInfo.svelte';
+  import LabelManager from '$lib/components/LabelManager.svelte';
   import WhatIsHD from '$lib/components/WhatIsHD.svelte';
   import { computeChart } from '$lib/hd/chart.js';
 
@@ -301,10 +305,124 @@
   /** @type {HTMLInputElement | undefined} */
   let importInput = $state();
 
+  // ── Labels + search (2026-08-09) ──────────────────────────────────────────
+  /** @type {import('$lib/db/charts.js').Label[]} global list, in order */
+  let labels = $state([]);
+  let search = $state('');
+  let searchOpen = $state(false);
+  /** @type {string[]} last searches (max 3, most recent first) */
+  let recentSearches = $state([]);
+  /** chart id whose label menu is open, or null */
+  let labelMenuFor = $state(null);
+  let labelManagerOpen = $state(false);
+
+  const RECENTS_KEY = 'hd:recent-searches';
+  const norm = (s) => (s ?? '').toString().toLowerCase();
+  const isFiltering = $derived(!!search.trim());
+
+  // Filter over what the chip shows: name, type, date, place, labels.
+  const filteredCharts = $derived.by(() => {
+    const q = norm(search).trim();
+    if (!q) return savedCharts;
+    return savedCharts.filter((c) =>
+      [c.name, typeLabels[c.type] ?? c.type, formatDate(c), cityCountry(c.birth?.placeLabel), ...(c.labels ?? [])]
+        .some((v) => norm(v).includes(q))
+    );
+  });
+
   onMount(() => {
     restoreLastBirth();
-    refreshList();
+    loadRecents();
+    initLists();
   });
+
+  async function initLists() {
+    // refreshList runs the cookie-vault restore first (which may bring labels
+    // back too); only then does seeding get a chance, and it no-ops unless the
+    // table is genuinely untouched.
+    await refreshList();
+    await seedDefaultLabels(tr('labels.defaults'));
+    await refreshLabels();
+  }
+
+  async function refreshLabels() {
+    try {
+      labels = await listLabels();
+    } catch {
+      // leave the previous list; the manage modal surfaces real failures
+    }
+  }
+
+  function loadRecents() {
+    try {
+      const arr = JSON.parse(localStorage.getItem(RECENTS_KEY) ?? '[]');
+      if (Array.isArray(arr)) recentSearches = arr.filter((s) => typeof s === 'string').slice(0, 3);
+    } catch {
+      // ignore malformed storage
+    }
+  }
+
+  function pushRecent(text) {
+    const v = text.trim();
+    if (!v) return;
+    recentSearches = [v, ...recentSearches.filter((s) => s.toLowerCase() !== v.toLowerCase())].slice(0, 3);
+    try {
+      localStorage.setItem(RECENTS_KEY, JSON.stringify(recentSearches));
+    } catch {
+      // ignore — recents are a convenience, not data
+    }
+  }
+
+  function pickSearch(text) {
+    search = text;
+    pushRecent(text);
+    searchOpen = false;
+  }
+
+  function onSearchKeydown(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      pushRecent(search);
+      searchOpen = false;
+    } else if (e.key === 'Escape') {
+      searchOpen = false;
+    }
+  }
+
+  // Labels in the global order, restricted to those assigned to this chart
+  // (plus any name not in the global list — e.g. imported — appended).
+  function assignedNames(c) {
+    const set = new Set(c.labels ?? []);
+    const ordered = labels.filter((l) => set.has(l.name)).map((l) => l.name);
+    for (const n of c.labels ?? []) if (!ordered.includes(n)) ordered.push(n);
+    return ordered;
+  }
+
+  const isAssigned = (c, name) => (c.labels ?? []).includes(name);
+
+  function toggleLabelMenu(id) {
+    labelMenuFor = labelMenuFor === id ? null : id;
+    searchOpen = false;
+  }
+
+  async function toggleLabel(c, name) {
+    const cur = c.labels ?? [];
+    const next = cur.includes(name) ? cur.filter((n) => n !== name) : [...cur, name];
+    c.labels = next; // optimistic; the menu stays open
+    savedCharts = [...savedCharts];
+    await setChartLabels(c.id, next);
+  }
+
+  function openManager() {
+    labelMenuFor = null;
+    labelManagerOpen = true;
+  }
+
+  async function onLabelsChanged() {
+    // A rename/delete rewrites chart labels, so reload both lists.
+    await refreshLabels();
+    await refreshList();
+  }
 
   // Coming back from the chart page, the form keeps the data of the last
   // chart that was on screen.
@@ -609,9 +727,61 @@
     </button>
   </form>
 
+  {#snippet tagIcon(size)}
+    <svg class="tag-ic" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <g transform="translate(24,0) scale(-1,1)">
+        <path d="M3 6v5.172a2 2 0 0 0 .586 1.414l7.71 7.71a2.41 2.41 0 0 0 3.408 0l5.592-5.592a2.41 2.41 0 0 0 0-3.408l-7.71-7.71A2 2 0 0 0 11.172 3H6a3 3 0 0 0-3 3z" />
+        <circle cx="7.5" cy="7.5" r="1.2" />
+      </g>
+    </svg>
+  {/snippet}
+
   <section class="saved">
     <div class="saved-head">
       <h2>{tr('saved.heading')}</h2>
+      {#if savedCharts.length > 0}
+        <div class="search">
+          <svg class="search-ic" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" />
+          </svg>
+          <input
+            type="text"
+            bind:value={search}
+            placeholder={tr('saved.searchPlaceholder')}
+            aria-label={tr('saved.searchAria')}
+            onfocus={() => { searchOpen = true; labelMenuFor = null; }}
+            onclick={() => (searchOpen = true)}
+            oninput={() => (searchOpen = true)}
+            onblur={() => setTimeout(() => (searchOpen = false), 150)}
+            onkeydown={onSearchKeydown}
+          />
+          {#if searchOpen && (recentSearches.length || labels.length)}
+            <div class="search-dd">
+              {#if recentSearches.length}
+                <div class="dd-head">{tr('saved.searchRecents')}</div>
+                {#each recentSearches as r}
+                  <button type="button" class="dd-item" onmousedown={(e) => e.preventDefault()} onclick={() => pickSearch(r)}>
+                    <span class="dd-ic">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M12 8v4l3 2" /></svg>
+                    </span>
+                    <span class="dd-name">{r}</span>
+                  </button>
+                {/each}
+              {/if}
+              {#if labels.length}
+                {#if recentSearches.length}<div class="dd-sep"></div>{/if}
+                <div class="dd-head">{tr('saved.searchLabels')}</div>
+                {#each labels as l}
+                  <button type="button" class="dd-item" onmousedown={(e) => e.preventDefault()} onclick={() => pickSearch(l.name)}>
+                    <span class="dd-ic">{@render tagIcon(14)}</span>
+                    <span class="dd-name">{l.name}</span>
+                  </button>
+                {/each}
+              {/if}
+            </div>
+          {/if}
+        </div>
+      {/if}
     </div>
 
     {#if listError}
@@ -620,11 +790,13 @@
 
     {#if savedCharts.length === 0}
       <p class="empty">{tr('saved.empty')}</p>
+    {:else if filteredCharts.length === 0}
+      <p class="empty">{tr('saved.noMatches')}</p>
     {:else}
       <ul>
-        {#each savedCharts as c, i (c.id)}
+        {#each filteredCharts as c, i (c.id)}
           <li
-            draggable="true"
+            draggable={!isFiltering}
             class:dragging={dragIndex === i}
             ondragstart={() => dragStart(i)}
             ondragover={(e) => dragOver(e, i)}
@@ -639,9 +811,56 @@
                 {/if}
               </span>
               <span class="chart-meta">{formatDate(c)} · {cityCountry(c.birth?.placeLabel)}</span>
+              {#if assignedNames(c).length}
+                <span class="chart-labels">{@render tagIcon(12)}<span class="chart-labels-text">{assignedNames(c).join(', ')}</span></span>
+              {/if}
             </button>
-            <button class="icon" onclick={() => renameSaved(c)} aria-label={tr('saved.rename')}>✎</button>
-            <button class="icon" onclick={() => deleteSaved(c)} aria-label={tr('saved.delete')}>✕</button>
+            <div class="actions">
+              <div class="btn-stack">
+                <button class="icon half" onclick={() => renameSaved(c)} aria-label={tr('saved.rename')}>✎</button>
+                <button
+                  class="icon half labels-btn"
+                  class:on={labelMenuFor === c.id}
+                  onclick={() => toggleLabelMenu(c.id)}
+                  aria-label={tr('saved.labelsAria')}
+                  aria-haspopup="true"
+                  aria-expanded={labelMenuFor === c.id}
+                >
+                  {@render tagIcon(12)}
+                  <span class="tri" aria-hidden="true">▾</span>
+                </button>
+              </div>
+              <button class="icon del" onclick={() => deleteSaved(c)} aria-label={tr('saved.delete')}>✕</button>
+
+              {#if labelMenuFor === c.id}
+                <div class="label-menu" role="menu">
+                  {#each labels as l}
+                    <button
+                      type="button"
+                      class="lm-item"
+                      class:sel={isAssigned(c, l.name)}
+                      role="menuitemcheckbox"
+                      aria-checked={isAssigned(c, l.name)}
+                      onclick={() => toggleLabel(c, l.name)}
+                    >
+                      <span class="lm-chk">
+                        {#if isAssigned(c, l.name)}
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7" /></svg>
+                        {/if}
+                      </span>
+                      <span class="lm-name">{l.name}</span>
+                    </button>
+                  {/each}
+                  {#if labels.length}<div class="dd-sep"></div>{/if}
+                  <button type="button" class="lm-item manage" onclick={openManager}>
+                    <span class="lm-ic">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9" /><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z" /></svg>
+                    </span>
+                    <span class="lm-name">{tr('labels.manage')}</span>
+                  </button>
+                </div>
+              {/if}
+            </div>
           </li>
         {/each}
       </ul>
@@ -683,6 +902,14 @@
       </div>
     </div>
   </section>
+
+  {#if labelMenuFor !== null}
+    <div class="menu-scrim" role="presentation" onclick={() => (labelMenuFor = null)}></div>
+  {/if}
+
+  {#if labelManagerOpen}
+    <LabelManager {labels} onClose={() => (labelManagerOpen = false)} onChanged={onLabelsChanged} />
+  {/if}
 
   <footer>
     {#if install.mode}
@@ -1141,6 +1368,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 0.75rem;
     margin-bottom: 0.75rem;
   }
   .saved h2 {
@@ -1188,18 +1416,23 @@
     align-items: stretch;
     gap: 0.4rem;
   }
+  /* All chips share one height (min-height sized for the tallest, 3-line, case)
+     with the text centred; kept tight so 2-line chips don't feel airy and
+     3-line ones read as denser (author's call, aug 2026). */
   .chart-open {
     flex: 1;
     min-width: 0;
+    min-height: 3.5rem;
     display: flex;
     flex-direction: column;
-    gap: 0.15rem;
+    justify-content: center;
+    gap: 0.1rem;
     text-align: left;
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--radius);
     color: var(--text);
-    padding: 0.6rem 0.85rem;
+    padding: 0.45rem 0.8rem;
     font-family: inherit;
     cursor: pointer;
   }
@@ -1209,26 +1442,208 @@
   .chart-name {
     font-size: 0.95rem;
     font-weight: 500;
+    line-height: 1.3;
   }
   .chart-meta {
     font-size: 0.78rem;
+    line-height: 1.3;
     color: var(--text-muted);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+  .chart-labels {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.78rem;
+    line-height: 1.3;
+    color: var(--text-muted);
+    min-width: 0;
+  }
+  .chart-labels-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .tag-ic {
+    flex: none;
+    color: var(--text-muted);
+  }
+
+  /* Right-hand controls: editar + etiquetas stacked in a narrow column,
+     borrar to their right at full height. */
+  .actions {
+    position: relative;
+    display: flex;
+    gap: 0.4rem;
+  }
+  .btn-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    width: 2.4rem;
   }
   .icon {
     background: var(--surface);
     border: 1px solid var(--border);
     color: var(--text-muted);
     border-radius: var(--radius);
-    width: 2.4rem;
     cursor: pointer;
     font-size: 0.9rem;
+    display: grid;
+    place-items: center;
+  }
+  .icon.half {
+    flex: 1;
+    width: 100%;
+    min-height: 0;
+  }
+  .icon.del {
+    width: 2.4rem;
   }
   .icon:hover {
     color: var(--text);
     border-color: var(--accent);
+  }
+  .labels-btn {
+    position: relative;
+  }
+  .labels-btn .tri {
+    position: absolute;
+    right: 3px;
+    bottom: 1px;
+    font-size: 0.5rem;
+    line-height: 1;
+    opacity: 0.7;
+  }
+  .icon.on {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+
+  /* Search box (top-right of the saved section) + its dropdown. */
+  .search {
+    position: relative;
+    flex: 0 1 200px;
+    min-width: 0;
+  }
+  .search-ic {
+    position: absolute;
+    left: 9px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    pointer-events: none;
+  }
+  .search input {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 0.85rem;
+    padding: 0.4rem 0.6rem 0.4rem 1.85rem;
+    outline: none;
+  }
+  .search input:focus {
+    border-color: var(--accent);
+  }
+  .search input::placeholder {
+    color: var(--text-muted);
+  }
+
+  /* Shared dropdown look for the search box and the chip label menu. */
+  .search-dd,
+  .label-menu {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 6px);
+    z-index: 45;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 4px;
+    box-shadow: 0 10px 30px #0009;
+    max-height: 60vh;
+    overflow-y: auto;
+  }
+  .search-dd {
+    width: 230px;
+    max-width: 80vw;
+  }
+  .label-menu {
+    width: 200px;
+  }
+  .dd-head {
+    font-size: 0.62rem;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--text-muted);
+    padding: 0.35rem 0.55rem 0.2rem;
+  }
+  .dd-item,
+  .lm-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    text-align: left;
+    padding: 0.42rem 0.5rem;
+    border: none;
+    border-radius: 7px;
+    background: none;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 0.84rem;
+    cursor: pointer;
+  }
+  .dd-item:hover,
+  .lm-item:hover {
+    background: #ffffff08;
+  }
+  .dd-ic,
+  .lm-chk,
+  .lm-ic {
+    width: 15px;
+    height: 15px;
+    flex: none;
+    display: grid;
+    place-items: center;
+  }
+  .dd-ic {
+    color: var(--text-muted);
+  }
+  .lm-chk,
+  .lm-ic {
+    color: var(--accent);
+  }
+  .dd-name,
+  .lm-name {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .lm-item.sel {
+    background: var(--accent-soft);
+  }
+  .lm-item.sel .lm-name {
+    color: var(--accent);
+  }
+  .lm-item.manage {
+    color: var(--accent);
+  }
+  .dd-sep {
+    height: 1px;
+    background: var(--border);
+    margin: 4px 2px;
+  }
+  .menu-scrim {
+    position: fixed;
+    inset: 0;
+    z-index: 40;
   }
   .io {
     display: flex;

@@ -82,11 +82,39 @@ export default {
   saved: {
     heading: 'Cartas guardadas',
     empty: 'No hay cartas guardadas todavía.',
+    noMatches: 'Ninguna carta coincide con la búsqueda.',
     rename: 'Renombrar',
     delete: 'Borrar',
+    labelsAria: 'Etiquetas',
+    searchPlaceholder: 'Buscar…',
+    searchAria: 'Buscar cartas',
+    searchRecents: 'Recientes',
+    searchLabels: 'Etiquetas',
     localNote: 'Las cartas se guardan en este dispositivo.',
     export: 'Exportar cartas',
     import: 'Importar cartas'
+  },
+
+  labels: {
+    defaults: ['Familia', 'Pareja', 'Amigos', 'Trabajo', 'Estudio'],
+    manage: 'Crear / editar etiquetas…',
+    managerTitle: 'Etiquetas',
+    managerSubtitle: 'Crea, renombra, reordena y elimina tus etiquetas.',
+    managerAria: 'Gestionar etiquetas',
+    menuAria: 'Etiquetas de la carta',
+    add: 'Añadir',
+    newPlaceholder: 'Nueva etiqueta…',
+    close: 'Cerrar',
+    rename: 'Renombrar',
+    delete: 'Eliminar',
+    renameTitle: 'Renombrar etiqueta',
+    renamePlaceholder: 'Nombre de la etiqueta',
+    renameConfirm: 'Guardar',
+    deleteTitle: 'Eliminar etiqueta',
+    deleteMessage: '¿Eliminar la etiqueta "{name}"? Se quitará de todas las cartas.',
+    deleteConfirm: 'Eliminar',
+    duplicate: 'Ya existe una etiqueta con ese nombre.',
+    emptyList: 'Aún no hay etiquetas. Crea la primera abajo.'
   },
 
   dialog: {

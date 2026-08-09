@@ -29,6 +29,19 @@ db.version(2)
       })
   );
 
+// v3 (2026-08-09): a global, user-editable label list. Charts store their
+// labels by NAME (not id) so the value is self-describing — it survives the
+// cookie-vault backup and the JSON export/import without id remapping, and a
+// rename just rewrites the name in every chart. The `labels` table exists to
+// hold the ordered set (including labels not yet assigned to any chart) that
+// drives the menu and the manage modal. Default labels are seeded from the UI
+// (localised, once) via seedDefaultLabels — not here, since this layer has no
+// locale.
+db.version(3).stores({
+  charts: '++id, name, createdAt, sortOrder',
+  labels: '++id, name, sortOrder'
+});
+
 /**
  * @typedef {Object} SavedChart
  * @property {number} [id]
@@ -37,6 +50,14 @@ db.version(2)
  * @property {number} sortOrder list position (ascending)
  * @property {Object} birth same shape the form writes to sessionStorage
  * @property {string} [type] HD type id, e.g. 'generator'
+ * @property {string[]} [labels] assigned label names
+ */
+
+/**
+ * @typedef {Object} Label
+ * @property {number} [id]
+ * @property {string} name
+ * @property {number} sortOrder
  */
 
 // --- Cookie-vault backup (2026-07-07) ---
@@ -74,9 +95,14 @@ export function ensureBackupRestored() {
         if (!res.ok) return false;
         const { payload } = await res.json();
         if (!payload) return false;
-        const records = await decodeCharts(payload);
+        const { charts: records, labels } = await decodeCharts(payload);
         if (!records.length) return false;
         await db.charts.bulkAdd(records);
+        // Rebuild the label list from the backup only if we don't already have
+        // one (e.g. after an ITP purge that wiped IndexedDB but not the vault).
+        if (labels.length && (await db.labels.count()) === 0) {
+          await db.labels.bulkAdd(labels.map((name, i) => ({ name, sortOrder: i })));
+        }
         return true;
       } catch {
         // offline or corrupt payload — leave local data alone
@@ -105,7 +131,8 @@ async function runBackupSync() {
       // exempt from the ITP purge — that's what the vault is for).
       navigator.storage?.persist?.()?.catch(() => {});
     }
-    const payload = charts.length ? await encodeCharts(charts) : '';
+    const labelNames = (await db.labels.orderBy('sortOrder').toArray()).map((l) => l.name);
+    const payload = charts.length ? await encodeCharts(charts, labelNames) : '';
     await fetch('/api/backup', {
       method: 'POST',
       headers: { 'content-type': 'text/plain' },
@@ -187,10 +214,128 @@ export async function deleteChart(id) {
   scheduleBackupSync();
 }
 
-/** Serialize all saved charts to a JSON string for download. */
+// ── Labels (v3) ────────────────────────────────────────────────────────────
+
+/** @returns {Promise<Label[]>} in user-defined order */
+export async function listLabels() {
+  return db.labels.orderBy('sortOrder').toArray();
+}
+
+/**
+ * Seed the default labels, but only when the table has never been touched:
+ * empty AND not previously seeded (the localStorage flag stops re-seeding after
+ * the user deletes them all). Called from the UI with localised names.
+ * @param {string[]} names
+ * @returns {Promise<boolean>} true when seeding happened
+ */
+export async function seedDefaultLabels(names) {
+  if (!Array.isArray(names) || !names.length) return false;
+  try {
+    if (typeof localStorage !== 'undefined' && localStorage.getItem('hd:labels-seeded')) {
+      return false;
+    }
+  } catch {
+    // storage unavailable — fall back to the empty-table check alone
+  }
+  const seeded = await db.transaction('rw', db.labels, async () => {
+    if ((await db.labels.count()) > 0) return false;
+    for (let i = 0; i < names.length; i++) {
+      await db.labels.add({ name: names[i].trim(), sortOrder: i });
+    }
+    return true;
+  });
+  try {
+    if (typeof localStorage !== 'undefined') localStorage.setItem('hd:labels-seeded', '1');
+  } catch {
+    // ignore — worst case defaults re-seed once on a device without storage
+  }
+  if (seeded) scheduleBackupSync();
+  return seeded;
+}
+
+/** Case-insensitive lookup of a label name already in use (optionally excluding one id). */
+async function labelNameTaken(name, exceptId) {
+  const lower = name.trim().toLowerCase();
+  const all = await db.labels.toArray();
+  return all.some((l) => l.id !== exceptId && l.name.toLowerCase() === lower);
+}
+
+/**
+ * @param {string} name
+ * @returns {Promise<{ id: number } | { error: 'empty' | 'duplicate' }>}
+ */
+export async function createLabel(name) {
+  const trimmed = (name ?? '').trim();
+  if (!trimmed) return { error: 'empty' };
+  if (await labelNameTaken(trimmed)) return { error: 'duplicate' };
+  const last = await db.labels.orderBy('sortOrder').last();
+  const id = await db.labels.add({ name: trimmed, sortOrder: (last?.sortOrder ?? -1) + 1 });
+  scheduleBackupSync();
+  return { id };
+}
+
+/**
+ * Rename a label and rewrite the name in every chart that carries it.
+ * @param {number} id @param {string} name
+ * @returns {Promise<{ ok: true } | { error: 'empty' | 'duplicate' | 'notfound' }>}
+ */
+export async function renameLabel(id, name) {
+  const trimmed = (name ?? '').trim();
+  if (!trimmed) return { error: 'empty' };
+  const label = await db.labels.get(id);
+  if (!label) return { error: 'notfound' };
+  if (label.name === trimmed) return { ok: true };
+  if (await labelNameTaken(trimmed, id)) return { error: 'duplicate' };
+  const oldName = label.name;
+  await db.transaction('rw', db.labels, db.charts, async () => {
+    await db.labels.update(id, { name: trimmed });
+    await db.charts.toCollection().modify((c) => {
+      if (Array.isArray(c.labels) && c.labels.includes(oldName)) {
+        c.labels = c.labels.map((n) => (n === oldName ? trimmed : n));
+      }
+    });
+  });
+  scheduleBackupSync();
+  return { ok: true };
+}
+
+/** Delete a label and strip it from every chart. @param {number} id */
+export async function deleteLabel(id) {
+  const label = await db.labels.get(id);
+  if (!label) return;
+  const name = label.name;
+  await db.transaction('rw', db.labels, db.charts, async () => {
+    await db.labels.delete(id);
+    await db.charts.toCollection().modify((c) => {
+      if (Array.isArray(c.labels) && c.labels.includes(name)) {
+        c.labels = c.labels.filter((n) => n !== name);
+      }
+    });
+  });
+  scheduleBackupSync();
+}
+
+/** Persist a new label order. @param {number[]} ids in display order */
+export async function reorderLabels(ids) {
+  await db.transaction('rw', db.labels, async () => {
+    for (let i = 0; i < ids.length; i++) {
+      await db.labels.update(ids[i], { sortOrder: i });
+    }
+  });
+  scheduleBackupSync();
+}
+
+/** Set the labels assigned to a chart. @param {number} id @param {string[]} labels */
+export async function setChartLabels(id, labels) {
+  await db.charts.update(id, { labels });
+  scheduleBackupSync();
+}
+
+/** Serialize all saved charts (and the label list) to a JSON string for download. */
 export async function exportCharts() {
   const charts = await db.charts.orderBy('sortOrder').toArray();
-  return JSON.stringify({ app: 'human-design-chart-app', version: 1, charts }, null, 2);
+  const labels = (await db.labels.orderBy('sortOrder').toArray()).map((l) => l.name);
+  return JSON.stringify({ app: 'human-design-chart-app', version: 2, charts, labels }, null, 2);
 }
 
 /**
@@ -241,9 +386,31 @@ export async function importCharts(json) {
       createdAt: typeof c.createdAt === 'string' ? c.createdAt : new Date().toISOString(),
       sortOrder: base + imported,
       birth: c.birth,
-      type: typeof c.type === 'string' ? c.type : undefined
+      type: typeof c.type === 'string' ? c.type : undefined,
+      labels: Array.isArray(c.labels) ? c.labels.filter((n) => typeof n === 'string') : []
     });
     imported++;
+  }
+  // Merge the label set: the file's global list plus any name referenced by an
+  // imported chart, appended (case-insensitively deduped) to what's already here.
+  const incoming = [];
+  if (Array.isArray(data.labels)) {
+    for (const n of data.labels) if (typeof n === 'string' && n.trim()) incoming.push(n.trim());
+  }
+  for (const c of data.charts) {
+    if (Array.isArray(c?.labels)) {
+      for (const n of c.labels) if (typeof n === 'string' && n.trim()) incoming.push(n.trim());
+    }
+  }
+  if (incoming.length) {
+    const current = await db.labels.toArray();
+    const seen = new Set(current.map((l) => l.name.toLowerCase()));
+    let order = current.reduce((m, l) => Math.max(m, l.sortOrder), -1);
+    for (const n of incoming) {
+      if (seen.has(n.toLowerCase())) continue;
+      seen.add(n.toLowerCase());
+      await db.labels.add({ name: n, sortOrder: ++order });
+    }
   }
   if (imported) scheduleBackupSync();
   return { imported, duplicates, invalid };

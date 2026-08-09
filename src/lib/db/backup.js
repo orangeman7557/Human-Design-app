@@ -39,18 +39,23 @@ function fromBase64Url(s) {
 }
 
 /**
- * Serialise saved charts to a cookie-safe payload string.
+ * Serialise saved charts (and the global label list) to a cookie-safe payload.
+ * The wire shape is an object `{ c: charts, l: labelNames }`; older payloads are
+ * a bare charts array (still decoded — see decodeCharts).
  * @param {import('./charts.js').SavedChart[]} charts in display order
+ * @param {string[]} [labelNames] global labels, in order
  * @returns {Promise<string>}
  */
-export async function encodeCharts(charts) {
+export async function encodeCharts(charts, labelNames = []) {
   const slim = charts.map((c) => ({
     name: c.name,
     createdAt: c.createdAt,
     type: c.type,
-    birth: c.birth
+    birth: c.birth,
+    labels: Array.isArray(c.labels) && c.labels.length ? c.labels : undefined
   }));
-  const raw = new TextEncoder().encode(JSON.stringify(slim));
+  const data = { c: slim, l: Array.isArray(labelNames) ? labelNames : [] };
+  const raw = new TextEncoder().encode(JSON.stringify(data));
   if (typeof CompressionStream !== 'undefined') {
     return '1.' + toBase64Url(await pipeThrough(raw, new CompressionStream('deflate-raw')));
   }
@@ -58,29 +63,34 @@ export async function encodeCharts(charts) {
 }
 
 /**
- * Decode a payload back into insertable records: no ids (fresh ones on
- * bulkAdd), sortOrder from position, records unusable by computeChart dropped.
+ * Decode a payload into insertable chart records (no ids — fresh ones on
+ * bulkAdd, sortOrder from position, records unusable by computeChart dropped)
+ * plus the global label names. Accepts both the new `{ c, l }` object and the
+ * legacy bare-array shape.
  * @param {string} payload
- * @returns {Promise<Omit<import('./charts.js').SavedChart, 'id'>[]>}
+ * @returns {Promise<{ charts: Omit<import('./charts.js').SavedChart, 'id'>[], labels: string[] }>}
  */
 export async function decodeCharts(payload) {
   const dot = payload.indexOf('.');
-  if (dot < 1) return [];
+  if (dot < 1) return { charts: [], labels: [] };
   let bytes = fromBase64Url(payload.slice(dot + 1));
   if (payload.slice(0, dot) === '1') {
     bytes = await pipeThrough(bytes, new DecompressionStream('deflate-raw'));
   }
-  const arr = JSON.parse(new TextDecoder().decode(bytes));
-  if (!Array.isArray(arr)) return [];
-  return arr
+  const parsed = JSON.parse(new TextDecoder().decode(bytes));
+  const arr = Array.isArray(parsed) ? parsed : Array.isArray(parsed?.c) ? parsed.c : [];
+  const labels = Array.isArray(parsed?.l) ? parsed.l.filter((n) => typeof n === 'string') : [];
+  const charts = arr
     .filter((c) => c && typeof c.name === 'string' && validBirth(c.birth))
     .map((c, i) => ({
       name: c.name,
       createdAt: typeof c.createdAt === 'string' ? c.createdAt : new Date().toISOString(),
       sortOrder: i,
       birth: c.birth,
-      type: typeof c.type === 'string' ? c.type : undefined
+      type: typeof c.type === 'string' ? c.type : undefined,
+      labels: Array.isArray(c.labels) ? c.labels.filter((n) => typeof n === 'string') : []
     }));
+  return { charts, labels };
 }
 
 /**
