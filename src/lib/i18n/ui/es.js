@@ -90,11 +90,11 @@ export default {
     searchAria: 'Buscar cartas',
     searchClear: 'Borrar búsqueda',
     searchRecents: 'Recientes',
-    searchRecentsClear: 'Borrar recientes',
+    searchRecentsClear: 'Quitar de recientes',
     searchLabels: 'Etiquetas',
     searchTypes: 'Tipos',
     localNote: 'Las cartas se guardan en este dispositivo.',
-    export: 'Exportar cartas',
+    export: 'Descargar cartas',
     import: 'Importar cartas'
   },
 
@@ -232,14 +232,11 @@ export default {
   storage: {
     link: 'saber más',
     title: 'Cómo se guardan las cartas',
-    p1: 'Las cartas guardadas viven en este dispositivo, dentro del almacenamiento del navegador. No hay cuentas ni nube: nadie más puede verlas.',
-    p2: 'Para tener una copia manual, o para llevar las cartas a otro navegador o dispositivo, usa los botones de exportar e importar junto a esta nota.',
-    p3a: 'Por si el navegador limpia ese almacenamiento, la app guarda una copia en una ',
-    p3b: 'cookie técnica propia',
-    p3c: ' (sin rastreo ni terceros) y las restaura sola.',
-    p4a: 'Lo que sí las borra del todo: ',
-    p4b: 'limpiar las cookies o los datos de este sitio',
-    p4c: ' en el navegador.'
+    p1a: 'Las cartas guardadas viven en este dispositivo, dentro del almacenamiento del navegador. No hay cuentas ni nube: nadie más puede verlas. Como hay navegadores que limpian mucho este almacenamiento, la app utiliza una ',
+    p1b: 'cookie técnica propia',
+    p1c: ' (sin rastreo ni terceros) para prolongar y restaurar las cartas guardadas.',
+    p2: 'Si limpias las cookies o los datos de este sitio en el navegador, borras las cartas del todo.',
+    p3: 'Para tener una copia manual de tus cartas, o para llevarlas a otro navegador o dispositivo, usa los botones de descargar e importar junto a esta nota.'
   },
 
   bug: {
@@ -281,7 +278,7 @@ export default {
     // Inline link in the "acerca de" modal that opens the donate modal.
     contribA: 'Si te apetece contribuir o simplemente agradecer, puedes hacerlo ',
     contribLink: 'aquí',
-    contribB: '.',
+    contribB: ' 🙂',
     // Closing line of the donate modal → opens "notificar un fallo" preset to a message.
     messageA: 'También puedes ',
     messageLink: 'enviarme un mensaje',
@@ -294,7 +291,8 @@ export default {
     madeA: 'App creada por Javi G.O. con asistencia de IA, sin ánimo de lucro y sin ánimo de nada, la creé porque me dio la gana, como buen ',
     madeType: 'Manifestador',
     madeB: ' que soy :)',
-    wish: 'Ojalá que te sea útil, ¡y que vivas feliz con tu diseño, querido humano!',
+    wishA: 'Ojalá que la app te sea útil.',
+    wishB: '¡Y que vivas feliz con tu diseño, querido humano!',
     disclaimer: 'Proyecto independiente sin afiliación a ninguna organización. Cualquier marca es propiedad de sus respectivos titulares. Todo el contenido presentado es de carácter divulgativo y no sustituye al asesoramiento profesional.',
     coffee: 'Invítame a un café',
     loveBase: '¡Mándame amor!',

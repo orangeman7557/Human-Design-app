@@ -82,11 +82,11 @@ export default {
     searchAria: 'Search charts',
     searchClear: 'Clear search',
     searchRecents: 'Recent',
-    searchRecentsClear: 'Clear recent searches',
+    searchRecentsClear: 'Remove from recent',
     searchLabels: 'Labels',
     searchTypes: 'Types',
     localNote: 'Charts are saved on this device.',
-    export: 'Export Charts',
+    export: 'Download Charts',
     import: 'Import Charts'
   },
 
@@ -216,14 +216,11 @@ export default {
   storage: {
     link: 'learn more',
     title: 'How Charts Are Stored',
-    p1: 'Saved charts live on this device, inside the browser’s storage. There are no accounts and no cloud: nobody else can see them.',
-    p2: 'To keep a manual copy, or to move your charts to another browser or device, use the export and import buttons next to this note.',
-    p3a: 'In case the browser clears that storage, the app keeps a backup in a ',
-    p3b: 'first-party technical cookie',
-    p3c: ' (no tracking, no third parties) and restores them by itself.',
-    p4a: 'What does delete them for good: ',
-    p4b: 'clearing the cookies or the site data',
-    p4c: ' in your browser.'
+    p1a: 'Saved charts live on this device, inside the browser’s storage. There are no accounts and no cloud: nobody else can see them. Because some browsers clear that storage aggressively, the app uses a ',
+    p1b: 'first-party technical cookie',
+    p1c: ' (no tracking, no third parties) to keep your saved charts around longer and restore them.',
+    p2: 'If you clear the cookies or the site data in your browser, your charts are gone for good.',
+    p3: 'To keep a manual copy of your charts, or to move them to another browser or device, use the download and import buttons next to this note.'
   },
 
   bug: {
@@ -269,7 +266,7 @@ export default {
     // Inline link in the "about" modal that opens the donate modal.
     contribA: 'If you feel like contributing or simply saying thanks, you can do so ',
     contribLink: 'here',
-    contribB: '.',
+    contribB: ' 🙂',
     // Closing line of the donate modal → opens "report a bug" preset to a message.
     messageA: 'You can also ',
     messageLink: 'send me a message',
@@ -285,7 +282,8 @@ export default {
     madeA: 'App made by Javi G.O., with a little help from AI. Non-profit — and non-anything-else, really: I built it because I felt like it, like the textbook ',
     madeType: 'Manifestor',
     madeB: ' I am :)',
-    wish: 'I hope it serves you well, and may you live happily with your design, dear human!',
+    wishA: 'I hope the app serves you well.',
+    wishB: 'And may you live happily with your design, dear human!',
     disclaimer: 'An independent project with no affiliation to any organization. Any trademarks belong to their respective owners. All content presented is informational and does not replace professional advice.',
     coffee: 'Buy Me a Coffee',
     loveBase: 'Send Me Love!',

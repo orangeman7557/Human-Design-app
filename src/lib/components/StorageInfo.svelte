@@ -41,10 +41,9 @@
     </header>
 
     <div class="body">
-      <p>{t('storage.p1')}</p>
-      <p>{t('storage.p2')}</p>
-      <p>{t('storage.p3a')}<strong>{t('storage.p3b')}</strong>{t('storage.p3c')}</p>
-      <p>{t('storage.p4a')}<strong>{t('storage.p4b')}</strong>{t('storage.p4c')}</p>
+      <p>{t('storage.p1a')}<strong>{t('storage.p1b')}</strong>{t('storage.p1c')}</p>
+      <p><strong>{t('storage.p2')}</strong></p>
+      <p>{t('storage.p3')}</p>
     </div>
   </div>
 {/if}

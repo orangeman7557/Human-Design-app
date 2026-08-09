@@ -340,7 +340,7 @@
         {t('about.madeA')}{#if onElement}<button type="button" class="tlink" onclick={() => openElement('type', 'manifestor')}>{t('about.madeType')}</button>{:else}{t('about.madeType')}{/if}{t('about.madeB')}
       </p>
       <p>{t('about.contribA')}<button type="button" class="ilink-btn" onclick={openDonate}>{t('about.contribLink')}</button>{t('about.contribB')}</p>
-      <p>{t('about.wish')}</p>
+      <p>{t('about.wishA')}<br />{t('about.wishB')}</p>
     </div>
 
     <p class="fine">

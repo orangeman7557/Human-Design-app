@@ -330,8 +330,8 @@
     (s ?? '').toString().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
   const isFiltering = $derived(!!search.trim());
 
-  // The five HD types, in the reference (population) order, for the search menu.
-  const TYPE_ORDER = ['manifestor', 'generator', 'manifesting-generator', 'projector', 'reflector'];
+  // The five HD types, in the community's canonical order (G, MG, P, M, R).
+  const TYPE_ORDER = ['generator', 'manifesting-generator', 'projector', 'manifestor', 'reflector'];
   const typeEntries = $derived(
     TYPE_ORDER.filter((k) => typeLabels[k]).map((k) => ({ key: k, label: typeLabels[k] }))
   );
@@ -399,10 +399,10 @@
     }
   }
 
-  function clearRecents() {
-    recentSearches = [];
+  function removeRecent(text) {
+    recentSearches = recentSearches.filter((s) => s !== text);
     try {
-      localStorage.removeItem(RECENTS_KEY);
+      localStorage.setItem(RECENTS_KEY, JSON.stringify(recentSearches));
     } catch {
       // ignore
     }
@@ -419,8 +419,21 @@
   function clearSearch() {
     search = '';
     suggestionApplied = false;
-    searchOpen = true;
-    searchInput?.focus();
+    // Drop focus so the dropdown closes and the full list shows again.
+    searchOpen = false;
+    searchInput?.blur();
+  }
+
+  // A chart chip's label, tapped: fill the search with it and filter, without
+  // opening the dropdown (applySearch leaves it closed and doesn't focus).
+  function pickChipLabel(name) {
+    applySearch(name);
+  }
+  function onChipKey(e, name) {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      pickChipLabel(name);
+    }
   }
 
   function onSearchInput() {
@@ -798,11 +811,11 @@
     </button>
   </form>
 
-  {#snippet tagIcon(size)}
-    <svg class="tag-ic" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  {#snippet tagIcon(size, filled = false)}
+    <svg class="tag-ic" width={size} height={size} viewBox="0 0 24 24" fill={filled ? 'currentColor' : 'none'} stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
       <g transform="translate(24,0) scale(-1,1)">
         <path d="M3 6v5.172a2 2 0 0 0 .586 1.414l7.71 7.71a2.41 2.41 0 0 0 3.408 0l5.592-5.592a2.41 2.41 0 0 0 0-3.408l-7.71-7.71A2 2 0 0 0 11.172 3H6a3 3 0 0 0-3 3z" />
-        <circle cx="7.5" cy="7.5" r="1.2" />
+        {#if !filled}<circle cx="7.5" cy="7.5" r="1.2" />{/if}
       </g>
     </svg>
   {/snippet}
@@ -833,7 +846,6 @@
             class:has-value={search}
             type="text"
             bind:value={search}
-            placeholder={tr('saved.searchPlaceholder')}
             aria-label={tr('saved.searchAria')}
             onfocus={() => { searchOpen = true; labelMenuFor = null; }}
             onclick={() => (searchOpen = true)}
@@ -849,19 +861,19 @@
           {#if searchOpen && (recentSearches.length || labels.length || typeEntries.length)}
             <div class="search-dd">
               {#if recentSearches.length}
-                <div class="dd-head-row">
-                  <span class="dd-head">{tr('saved.searchRecents')}</span>
-                  <button type="button" class="dd-x" onmousedown={(e) => e.preventDefault()} onclick={clearRecents} aria-label={tr('saved.searchRecentsClear')}>
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18" /><line x1="18" y1="6" x2="6" y2="18" /></svg>
-                  </button>
-                </div>
+                <div class="dd-head">{tr('saved.searchRecents')}</div>
                 {#each recentSearches as r}
-                  <button type="button" class="dd-item" onmousedown={(e) => e.preventDefault()} onclick={() => applySearch(r)}>
-                    <span class="dd-ic">
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M12 8v4l3 2" /></svg>
-                    </span>
-                    <span class="dd-name">{r}</span>
-                  </button>
+                  <div class="dd-recent">
+                    <button type="button" class="dd-item" onmousedown={(e) => e.preventDefault()} onclick={() => applySearch(r)}>
+                      <span class="dd-ic">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M12 8v4l3 2" /></svg>
+                      </span>
+                      <span class="dd-name">{r}</span>
+                    </button>
+                    <button type="button" class="dd-x" onmousedown={(e) => e.preventDefault()} onclick={() => removeRecent(r)} aria-label={tr('saved.searchRecentsClear')}>
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18" /><line x1="18" y1="6" x2="6" y2="18" /></svg>
+                    </button>
+                  </div>
                 {/each}
               {/if}
               {#if labels.length}
@@ -869,7 +881,7 @@
                 <div class="dd-head-row">
                   <span class="dd-head">{tr('saved.searchLabels')}</span>
                   <button type="button" class="dd-gear" onmousedown={(e) => e.preventDefault()} onclick={openManager} aria-label={tr('labels.managerAria')}>
-                    {@render gearIcon(14)}
+                    {@render gearIcon(13)}
                   </button>
                 </div>
                 {#each labels as l}
@@ -915,18 +927,23 @@
             ondragend={dragEnd}
           >
             <span class="drag" aria-hidden="true">⠿</span>
-            <button class="chart-open" onclick={() => openSaved(c)}>
-              <span class="chart-name">
-                {c.name}
-                {#if c.type}
-                  <span class="chart-type">{typeLabels[c.type] ?? c.type}</span>
-                {/if}
-              </span>
-              <span class="chart-meta">{formatDate(c)} · {cityCountry(c.birth?.placeLabel)}</span>
+            <div class="chart-card">
+              <button class="chart-open" onclick={() => openSaved(c)}>
+                <span class="chart-name">
+                  {c.name}
+                  {#if c.type}
+                    <span class="chart-type">{typeLabels[c.type] ?? c.type}</span>
+                  {/if}
+                </span>
+                <span class="chart-meta">{formatDate(c)} · {cityCountry(c.birth?.placeLabel)}</span>
+              </button>
               {#if assignedNames(c).length}
-                <span class="chart-labels">{@render tagIcon(12)}<span class="chart-labels-text">{assignedNames(c).join(', ')}</span></span>
+                <div class="chart-labels">
+                  {@render tagIcon(12)}
+                  <span class="chart-labels-text">{#each assignedNames(c) as n, li}<span class="chip-label" role="button" tabindex="0" onclick={() => pickChipLabel(n)} onkeydown={(e) => onChipKey(e, n)}>{n}</span>{#if li < assignedNames(c).length - 1}{', '}{/if}{/each}</span>
+                </div>
               {/if}
-            </button>
+            </div>
             <div class="actions">
               <div class="btn-stack">
                 <button class="icon half" onclick={() => renameSaved(c)} aria-label={tr('saved.rename')}>✎</button>
@@ -938,7 +955,7 @@
                   aria-haspopup="true"
                   aria-expanded={labelMenuFor === c.id}
                 >
-                  {@render tagIcon(13)}
+                  {@render tagIcon(13, assignedNames(c).length > 0)}
                 </button>
               </div>
               <button class="icon del" onclick={() => deleteSaved(c)} aria-label={tr('saved.delete')}>✕</button>
@@ -960,12 +977,7 @@
                       aria-checked={isAssigned(c, l.name)}
                       onclick={() => toggleLabel(c, l.name)}
                     >
-                      <span class="lm-chk">
-                        {#if isAssigned(c, l.name)}
-                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7" /></svg>
-                        {/if}
-                      </span>
-                      {@render tagIcon(14)}
+                      {@render tagIcon(14, isAssigned(c, l.name))}
                       <span class="lm-name">{l.name}</span>
                     </button>
                   {/each}
@@ -1170,6 +1182,12 @@
     /* Uniform height: without native appearance each input type picks its
        own; 2.75rem ≈ 44px, the iOS minimum tap-target size. */
     height: 2.75rem;
+  }
+  /* The compact search box and the inline "new label" field opt out of the
+     44px form-field min-height above (needs the higher specificity to win). */
+  .saved-head .search input,
+  .label-menu .lm-add input {
+    height: auto;
   }
   /* iOS renders date/time values in a shadow div that collapses to zero
      height when empty once appearance is stripped; keep a text line alive. */
@@ -1541,10 +1559,11 @@
     align-items: stretch;
     gap: 0.4rem;
   }
-  /* All chips share one height (min-height sized for the tallest, 3-line, case)
-     with the text centred; kept tight so 2-line chips don't feel airy and
-     3-line ones read as denser (author's call, aug 2026). */
-  .chart-open {
+  /* The card carries the surface/border/hover; all cards share one height
+     (sized for the tallest, 3-line, case) with the content centred — tight so
+     2-line cards don't feel airy and 3-line ones read as denser (author, aug
+     2026). The name/meta open the chart; the labels row is separately clickable. */
+  .chart-card {
     flex: 1;
     min-width: 0;
     min-height: 3.5rem;
@@ -1552,17 +1571,26 @@
     flex-direction: column;
     justify-content: center;
     gap: 0.1rem;
-    text-align: left;
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--radius);
-    color: var(--text);
     padding: 0.45rem 0.8rem;
+  }
+  .chart-card:hover {
+    border-color: var(--accent);
+  }
+  .chart-open {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    text-align: left;
+    background: none;
+    border: none;
+    color: var(--text);
+    padding: 0;
     font-family: inherit;
     cursor: pointer;
-  }
-  .chart-open:hover {
-    border-color: var(--accent);
   }
   .chart-name {
     font-size: 0.95rem;
@@ -1587,9 +1615,32 @@
     min-width: 0;
   }
   .chart-labels-text {
+    min-width: 0;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+  /* Each assigned label is a filter shortcut: no link chrome on desktop (just an
+     accent hover), a plain underline on touch where there is no hover. */
+  .chip-label {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+  }
+  @media (hover: hover) {
+    .chip-label:hover {
+      color: var(--accent);
+    }
+  }
+  @media (hover: none) {
+    .chip-label {
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
   }
   .tag-ic {
     flex: none;
@@ -1662,11 +1713,14 @@
     color: var(--text);
     font-family: inherit;
     font-size: 0.82rem;
-    padding: 0.28rem 0.55rem 0.28rem 1.65rem;
+    line-height: 1.15;
+    /* Short field — a bit shorter on touch, much shorter on desktop (override
+       below). The lupa alone signals "search", so there's no placeholder. */
+    padding: 0.22rem 0.55rem 0.22rem 1.6rem;
     outline: none;
   }
   .search input.has-value {
-    padding-right: 1.6rem;
+    padding-right: 1.5rem;
   }
   .search input:focus {
     border-color: var(--accent);
@@ -1693,6 +1747,13 @@
   }
   .search-clear:hover {
     color: var(--text);
+  }
+  /* Desktop: notably shorter still (author, aug 2026). */
+  @media (min-width: 835px) {
+    .search input {
+      padding-top: 0.08rem;
+      padding-bottom: 0.08rem;
+    }
   }
 
   /* Shared dropdown look for the search box and the chip label menu. */
@@ -1724,23 +1785,18 @@
     color: var(--text-muted);
     padding: 0.35rem 0.55rem 0.2rem;
   }
-  /* Section header with a right-aligned control (gear on "Etiquetas", x on
-     "Recientes"); the control's box doesn't lift the baseline. */
+  /* "Etiquetas" header: the gear sits right after the title (small gap), not
+     pushed to the far edge. */
   .dd-head-row {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    gap: 0.15rem;
   }
-  .dd-head-row .dd-head {
-    flex: 1;
-  }
-  .dd-gear,
-  .dd-x {
+  .dd-gear {
     display: grid;
     place-items: center;
-    width: 1.35rem;
-    height: 1.35rem;
-    margin-right: 2px;
+    width: 1.2rem;
+    height: 1.2rem;
     padding: 0;
     border: none;
     background: none;
@@ -1748,7 +1804,32 @@
     cursor: pointer;
     border-radius: 6px;
   }
-  .dd-gear:hover,
+  .dd-gear:hover {
+    color: var(--text);
+  }
+  /* Recent row: the search shortcut fills the row, a discreet per-item "x"
+     (no button chrome) removes just that entry. */
+  .dd-recent {
+    display: flex;
+    align-items: center;
+  }
+  .dd-recent .dd-item {
+    flex: 1;
+    min-width: 0;
+  }
+  .dd-x {
+    display: grid;
+    place-items: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    flex: none;
+    padding: 0;
+    border: none;
+    background: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-radius: 6px;
+  }
   .dd-x:hover {
     color: var(--text);
   }
@@ -1772,21 +1853,13 @@
   .lm-item:hover {
     background: #ffffff08;
   }
-  .dd-ic,
-  .lm-chk,
-  .lm-ic {
+  .dd-ic {
     width: 15px;
     height: 15px;
     flex: none;
     display: grid;
     place-items: center;
-  }
-  .dd-ic {
     color: var(--text-muted);
-  }
-  .lm-chk,
-  .lm-ic {
-    color: var(--accent);
   }
   .dd-name,
   .lm-name {
@@ -1795,10 +1868,11 @@
     text-overflow: ellipsis;
     white-space: nowrap;
   }
-  .lm-item.sel {
-    background: var(--accent-soft);
+  /* Assigned label: no check column — the tag icon itself turns filled + accent. */
+  .lm-item .tag-ic {
+    flex: none;
   }
-  .lm-item.sel .lm-name {
+  .lm-item.sel .tag-ic {
     color: var(--accent);
   }
   /* Inline "new label" field, last row of the assign menu. `.lm-add` is a
@@ -1819,14 +1893,29 @@
     color: var(--text);
     font-family: inherit;
     font-size: 0.82rem;
-    padding: 0.32rem 0.45rem;
+    line-height: 1.15;
+    /* Left-aligned everywhere (some mobile UAs centre a bare input) and short —
+       a touch less on mobile, much less on desktop (override below). */
+    text-align: left;
+    padding: 0.26rem 0.45rem;
     outline: none;
+  }
+  @media (min-width: 835px) {
+    .lm-add input {
+      padding-top: 0.12rem;
+      padding-bottom: 0.12rem;
+    }
+    .lm-add-btn {
+      width: 1.5rem;
+      height: 1.5rem;
+    }
   }
   .lm-add input:focus {
     border-color: var(--accent);
   }
   .lm-add input::placeholder {
     color: var(--text-muted);
+    text-align: left;
   }
   .lm-add-btn {
     display: grid;

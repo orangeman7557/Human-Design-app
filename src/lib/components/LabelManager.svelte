@@ -145,7 +145,9 @@
       maxlength="40"
       placeholder={t('labels.newPlaceholder')}
     />
-    <button type="submit">{t('labels.add')}</button>
+    <button type="submit" class="add-btn" aria-label={t('labels.add')}>
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
+    </button>
   </form>
 
   <div class="foot">
@@ -283,19 +285,20 @@
   .add input::placeholder {
     color: var(--text-muted);
   }
-  .add button {
-    background: var(--accent);
-    border: none;
-    color: #1a1205;
-    font-family: inherit;
-    font-weight: 600;
-    font-size: 0.85rem;
+  .add-btn {
+    display: grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    flex: none;
+    background: var(--accent-soft);
+    border: 1px solid transparent;
     border-radius: var(--radius);
-    padding: 0 0.95rem;
+    color: var(--accent);
     cursor: pointer;
   }
-  .add button:hover {
-    filter: brightness(1.05);
+  .add-btn:hover {
+    border-color: var(--accent);
   }
   .foot {
     display: flex;
