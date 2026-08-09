@@ -130,12 +130,6 @@ function fallbackBlock(profile) {
     `Nacimiento: ${escHtml(b.date ?? '')} ${escHtml(b.time ?? '')} · ${escHtml(b.place ?? '')}.`;
   const json = escHtml(JSON.stringify(profile, null, 2));
   return (
-    // TEMPORARY diagnostic (aug 2026): a persistent marker that is NOT removed by
-    // JS, placed before the removable profile. If an AI reads THIS on /chart but
-    // not the profile below, its browser runs JS and the removal script is what
-    // strips the profile (that's the difference vs the JS-less /ai-test route).
-    // Remove once the AI-access question is settled.
-    `<h1>AI_CHART_TEST_123456</h1><pre>{"chart_test":true}</pre>` +
     `<div id="hd-share-fallback">` +
     `<h1>Carta de Human Design</h1>` +
     `<p>${summary}</p>` +
@@ -170,19 +164,6 @@ export async function handle({ event, resolve }) {
   // paths have a page and nothing links to them, and touching url.search then
   // throws — so skip the redirect logic while building.
   if (!building) {
-    // TEMPORARY diagnostic (aug 2026): a dead-simple, plain-HTML route — no
-    // framework, no JS, no detection — to isolate whether an AI browsing tool
-    // can read ANY HTML the Worker serves. Remove once shared-link access is
-    // sorted. (Suggested by ChatGPT while debugging why it couldn't read the
-    // embedded profile.)
-    if (path === '/ai-test' || path === '/es/ai-test' || path === '/en/ai-test') {
-      return new Response(
-        '<!doctype html><html lang="en"><head><meta charset="utf-8"><title>AI test</title></head>' +
-          '<body><h1>AI_TEST_123456</h1><pre>{"hello":"world","source":"cloudflare-worker","number":123456}</pre></body></html>',
-        { headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'no-store' } }
-      );
-    }
-
     // 1. Bare root → negotiate a language and redirect.
     if (path === '/') {
       const lang = negotiateLocale(event.cookies.get('hdl'), event.request.headers.get('accept-language'));
