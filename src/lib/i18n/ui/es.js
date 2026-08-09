@@ -88,8 +88,11 @@ export default {
     labelsAria: 'Etiquetas',
     searchPlaceholder: 'Buscar…',
     searchAria: 'Buscar cartas',
+    searchClear: 'Borrar búsqueda',
     searchRecents: 'Recientes',
+    searchRecentsClear: 'Borrar recientes',
     searchLabels: 'Etiquetas',
+    searchTypes: 'Tipos',
     localNote: 'Las cartas se guardan en este dispositivo.',
     export: 'Exportar cartas',
     import: 'Importar cartas'
@@ -231,12 +234,12 @@ export default {
     title: 'Cómo se guardan las cartas',
     p1: 'Las cartas guardadas viven en este dispositivo, dentro del almacenamiento del navegador. No hay cuentas ni nube: nadie más puede verlas.',
     p2: 'Para tener una copia manual, o para llevar las cartas a otro navegador o dispositivo, usa los botones de exportar e importar junto a esta nota.',
-    p3a: 'Algunos navegadores limpian ese almacenamiento de vez en cuando — Safari en iPhone y iPad, por ejemplo, borra los datos de las webs que llevan unos días sin visitarse. Para que eso no se lleve las cartas, la app guarda una copia de seguridad en una ',
+    p3a: 'Por si el navegador limpia ese almacenamiento, la app guarda una copia en una ',
     p3b: 'cookie técnica propia',
-    p3c: ' (sin rastreo ni terceros) y las restaura sola si el navegador las borra. La copia solo viaja, cifrada, al crearse o restaurarse, y el servidor no la almacena.',
+    p3c: ' (sin rastreo ni terceros) y las restaura sola.',
     p4a: 'Lo que sí las borra del todo: ',
     p4b: 'limpiar las cookies o los datos de este sitio',
-    p4c: ' en el navegador (desaparecen las cartas y su copia).'
+    p4c: ' en el navegador.'
   },
 
   bug: {

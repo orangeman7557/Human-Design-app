@@ -93,7 +93,9 @@
     font-family: inherit;
     /* Match the tagline's size (set on `.what-hd` in the home, responsive). */
     font-size: inherit;
-    color: var(--text);
+    /* Same muted colour as the tagline it hangs under (author, aug 2026); the
+       accent hover below still highlights it as a link. */
+    color: var(--text-muted);
     cursor: pointer;
   }
   .link:hover,

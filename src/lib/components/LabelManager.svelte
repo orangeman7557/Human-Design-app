@@ -147,6 +147,10 @@
     />
     <button type="submit">{t('labels.add')}</button>
   </form>
+
+  <div class="foot">
+    <button type="button" class="done" onclick={onClose}>{t('labels.close')}</button>
+  </div>
 </div>
 
 <style>
@@ -292,5 +296,23 @@
   }
   .add button:hover {
     filter: brightness(1.05);
+  }
+  .foot {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1.1rem;
+  }
+  .done {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: var(--radius);
+    padding: 0.5rem 1.1rem;
+    font-family: inherit;
+    font-size: 0.85rem;
+    cursor: pointer;
+  }
+  .done:hover {
+    border-color: var(--accent);
   }
 </style>

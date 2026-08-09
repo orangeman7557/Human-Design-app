@@ -80,8 +80,11 @@ export default {
     labelsAria: 'Labels',
     searchPlaceholder: 'Search…',
     searchAria: 'Search charts',
+    searchClear: 'Clear search',
     searchRecents: 'Recent',
+    searchRecentsClear: 'Clear recent searches',
     searchLabels: 'Labels',
+    searchTypes: 'Types',
     localNote: 'Charts are saved on this device.',
     export: 'Export Charts',
     import: 'Import Charts'
@@ -215,12 +218,12 @@ export default {
     title: 'How Charts Are Stored',
     p1: 'Saved charts live on this device, inside the browser’s storage. There are no accounts and no cloud: nobody else can see them.',
     p2: 'To keep a manual copy, or to move your charts to another browser or device, use the export and import buttons next to this note.',
-    p3a: 'Some browsers clear that storage from time to time — Safari on iPhone and iPad, for example, deletes data from sites that haven’t been visited for a few days. So that this doesn’t take your charts with it, the app keeps a backup in a ',
+    p3a: 'In case the browser clears that storage, the app keeps a backup in a ',
     p3b: 'first-party technical cookie',
-    p3c: ' (no tracking, no third parties) and restores them by itself if the browser deletes them. The backup only travels, encrypted, when it is created or restored, and the server does not store it.',
+    p3c: ' (no tracking, no third parties) and restores them by itself.',
     p4a: 'What does delete them for good: ',
     p4b: 'clearing the cookies or the site data',
-    p4c: ' in your browser (the charts and their backup both disappear).'
+    p4c: ' in your browser.'
   },
 
   bug: {

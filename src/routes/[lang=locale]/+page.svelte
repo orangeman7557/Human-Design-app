@@ -35,7 +35,8 @@
     ensureBackupRestored,
     listLabels,
     seedDefaultLabels,
-    setChartLabels
+    setChartLabels,
+    createLabel
   } from '$lib/db/charts.js';
   import StorageInfo from '$lib/components/StorageInfo.svelte';
   import LabelManager from '$lib/components/LabelManager.svelte';
@@ -315,10 +316,25 @@
   /** chart id whose label menu is open, or null */
   let labelMenuFor = $state(null);
   let labelManagerOpen = $state(false);
+  /** inline "new label" field inside the assign menu */
+  let menuNewName = $state('');
+  /** @type {HTMLInputElement | undefined} */
+  let searchInput = $state();
+  // Non-reactive: true right after a suggestion (recent/label/type) was applied,
+  // so the following blur doesn't record it as a recent search.
+  let suggestionApplied = false;
 
   const RECENTS_KEY = 'hd:recent-searches';
-  const norm = (s) => (s ?? '').toString().toLowerCase();
+  // Accent- and case-insensitive: "alva" must find "Álvaro".
+  const norm = (s) =>
+    (s ?? '').toString().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
   const isFiltering = $derived(!!search.trim());
+
+  // The five HD types, in the reference (population) order, for the search menu.
+  const TYPE_ORDER = ['manifestor', 'generator', 'manifesting-generator', 'projector', 'reflector'];
+  const typeEntries = $derived(
+    TYPE_ORDER.filter((k) => typeLabels[k]).map((k) => ({ key: k, label: typeLabels[k] }))
+  );
 
   // Filter over what the chip shows: name, type, date, place, labels.
   const filteredCharts = $derived.by(() => {
@@ -328,6 +344,16 @@
       [c.name, typeLabels[c.type] ?? c.type, formatDate(c), cityCountry(c.birth?.placeLabel), ...(c.labels ?? [])]
         .some((v) => norm(v).includes(q))
     );
+  });
+
+  // Keep the search box from moving while filtering: reserve the list's natural
+  // (unfiltered) height so the whole centred block doesn't re-center as rows drop.
+  /** @type {HTMLElement | undefined} */
+  let listWrap = $state();
+  let reservedH = $state(0);
+  $effect(() => {
+    savedCharts.length; // re-measure when the full set changes
+    if (!isFiltering && listWrap) reservedH = listWrap.offsetHeight;
   });
 
   onMount(() => {
@@ -373,10 +399,38 @@
     }
   }
 
-  function pickSearch(text) {
+  function clearRecents() {
+    recentSearches = [];
+    try {
+      localStorage.removeItem(RECENTS_KEY);
+    } catch {
+      // ignore
+    }
+  }
+
+  // Applying a suggestion (a recent, a label or a type): fills the field and
+  // filters, but is NOT recorded as a recent (only typed searches are).
+  function applySearch(text) {
     search = text;
-    pushRecent(text);
+    suggestionApplied = true;
     searchOpen = false;
+  }
+
+  function clearSearch() {
+    search = '';
+    suggestionApplied = false;
+    searchOpen = true;
+    searchInput?.focus();
+  }
+
+  function onSearchInput() {
+    searchOpen = true;
+    suggestionApplied = false;
+  }
+
+  function onSearchBlur() {
+    if (search.trim() && !suggestionApplied) pushRecent(search);
+    setTimeout(() => (searchOpen = false), 150);
   }
 
   function onSearchKeydown(e) {
@@ -402,15 +456,32 @@
 
   function toggleLabelMenu(id) {
     labelMenuFor = labelMenuFor === id ? null : id;
+    menuNewName = '';
     searchOpen = false;
   }
 
+  // Assigning/unassigning closes the menu (reopen to add more — author, aug 2026).
   async function toggleLabel(c, name) {
     const cur = c.labels ?? [];
     const next = cur.includes(name) ? cur.filter((n) => n !== name) : [...cur, name];
-    c.labels = next; // optimistic; the menu stays open
+    c.labels = next;
     savedCharts = [...savedCharts];
+    labelMenuFor = null;
     await setChartLabels(c.id, next);
+  }
+
+  // Create a label from the inline field at the bottom of the assign menu, then
+  // assign it to this chart (which closes the menu, like any other assignment).
+  async function createFromMenu(c) {
+    const res = await createLabel(menuNewName);
+    if ('error' in res) {
+      if (res.error === 'duplicate') await dialog.alert({ message: tr('labels.duplicate') });
+      return;
+    }
+    const name = menuNewName.trim();
+    menuNewName = '';
+    await refreshLabels();
+    await toggleLabel(c, name);
   }
 
   function openManager() {
@@ -736,31 +807,56 @@
     </svg>
   {/snippet}
 
+  {#snippet personIcon(size)}
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="12" cy="8" r="4" /><path d="M4 21v-1a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v1" />
+    </svg>
+  {/snippet}
+
+  {#snippet gearIcon(size)}
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="3" />
+      <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+    </svg>
+  {/snippet}
+
   <section class="saved">
     <div class="saved-head">
       <h2>{tr('saved.heading')}</h2>
       {#if savedCharts.length > 0}
         <div class="search">
-          <svg class="search-ic" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <svg class="search-ic" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" />
           </svg>
           <input
+            bind:this={searchInput}
+            class:has-value={search}
             type="text"
             bind:value={search}
             placeholder={tr('saved.searchPlaceholder')}
             aria-label={tr('saved.searchAria')}
             onfocus={() => { searchOpen = true; labelMenuFor = null; }}
             onclick={() => (searchOpen = true)}
-            oninput={() => (searchOpen = true)}
-            onblur={() => setTimeout(() => (searchOpen = false), 150)}
+            oninput={onSearchInput}
+            onblur={onSearchBlur}
             onkeydown={onSearchKeydown}
           />
-          {#if searchOpen && (recentSearches.length || labels.length)}
+          {#if search}
+            <button type="button" class="search-clear" onmousedown={(e) => e.preventDefault()} onclick={clearSearch} aria-label={tr('saved.searchClear')}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18" /><line x1="18" y1="6" x2="6" y2="18" /></svg>
+            </button>
+          {/if}
+          {#if searchOpen && (recentSearches.length || labels.length || typeEntries.length)}
             <div class="search-dd">
               {#if recentSearches.length}
-                <div class="dd-head">{tr('saved.searchRecents')}</div>
+                <div class="dd-head-row">
+                  <span class="dd-head">{tr('saved.searchRecents')}</span>
+                  <button type="button" class="dd-x" onmousedown={(e) => e.preventDefault()} onclick={clearRecents} aria-label={tr('saved.searchRecentsClear')}>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18" /><line x1="18" y1="6" x2="6" y2="18" /></svg>
+                  </button>
+                </div>
                 {#each recentSearches as r}
-                  <button type="button" class="dd-item" onmousedown={(e) => e.preventDefault()} onclick={() => pickSearch(r)}>
+                  <button type="button" class="dd-item" onmousedown={(e) => e.preventDefault()} onclick={() => applySearch(r)}>
                     <span class="dd-ic">
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M12 8v4l3 2" /></svg>
                     </span>
@@ -770,11 +866,26 @@
               {/if}
               {#if labels.length}
                 {#if recentSearches.length}<div class="dd-sep"></div>{/if}
-                <div class="dd-head">{tr('saved.searchLabels')}</div>
+                <div class="dd-head-row">
+                  <span class="dd-head">{tr('saved.searchLabels')}</span>
+                  <button type="button" class="dd-gear" onmousedown={(e) => e.preventDefault()} onclick={openManager} aria-label={tr('labels.managerAria')}>
+                    {@render gearIcon(14)}
+                  </button>
+                </div>
                 {#each labels as l}
-                  <button type="button" class="dd-item" onmousedown={(e) => e.preventDefault()} onclick={() => pickSearch(l.name)}>
+                  <button type="button" class="dd-item" onmousedown={(e) => e.preventDefault()} onclick={() => applySearch(l.name)}>
                     <span class="dd-ic">{@render tagIcon(14)}</span>
                     <span class="dd-name">{l.name}</span>
+                  </button>
+                {/each}
+              {/if}
+              {#if typeEntries.length}
+                <div class="dd-sep"></div>
+                <div class="dd-head">{tr('saved.searchTypes')}</div>
+                {#each typeEntries as ty}
+                  <button type="button" class="dd-item" onmousedown={(e) => e.preventDefault()} onclick={() => applySearch(ty.label)}>
+                    <span class="dd-ic">{@render personIcon(14)}</span>
+                    <span class="dd-name">{ty.label}</span>
                   </button>
                 {/each}
               {/if}
@@ -788,6 +899,7 @@
       <p class="error">{listError}</p>
     {/if}
 
+    <div class="list-wrap" bind:this={listWrap} style:min-height={isFiltering ? reservedH + 'px' : null}>
     {#if savedCharts.length === 0}
       <p class="empty">{tr('saved.empty')}</p>
     {:else if filteredCharts.length === 0}
@@ -826,14 +938,19 @@
                   aria-haspopup="true"
                   aria-expanded={labelMenuFor === c.id}
                 >
-                  {@render tagIcon(12)}
-                  <span class="tri" aria-hidden="true">▾</span>
+                  {@render tagIcon(13)}
                 </button>
               </div>
               <button class="icon del" onclick={() => deleteSaved(c)} aria-label={tr('saved.delete')}>✕</button>
 
               {#if labelMenuFor === c.id}
                 <div class="label-menu" role="menu">
+                  <div class="dd-head-row">
+                    <span class="dd-head">{tr('saved.searchLabels')}</span>
+                    <button type="button" class="dd-gear" onclick={openManager} aria-label={tr('labels.managerAria')}>
+                      {@render gearIcon(14)}
+                    </button>
+                  </div>
                   {#each labels as l}
                     <button
                       type="button"
@@ -848,16 +965,23 @@
                           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7" /></svg>
                         {/if}
                       </span>
+                      {@render tagIcon(14)}
                       <span class="lm-name">{l.name}</span>
                     </button>
                   {/each}
-                  {#if labels.length}<div class="dd-sep"></div>{/if}
-                  <button type="button" class="lm-item manage" onclick={openManager}>
-                    <span class="lm-ic">
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9" /><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z" /></svg>
-                    </span>
-                    <span class="lm-name">{tr('labels.manage')}</span>
-                  </button>
+                  <div class="dd-sep"></div>
+                  <form class="lm-add" onsubmit={(e) => { e.preventDefault(); createFromMenu(c); }}>
+                    <input
+                      bind:value={menuNewName}
+                      type="text"
+                      maxlength="40"
+                      placeholder={tr('labels.newPlaceholder')}
+                      aria-label={tr('labels.newPlaceholder')}
+                    />
+                    <button type="button" class="lm-add-btn" onclick={() => createFromMenu(c)} aria-label={tr('labels.add')}>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
+                    </button>
+                  </form>
                 </div>
               {/if}
             </div>
@@ -865,6 +989,7 @@
         {/each}
       </ul>
     {/if}
+    </div>
 
     <div class="saved-foot">
       <div class="local-note">
@@ -1509,28 +1634,21 @@
   .labels-btn {
     position: relative;
   }
-  .labels-btn .tri {
-    position: absolute;
-    right: 3px;
-    bottom: 1px;
-    font-size: 0.5rem;
-    line-height: 1;
-    opacity: 0.7;
-  }
   .icon.on {
     color: var(--accent);
     border-color: var(--accent);
   }
 
-  /* Search box (top-right of the saved section) + its dropdown. */
+  /* Search box (top-right of the saved section) + its dropdown. Kept short —
+     roughly the height of the "cartas guardadas" title — and narrow. */
   .search {
     position: relative;
-    flex: 0 1 200px;
+    flex: 0 1 140px;
     min-width: 0;
   }
   .search-ic {
     position: absolute;
-    left: 9px;
+    left: 8px;
     top: 50%;
     transform: translateY(-50%);
     color: var(--text-muted);
@@ -1543,15 +1661,38 @@
     border-radius: var(--radius);
     color: var(--text);
     font-family: inherit;
-    font-size: 0.85rem;
-    padding: 0.4rem 0.6rem 0.4rem 1.85rem;
+    font-size: 0.82rem;
+    padding: 0.28rem 0.55rem 0.28rem 1.65rem;
     outline: none;
+  }
+  .search input.has-value {
+    padding-right: 1.6rem;
   }
   .search input:focus {
     border-color: var(--accent);
   }
   .search input::placeholder {
     color: var(--text-muted);
+  }
+  /* Clear "x", same right-hand slot pattern as the city field. */
+  .search-clear {
+    position: absolute;
+    right: 4px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: grid;
+    place-items: center;
+    width: 1.35rem;
+    height: 1.35rem;
+    padding: 0;
+    border: none;
+    background: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-radius: 50%;
+  }
+  .search-clear:hover {
+    color: var(--text);
   }
 
   /* Shared dropdown look for the search box and the chip label menu. */
@@ -1582,6 +1723,34 @@
     letter-spacing: 0.07em;
     color: var(--text-muted);
     padding: 0.35rem 0.55rem 0.2rem;
+  }
+  /* Section header with a right-aligned control (gear on "Etiquetas", x on
+     "Recientes"); the control's box doesn't lift the baseline. */
+  .dd-head-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .dd-head-row .dd-head {
+    flex: 1;
+  }
+  .dd-gear,
+  .dd-x {
+    display: grid;
+    place-items: center;
+    width: 1.35rem;
+    height: 1.35rem;
+    margin-right: 2px;
+    padding: 0;
+    border: none;
+    background: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-radius: 6px;
+  }
+  .dd-gear:hover,
+  .dd-x:hover {
+    color: var(--text);
   }
   .dd-item,
   .lm-item {
@@ -1632,8 +1801,47 @@
   .lm-item.sel .lm-name {
     color: var(--accent);
   }
-  .lm-item.manage {
+  /* Inline "new label" field, last row of the assign menu. `.lm-add` is a
+     <form>, so it must override the birth form's column flex explicitly. */
+  .lm-add {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.15rem 0.15rem 0.15rem 0.35rem;
+  }
+  .lm-add input {
+    flex: 1;
+    min-width: 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 0.82rem;
+    padding: 0.32rem 0.45rem;
+    outline: none;
+  }
+  .lm-add input:focus {
+    border-color: var(--accent);
+  }
+  .lm-add input::placeholder {
+    color: var(--text-muted);
+  }
+  .lm-add-btn {
+    display: grid;
+    place-items: center;
+    width: 1.7rem;
+    height: 1.7rem;
+    flex: none;
+    background: var(--accent-soft);
+    border: 1px solid transparent;
+    border-radius: 7px;
     color: var(--accent);
+    cursor: pointer;
+  }
+  .lm-add-btn:hover {
+    border-color: var(--accent);
   }
   .dd-sep {
     height: 1px;
