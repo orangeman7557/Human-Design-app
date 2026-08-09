@@ -1848,13 +1848,12 @@ Bundle size itself is not a concern: the added ~500 kB (uncompressed) is well
 under Cloudflare's multi-MB Worker limit, and it is the same calc code already
 shipped to every browser client-side.
 
-### Pending content — per-cross report summary (added 2026-08-08)
+### Per-cross report summary — DONE (2026-08-09)
 
-The report's "Tu propósito" section now leads with **"Tu cruz es: <name>
-(<gates>)"** (like the type section). The author also wants a **brief, general
-one-paragraph summary of the specific cross** inserted there — no gate/quarter
-detail (that lives in the cross drawer). That means authoring ~112 unique
-summaries (the crosses share bare names, as `crossEssence` does) in **both**
-languages — a focused content pass, not a bulk auto-generation. `crossEssence`
-(already hand-written per cross) is the natural source to derive briefer
-summaries from. **Not yet done.**
+The report's "Tu propósito" section leads with **"Tu cruz es: <name>
+(<gates>)"** and now inserts a **brief, second-person one-paragraph summary of
+the specific cross** between the angle body and the outro — no gate/quarter
+detail (that lives in the cross drawer). Authored for all 112 unique cross names
+(the crosses share bare names, as `crossEssence` does) in both languages
+(`crossSummary` block; `getCrossSummary` mirrors `getCrossEssence`'s keying).
+Derived from the existing `crossEssence` interpretations.

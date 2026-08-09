@@ -458,6 +458,21 @@ export function getCrossEssence(cross, lang = getLocale()) {
 }
 
 /**
+ * A brief, second-person one-paragraph summary of a cross, for the initial
+ * report's "Tu propósito" section (no gate/quarter detail — that lives in the
+ * cross drawer). Keyed exactly like `getCrossEssence` (bare name, or an
+ * angle-qualified key for the few shared names). Returns a string or null.
+ */
+export function getCrossSummary(cross, lang = getLocale()) {
+  const full = en.crossName?.[`${cross?.gates?.[0]}|${cross?.angle}`];
+  const prefix = en.labels?.cross?.[cross?.angle];
+  if (!full || !prefix || !full.startsWith(prefix)) return null;
+  const bare = full.slice(prefix.length).trim();
+  const cs = pack(lang).crossSummary ?? {};
+  return cs[`${cross.angle}:${bare}`] ?? cs[bare] ?? null;
+}
+
+/**
  * The incarnation cross: its canonical name, what its angle means, and the four
  * Sun/Earth gates with their themes — the meaning is composed from those gates
  * rather than hand-written 192 times, the same approach channels use.

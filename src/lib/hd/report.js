@@ -21,6 +21,7 @@ import {
   getSignalNames,
   formatCrossGates,
   getCrossName,
+  getCrossSummary,
   fillTpl,
   getLocale
 } from './content/index.js';
@@ -211,6 +212,7 @@ export function buildReport(chart, lang = getLocale()) {
   if (purpose && angleBody) {
     // The cross's canonical name, falling back to the bare angle label.
     const name = getCrossName(chart.cross, lang) ?? getDisplayLabels(lang).cross?.[chart.cross.angle] ?? '';
+    const summary = getCrossSummary(chart.cross, lang);
     add('purpose', purpose.title, [
       getReportLeadIn('purpose', lang),
       ...purpose.paragraphs,
@@ -222,8 +224,9 @@ export function buildReport(chart, lang = getLocale()) {
         })
       },
       angleBody,
+      summary,
       purpose.outro
-    ]);
+    ].filter(Boolean));
   }
 
   return sections;
