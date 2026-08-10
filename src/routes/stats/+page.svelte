@@ -168,20 +168,32 @@
     </section>
 
     <section class="grid">
-      <div class="card">
-        <div class="card-head"><span>Recurrencia (dispositivos que…)</span></div>
-        <ul class="rows">
-          <li><span>≥ 2 cartas</span><b>{fmt(data.milestones.m2)}</b></li>
-          <li><span>≥ 3 cartas</span><b>{fmt(data.milestones.m3)}</b></li>
-          <li><span>≥ 5 cartas</span><b>{fmt(data.milestones.m5)}</b></li>
-          <li><span>≥ 10 cartas</span><b>{fmt(data.milestones.m10)}</b></li>
-        </ul>
+      <div class="col">
+        <div class="card">
+          <div class="card-head"><span>Recurrencia (dispositivos que…)</span></div>
+          <ul class="rows">
+            <li><span>≥ 2 cartas</span><b>{fmt(data.milestones.m2)}</b></li>
+            <li><span>≥ 3 cartas</span><b>{fmt(data.milestones.m3)}</b></li>
+            <li><span>≥ 5 cartas</span><b>{fmt(data.milestones.m5)}</b></li>
+            <li><span>≥ 10 cartas</span><b>{fmt(data.milestones.m10)}</b></li>
+          </ul>
+        </div>
+
+        <div class="card lang-box">
+          <div class="card-head">
+            <span class="tip" data-tip="Aperturas contadas según el idioma activo en cada carga de la app.">Idioma <em>· aperturas</em></span>
+          </div>
+          <span class="chips">
+            <span class="chip">es · {fmt(data.langs.es)}</span>
+            <span class="chip">en · {fmt(data.langs.en)}</span>
+          </span>
+        </div>
       </div>
 
       <div class="card">
         <div class="card-head"><span>Otros</span></div>
         <ul class="rows">
-          <li><span class="tip" title={OPEN_TIP}>Aperturas</span><b>{fmt(data.totals.open)}</b></li>
+          <li><span class="tip" data-tip={OPEN_TIP}>Aperturas</span><b>{fmt(data.totals.open)}</b></li>
           <li><span>Guardadas</span><b>{fmt(data.totals.save)}</b></li>
           <li><span>Instalaciones (PWA)</span><b>{fmt(data.installs)}</b></li>
           <li><span>Informe abierto</span><b>{fmt(data.totals.report)}</b></li>
@@ -191,14 +203,6 @@
           <li><span>Hora desconocida</span><b>{fmt(data.totals.notime)}</b></li>
         </ul>
       </div>
-    </section>
-
-    <section class="card lang-row">
-      <span class="tip" title="Aperturas contadas según el idioma activo en cada carga de la app.">Idioma <em>· aperturas</em></span>
-      <span class="chips">
-        <span class="chip">es · {fmt(data.langs.es)}</span>
-        <span class="chip">en · {fmt(data.langs.en)}</span>
-      </span>
     </section>
 
     <section class="card gauge {writeLevel}">
@@ -354,6 +358,7 @@
     font-size: 11px;
   }
   .tip {
+    position: relative;
     text-decoration: underline dotted var(--text-muted);
     text-underline-offset: 3px;
     cursor: help;
@@ -363,10 +368,65 @@
     color: #82828a;
     text-decoration: none;
   }
+  /* Own hover tooltip — the native `title` only appears after a long delay. */
+  .tip::after {
+    content: attr(data-tip);
+    position: absolute;
+    left: 0;
+    top: 100%;
+    margin-top: 6px;
+    width: max-content;
+    max-width: 240px;
+    padding: 0.5rem 0.6rem;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 0.75rem;
+    line-height: 1.4;
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: 0;
+    color: var(--text);
+    white-space: normal;
+    opacity: 0;
+    transform: translateY(-2px);
+    pointer-events: none;
+    transition: opacity 0.1s ease, transform 0.1s ease;
+    z-index: 50;
+  }
+  .tip:hover::after,
+  .tip:focus-visible::after {
+    opacity: 1;
+    transform: translateY(0);
+  }
   .grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1rem;
+    align-items: stretch;
+  }
+  .col {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  /* Inside the two-column grid, cards use the grid `gap`, not their own
+     bottom margin — the leftover margin would stop a card from stretching to
+     the row height (the "Otros" column ends up short of the left column). */
+  .grid .card {
+    margin-bottom: 0;
+  }
+  /* The language box fills the leftover height so the recurrence + language
+     column ends level with the taller "Otros" column. */
+  .lang-box {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.7rem;
+  }
+  .lang-box .card-head {
+    margin-bottom: 0;
   }
   .rows {
     list-style: none;
@@ -388,15 +448,6 @@
   .rows b {
     color: var(--text);
     font-variant-numeric: tabular-nums;
-  }
-  .lang-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-size: 0.72rem;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--text-muted);
   }
   .chips {
     display: inline-flex;
