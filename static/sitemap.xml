@@ -6,6 +6,7 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://hdchart.app/en" />
     <xhtml:link rel="alternate" hreflang="es" href="https://hdchart.app/es" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://hdchart.app/" />
+    <lastmod>2026-08-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
@@ -14,6 +15,7 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://hdchart.app/en" />
     <xhtml:link rel="alternate" hreflang="es" href="https://hdchart.app/es" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://hdchart.app/" />
+    <lastmod>2026-08-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
@@ -21,6 +23,7 @@
     <loc>https://hdchart.app/en/privacy</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://hdchart.app/en/privacy" />
     <xhtml:link rel="alternate" hreflang="es" href="https://hdchart.app/es/privacy" />
+    <lastmod>2026-08-10</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
@@ -28,6 +31,7 @@
     <loc>https://hdchart.app/es/privacy</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://hdchart.app/en/privacy" />
     <xhtml:link rel="alternate" hreflang="es" href="https://hdchart.app/es/privacy" />
+    <lastmod>2026-08-10</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>

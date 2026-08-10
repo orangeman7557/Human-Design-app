@@ -223,6 +223,7 @@ Colores de centros definidos: Head/G amarillo `#e5cf3d`, Ajna verde `#6cb46c`, T
 - **Fase 8 — Carta compuesta:** overlay visual de dos cartas guardadas.
 - **Fase 9 — Tránsitos:** vista de tránsitos en tiempo real sobre una carta guardada.
 - **Fase 10 — Guardado en línea:** sincronización opcional en la nube (local-only sigue siendo el default).
+- **Fase 11 — Distribución y difusión (creada 2026-08-10):** dar a conocer la app. El diagnóstico que la motiva: la app **tiene 4 URLs indexables** mientras sus packs de contenido guardan una enciclopedia bilingüe ya escrita (64 puertas, 36 canales, 9 centros, 5 tipos, 7 autoridades, 12 líneas, 112 textos de cruces × 2 idiomas) que **Google no ve**. Cinco niveles, del más barato al más caro, detallados en BACKLOG § "Fase 11 — Distribución y marketing": (0) instrumentación — Search Console/Bing, hoy no hay ningún dato de adquisición; (1) **páginas de referencia prerenderizadas** por elemento e idioma, el gran multiplicador; (2) lanzamiento puntual (Product Hunt, Show HN, directorios) por los backlinks más que por el tráfico; (3) comunidad HD (Discord ~46k, Reddit, Facebook), donde la vía de entrada son los dos ángulos que nadie más tiene — sin registro y **enlace legible por una IA**; (4) Play Store, que es la Fase P; (5) el producto como motor — imagen OG por carta y «puerta del día».
 
 ### Deuda técnica conocida
 

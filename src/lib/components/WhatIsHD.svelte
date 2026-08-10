@@ -7,7 +7,6 @@
 <script>
   import { fade, fly } from 'svelte/transition';
   import { t } from '$lib/i18n/index.svelte.js';
-  import { getReportSection } from '$lib/hd/content/index.js';
   import { renderInline } from '$lib/markup.js';
   import { focusTrap } from './focus-trap.js';
   import { scrollLock } from './scroll-lock.js';
@@ -20,11 +19,28 @@
 
   let open = $state(false);
 
+  // The content library is loaded ON DEMAND, not imported at the top (audit aug
+  // 2026): this modal is the only thing on the home that needs real content, and
+  // a static import dragged both full language packs (~526 KB of prose) into the
+  // home's eager bundle for a panel most visitors never open. The home is
+  // prerendered, so this import only ever runs on a real click in the browser.
+  /** @type {((id: string, lang: string) => any) | null} */
+  let getReportSection = $state(null);
+
+  async function openModal() {
+    if (!getReportSection) {
+      const mod = await import('$lib/hd/content/index.js');
+      getReportSection = mod.getReportSection;
+    }
+    open = true;
+  }
+
   // The report's opening sections. The intro's own title is the modal heading,
   // so it is dropped; the rest keep theirs as sub-headings. In-text drawer links
   // ([label](kind:key)) are stripped to plain text — there is no drawer system
   // on the home.
   const blocks = $derived.by(() => {
+    if (!getReportSection) return [];
     const out = [];
     const push = (id, withTitle) => {
       const s = getReportSection(id, lang);
@@ -49,7 +65,7 @@
 
 <svelte:window {onkeydown} />
 
-<button class="link" type="button" onclick={() => (open = true)}>{t('whatHd.link', null, lang)}</button>
+<button class="link" type="button" onclick={openModal}>{t('whatHd.link', null, lang)}</button>
 
 {#if open}
   <div class="scrim" onclick={() => (open = false)} role="presentation" transition:fade={{ duration: 120 }}></div>

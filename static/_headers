@@ -1,5 +1,10 @@
+# Cloudflare applies this file to STATIC assets only (the prerendered pages and
+# everything under /_app). The Worker-served routes — the root redirect and
+# /<lang>/chart — set the same set themselves in src/hooks.server.js; keep the
+# two in sync.
 /*
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   X-Frame-Options: SAMEORIGIN
   Permissions-Policy: camera=(), microphone=(), geolocation=()
+  Strict-Transport-Security: max-age=15552000; includeSubDomains

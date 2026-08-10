@@ -140,6 +140,47 @@ function fallbackBlock(profile) {
   );
 }
 
+// ── Security headers (audit aug 2026) ───────────────────────────────────────
+// `static/_headers` only covers what Cloudflare serves as a static asset (the
+// prerendered pages and the assets). Everything this Worker answers — the root
+// redirect, the legacy redirects and above all `/<lang>/chart`, which is the
+// URL people actually share — was going out with no security headers at all.
+// The set below mirrors `_headers` so both paths agree; keep them in sync.
+//
+// `Referrer-Policy` is the one that matters most here: a shared chart URL
+// carries the birth data in its query string, so without it the full URL would
+// ride in the `Referer` header of any outbound click (the AI handoff links, the
+// donate links) straight to a third party.
+const SECURITY_HEADERS = {
+  'x-content-type-options': 'nosniff',
+  'referrer-policy': 'strict-origin-when-cross-origin',
+  'x-frame-options': 'SAMEORIGIN',
+  'permissions-policy': 'camera=(), microphone=(), geolocation=()',
+  // Belt-and-braces against plain HTTP. The authoritative fix is Cloudflare's
+  // "Always Use HTTPS" redirect; this stops a browser that has seen the site
+  // once from ever trying HTTP again. No `preload` on purpose — that one is
+  // effectively irreversible and needs a deliberate decision.
+  'strict-transport-security': 'max-age=15552000; includeSubDomains'
+};
+
+// A shared chart URL carries the birth data (name, date, time, coordinates) in
+// its query string, and since aug 2026 the Worker also embeds the computed
+// profile in the HTML. `robots.txt` says `Allow: /`, so a link pasted on a
+// public forum or blog was indexable — someone's birth data in Google's index,
+// forever. Link previews are unaffected: social unfurlers don't obey this.
+const NOINDEX = 'noindex, nofollow';
+
+/** Staging/preview host? Same test as routes/api/stats and routes/robots.txt. */
+function isStagingHost(url) {
+  return /^staging\.|-staging\./.test(url.hostname);
+}
+
+/** Apply the baseline security headers to a response we are about to return. */
+function secure(response) {
+  for (const [k, v] of Object.entries(SECURITY_HEADERS)) response.headers.set(k, v);
+  return response;
+}
+
 /** The leading path segment if it's a known language, else null. */
 function langOf(pathname) {
   const seg = pathname.split('/')[1];
@@ -160,6 +201,18 @@ export async function handle({ event, resolve }) {
   const { url } = event;
   const path = url.pathname;
 
+  // Prerender runs this hook too, but there is no real request to harden and
+  // the headers belong to the served response, not the built HTML.
+  if (building) return handleRequest({ event, resolve });
+
+  return secure(await handleRequest({ event, resolve }));
+}
+
+/** @type {import('@sveltejs/kit').Handle} */
+async function handleRequest({ event, resolve }) {
+  const { url } = event;
+  const path = url.pathname;
+
   // Root/legacy redirects are runtime-only. During prerender none of these
   // paths have a page and nothing links to them, and touching url.search then
   // throws — so skip the redirect logic while building.
@@ -168,6 +221,14 @@ export async function handle({ event, resolve }) {
     if (path === '/') {
       const lang = negotiateLocale(event.cookies.get('hdl'), event.request.headers.get('accept-language'));
       return redirectTo(`/${lang}${url.search}`);
+    }
+
+    // 1b. The analytics dashboard is staging-only, like the endpoint that feeds
+    //     it (routes/api/stats). Its data was already gated — this closes the
+    //     page itself, which answered 200 on production and advertised that a
+    //     dashboard exists (audit aug 2026).
+    if (path === '/stats' && !isStagingHost(url)) {
+      return new Response('Not found', { status: 404 });
     }
 
     // 2. Legacy language-less links (pre-Phase-M).
@@ -193,7 +254,8 @@ export async function handle({ event, resolve }) {
         headers: {
           'content-type': 'application/json; charset=utf-8',
           'cache-control': 'public, max-age=3600',
-          'access-control-allow-origin': '*'
+          'access-control-allow-origin': '*',
+          'x-robots-tag': NOINDEX
         }
       });
     }
@@ -202,10 +264,12 @@ export async function handle({ event, resolve }) {
     //     profile fallback (stripped by JS clients, read by non-JS ones).
     const meta = chartMeta(url, lang);
     const fallback = profile ? fallbackBlock(profile) : '';
-    return resolve(event, {
+    const page = await resolve(event, {
       transformPageChunk: ({ html }) =>
         setHtmlLang(html.replace('<!--%og%-->', meta).replace('<!--%fallback%-->', fallback), lang)
     });
+    page.headers.set('x-robots-tag', NOINDEX);
+    return page;
   }
 
   // 4. Any other page under a language: fix <html lang> (prerender + SSR).

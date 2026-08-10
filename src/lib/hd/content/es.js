@@ -16,6 +16,8 @@
 // extra weight on energy management and decision-making, and an introspective,
 // self-discovery angle for readers new to Human Design.
 
+import { LABELS } from './labels-es.js';
+
 export default {
   // ── Concept level (the card / cajetín "i"): what each category is. ──
   concept: {
@@ -2770,86 +2772,7 @@ export default {
   // articles — "estrategia responder", "el Sol"), while these are the labels the
   // UI shows in cards, chips and table columns (sentence case, no articles).
   // The chart page reads these; they translate with the rest of the content.
-  labels: {
-    type: {
-      generator: 'Generador',
-      'manifesting-generator': 'Generador Manifestante',
-      projector: 'Proyector',
-      manifestor: 'Manifestador',
-      reflector: 'Reflector'
-    },
-    strategy: {
-      'inform-before-acting': 'Informar antes de actuar',
-      respond: 'Responder',
-      'respond-then-inform': 'Responder y luego informar',
-      'wait-for-invitation': 'Esperar la invitación',
-      'wait-lunar-cycle': 'Esperar un ciclo lunar'
-    },
-    // Same quality-(centre) order as the drawers and prompts (text audit, jul 2026).
-    authority: {
-      emotional: 'Emocional (Plexo solar)',
-      sacral: 'Sacral',
-      splenic: 'Esplénica (Bazo)',
-      ego: 'Ego (Corazón)',
-      'self-projected': 'Autoproyectada (G-Garganta)',
-      mental: 'Mental/ambiental',
-      lunar: 'Lunar'
-    },
-    definition: {
-      'no-definition': 'Sin definición',
-      single: 'Definición única',
-      split: 'Definición split',
-      'triple-split': 'Definición triple split',
-      'quad-split': 'Definición cuádruple split'
-    },
-    center: {
-      head: 'Cabeza',
-      ajna: 'Ajna',
-      throat: 'Garganta',
-      g: 'G',
-      heart: 'Corazón',
-      sacral: 'Sacral',
-      spleen: 'Bazo',
-      solarPlexus: 'Plexo solar',
-      root: 'Raíz'
-    },
-    planet: {
-      sun: 'Sol',
-      earth: 'Tierra',
-      moon: 'Luna',
-      northNode: 'Nodo Norte',
-      southNode: 'Nodo Sur',
-      mercury: 'Mercurio',
-      venus: 'Venus',
-      mars: 'Marte',
-      jupiter: 'Júpiter',
-      saturn: 'Saturno',
-      uranus: 'Urano',
-      neptune: 'Neptuno',
-      pluto: 'Plutón'
-    },
-    // Short type names for tight spots (the signal-pair drawer title). Only the
-    // Manifesting Generator actually shortens; the acronym follows the
-    // language's word order — Spanish GM, English MG.
-    typeShort: {
-      generator: 'Generador',
-      'manifesting-generator': 'GM',
-      projector: 'Proyector',
-      manifestor: 'Manifestador',
-      reflector: 'Reflector'
-    },
-    // The two polarities of the signals card (the values themselves are per
-    // type and live in the `signal` block).
-    signal: {
-      aligned: 'Alineamiento',
-      misaligned: 'Desalineamiento'
-    },
-    cross: {
-      right: 'Cruz de ángulo derecho',
-      left: 'Cruz de ángulo izquierdo',
-      juxtaposition: 'Cruz de yuxtaposición'
-    }
-  },
+  labels: LABELS,
 
   promptLabels: {
     type: {

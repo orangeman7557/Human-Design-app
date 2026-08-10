@@ -678,6 +678,111 @@ corrected).
   ([+page.svelte](./src/routes/+page.svelte)); a web worker or chunked yielding
   would avoid potential jank (it's already sequence-guarded).
 
+## Fase 11 — Distribución y marketing (creada 2026-08-10)
+
+Fase nueva, pedida por el autor: hasta ahora todo el esfuerzo ha ido a
+construir la app y **nada** a darla a conocer. Lo que sigue es el resultado de
+una revisión del estado real (2026-08-10) más búsqueda del panorama
+competitivo, ordenado en cinco niveles por coste creciente.
+
+**El diagnóstico que ordena todo lo demás.** La app **tiene 4 URLs
+indexables** (`/en`, `/es`, `/en/privacy`, `/es/privacy`). Dentro de
+`lib/hd/content/{es,en}.js` hay una enciclopedia de Diseño Humano **ya
+escrita, original y legalmente limpia**: 64 puertas, 36 canales, 9 centros,
+5 tipos, 7 autoridades, 12 líneas de perfil y 112 textos de cruces que cubren
+las 192 — en dos idiomas. Del orden de **400-600 páginas de contenido único
+que Google no ve**. Los competidores que ocupan la primera página de Google
+(`humandesignhd.com`, `bodygraph.io`, `freehumandesignchart.com`) rankean
+exactamente con ese patrón: calculadora gratis + muchas páginas de
+referencia. Tenemos el contenido y no lo publicamos.
+
+### Nivel 0 — Instrumentación (horas, gratis, va primero)
+
+- ⬜ **Google Search Console + Bing Webmaster Tools.** Verificar el dominio y
+  enviar `sitemap.xml`. La analítica propia (2026-08) mide **uso**; no hay
+  **nada** que mida **adquisición** — ni qué se busca para llegar, ni si se
+  llega. Sin esto, todos los niveles siguientes se hacen a ciegas y no se
+  puede saber si funcionan. Requiere una acción del autor (verificar el
+  dominio); el sitemap ya existe y es válido.
+
+### Nivel 1 — Páginas de referencia prerenderizadas (el multiplicador)
+
+- ⬜ **Publicar la enciclopedia como páginas propias**, prerenderizadas por
+  idioma con su `hreflang`: `/es/puertas/41`, `/es/canales/34-57`,
+  `/es/centros/garganta`, `/es/tipos/manifestador`, `/es/cruces/…`.
+  **Aviso que condiciona el diseño (búsqueda 2026):** Google castiga el
+  contenido fino; el listón práctico está en **≥500 palabras y 30-40% de
+  diferenciación** por página. Así que **no vale volcar la esencia sola** —
+  una página de puerta debe componer esencia + hexagrama + su centro + sus
+  canales + las 6 líneas + enlaces cruzados, que pasa el listón de sobra.
+  Es la cola larga real («puerta 41 diseño humano», «canal 34-57», «cruz de
+  encarnación del edén»): lo que busca quien ya tiene su carta calculada en
+  otro sitio. Cada página cierra con CTA a la calculadora — ese es el embudo.
+  **Dependencia:** conviene resolver antes el peso de la home (ver los
+  hallazgos de auditoría), porque estas páginas heredarían el mismo lastre.
+
+### Nivel 2 — Lanzamiento puntual (picos, no tráfico sostenido)
+
+- ⬜ Product Hunt, Show HN, Indie Hackers, r/SideProject, directorios de PWA,
+  AlternativeTo. **Expectativa honesta:** pico de 48 h y decaimiento. El valor
+  real son los **backlinks** —que son lo que hace despegar al Nivel 1— y los
+  primeros usuarios, no el tráfico sostenido. Conviene hacerlo *después* del
+  Nivel 1, para que los enlaces apunten a un sitio con contenido.
+
+### Nivel 3 — Comunidad de Diseño Humano (donde está el público)
+
+- ⬜ Discord *Human Design Direct* (~46.000 miembros), otros servidores de los
+  directorios (DISBOARD, Discords.com), Reddit, grupos de Facebook, boletines
+  de Substack de HD. **Aviso: estas comunidades detestan la autopromoción.**
+  La vía de entrada no es «mirad mi app» sino los dos ángulos que **nadie más
+  tiene**: (a) gratis, **sin registro y sin email**, y sobre todo (b) el
+  **enlace de carta que una IA puede leer** — «pega el enlace de tu carta en
+  ChatGPT y pregúntale lo que quieras» es una historia contable, no un
+  anuncio. El enlace compartido es además viral por construcción.
+
+### Nivel 4 — Tiendas de aplicaciones
+
+- ⬜ Es la **Fase P** ya decidida (TWA → Google Play). **Bloqueada por** la
+  falta de `screenshots` en el manifest: sin ellas ni Chrome muestra el diálogo
+  de instalación enriquecido ni la ficha de Play queda presentable. Apple sigue
+  aparcada a propósito (99 €/año).
+- ⬜ **Capturas para el manifest — necesita assets del autor (2026-08-10).**
+  Es lo único de la auditoría que **no** se pudo cerrar en la sesión de
+  arreglos: son imágenes, y elegirlas es una decisión de diseño (qué carta se
+  enseña, qué pantalla vende mejor la app), no algo que deba autogenerarse.
+  Especificación exacta para cuando se hagan:
+  - **Al menos una `form_factor: "wide"`** (escritorio, p. ej. 1280×800) y
+    **al menos una estrecha** (móvil, p. ej. 390×844). Chrome exige las dos
+    para el diálogo de instalación enriquecido.
+  - PNG, `sizes` **debe coincidir exactamente** con los píxeles reales del
+    fichero o Chrome descarta la entrada en silencio.
+  - Candidatas obvias: la carta con el bodygraph (la imagen que vende), el
+    informe inicial abierto, y la home con el formulario.
+  - Van en `static/`, se declaran en `static/manifest.webmanifest` bajo
+    `screenshots` (con `label` por captura) y **hay que añadirlas a la lista de
+    precache** del service worker si se quieren offline.
+  - Las mismas sirven para la ficha de Play Store, que pide además un
+    *feature graphic* de 1024×500.
+
+### Nivel 5 — El producto como motor de distribución
+
+- ⬜ **Imagen OG por carta.** Hoy cada carta compartida enseña **la misma**
+  `og-image.png` genérica. Renderizar el bodygraph en el edge convertiría cada
+  enlace compartido en un anuncio visual distinto — de lejos lo de mayor
+  retorno del catálogo en clave de difusión. Ya estaba anotado como diferido
+  en § "To evaluate — distribution / docs"; aquí se registra su valor de
+  marketing, que es lo que justifica el coste.
+- ⬜ **«Puerta del día»** (ya en § "Functional gap analysis", ítem 5): es el
+  único motivo recurrente para reabrir la app, y la retención es lo que hace
+  que el tráfico ganado en los niveles anteriores no se evapore.
+
+### Cómo se mide
+
+Definir el éxito **antes** de empezar, o no se sabrá qué nivel funcionó: URLs
+indexadas y clics/impresiones por consulta (Search Console), y del lado propio
+los contadores que ya existen (`open`, `device`, `chart`, `install`) más la
+ratio cartas/dispositivo, que ya se calcula en el panel.
+
 ## Possible improvements (not scheduled, not part of Phase 5)
 
 - ⬜ **Cross drawers: name the mandala quarter + a quarters explainer drawer

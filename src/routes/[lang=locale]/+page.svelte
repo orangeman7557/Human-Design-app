@@ -5,7 +5,10 @@
   import { goto } from '$app/navigation';
   import { page } from '$app/stores';
   import { t, LOCALES, localeMeta } from '$lib/i18n/index.svelte.js';
-  import { getDisplayLabels } from '$lib/hd/content/index.js';
+  // Deliberately ./labels.js, not ./index.js: the home needs only the type
+  // names, and going through index.js pulled both full content packs into the
+  // home's eager bundle (audit aug 2026).
+  import { getDisplayLabels } from '$lib/hd/content/labels.js';
   // The active language for URLs and text. Read from the route param (not the
   // i18n module state), since the home is prerendered (concurrent at build) and
   // the shared module locale can race; `tr` passes it explicitly to t().
