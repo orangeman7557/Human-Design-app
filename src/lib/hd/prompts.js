@@ -13,6 +13,12 @@
 // definidos …". Prompts stay impersonal (no first person): the chart on screen
 // may belong to someone else (a saved chart).
 //
+// With a shareable link (`shareUrl`), <quién> shrinks to "un Generador con la
+// carta del enlace de abajo" — the link carries the data the descriptor used to
+// spell out — and the prompt closes by *telling* the AI to open it, because
+// some models won't follow a bare URL. The chart angle keeps the rest of its
+// chart-specific wording either way.
+//
 // Every one of those sentence fragments is grammar-bound (articles, gender,
 // word order), so they live in the language pack as templates
 // (`promptTemplates`) rather than here — see docs/fase-m-multilingue.md.
@@ -37,15 +43,19 @@ import {
 /** General angle. */
 const ask = (T, subject) => fillTpl(T.ask, { frame: T.frame, subject });
 
-/** Impersonal descriptor of the chart, e.g. "un Generador, perfil 3/5, …". */
-function who(T, L, chart) {
+/** Impersonal descriptor of the chart, e.g. "un Generador, perfil 3/5, …".
+ *  With `linked`, the chart's data lives at the shared link, so the descriptor
+ *  only names the type and points at it. */
+function who(T, L, chart, linked = false) {
   // Every field is optional: some call sites (concept prompts) can reach here
   // before a chart exists, and a missing one should thin the sentence out, not
   // throw. `??` on each lookup mirrors the `definedCenters` guard that was
   // already here.
   const c = chart ?? {};
+  const type = L.type[c.type] ?? c.type ?? '';
+  if (linked) return fillTpl(T.whoLink, { type });
   return fillTpl(T.who, {
-    type: L.type[c.type] ?? c.type ?? '',
+    type,
     profile: c.profile ?? '',
     authority: L.authority[c.authority] ?? c.authority ?? '',
     definition: L.definition[c.definition] ?? c.definition ?? '',
@@ -54,8 +64,8 @@ function who(T, L, chart) {
 }
 
 /** Chart angle: same as `ask` but prefixed with the chart descriptor. */
-const askChart = (T, L, chart, subject) =>
-  fillTpl(T.askChart, { frame: T.frame, who: who(T, L, chart), subject });
+const askChart = (T, L, chart, subject, linked = false) =>
+  fillTpl(T.askChart, { frame: T.frame, who: who(T, L, chart, linked), subject });
 
 /** The planets whose Personality/Design activations light up gate `g`. */
 function gateActivations(T, L, chart, g) {
@@ -94,50 +104,47 @@ function channelChartSubject(T, a, b, state) {
  * @param {string} key    element key (for 'concept', the category name; for 'profile', the "3/5" string)
  * @param {any} chart      computed chart (type, authority, strategy, profile, definedCenters, personality, design…)
  * @param {string} [lang]
- * @param {string|null} [shareUrl] when given, the chart-angle prompt ends with a
- *   link to this chart's shareable page (which serves the full profile as JSON
- *   to an AI). Only the chart angle gets it — the general angle isn't about this
- *   chart. Phase: shareable-profile (aug 2026).
+ * @param {string|null} [shareUrl] when given, the chart-angle prompt names the
+ *   chart through the link instead of spelling its data out, and closes asking
+ *   the AI to open it (the shareable page serves the full profile as JSON).
+ *   Only the chart angle gets it — the general angle isn't about this chart.
+ *   Phase: shareable-profile (aug 2026; specific wording restored aug 2026).
  * @returns {{ general: string, chart: string | null }}
  */
 export function buildPrompts(kind, key, chart, lang = getLocale(), shareUrl = null) {
-  const out = buildPromptsCore(kind, key, chart, lang);
-  // With a share link, the chart-angle prompt no longer spells out the chart's
-  // data in the text (that is the point of the link): it asks the same question
-  // as the general angle and points to the link for this chart's data. Falls
-  // back to whatever core built if there is no general text to reuse.
+  const out = buildPromptsCore(kind, key, chart, lang, !!shareUrl);
   if (shareUrl && out?.chart) {
-    const linkLine = fillTpl(getPromptTemplates(lang).chartLink, { url: shareUrl });
-    out.chart = (out.general || out.chart) + linkLine;
+    out.chart += fillTpl(getPromptTemplates(lang).chartLink, { url: shareUrl });
   }
   return out;
 }
 
 /** @returns {{ general: string, chart: string | null }} */
-function buildPromptsCore(kind, key, chart, lang = getLocale()) {
+function buildPromptsCore(kind, key, chart, lang = getLocale(), linked = false) {
   const L = getPromptLabels(lang);
   const T = getPromptTemplates(lang);
   const S = T.subject;
+  const askC = (subject) => askChart(T, L, chart, subject, linked);
 
-  if (kind === 'concept') return conceptPrompts(T, L, key, chart);
+  if (kind === 'concept') return conceptPrompts(T, L, key, chart, linked);
 
   if (kind === 'type') {
     const subject = fillTpl(S.type, { name: L.type[key] ?? key });
     // The chart angle only makes sense for the chart's own type.
     return {
       general: ask(T, subject),
-      chart: key === chart.type ? askChart(T, L, chart, subject) : null
+      chart: key === chart.type ? askC(subject) : null
     };
   }
 
   if (kind === 'strategy') {
     const subject = fillTpl(S.strategy, { name: L.strategy[key] ?? key });
-    return { general: ask(T, subject), chart: askChart(T, L, chart, subject) };
+    return { general: ask(T, subject), chart: askC(subject) };
   }
 
   if (kind === 'authority') {
     const subject = fillTpl(S.authority, { name: L.authority[key] ?? key });
-    return { general: ask(T, subject), chart: askChart(T, L, chart, subject) };
+    return { general: ask(T, subject), chart: askC(subject) };
   }
 
   if (kind === 'profile') {
@@ -146,7 +153,7 @@ function buildPromptsCore(kind, key, chart, lang = getLocale()) {
     const subject = isLine ? fillTpl(S.profileLine, { n: key }) : fillTpl(S.profile, { n: key });
     return {
       general: ask(T, subject),
-      chart: isLine ? null : askChart(T, L, chart, subject)
+      chart: isLine ? null : askC(subject)
     };
   }
 
@@ -155,12 +162,12 @@ function buildPromptsCore(kind, key, chart, lang = getLocale()) {
       key === 'no-definition'
         ? S.noDefinition
         : fillTpl(S.definition, { name: L.definition[key] ?? key });
-    return { general: ask(T, subject), chart: askChart(T, L, chart, subject) };
+    return { general: ask(T, subject), chart: askC(subject) };
   }
 
   if (kind === 'center') {
     const subject = fillTpl(S.center, { name: L.center[key] ?? key });
-    return { general: ask(T, subject), chart: askChart(T, L, chart, subject) };
+    return { general: ask(T, subject), chart: askC(subject) };
   }
 
   if (kind === 'gate') {
@@ -170,7 +177,7 @@ function buildPromptsCore(kind, key, chart, lang = getLocale()) {
     const state = gateState(g, chart);
     return {
       general: ask(T, fillTpl(T.gate.subject, { g })),
-      chart: state ? askChart(T, L, chart, gateChartSubject(T, L, chart, g, state)) : null
+      chart: state ? askC(gateChartSubject(T, L, chart, g, state)) : null
     };
   }
 
@@ -180,7 +187,7 @@ function buildPromptsCore(kind, key, chart, lang = getLocale()) {
     const state = channelState(a, b, chart);
     return {
       general: ask(T, fillTpl(T.channel.subject, { a, b })),
-      chart: state ? askChart(T, L, chart, channelChartSubject(T, a, b, state)) : null
+      chart: state ? askC(channelChartSubject(T, a, b, state)) : null
     };
   }
 
@@ -197,7 +204,7 @@ function buildPromptsCore(kind, key, chart, lang = getLocale()) {
     });
     return {
       general: ask(T, subject),
-      chart: key === chart?.type ? askChart(T, L, chart, subject) : null
+      chart: key === chart?.type ? askC(subject) : null
     };
   }
 
@@ -207,7 +214,7 @@ function buildPromptsCore(kind, key, chart, lang = getLocale()) {
       name: getCrossName(chart.cross, lang) ?? L.cross?.[chart.cross.angle] ?? key,
       gates: formatCrossGates(chart.cross, lang)
     });
-    return { general: ask(T, subject), chart: askChart(T, L, chart, subject) };
+    return { general: ask(T, subject), chart: askC(subject) };
   }
 
   if (kind === 'activationCol') {
@@ -225,7 +232,7 @@ function buildPromptsCore(kind, key, chart, lang = getLocale()) {
         p && d
           ? fillTpl(T.planetChart, {
               frame: T.frame,
-              who: who(T, L, chart),
+              who: who(T, L, chart, linked),
               name,
               pg: p.gate,
               pl: p.line,
@@ -241,13 +248,14 @@ function buildPromptsCore(kind, key, chart, lang = getLocale()) {
 
 /** Concept-level prompts (the card / section-title "i"). Only `bodygraph` and
  *  `center` have a chart angle. */
-function conceptPrompts(T, L, key, chart) {
+function conceptPrompts(T, L, key, chart, linked = false) {
   const C = T.concept;
+  const askC = (subject) => askChart(T, L, chart, subject, linked);
   if (key === 'bodygraph') {
-    return { general: ask(T, C.bodygraph), chart: askChart(T, L, chart, C.bodygraphChart) };
+    return { general: ask(T, C.bodygraph), chart: askC(C.bodygraphChart) };
   }
   if (key === 'center') {
-    return { general: ask(T, C.centerGeneral), chart: askChart(T, L, chart, C.centerChart) };
+    return { general: ask(T, C.centerGeneral), chart: askC(C.centerChart) };
   }
   const subject = C[key];
   return { general: subject ? ask(T, subject) : '', chart: null };

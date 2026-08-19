@@ -2851,9 +2851,13 @@ export default {
     askChart: '{frame}, para {who}, ¿me explicas en detalle {subject}?',
     // Chart-angle prompts (and the report handoff) drop the in-text chart data
     // and point to the shareable link instead — an AI that opens it gets the
-    // full profile (aug 2026).
-    chartLink: '\n\nDatos de la carta: {url}',
+    // full profile (aug 2026). The closing line *asks* for the link to be
+    // opened: several AIs ignore a URL that arrives without an instruction.
+    chartLink: '\n\nConsulta el siguiente enlace para ver los datos de la carta: {url}',
     who: 'un {type}, perfil {profile}, autoridad {authority}, {definition}, centros definidos {centers}',
+    // Same slot as `who` when the link carries the data: the prompt still says
+    // whose chart it is, without repeating what the link already serves.
+    whoLink: 'un {type} con la carta del enlace de abajo',
     none: 'ninguno',
     side: { personality: 'Personalidad', design: 'Diseño' },
     activation: '{planet} en {side} (línea {line})',
@@ -3035,7 +3039,7 @@ export default {
     // Used when a shareable link is available: the data lives at the link, so
     // the prompt doesn't spell it out (aug 2026).
     closingPromptLink:
-      'Según el Diseño Humano, me gustaría saber más sobre mi carta. Los datos completos están en este enlace: {url}. En concreto, me gustaría profundizar en...',
+      'Según el Diseño Humano, me gustaría saber más sobre mi carta. Consulta el siguiente enlace para ver los datos completos de mi carta: {url}\n\nEn concreto, me gustaría profundizar en...',
     noCenters: 'ninguno'
   }
 };

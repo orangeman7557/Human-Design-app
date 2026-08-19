@@ -103,9 +103,13 @@ const overrides = {
     askChart: '{frame}, for {who}, can you explain {subject} in detail?',
     // Chart-angle prompts (and the report handoff) drop the in-text chart data
     // and point to the shareable link instead — an AI that opens it gets the
-    // full profile (aug 2026).
-    chartLink: '\n\nChart data: {url}',
+    // full profile (aug 2026). The closing line *asks* for the link to be
+    // opened: several AIs ignore a URL that arrives without an instruction.
+    chartLink: '\n\nPlease open the following link to see the chart data: {url}',
     who: 'a {type} with a {profile} profile, {authority} authority, {definition}, and these defined centers: {centers}',
+    // Same slot as `who` when the link carries the data: the prompt still says
+    // whose chart it is, without repeating what the link already serves.
+    whoLink: 'a {type} whose chart is at the link below',
     none: 'none',
     side: { personality: 'Personality', design: 'Design' },
     activation: '{planet} in {side} (line {line})',
@@ -267,7 +271,7 @@ const overrides = {
     // Used when a shareable link is available: the data lives at the link, so
     // the prompt doesn't spell it out (aug 2026).
     closingPromptLink:
-      'According to Human Design, I would like to know more about my chart. The full data is at this link: {url}. In particular, I would like to go deeper into...',
+      'According to Human Design, I would like to know more about my chart. Please open the following link to see my full chart data: {url}\n\nIn particular, I would like to go deeper into...',
     noCenters: 'none'
   },
 
