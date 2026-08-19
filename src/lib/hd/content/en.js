@@ -99,8 +99,12 @@ const overrides = {
   // ── Prompt templates (grammar-bound connective text) ─────────────────────
   promptTemplates: {
     frame: 'In the framework of Human Design',
-    ask: '{frame}, can you explain {subject} in detail?',
-    askChart: '{frame}, for {who}, can you explain {subject} in detail?',
+    // "in detail" goes BEFORE the subject, unlike the Spanish word order these
+    // templates were first mirrored from: several subjects end in a relative
+    // clause ("gate 1, which in this chart is hanging…"), and a trailing
+    // modifier dangles after it. Same shape as `planetChart` below.
+    ask: '{frame}, can you explain in detail {subject}?',
+    askChart: '{frame}, for {who}, can you explain in detail {subject}?',
     // Chart-angle prompts (and the report handoff) drop the in-text chart data
     // and point to the shareable link instead — an AI that opens it gets the
     // full profile (aug 2026). The closing line *asks* for the link to be

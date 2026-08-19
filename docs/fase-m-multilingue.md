@@ -131,6 +131,18 @@ Lo único **manual** que queda fuera de esa derivación:
   seguir la estructura de la frase española: frases más cortas, idioma natural.
   Lo contrario produjo textos "gramaticalmente correctos pero no ingleses"
   (revisión del autor, 2026-07-21).
+- **Y eso incluye las plantillas, no solo la prosa** (regla del autor,
+  2026-08-19). Los marcos de `promptTemplates`, `drawer` y `reportShell` se
+  calcaron del español y ahí el orden de palabras **sí cambia el resultado**,
+  porque el hueco `{…}` se rellena con texto de longitud imprevisible. Caso
+  real: `ask` decía `can you explain {subject} in detail?` — espejo de
+  «¿me explicas en detalle {subject}?» — y con un sujeto que termina en
+  subordinada salía *"can you explain gate 1, which in this chart is activated
+  by Saturn in Personality (line 4) and is hanging (missing the other half of
+  its channel) **in detail**?"*, con el modificador colgando a 20 palabras del
+  verbo. Arreglado moviéndolo delante (`can you explain in detail {subject}?`).
+  **Al escribir una plantilla nueva, probarla con el relleno más largo que
+  admita**, no con el más corto.
 - **I Ching (⚠️ legal)**: los nombres de hexagrama en inglés **no** pueden
   reutilizar la traducción Wilhelm/Baynes (tiene copyright). Usar redacción
   propia o la de Legge (1882, dominio público) — igual que se hizo en español.
