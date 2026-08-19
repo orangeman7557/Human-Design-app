@@ -109,7 +109,7 @@ const overrides = {
     who: 'a {type} with a {profile} profile, {authority} authority, {definition}, and these defined centers: {centers}',
     // Same slot as `who` when the link carries the data: the prompt still says
     // whose chart it is, without repeating what the link already serves.
-    whoLink: 'a {type} whose chart is at the link below',
+    whoLink: 'a {type} with this chart (see the link at the end)',
     none: 'none',
     side: { personality: 'Personality', design: 'Design' },
     activation: '{planet} in {side} (line {line})',

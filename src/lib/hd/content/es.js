@@ -2857,7 +2857,7 @@ export default {
     who: 'un {type}, perfil {profile}, autoridad {authority}, {definition}, centros definidos {centers}',
     // Same slot as `who` when the link carries the data: the prompt still says
     // whose chart it is, without repeating what the link already serves.
-    whoLink: 'un {type} con la carta del enlace de abajo',
+    whoLink: 'un {type} con esta carta (ver enlace al final)',
     none: 'ninguno',
     side: { personality: 'Personalidad', design: 'Diseño' },
     activation: '{planet} en {side} (línea {line})',

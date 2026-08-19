@@ -13,9 +13,9 @@
 // definidos …". Prompts stay impersonal (no first person): the chart on screen
 // may belong to someone else (a saved chart).
 //
-// With a shareable link (`shareUrl`), <quién> shrinks to "un Generador con la
-// carta del enlace de abajo" — the link carries the data the descriptor used to
-// spell out — and the prompt closes by *telling* the AI to open it, because
+// With a shareable link (`shareUrl`), <quién> shrinks to "un Generador con esta
+// carta (ver enlace al final)" — the link carries the data the descriptor used
+// to spell out — and the prompt closes by *telling* the AI to open it, because
 // some models won't follow a bare URL. The chart angle keeps the rest of its
 // chart-specific wording either way.
 //
