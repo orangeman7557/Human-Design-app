@@ -59,7 +59,14 @@
   // counter (first batched POST carries first: true).
   const SENT_FLAG = 'hd:love-sent';
   let heartColor = $state('');
-  let heartLabel = $state(BASE_LABEL);
+  // WHAT the heart says, not the words: null is the resting invitation, 'more'
+  // the "…MÁS" nudge, a number the thank-you at that step. Holding the text
+  // itself froze it in whatever language the modal was built in, so switching
+  // language left a Spanish button on an English page (2026-08-24).
+  let heartSays = $state(null);
+  const heartLabel = $derived(
+    heartSays === null ? BASE_LABEL : heartSays === 'more' ? MORE_LABEL : THANKS[heartSays]
+  );
   let clicks = 0;
   let partyClicks = 0;
   let pending = 0;
@@ -139,11 +146,11 @@
     pending += 1;
     flushLater();
 
-    heartLabel = THANKS[Math.min(Math.floor(partyClicks / 4), THANKS.length - 1)];
+    heartSays = Math.min(Math.floor(partyClicks / 4), THANKS.length - 1);
     partyClicks += 1;
     clearTimeout(labelTimer);
     labelTimer = setTimeout(() => {
-      heartLabel = MORE_LABEL;
+      heartSays = 'more';
       partyClicks = 0;
     }, 4000);
 

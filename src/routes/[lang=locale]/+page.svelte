@@ -1048,7 +1048,7 @@
     {:else if filteredCharts.length === 0}
       <p class="empty">{tr('saved.noMatches')}</p>
     {:else}
-      <ul style:--card-h={anyLabels ? '4.25rem' : '3.5rem'}>
+      <ul class:labelled={anyLabels}>
         {#each filteredCharts as c, i (c.id)}
           <li
             draggable={!isFiltering}
@@ -1715,7 +1715,7 @@
     min-width: 0;
     /* Fixed, not min-height: with the two text lines centred, one height
        serves both the labelled and the unlabelled card. See anyLabels. */
-    height: var(--card-h, 3.5rem);
+    height: 3.5rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -1749,6 +1749,21 @@
     font-size: 0.95rem;
     font-weight: 500;
     line-height: 1.3;
+  }
+  .saved ul.labelled .chart-card {
+    height: 4.25rem;
+  }
+  /* Desktop: 2px less air above and below, so the three-line card reads
+     tighter (author, 2026-08-24). Mobile keeps its breathing room. */
+  @media (min-width: 835px) {
+    .chart-card {
+      height: 3.25rem;
+      padding-top: 0.275rem;
+      padding-bottom: 0.275rem;
+    }
+    .saved ul.labelled .chart-card {
+      height: 4rem;
+    }
   }
   /* The name yields, the type never wraps — see rowType(). */
   .chart-name-text {
@@ -1809,10 +1824,9 @@
     color: var(--text-muted);
   }
 
-  /* Right-hand controls on a 2×2 grid: editar over etiquetas on the left, and
-     borrar on the right spanning both rows but sized like one of them, so it
-     sits halfway between the two. (It only reads right now that every row is
-     the same height — see anyLabels.) */
+  /* Right-hand controls on a 2×2 grid: editar over etiquetas on the left,
+     borrar on the right at full height. (The half-height, centred variant was
+     tried twice — 2026-08-24 — and the tall one wins both times.) */
   .actions {
     position: relative;
     display: grid;
@@ -1844,8 +1858,6 @@
   }
   .icon.del {
     grid-area: del;
-    height: calc(50% - 0.2rem);
-    align-self: center;
   }
   .icon:hover {
     color: var(--text);

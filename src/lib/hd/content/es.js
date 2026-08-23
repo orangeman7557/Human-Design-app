@@ -143,7 +143,7 @@ export default {
           '**Ángulo izquierdo** — geometría *transpersonal*: se cumple en relación con otros, a través de la gente que uno se cruza.',
           '**Yuxtaposición** — geometría *fija*: un papel muy concreto, sostenido con bastante independencia del entorno.'
         ] },
-        'El ángulo se deduce directamente del [perfil](concept:profile) (por ejemplo, el perfil 1/3 es ángulo derecho, el perfil 5/2 es ángulo izquierdo, etc.). Los nombres vienen de la **geometría del mandala** —de la separación angular entre el Sol de Personalidad y el de Diseño, próxima a un ángulo recto en un caso y contigua en los otros—, no de ninguna cualidad mejor ni peor.'
+        'El ángulo se deduce directamente del [perfil](concept:profile) (por ejemplo, el perfil 1/3 es ángulo derecho, el perfil 5/2 es ángulo izquierdo, etc.). Los nombres vienen de la **geometría del mandala**: de la separación angular entre el Sol de Personalidad y el de Diseño, próxima a un ángulo recto en un caso y contigua en los otros.'
       ]
     }
   },
