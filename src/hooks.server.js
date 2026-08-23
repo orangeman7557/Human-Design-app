@@ -44,12 +44,12 @@ const OG = {
   en: {
     site: 'Human Design Chart',
     title: (name) => (name ? `${name} · Human Design Chart` : 'Human Design Chart'),
-    desc: 'Type, strategy, authority, profile, centres and channels. View this Human Design chart and explore it.'
+    desc: 'Type, strategy, authority, profile, centres and channels. Explore this Human Design chart on HDchart.app.'
   },
   es: {
     site: 'Human Design Chart',
-    title: (name) => (name ? `${name} · Carta de Human Design` : 'Carta de Human Design'),
-    desc: 'Tipo, estrategia, autoridad, perfil, centros y canales. Mira esta carta de Human Design y explórala.'
+    title: (name) => (name ? `${name} · Carta de Diseño Humano` : 'Carta de Diseño Humano'),
+    desc: 'Tipo, estrategia, autoridad, perfil, centros y canales. Explora esta carta de Diseño Humano en HDchart.app.'
   }
 };
 

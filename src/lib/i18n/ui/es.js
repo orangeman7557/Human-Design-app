@@ -95,7 +95,12 @@ export default {
     searchTypes: 'Tipos',
     localNote: 'Las cartas se guardan en este dispositivo.',
     export: 'Descargar cartas',
-    import: 'Importar cartas'
+    import: 'Importar cartas',
+    send: 'Enviar las cartas',
+    sendSubject: 'HDchart.app · Copia de mis cartas',
+    sendBody:
+      'Adjunto va la copia de seguridad de mis cartas de HDchart.app. Para restaurarlas, abre la app y pulsa el botón de importar.',
+    errSend: 'No se pudieron enviar las cartas: {msg}'
   },
 
   labels: {

@@ -618,15 +618,55 @@
     await refreshList();
   }
 
-  async function doExport() {
-    const json = await exportCharts();
-    const blob = new Blob([json], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
+  // Backups are JSON *inside a .txt* (aug 2026). Chromium's Web Share checks
+  // both the file extension and the MIME type against allowlists, and neither
+  // ".json" nor "application/json" is on them — so a .json backup can't be sent
+  // through a share sheet at all, while ".txt" + "text/plain" (declared exactly
+  // like that, no charset suffix) passes everywhere. Same bytes either way, so
+  // download and send share one file; import still accepts the old .json.
+  async function backupFile() {
+    const d = new Date();
+    const pad = (n) => String(n).padStart(2, '0');
+    const name = `hdchart-${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}.txt`;
+    return new File([await exportCharts()], name, { type: 'text/plain' });
+  }
+
+  function downloadFile(file) {
+    const url = URL.createObjectURL(file);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'human-design-charts.json';
+    a.download = file.name;
     a.click();
     URL.revokeObjectURL(url);
+  }
+
+  async function doExport() {
+    downloadFile(await backupFile());
+  }
+
+  // "Send the charts": hands the backup to the OS share sheet, where mail apps
+  // sit alongside everything else — a backup by email without any mail plumbing
+  // on our side. The subject/body travel as share title/text; whether the
+  // receiving app uses them is its call. No share sheet (desktop Firefox) or a
+  // refused file falls back to the plain download.
+  async function doSend() {
+    listError = null;
+    const file = await backupFile();
+    if (!navigator.canShare?.({ files: [file] })) {
+      downloadFile(file);
+      return;
+    }
+    try {
+      await navigator.share({
+        files: [file],
+        title: tr('saved.sendSubject'),
+        text: tr('saved.sendBody')
+      });
+    } catch (err) {
+      if (err?.name !== 'AbortError') {
+        listError = tr('saved.errSend', { msg: err instanceof Error ? err.message : String(err) });
+      }
+    }
   }
 
   async function doImport(e) {
@@ -1037,9 +1077,20 @@
             <path d="M12 15V3" /><path d="m8 7 4-4 4 4" /><path d="M4 21h16" />
           </svg>
         </button>
+        <button
+          class="io-btn"
+          onclick={doSend}
+          disabled={savedCharts.length === 0}
+          data-tip={tr('saved.send')}
+          aria-label={tr('saved.send')}
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 2 11 13" /><path d="M22 2 15 22l-4-9-9-4Z" />
+          </svg>
+        </button>
         <input
           type="file"
-          accept="application/json,.json"
+          accept="text/plain,.txt,application/json,.json"
           bind:this={importInput}
           onchange={doImport}
           hidden

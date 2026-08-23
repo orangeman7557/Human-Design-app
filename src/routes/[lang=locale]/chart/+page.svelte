@@ -244,10 +244,11 @@
     if (!isTouch()) { cardReveal = null; innerReveal = null; }
   }
 
-  // Touch: a tap toggles the reveal for whatever was tapped; tapping the "i"
-  // opens the panel. stopPropagation keeps the window handler from clearing
-  // the reveal underneath — nesting handlers under Svelte's event delegation
-  // is unreliable, so everything routes through this one handler.
+  // Touch: a tap reveals the "i" for whatever was tapped, and a second tap on
+  // the same thing (or on its "i") opens the drawer. stopPropagation keeps the
+  // window handler from clearing the reveal underneath — nesting handlers under
+  // Svelte's event delegation is unreliable, so everything routes through this
+  // one handler.
   function cardClick(e, id, extra) {
     const dot = e.target.closest('[data-info-key]');
     if (dot) {
@@ -257,36 +258,54 @@
     }
     extra?.(e);
     e.stopPropagation();
+    const inner = e.target.closest('[data-inner-key]');
     if (!isTouch()) {
       // Desktop: clicking the element opens the same drawer its hover "i" would
       // (author request). The pointer is already over the element, so cardOver
       // has rendered the matching "i" (inner element's, else the card concept);
       // find it and open it. Touch keeps the tap-to-reveal below.
-      const innerEl = e.target.closest('[data-inner-key]');
-      const openFrom =
-        (innerEl ?? e.currentTarget).querySelector('[data-info-key]') ??
-        e.currentTarget.querySelector('[data-info-key]');
-      if (openFrom) openInfoFor(openFrom.dataset.infoCat, openFrom.dataset.infoKind, openFrom.dataset.infoKey);
+      if (!openFromDot(inner)) openFromDot(e.currentTarget);
       return;
     }
-    const inner = e.target.closest('[data-inner-key]');
+    // Touch: the first tap reveals the "i", and a second tap on the same thing
+    // opens its drawer — reaching for the "i" is a shortcut, not a toll gate
+    // (author request 2026-08-23). The trade-off is deliberate: there is no
+    // tap-to-unreveal any more, tapping elsewhere clears it.
     if (inner) {
-      innerReveal = innerReveal === inner.dataset.innerKey ? null : inner.dataset.innerKey;
+      if (innerReveal === inner.dataset.innerKey) { openFromDot(inner); return; }
+      innerReveal = inner.dataset.innerKey;
       cardReveal = null;
     } else {
-      cardReveal = cardReveal === id ? null : id;
+      if (cardReveal === id) { openFromDot(e.currentTarget); return; }
+      cardReveal = id;
       innerReveal = null;
     }
+  }
+
+  /** Open the drawer of the "i" currently rendered inside `host` (an element
+   *  wrapper or a whole card). Returns false when there is none to open. */
+  function openFromDot(host) {
+    const dot = host?.querySelector('[data-info-key]');
+    if (!dot) return false;
+    openInfoFor(dot.dataset.infoCat, dot.dataset.infoKind, dot.dataset.infoKey);
+    return true;
   }
 
   // Centre chips are <button>, so their tap is handled here (pin + reveal); the
   // "i" sits as a sibling and opens via the card's click handler.
   function onCenterChipClick(e, c) {
     const h = { kind: 'center', center: c, gates: [] };
+    // Touch: second tap on an already-revealed chip opens its drawer (see
+    // cardClick). pin() is skipped so the highlight stays put.
+    if (isTouch() && innerReveal === `center:${c}`) {
+      e.stopPropagation();
+      openInfoFor('center', 'center', c);
+      return;
+    }
     pin(e, h);
     // Desktop (hover): clicking the chip opens its drawer, same as clicking the
-    // "i" that appears on hover. Touch keeps the two-step (tap highlights, the
-    // "i" opens) so a single tap can never fire a drawer by accident.
+    // "i" that appears on hover. Touch keeps the two-step (first tap highlights
+    // and reveals, second tap opens) so no single tap fires a drawer by accident.
     if (!isTouch()) {
       openInfoFor('center', 'center', c);
       return;
@@ -299,6 +318,14 @@
   // window handler doesn't clear the reveal), so the reveal must be set here —
   // not left to the info-zone's cardClick, which never runs for them.
   function onChipClick(e, h, innerKey) {
+    // Touch: second tap on an already-revealed chip opens its drawer (see
+    // cardClick). The drawer is read off the rendered "i" rather than derived
+    // from innerKey, because the definition's key is its value, not "value".
+    if (isTouch() && innerReveal === innerKey) {
+      e.stopPropagation();
+      openFromDot(e.target.closest('[data-inner-key]'));
+      return;
+    }
     pin(e, h);
     // Desktop: clicking the chip opens its drawer (like clicking its hover "i").
     if (!isTouch()) {
@@ -377,8 +404,8 @@
   // The definition note. On desktop hover already highlights it and surfaces
   // the "i", so the click itself does nothing (it only has to stop the window
   // handler from wiping the reveal out from under the pointer). On touch it
-  // behaves like the centre and channel chips: the tap pins the highlight and
-  // reveals the "i", and only the "i" opens the drawer.
+  // behaves like the centre and channel chips: the first tap pins the highlight
+  // and reveals the "i", the second one opens the drawer.
   function onDefinitionClick(e) {
     if (!isTouch()) {
       e.stopPropagation();
@@ -1272,9 +1299,9 @@
                the vanished concept "i" used to carry). -->
           <!-- Behaves like every other element: hover (desktop) / tap (touch)
                highlights the definition on the bodygraph and surfaces its "i";
-               only the "i" opens the drawer. The "i" floats as a superscript
-               because the note is right-aligned and a reserved slot beside it
-               would push it off the card. -->
+               a second tap (or the "i") opens the drawer. The "i" floats as a
+               superscript because the note is right-aligned and a reserved slot
+               beside it would push it off the card. -->
           <span class="def-row" data-inner-key="definition:value">
             <!-- The "i" goes on the LEFT: the note is right-aligned, so that is
                  the side with room — on the right it either covered the text or

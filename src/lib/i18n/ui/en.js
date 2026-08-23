@@ -87,7 +87,12 @@ export default {
     searchTypes: 'Types',
     localNote: 'Charts are saved on this device.',
     export: 'Download Charts',
-    import: 'Import Charts'
+    import: 'Import Charts',
+    send: 'Send Charts',
+    sendSubject: 'HDchart.app · My charts backup',
+    sendBody:
+      'Attached is the backup of my HDchart.app charts. To restore them, open the app and tap the import button.',
+    errSend: 'Could not send the charts: {msg}'
   },
 
   labels: {
