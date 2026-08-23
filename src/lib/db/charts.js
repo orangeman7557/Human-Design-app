@@ -227,11 +227,15 @@ export async function listLabels() {
  * Seed the default labels, but only when the table has never been touched:
  * empty AND not previously seeded (the localStorage flag stops re-seeding after
  * the user deletes them all). Called from the UI with localised names.
- * @param {string[]} names
+ *
+ * Each seeded row keeps the default's `def` key, which is what lets
+ * `syncDefaultLabels` re-translate it when the app language changes. A rename
+ * drops the key: from then on the label is the user's word, in any language.
+ * @param {{ key: string, name: string }[]} defaults
  * @returns {Promise<boolean>} true when seeding happened
  */
-export async function seedDefaultLabels(names) {
-  if (!Array.isArray(names) || !names.length) return false;
+export async function seedDefaultLabels(defaults) {
+  if (!Array.isArray(defaults) || !defaults.length) return false;
   try {
     if (typeof localStorage !== 'undefined' && localStorage.getItem('hd:labels-seeded')) {
       return false;
@@ -241,8 +245,8 @@ export async function seedDefaultLabels(names) {
   }
   const seeded = await db.transaction('rw', db.labels, async () => {
     if ((await db.labels.count()) > 0) return false;
-    for (let i = 0; i < names.length; i++) {
-      await db.labels.add({ name: names[i].trim(), sortOrder: i });
+    for (let i = 0; i < defaults.length; i++) {
+      await db.labels.add({ name: defaults[i].name.trim(), sortOrder: i, def: defaults[i].key });
     }
     return true;
   });
@@ -253,6 +257,79 @@ export async function seedDefaultLabels(names) {
   }
   if (seeded) scheduleBackupSync();
   return seeded;
+}
+
+/**
+ * Keep the *default* labels in the app's language (aug 2026). Charts store
+ * their labels by name, so translating one is a rename: the row and every
+ * chart carrying it are rewritten together, exactly as renameLabel does.
+ *
+ * Only rows that still carry their `def` key are touched. Rows seeded before
+ * the keys existed (and rows the cookie-vault restore rebuilt from names alone)
+ * are adopted first — but only when the table still holds most of ONE
+ * language's default set, so a label the user happened to name "Work" by hand
+ * isn't mistaken for the seeded one and translated out from under them.
+ *
+ * @param {{ key: string, name: string }[]} current  defaults in the active language
+ * @param {Record<string, Record<string, string>>} byLocale  every language's defaults, keyed by locale
+ * @returns {Promise<boolean>} true when anything was rewritten
+ */
+export async function syncDefaultLabels(current, byLocale) {
+  if (!Array.isArray(current) || !current.length) return false;
+  const want = new Map(current.map((d) => [d.key, d.name]));
+  const rows = await db.labels.toArray();
+  if (!rows.length) return false;
+
+  // Which name belongs to which default key, for the languages whose seeded set
+  // is still recognisable in this table (half of it or more).
+  /** @type {Map<string, string>} lowercased name → default key */
+  const adoptable = new Map();
+  for (const set of Object.values(byLocale ?? {})) {
+    const entries = Object.entries(set ?? {});
+    if (!entries.length) continue;
+    const present = entries.filter(([, name]) =>
+      rows.some((r) => r.name.toLowerCase() === name.toLowerCase())
+    );
+    if (present.length * 2 < entries.length) continue;
+    for (const [key, name] of entries) adoptable.set(name.toLowerCase(), key);
+  }
+
+  const taken = new Set(rows.map((r) => r.name.toLowerCase()));
+  /** @type {{ id: number, key: string, name?: string, from?: string }[]} */
+  const changes = [];
+  for (const row of rows) {
+    if (row.def === null) continue;
+    const key = row.def ?? adoptable.get(row.name.toLowerCase());
+    if (!key) continue;
+    const name = want.get(key);
+    if (!name) continue;
+    if (row.name === name) {
+      if (row.def !== key) changes.push({ id: row.id, key });
+      continue;
+    }
+    // Someone already owns that word (a label of their own, or another default
+    // that hasn't been rewritten yet): leave this one alone rather than create
+    // a duplicate. It gets picked up on a later pass.
+    if (taken.has(name.toLowerCase())) continue;
+    taken.delete(row.name.toLowerCase());
+    taken.add(name.toLowerCase());
+    changes.push({ id: row.id, key, name, from: row.name });
+  }
+  if (!changes.length) return false;
+
+  const renamed = new Map(changes.filter((c) => c.name).map((c) => [c.from, c.name]));
+  await db.transaction('rw', db.labels, db.charts, async () => {
+    for (const c of changes) {
+      await db.labels.update(c.id, c.name ? { name: c.name, def: c.key } : { def: c.key });
+    }
+    if (renamed.size) {
+      await db.charts.toCollection().modify((c) => {
+        if (Array.isArray(c.labels)) c.labels = c.labels.map((n) => renamed.get(n) ?? n);
+      });
+    }
+  });
+  if (renamed.size) scheduleBackupSync();
+  return true;
 }
 
 /** Case-insensitive lookup of a label name already in use (optionally excluding one id). */
@@ -290,7 +367,9 @@ export async function renameLabel(id, name) {
   if (await labelNameTaken(trimmed, id)) return { error: 'duplicate' };
   const oldName = label.name;
   await db.transaction('rw', db.labels, db.charts, async () => {
-    await db.labels.update(id, { name: trimmed });
+    // `def: null` — not a deletion — so the row can never be re-adopted as a
+    // default by name and re-translated behind the user's back.
+    await db.labels.update(id, { name: trimmed, def: null });
     await db.charts.toCollection().modify((c) => {
       if (Array.isArray(c.labels) && c.labels.includes(oldName)) {
         c.labels = c.labels.map((n) => (n === oldName ? trimmed : n));

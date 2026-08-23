@@ -124,7 +124,11 @@
     if (!dragging) {
       if (dy < DRAG_START || Math.abs(e.clientX - dragFrom.x) > dy) return;
       dragging = true;
-      dragFrom.el.setPointerCapture?.(dragFrom.id);
+      try {
+        dragFrom.el.setPointerCapture?.(dragFrom.id);
+      } catch {
+        // The pointer can be gone already (or synthetic); the drag still works.
+      }
     }
     dragY = Math.max(0, dy);
   }

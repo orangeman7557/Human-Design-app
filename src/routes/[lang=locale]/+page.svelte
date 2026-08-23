@@ -34,6 +34,7 @@
     deleteChart,
     exportCharts,
     importCharts,
+    syncDefaultLabels,
     reorderCharts,
     setChartType,
     ensureBackupRestored,
@@ -375,9 +376,22 @@
     // back too); only then does seeding get a chance, and it no-ops unless the
     // table is genuinely untouched.
     await refreshList();
-    await seedDefaultLabels(tr('labels.defaults'));
+    await seedDefaultLabels(defaultLabels());
+    // A translated label is a rename, so the charts already listed carry the
+    // old word: reload them.
+    if (await syncDefaultLabels(defaultLabels(), defaultLabelsByLocale())) await refreshList();
     await refreshLabels();
   }
+
+  // The seeded labels ("Familia", "Trabajo"…) are UI text, so they follow the
+  // app's language — this runs on every load, which is also every language
+  // switch (the language lives in the URL, so the home remounts). A label the
+  // user writes, or renames, is their word and is never touched: the DB layer
+  // decides, from the `def` key each seeded row carries.
+  const defaultLabels = () =>
+    Object.entries(tr('labels.defaults') ?? {}).map(([key, name]) => ({ key, name }));
+  const defaultLabelsByLocale = () =>
+    Object.fromEntries(LOCALES.map((l) => [l.code, t('labels.defaults', null, l.code) ?? {}]));
 
   async function refreshLabels() {
     try {
@@ -692,6 +706,51 @@
     }
   }
 
+  // A saved chart's row must stay on ONE line (author request 2026-08-24).
+  // The type gives way first — "Generador" → "Gen." — and only if the name is
+  // still too long does CSS clip it with an ellipsis. The widths are measured
+  // on a canvas rather than by rendering and re-measuring, so changing the
+  // label can't feed back into the measurement. The search keeps matching the
+  // full words: it reads the chart, not the row.
+  /** @type {{ name: string, type: string, gap: number } | null} */
+  let rowFont = $state(null);
+  let nameBoxW = $state(0);
+  /** @type {CanvasRenderingContext2D | null} */
+  let textCanvas = null;
+
+  function textWidth(text, font) {
+    textCanvas ??= document.createElement('canvas').getContext('2d');
+    if (!textCanvas) return 0;
+    textCanvas.font = font;
+    return textCanvas.measureText(text ?? '').width;
+  }
+
+  /** Action on the name row: the first one to mount publishes the two fonts
+   *  (name and type) and the gap between them — every row shares them. */
+  function rowMetrics(node) {
+    if (rowFont) return;
+    const font = (el) => {
+      const cs = getComputedStyle(el);
+      return `${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;
+    };
+    const type = node.querySelector('.chart-type');
+    rowFont = {
+      name: font(node),
+      type: type ? font(type) : font(node),
+      gap: parseFloat(getComputedStyle(node).columnGap) || 0
+    };
+  }
+
+  function rowType(c) {
+    const full = typeLabels[c.type] ?? c.type;
+    if (!c.type || !rowFont || !nameBoxW) return full;
+    const short = tr('types.short.' + c.type);
+    if (!short || short === full) return full;
+    const wide =
+      textWidth(c.name, rowFont.name) + rowFont.gap + textWidth(full, rowFont.type) > nameBoxW;
+    return wide ? short : full;
+  }
+
   // Same date shape as the chart subtitle ("13/03/1984, 09:30").
   function formatDate(c) {
     const [y, m, d] = (c.birth?.date ?? '').split('-');
@@ -977,10 +1036,10 @@
             <span class="drag" aria-hidden="true">⠿</span>
             <div class="chart-card">
               <button class="chart-open" onclick={() => openSaved(c)}>
-                <span class="chart-name">
-                  {c.name}
+                <span class="chart-name" use:rowMetrics bind:clientWidth={nameBoxW}>
+                  <span class="chart-name-text">{c.name}</span>
                   {#if c.type}
-                    <span class="chart-type">{typeLabels[c.type] ?? c.type}</span>
+                    <span class="chart-type">{rowType(c)}</span>
                   {/if}
                 </span>
                 <span class="chart-meta">{formatDate(c)} · {cityCountry(c.birth?.placeLabel)}</span>
@@ -993,19 +1052,17 @@
               {/if}
             </div>
             <div class="actions">
-              <div class="btn-stack">
-                <button class="icon half" onclick={() => renameSaved(c)} aria-label={tr('saved.rename')}>✎</button>
-                <button
-                  class="icon half labels-btn"
-                  class:on={labelMenuFor === c.id}
-                  onclick={() => toggleLabelMenu(c.id)}
-                  aria-label={tr('saved.labelsAria')}
-                  aria-haspopup="true"
-                  aria-expanded={labelMenuFor === c.id}
-                >
-                  {@render tagIcon(13, assignedNames(c).length > 0)}
-                </button>
-              </div>
+              <button class="icon half edit" onclick={() => renameSaved(c)} aria-label={tr('saved.rename')}>✎</button>
+              <button
+                class="icon half labels-btn"
+                class:on={labelMenuFor === c.id}
+                onclick={() => toggleLabelMenu(c.id)}
+                aria-label={tr('saved.labelsAria')}
+                aria-haspopup="true"
+                aria-expanded={labelMenuFor === c.id}
+              >
+                {@render tagIcon(13, assignedNames(c).length > 0)}
+              </button>
               <button class="icon del" onclick={() => deleteSaved(c)} aria-label={tr('saved.delete')}>✕</button>
 
               {#if labelMenuFor === c.id}
@@ -1550,10 +1607,11 @@
     user-select: none;
   }
   .chart-type {
+    flex: none;
+    white-space: nowrap;
     color: var(--text-muted);
     font-weight: 400;
     font-size: 0.78rem;
-    margin-left: 0.35rem;
   }
   .saved-foot {
     display: flex;
@@ -1658,9 +1716,20 @@
     cursor: pointer;
   }
   .chart-name {
+    display: flex;
+    align-items: baseline;
+    gap: 0.35rem;
+    min-width: 0;
     font-size: 0.95rem;
     font-weight: 500;
     line-height: 1.3;
+  }
+  /* The name yields, the type never wraps — see rowType(). */
+  .chart-name-text {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   .chart-meta {
     font-size: 0.78rem;
@@ -1712,18 +1781,19 @@
     color: var(--text-muted);
   }
 
-  /* Right-hand controls: editar + etiquetas stacked in a narrow column,
-     borrar to their right at full height. */
+  /* Right-hand controls on a 2×2 grid: editar over etiquetas on the left,
+     borrar top-right, and the fourth cell left empty (author request
+     2026-08-24) — three buttons of the same size read better than a tall one
+     beside two short ones. */
   .actions {
     position: relative;
-    display: flex;
+    display: grid;
+    grid-template-columns: 2.4rem 2.4rem;
+    grid-template-rows: 1fr 1fr;
+    grid-template-areas:
+      'edit del'
+      'labels .';
     gap: 0.4rem;
-  }
-  .btn-stack {
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
-    width: 2.4rem;
   }
   .icon {
     background: var(--surface);
@@ -1736,12 +1806,16 @@
     place-items: center;
   }
   .icon.half {
-    flex: 1;
-    width: 100%;
     min-height: 0;
   }
+  .icon.edit {
+    grid-area: edit;
+  }
+  .labels-btn {
+    grid-area: labels;
+  }
   .icon.del {
-    width: 2.4rem;
+    grid-area: del;
   }
   .icon:hover {
     color: var(--text);
@@ -1749,6 +1823,7 @@
   }
   .labels-btn {
     position: relative;
+    grid-area: labels;
   }
   .icon.on {
     color: var(--accent);

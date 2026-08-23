@@ -96,7 +96,14 @@ export default {
   },
 
   labels: {
-    defaults: ['Family', 'Partner', 'Friends', 'Work', 'Study'],
+    // Keyed, not a plain list — see the note in es.js.
+    defaults: {
+      family: 'Family',
+      partner: 'Partner',
+      friends: 'Friends',
+      work: 'Work',
+      study: 'Study'
+    },
     manage: 'Create / edit labels…',
     managerTitle: 'Labels',
     managerSubtitle: 'Create, rename, reorder and delete your labels.',
@@ -412,6 +419,15 @@ export default {
       projector: 'P',
       manifestor: 'M',
       reflector: 'R'
+    },
+    // Short forms for the saved-charts list, where a long name would otherwise
+    // push the row onto a second line.
+    short: {
+      generator: 'Gen.',
+      'manifesting-generator': 'Man. Gen.',
+      projector: 'Proj.',
+      manifestor: 'Manif.',
+      reflector: 'Refl.'
     }
   }
 };

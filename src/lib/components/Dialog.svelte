@@ -71,6 +71,7 @@
   {@const a = dialog.active}
   <div
     class="scrim"
+    class:typing={a.mode === 'prompt'}
     onclick={onScrim}
     role="presentation"
     transition:fade={{ duration: 120 }}
@@ -127,7 +128,12 @@
   .scrim {
     position: fixed;
     inset: 0;
-    z-index: 70;
+    /* Above every other overlay (drawer 61, label manager 71): a dialog is
+       always the answer to something already on screen, so it has to sit on
+       top of it — and its scrim dims whatever asked for it. `z-index` on a
+       positioned element opens a stacking context, so the .dialog below is
+       ranked inside THIS one, not against the page. */
+    z-index: 90;
     background: rgba(0, 0, 0, 0.55);
     display: flex;
     align-items: center;
@@ -135,11 +141,12 @@
     padding: 1rem;
   }
   /* On phones the on-screen keyboard covers the lower half of the viewport, so
-     a centred prompt (save / rename / delete name) ends up hidden behind it.
-     Pin the dialog near the top instead and let the scrim scroll, so it stays
-     visible — and can be slid all the way up — while typing. */
+     a centred prompt (save / rename) ends up hidden behind it. Pin THOSE near
+     the top instead and let the scrim scroll, so the field stays visible while
+     typing. Dialogs with nothing to type — confirm, alert — raise no keyboard
+     and stay centred, which is where a question belongs. */
   @media (max-width: 560px) {
-    .scrim {
+    .scrim.typing {
       align-items: flex-start;
       justify-content: center;
       padding: 1.5rem 1rem;

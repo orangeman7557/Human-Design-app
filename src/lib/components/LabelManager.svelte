@@ -93,7 +93,9 @@
   }
 
   function onkeydown(e) {
-    if (e.key === 'Escape') onClose();
+    // A rename/delete dialog opened from here owns Escape while it is up —
+    // otherwise one press closes the manager underneath it too.
+    if (e.key === 'Escape' && !dialog.active) onClose();
   }
 </script>
 

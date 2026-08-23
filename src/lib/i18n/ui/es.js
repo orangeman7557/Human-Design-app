@@ -104,7 +104,16 @@ export default {
   },
 
   labels: {
-    defaults: ['Familia', 'Pareja', 'Amigos', 'Trabajo', 'Estudio'],
+    // Keyed, not a plain list: the key is what ties "Familia" to "Family", so a
+    // seeded default follows the app's language (see syncDefaultLabels). Rename
+    // the words freely; never change a key.
+    defaults: {
+      family: 'Familia',
+      partner: 'Pareja',
+      friends: 'Amigos',
+      work: 'Trabajo',
+      study: 'Estudio'
+    },
     manage: 'Crear / editar etiquetas…',
     managerTitle: 'Etiquetas',
     managerSubtitle: 'Crea, renombra, reordena y elimina tus etiquetas.',
@@ -427,6 +436,15 @@ export default {
       projector: 'P',
       manifestor: 'M',
       reflector: 'R'
+    },
+    // Short forms for the saved-charts list, where a long name would otherwise
+    // push the row onto a second line.
+    short: {
+      generator: 'Gen.',
+      'manifesting-generator': 'Gen. Man.',
+      projector: 'Proy.',
+      manifestor: 'Manif.',
+      reflector: 'Refl.'
     }
   }
 };
