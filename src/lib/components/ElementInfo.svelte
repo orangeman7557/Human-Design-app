@@ -98,6 +98,52 @@
     window.addEventListener('pointermove', move);
     window.addEventListener('pointerup', up);
   }
+
+  // Mobile: drag the sheet down to dismiss it — the gesture people try before
+  // hunting for the ✕ (author request 2026-08-23). Every part of the drawer's
+  // chrome is a handle (the grabber, the header, the AI footer); the scrolling
+  // text and the prompt box are not, so a drag there still scrolls or selects.
+  // The gesture only exists on the phone layout: on desktop the drawer is a
+  // side panel and dragging it down would mean nothing.
+  const DRAG_START = 8;
+  const DRAG_CLOSE = 90;
+  let dragY = $state(0);
+  let dragging = $state(false);
+  /** @type {{ x: number, y: number, id: number, el: Element } | null} */
+  let dragFrom = null;
+
+  function dragDown(e) {
+    if (wide || e.target.closest('.info-scroll, textarea, input, .resize')) return;
+    dragFrom = { x: e.clientX, y: e.clientY, id: e.pointerId, el: e.currentTarget };
+  }
+  // The drag only takes over once the finger has clearly moved DOWN, so taps on
+  // the header buttons still register as taps and an upward flick is ignored.
+  function dragMove(e) {
+    if (!dragFrom || e.pointerId !== dragFrom.id) return;
+    const dy = e.clientY - dragFrom.y;
+    if (!dragging) {
+      if (dy < DRAG_START || Math.abs(e.clientX - dragFrom.x) > dy) return;
+      dragging = true;
+      dragFrom.el.setPointerCapture?.(dragFrom.id);
+    }
+    dragY = Math.max(0, dy);
+  }
+  function dragEnd() {
+    if (!dragFrom) return;
+    const dismiss = dragging && dragY > DRAG_CLOSE;
+    dragFrom = null;
+    dragging = false;
+    // Past the threshold the sheet finishes the journey on its own (the CSS
+    // transition below) and only then unmounts, so the close reads as one
+    // continuous movement instead of a snap back followed by the fly-out.
+    if (dismiss) {
+      dragY = window.innerHeight;
+      setTimeout(onclose, 160);
+    } else {
+      dragY = 0;
+    }
+  }
+
   /** @type {HTMLTextAreaElement | undefined} */
   let promptEl = $state();
   /** @type {HTMLDivElement | undefined} */
@@ -126,6 +172,7 @@
     untrack(() => {
       aiOpen = false;
       showPrompt = false;
+      dragY = 0;
       angleOpen = false;
       copied = false;
       preferred = getPreferredAI();
@@ -276,10 +323,16 @@
   <aside
     class="panel"
     class:resizing
+    class:dragging
     role="dialog"
     aria-modal="true"
     aria-label={info.title}
     style:width={wide ? `${panelWidth}px` : null}
+    style:transform={dragY ? `translateY(${dragY}px)` : null}
+    onpointerdown={dragDown}
+    onpointermove={dragMove}
+    onpointerup={dragEnd}
+    onpointercancel={dragEnd}
     use:focusTrap
     use:scrollLock
     transition:fly={{ x: wide ? 460 : 0, y: wide ? 0 : 60, duration: 240, opacity: 1 }}
@@ -573,6 +626,13 @@
     overscroll-behavior: contain;
     -webkit-overflow-scrolling: touch;
     padding: 0.6rem 1.1rem 1.6rem;
+    /* Drag-to-dismiss: eased when the sheet settles back or finishes leaving,
+       off while the finger is on it so it tracks 1:1. The open/close fly is a
+       CSS animation, which outranks this and stays untouched. */
+    transition: transform 160ms ease;
+  }
+  .panel.dragging {
+    transition: none;
   }
   @media (min-width: 680px) {
     .panel {
@@ -586,6 +646,7 @@
       border-left: 1px solid var(--border);
       border-radius: 0;
       padding: 1.2rem 1.3rem;
+      transition: none;
     }
   }
   /* Left-edge drag handle to resize the desktop drawer (hidden on mobile). */
@@ -626,6 +687,7 @@
     background: #3a3a40;
     margin: 0.3rem auto 0.7rem;
     flex: none;
+    touch-action: none;
   }
   @media (min-width: 680px) {
     .grabber {
@@ -638,6 +700,9 @@
     justify-content: space-between;
     gap: 0.5rem;
     flex: none;
+    /* The drag-to-dismiss handles: claim the vertical gesture so the browser
+       doesn't read it as a scroll and cancel the pointer mid-drag. */
+    touch-action: none;
   }
   .eyebrow {
     font-size: 0.7rem;

@@ -1084,8 +1084,14 @@
           data-tip={tr('saved.send')}
           aria-label={tr('saved.send')}
         >
+          <!-- The plane's mass sits up and to the right of the 24×24 box's
+               centre, so squared in the button it reads as off-centre. The
+               group re-centres it on its own centroid and shrinks it 10% to
+               fit (stroke bumped to 2.2 so it keeps the siblings' weight). -->
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M22 2 11 13" /><path d="M22 2 15 22l-4-9-9-4Z" />
+            <g transform="translate(12 12) scale(0.92) translate(-12.9 -11.1)" stroke-width="2.2">
+              <path d="M22 2 11 13" /><path d="M22 2 15 22l-4-9-9-4Z" />
+            </g>
           </svg>
         </button>
         <input

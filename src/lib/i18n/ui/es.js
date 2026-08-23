@@ -97,9 +97,9 @@ export default {
     export: 'Descargar cartas',
     import: 'Importar cartas',
     send: 'Enviar las cartas',
-    sendSubject: 'HDchart.app · Copia de mis cartas',
+    sendSubject: 'HDchart.app · Copia de las cartas',
     sendBody:
-      'Adjunto va la copia de seguridad de mis cartas de HDchart.app. Para restaurarlas, abre la app y pulsa el botón de importar.',
+      'Adjunto va la copia de seguridad de las cartas de HDchart.app. Para restaurarlas, abre la app y pulsa el botón de importar.',
     errSend: 'No se pudieron enviar las cartas: {msg}'
   },
 
@@ -172,7 +172,7 @@ export default {
     dlgSaveTitle: 'Guardar carta',
     dlgSavePlaceholder: 'Nombre de la carta',
     dlgSaveConfirm: 'Guardar',
-    shareSheetTitle: 'Carta de Human Design',
+    shareSheetTitle: 'Carta de Diseño Humano',
     shareFallbackTitle: 'Enlace de la carta',
     shareLink: 'Compartir enlace',
     shareLinkAria: 'Compartir enlace de la carta',

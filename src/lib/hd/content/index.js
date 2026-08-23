@@ -517,13 +517,18 @@ function buildCrossInfo(cross, lang = getLocale()) {
   // links to the quarters explainer drawer (aug 2026).
   const qi = quarterGates().findIndex((gs) => gs.includes(pSun));
   const qShort = qi >= 0 ? D.quarter?.[qi]?.short : null;
-  // Reading order: what the ANGLE means (briefly) → why the four gates are read
-  // together → the quarter it sits in + the four gates → the schema → this
-  // cross's reading → handoff.
-  const essence = getCrossEssence(cross, lang);
+  // Reading order: THIS cross's reading first — it is what the drawer is about,
+  // and it used to sit below the schema where nobody read it (author request
+  // 2026-08-23) — then what the ANGLE means, why the four gates are read
+  // together, the quarter it sits in + the four gates, the schema, and the
+  // handoff last.
+  // Hand-written interpretation where it exists; otherwise the reading composed
+  // from the four gate themes, so no cross is ever left bare.
+  const essence = getCrossEssence(cross, lang) ?? [crossReading(cross, lang)].filter(Boolean);
   return {
     title: fillTpl(D.crossTitle, { name: getCrossName(cross, lang) ?? entry.name }),
     paragraphs: [
+      ...essence,
       entry.text,
       D.crossFourGates,
       fillTpl(D.crossCombination, { quarter: qShort ?? '', gates: formatCrossGates(cross, lang) })
@@ -550,9 +555,7 @@ function buildCrossInfo(cross, lang = getLocale()) {
         ]
       }
     ],
-    // Hand-written interpretation where it exists; otherwise the reading
-    // composed from the four gate themes, so no cross is ever left bare.
-    after: [...(essence ?? [crossReading(cross, lang)].filter(Boolean)), D.deeper]
+    after: [D.deeper]
   };
 }
 

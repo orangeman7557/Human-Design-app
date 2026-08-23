@@ -337,7 +337,7 @@ export async function setChartLabels(id, labels) {
 export async function exportCharts() {
   const charts = await db.charts.orderBy('sortOrder').toArray();
   const labels = (await db.labels.orderBy('sortOrder').toArray()).map((l) => l.name);
-  return JSON.stringify({ app: 'human-design-chart-app', version: 2, charts, labels }, null, 2);
+  return JSON.stringify({ app: 'human-design-chart-app', charts, labels }, null, 2);
 }
 
 /**

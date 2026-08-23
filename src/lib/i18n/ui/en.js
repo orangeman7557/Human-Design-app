@@ -89,9 +89,9 @@ export default {
     export: 'Download Charts',
     import: 'Import Charts',
     send: 'Send Charts',
-    sendSubject: 'HDchart.app · My charts backup',
+    sendSubject: 'HDchart.app · Charts backup',
     sendBody:
-      'Attached is the backup of my HDchart.app charts. To restore them, open the app and tap the import button.',
+      'Attached is the backup of the HDchart.app charts. To restore them, open the app and tap the import button.',
     errSend: 'Could not send the charts: {msg}'
   },
 
