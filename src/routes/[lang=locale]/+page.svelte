@@ -768,6 +768,13 @@
     return wide ? short : full;
   }
 
+  // Every row in the list is the same height, so the cards — and the buttons
+  // that stretch with them — never come in two sizes (author, 2026-08-24). The
+  // tall height fits three lines; a card without labels centres its two inside
+  // it. The list only pays for the third line when some chart actually has
+  // labels, so a list with none stays as compact as it was.
+  const anyLabels = $derived(savedCharts.some((c) => (c.labels ?? []).length > 0));
+
   // Same date shape as the chart subtitle ("13/03/1984, 09:30").
   function formatDate(c) {
     const [y, m, d] = (c.birth?.date ?? '').split('-');
@@ -1041,7 +1048,7 @@
     {:else if filteredCharts.length === 0}
       <p class="empty">{tr('saved.noMatches')}</p>
     {:else}
-      <ul>
+      <ul style:--card-h={anyLabels ? '4.25rem' : '3.5rem'}>
         {#each filteredCharts as c, i (c.id)}
           <li
             draggable={!isFiltering}
@@ -1706,7 +1713,9 @@
   .chart-card {
     flex: 1;
     min-width: 0;
-    min-height: 3.5rem;
+    /* Fixed, not min-height: with the two text lines centred, one height
+       serves both the labelled and the unlabelled card. See anyLabels. */
+    height: var(--card-h, 3.5rem);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -1714,7 +1723,7 @@
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--radius);
-    padding: 0.45rem 0.8rem;
+    padding: 0.4rem 0.8rem;
   }
   .chart-card:hover {
     border-color: var(--accent);
@@ -1760,8 +1769,10 @@
     display: flex;
     align-items: center;
     gap: 0.35rem;
-    font-size: 0.78rem;
-    line-height: 1.3;
+    /* Tighter than the meta line above it: the third line has to fit without
+       making the whole list taller than it needs to be. */
+    font-size: 0.72rem;
+    line-height: 1.15;
     color: var(--text-muted);
     min-width: 0;
   }
@@ -1798,9 +1809,10 @@
     color: var(--text-muted);
   }
 
-  /* Right-hand controls on a 2×2 grid: editar over etiquetas on the left,
-     borrar on the right at full height. (Both of the shorter variants were
-     tried on 2026-08-24 and the tall one won.) */
+  /* Right-hand controls on a 2×2 grid: editar over etiquetas on the left, and
+     borrar on the right spanning both rows but sized like one of them, so it
+     sits halfway between the two. (It only reads right now that every row is
+     the same height — see anyLabels.) */
   .actions {
     position: relative;
     display: grid;
@@ -1832,6 +1844,8 @@
   }
   .icon.del {
     grid-area: del;
+    height: calc(50% - 0.2rem);
+    align-self: center;
   }
   .icon:hover {
     color: var(--text);
