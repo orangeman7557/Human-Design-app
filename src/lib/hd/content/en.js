@@ -399,7 +399,7 @@ const overrides = {
           '**Left angle** — a *transpersonal* one: it is fulfilled through other people, through whoever you cross paths with.',
           '**Juxtaposition** — a *fixed* geometry: a very specific role, held fairly independently of the surroundings.'
         ] },
-        'The angle follows directly from the [profile](concept:profile) — a 1/3 profile is right angle, a 5/2 is left angle, and so on. The names come from the **geometry of the mandala**: how far apart the Personality Sun and the Design Sun sit, close to a right angle in one case and adjacent in the others. Neither is better than the other.'
+        'The angle follows directly from the [profile](concept:profile) — a 1/3 profile is right angle, a 5/2 is left angle, and so on. The names come from the **geometry of the mandala**: how far apart the Personality Sun and the Design Sun sit, close to a right angle in one case and adjacent in the others.'
       ]
     }
   },

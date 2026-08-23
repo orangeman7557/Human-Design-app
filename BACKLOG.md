@@ -52,6 +52,18 @@ without competing against a clone of the same code.
 
 Open:
 
+- ℹ️ **macOS share sheet won't offer Mail for the backup file (2026-08-24) — not
+  fixable from the web.** The "send charts" button hands a `.txt` (JSON inside)
+  to `navigator.share`; on macOS Chrome the picker appears but Mail is absent,
+  while the same picker offers Mail for the chart *link*. The OS decides which
+  services accept which item types, and plain-text files are not offered to
+  Mail. The `.txt` is not negotiable either: Chromium validates shared files
+  against two allowlists — extension AND MIME — and neither `.json` nor
+  `application/json` is on them, so a `.json` backup cannot be shared at all.
+  Android (the target case: back up by email from the phone) works, Gmail picks
+  up the share title as the subject and the text as the body. Accepted as is by
+  the author; on desktop the button falls back to the plain download.
+
 - ⬜ **Install link missing on mobile Chrome (betatester).** "instalar como app"
   shows on Mac Chrome but not on the phone (both Chrome). Only shows when
   `install.mode` is set (`beforeinstallprompt`, Chromium). Investigate Android

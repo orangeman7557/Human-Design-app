@@ -512,18 +512,19 @@
     searchOpen = false;
   }
 
-  // Assigning/unassigning closes the menu (reopen to add more — author, aug 2026).
+  // The menu stays open while labels are ticked, so several can be set in one
+  // go; it closes on the button again, or on a click outside (author request
+  // 2026-08-24, reversing the close-on-pick of aug 2026).
   async function toggleLabel(c, name) {
     const cur = c.labels ?? [];
     const next = cur.includes(name) ? cur.filter((n) => n !== name) : [...cur, name];
     c.labels = next;
     savedCharts = [...savedCharts];
-    labelMenuFor = null;
     await setChartLabels(c.id, next);
   }
 
   // Create a label from the inline field at the bottom of the assign menu, then
-  // assign it to this chart (which closes the menu, like any other assignment).
+  // assign it to this chart. The menu stays open, like any other assignment.
   async function createFromMenu(c) {
     const res = await createLabel(menuNewName);
     if ('error' in res) {
