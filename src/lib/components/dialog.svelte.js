@@ -50,8 +50,9 @@ export const dialog = {
       defaultValue: '',
       placeholder: '',
       // Bounded by default: the only prompt in the app is the chart name, and
-      // an unbounded one grew the saved-charts row without limit.
-      maxLength: 60,
+      // an unbounded one grew the saved-charts row without limit. 50 matches
+      // the form's own field (2026-08-24).
+      maxLength: 50,
       confirmLabel: t('dialog.ok'),
       cancelLabel: t('dialog.cancel'),
       ...opts

@@ -21,6 +21,12 @@ const FOCUSABLE = [
 export function focusTrap(node) {
   const prev = /** @type {HTMLElement | null} */ (document.activeElement);
   if (!node.hasAttribute('tabindex')) node.setAttribute('tabindex', '-1');
+  // …and no focus ring around the whole overlay: the container is focused only
+  // to scope the trap, so a browser outline on it reads as "the drawer itself
+  // is selected". The controls inside keep their own rings. (2026-08-24: the
+  // ring started showing on the drawer when it could be opened by tapping the
+  // element rather than a button, i.e. with nothing focused beforehand.)
+  node.style.outline = 'none';
   node.focus({ preventScroll: true });
 
   function onKeydown(e) {

@@ -377,11 +377,28 @@
     // table is genuinely untouched.
     await refreshList();
     await seedDefaultLabels(defaultLabels());
-    // A translated label is a rename, so the charts already listed carry the
-    // old word: reload them.
+    // The cookie-vault restore inside refreshList may have brought labels back,
+    // so run the language pass again over whatever is there now.
+    syncedLang = null;
+    await syncLabels();
+  }
+
+  // Switching language is a client-side navigation between /es and /en: the
+  // page's load runs again but onMount does not, so the sync hangs off `lang`
+  // instead — the labels change with everything else, no reload.
+  let syncedLang = null;
+  async function syncLabels() {
+    if (syncedLang === lang) return;
+    syncedLang = lang;
+    // A translated label is a rename, so the charts already listed still carry
+    // the old word: reload them too.
     if (await syncDefaultLabels(defaultLabels(), defaultLabelsByLocale())) await refreshList();
     await refreshLabels();
   }
+  $effect(() => {
+    lang;
+    syncLabels();
+  });
 
   // The seeded labels ("Familia", "Trabajo"…) are UI text, so they follow the
   // app's language — this runs on every load, which is also every language
@@ -818,7 +835,7 @@
   <form onsubmit={submit}>
     <label>
       <span>{tr('form.name')}</span>
-      <input type="text" bind:value={name} autocomplete="off" use:selectOnFocus />
+      <input type="text" bind:value={name} maxlength="50" autocomplete="off" use:selectOnFocus />
     </label>
 
     <!-- Own day/month/year entry (DateField) instead of the native date
@@ -1781,10 +1798,10 @@
     color: var(--text-muted);
   }
 
-  /* Right-hand controls on a 2×2 grid: editar over etiquetas on the left,
-     borrar top-right, and the fourth cell left empty (author request
-     2026-08-24) — three buttons of the same size read better than a tall one
-     beside two short ones. */
+  /* Right-hand controls on a 2×2 grid: editar over etiquetas on the left, and
+     borrar on the right spanning both rows but sized like one of them, so it
+     sits halfway between the two (author request 2026-08-24) — three buttons
+     of the same size read better than a tall one beside two short ones. */
   .actions {
     position: relative;
     display: grid;
@@ -1792,7 +1809,7 @@
     grid-template-rows: 1fr 1fr;
     grid-template-areas:
       'edit del'
-      'labels .';
+      'labels del';
     gap: 0.4rem;
   }
   .icon {
@@ -1816,6 +1833,10 @@
   }
   .icon.del {
     grid-area: del;
+    /* One row tall — half the stack minus the gap between its two buttons —
+       and centred against them. */
+    height: calc(50% - 0.2rem);
+    align-self: center;
   }
   .icon:hover {
     color: var(--text);
@@ -1834,6 +1855,9 @@
      roughly the height of the "cartas guardadas" title — and narrow. */
   .search {
     position: relative;
+    /* Wrap the field, don't stretch to the heading's row height: the lupa is
+       centred against THIS box, so a stretched one left it sitting high. */
+    align-self: center;
     flex: 0 1 140px;
     min-width: 0;
   }
@@ -1888,11 +1912,12 @@
   .search-clear:hover {
     color: var(--text);
   }
-  /* Desktop: notably shorter still (author, aug 2026). */
+  /* Desktop: notably shorter still (author, aug 2026) — but not cramped: a
+     couple of pixels back on each side (2026-08-24). */
   @media (min-width: 835px) {
     .search input {
-      padding-top: 0.08rem;
-      padding-bottom: 0.08rem;
+      padding-top: 0.2rem;
+      padding-bottom: 0.2rem;
     }
   }
 
