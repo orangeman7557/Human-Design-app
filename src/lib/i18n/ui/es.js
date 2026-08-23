@@ -292,7 +292,7 @@ export default {
     // Inline link in the "acerca de" modal that opens the donate modal.
     contribA: 'Si te apetece contribuir o simplemente agradecer, puedes hacerlo ',
     contribLink: 'aquí',
-    contribB: ' 🙂',
+    contribB: '.',
     // Closing line of the donate modal → opens "notificar un fallo" preset to a message.
     messageA: 'También puedes ',
     messageLink: 'enviarme un mensaje',

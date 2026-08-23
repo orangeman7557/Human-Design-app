@@ -278,7 +278,7 @@ export default {
     // Inline link in the "about" modal that opens the donate modal.
     contribA: 'If you feel like contributing or simply saying thanks, you can do so ',
     contribLink: 'here',
-    contribB: ' 🙂',
+    contribB: '.',
     // Closing line of the donate modal → opens "report a bug" preset to a message.
     messageA: 'You can also ',
     messageLink: 'send me a message',

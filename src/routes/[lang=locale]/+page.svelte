@@ -835,7 +835,7 @@
   <form onsubmit={submit}>
     <label>
       <span>{tr('form.name')}</span>
-      <input type="text" bind:value={name} maxlength="50" autocomplete="off" use:selectOnFocus />
+      <input type="text" bind:value={name} maxlength="40" autocomplete="off" use:selectOnFocus />
     </label>
 
     <!-- Own day/month/year entry (DateField) instead of the native date
@@ -1798,10 +1798,9 @@
     color: var(--text-muted);
   }
 
-  /* Right-hand controls on a 2×2 grid: editar over etiquetas on the left, and
-     borrar on the right spanning both rows but sized like one of them, so it
-     sits halfway between the two (author request 2026-08-24) — three buttons
-     of the same size read better than a tall one beside two short ones. */
+  /* Right-hand controls on a 2×2 grid: editar over etiquetas on the left,
+     borrar on the right at full height. (Both of the shorter variants were
+     tried on 2026-08-24 and the tall one won.) */
   .actions {
     position: relative;
     display: grid;
@@ -1833,10 +1832,6 @@
   }
   .icon.del {
     grid-area: del;
-    /* One row tall — half the stack minus the gap between its two buttons —
-       and centred against them. */
-    height: calc(50% - 0.2rem);
-    align-self: center;
   }
   .icon:hover {
     color: var(--text);
