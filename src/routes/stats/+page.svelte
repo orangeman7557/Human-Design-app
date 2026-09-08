@@ -136,7 +136,14 @@
   const by = (v) => PAD.t + innerH - (v / yMax) * innerH;
 
   const coords = (key) => buckets.items.map((b, i) => ({ x: bx(i), y: by(b[key]) }));
-  const asPoints = (key) => coords(key).map((p) => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ');
+  const pts = (ps) => ps.map((p) => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ');
+
+  // The last bucket always holds today, so it is always **in progress**: a
+  // month three days in reads as a collapse unless it says so. Its segment is
+  // drawn dashed, its dot hollow, and the readout and legend name it.
+  const lastIdx = $derived(buckets.items.length - 1);
+  const solidPoints = (key) => pts(coords(key).slice(0, -1));
+  const tailPoints = (key) => pts(coords(key).slice(-2));
 
   // Axis ticks: short. Months go by name, not number — "8/26" next to a "3/9"
   // day tick reads as another day/month.
@@ -185,6 +192,7 @@
   }
 
   const hovered = $derived(hover !== null ? buckets.items[hover] : null);
+  const partialNote = $derived(`${UNIT_NAME[buckets.unit]} en curso`);
   const headTitle = $derived.by(() => {
     const r = RANGES.find((x) => x.key === range) ?? RANGES[0];
     const per = `Uso por ${UNIT_NAME[buckets.unit]}`;
@@ -263,9 +271,19 @@
               <line class="guide" x1={bx(hover)} y1={PAD.t} x2={bx(hover)} y2={CH - PAD.b} />
             {/if}
             {#each LINES as l}
-              <polyline fill="none" stroke={l.color} stroke-width="2" stroke-linejoin="round" points={asPoints(l.key)} />
+              <polyline fill="none" stroke={l.color} stroke-width="2" stroke-linejoin="round" points={solidPoints(l.key)} />
+              {#if buckets.items.length > 1}
+                <polyline fill="none" stroke={l.color} stroke-width="2" stroke-linejoin="round" stroke-dasharray="4 3" points={tailPoints(l.key)} />
+              {/if}
               {#each coords(l.key) as p, i}
-                <circle cx={p.x} cy={p.y} r={hover === i ? 3.6 : 2.2} fill={l.color} />
+                <circle
+                  cx={p.x}
+                  cy={p.y}
+                  r={hover === i ? 3.6 : 2.2}
+                  fill={i === lastIdx ? 'var(--surface)' : l.color}
+                  stroke={i === lastIdx ? l.color : 'none'}
+                  stroke-width="1.5"
+                />
               {/each}
             {/each}
           </svg>
@@ -276,7 +294,7 @@
               class:flip={bx(hover) > CW * 0.62}
               style="left:{(bx(hover) / CW) * 100}%"
             >
-              <span class="ro-when">{fullLabel(hovered.at, buckets.unit)}</span>
+              <span class="ro-when">{fullLabel(hovered.at, buckets.unit)}{hover === lastIdx ? ' · en curso' : ''}</span>
               {#each LINES as l}
                 <span class="ro-row">
                   <i style="background:{l.color}"></i>{l.label}<b>{fmt(hovered[l.key])}</b>
@@ -289,6 +307,7 @@
           {#each LINES as l}
             <span class="lg"><i style="background:{l.color}"></i>{l.label}</span>
           {/each}
+          <span class="lg partial"><i class="dash"></i>{partialNote}</span>
         </span>
       {:else}
         <p class="muted small">Sin datos todavía.</p>
@@ -544,6 +563,16 @@
     margin-top: 0.5rem;
     font-size: 0.72rem;
     color: var(--text-muted);
+    flex-wrap: wrap;
+  }
+  /* Dashed swatch for the in-progress tail: the same key as the lines above,
+     so the reader ties it to what they see instead of guessing. */
+  .lg.partial {
+    color: #82828a;
+  }
+  .lg i.dash {
+    width: 14px;
+    background: repeating-linear-gradient(90deg, currentColor 0 4px, transparent 4px 7px);
   }
   /* On a phone the plot is only ~100 px tall, so the readout gives back what
      it can: less padding, tighter minimum, one step down in size. */
