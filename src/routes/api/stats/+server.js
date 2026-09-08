@@ -44,7 +44,7 @@ export async function GET({ url, platform }) {
 
   const today = new Date().toISOString().slice(0, 10);
   const totals = {};
-  const series = []; // per-day chart counts, for the sparkline
+  const series = []; // one entry per day with data, ascending; the chart buckets it
   let writesToday = 0;
 
   days.forEach((d, i) => {
@@ -71,7 +71,10 @@ export async function GET({ url, platform }) {
     milestones: { m2: nz(totals.m2), m3: nz(totals.m3), m5: nz(totals.m5), m10: nz(totals.m10) },
     langs: { es: nz(totals['lang.es']), en: nz(totals['lang.en']) },
     installs: nz(totals.install),
-    series: series.slice(-30),
+    // Whole history, not a 30-day window: the dashboard's range selector
+    // (month / 3 months / year / all) buckets it client-side. One small object
+    // per day with traffic, so even years of it stay a few KB.
+    series,
     writesToday,
     writeLimit: WRITE_LIMIT
   });

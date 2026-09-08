@@ -5,6 +5,7 @@
      Aggregate numbers only; nothing here identifies anyone. -->
 <script>
   import { onMount } from 'svelte';
+  import { DateTime } from 'luxon';
 
   let data = $state(null);
   let error = $state('');
@@ -67,40 +68,134 @@
   const innerW = CW - PAD.l - PAD.r;
   const innerH = CH - PAD.t - PAD.b;
 
+  // Time range: each one fixes how far back the window reaches and the unit the
+  // daily rows are summed into, so a wider window doesn't turn into a hairball
+  // of hundreds of points. 'todo' picks its unit from the history it finds.
+  const RANGES = [
+    { key: '1m', label: '1 mes', days: 30, unit: 'day' },
+    { key: '3m', label: '3 meses', days: 91, unit: 'week' },
+    { key: '1y', label: '1 año', days: 365, unit: 'month' },
+    { key: 'all', label: 'todo', days: null, unit: 'auto' }
+  ];
+  const UNIT_NAME = { day: 'día', week: 'semana', month: 'mes', year: 'año' };
+  let range = $state('1m');
+  /** index into `buckets`, or null: the point the pointer is on */
+  let hover = $state(null);
+
+  function setRange(next) {
+    range = next;
+    hover = null;
+  }
+
+  // Dense buckets, zeros included: KV only holds a document for days with
+  // traffic, so a chart built from the rows alone would silently close the gaps
+  // and draw a quiet week as if it never happened.
+  const buckets = $derived.by(() => {
+    const rows = data?.series ?? [];
+    if (!rows.length) return { unit: 'day', items: [] };
+
+    const r = RANGES.find((x) => x.key === range) ?? RANGES[0];
+    const today = DateTime.utc().startOf('day');
+    const first = DateTime.fromISO(rows[0].date, { zone: 'utc' }).startOf('day');
+    const start = r.days ? today.minus({ days: r.days - 1 }) : first;
+
+    let unit = r.unit;
+    if (unit === 'auto') {
+      const months = today.diff(start, 'months').months;
+      unit = months > 36 ? 'year' : months > 2 ? 'month' : 'day';
+    }
+
+    const step = { day: { days: 1 }, week: { weeks: 1 }, month: { months: 1 }, year: { years: 1 } }[unit];
+    const items = [];
+    const index = new Map();
+    for (let t = start.startOf(unit); t <= today; t = t.plus(step)) {
+      index.set(t.toISODate(), items.length);
+      items.push({ at: t, chart: 0, open: 0, device: 0 });
+    }
+
+    for (const row of rows) {
+      const d = DateTime.fromISO(row.date, { zone: 'utc' });
+      if (d < start.startOf(unit) || d > today) continue;
+      const i = index.get(d.startOf(unit).toISODate());
+      if (i === undefined) continue;
+      items[i].chart += row.chart;
+      items[i].open += row.open;
+      items[i].device += row.device;
+    }
+    return { unit, items };
+  });
+
   const yMax = $derived(
-    data && data.series.length
-      ? Math.max(1, ...data.series.flatMap((d) => [d.chart, d.open, d.device]))
-      : 1
+    Math.max(1, ...buckets.items.flatMap((b) => [b.chart, b.open, b.device]))
   );
 
-  function coords(key) {
-    const s = data?.series ?? [];
-    const n = s.length;
-    return s.map((d, i) => ({
-      x: PAD.l + (n > 1 ? (i * innerW) / (n - 1) : innerW / 2),
-      y: PAD.t + innerH - (d[key] / yMax) * innerH
-    }));
-  }
+  const bx = (i) => {
+    const n = buckets.items.length;
+    return PAD.l + (n > 1 ? (i * innerW) / (n - 1) : innerW / 2);
+  };
+  const by = (v) => PAD.t + innerH - (v / yMax) * innerH;
+
+  const coords = (key) => buckets.items.map((b, i) => ({ x: bx(i), y: by(b[key]) }));
   const asPoints = (key) => coords(key).map((p) => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ');
 
-  const dayLabel = (iso) => {
-    const [, m, d] = iso.split('-');
-    return `${Number(d)}/${Number(m)}`;
-  };
+  // Axis ticks: short. Months go by name, not number — "8/26" next to a "3/9"
+  // day tick reads as another day/month.
+  const MONTHS = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+  function tickLabel(at, unit) {
+    if (unit === 'year') return String(at.year);
+    if (unit === 'month') return `${MONTHS[at.month - 1]} ${String(at.year).slice(2)}`;
+    return `${at.day}/${at.month}`;
+  }
+  function fullLabel(at, unit) {
+    if (unit === 'year') return String(at.year);
+    if (unit === 'month') return at.setLocale('es').toFormat('LLLL yyyy');
+    if (unit === 'week') return `semana del ${at.day}/${at.month}/${at.year}`;
+    return at.setLocale('es').toFormat('d LLL yyyy');
+  }
+
+  // At most ~6 ticks, always including the last bucket, so labels never collide.
   const xLabels = $derived.by(() => {
-    const s = data?.series ?? [];
-    if (!s.length) return [];
-    const n = s.length;
-    const idxs = n <= 2 ? s.map((_, i) => i) : [0, Math.floor((n - 1) / 2), n - 1];
-    return idxs.map((i) => ({
-      x: PAD.l + (n > 1 ? (i * innerW) / (n - 1) : innerW / 2),
-      label: dayLabel(s[i].date)
-    }));
+    const { items, unit } = buckets;
+    const n = items.length;
+    if (!n) return [];
+    const stride = Math.max(1, Math.ceil(n / 6));
+    const out = [];
+    for (let i = n - 1; i >= 0; i -= stride) out.unshift({ x: bx(i), label: tickLabel(items[i].at, unit) });
+    return out;
+  });
+
+  /** Pointer → nearest bucket. The SVG scales, so map client px through its box. */
+  function pointAt(e) {
+    const n = buckets.items.length;
+    if (!n) return;
+    const box = e.currentTarget.getBoundingClientRect();
+    const x = ((e.clientX - box.left) / box.width) * CW;
+    const t = n > 1 ? (x - PAD.l) / innerW : 0;
+    hover = Math.max(0, Math.min(n - 1, Math.round(t * (n - 1))));
+  }
+
+  // Touch destroys the pointer on lift, which fires pointerleave — so only a
+  // mouse leaving clears the readout; a tap keeps it until the next tap.
+  function onChartLeave(e) {
+    if (e.pointerType === 'mouse') hover = null;
+  }
+
+  function onDocPointerDown(e) {
+    if (hover !== null && !e.target.closest('.chart-wrap')) hover = null;
+  }
+
+  const hovered = $derived(hover !== null ? buckets.items[hover] : null);
+  const headTitle = $derived.by(() => {
+    const r = RANGES.find((x) => x.key === range) ?? RANGES[0];
+    const per = `Uso por ${UNIT_NAME[buckets.unit]}`;
+    return r.days ? `${per} · ${r.key === '1m' ? 'último mes' : r.label === '3 meses' ? 'últimos 3 meses' : 'último año'}` : `${per} · todo el historial`;
   });
 
   const OPEN_TIP =
     'Cada vez que se carga la app (una visita): incluye recargas y reaperturas. No es lo mismo que dispositivos, que cuenta cada navegador una sola vez.';
 </script>
+
+<svelte:window onpointerdown={onDocPointerDown} />
 
 <svelte:head>
   <title>stats</title>
@@ -139,29 +234,62 @@
 
     <section class="card">
       <div class="card-head">
-        <span>Uso diario · últimos {data.series.length} días</span>
-        <span class="legend">
+        <span>{headTitle}</span>
+        <div class="toggle range" role="group" aria-label="Rango de tiempo">
+          {#each RANGES as r}
+            <button class:active={range === r.key} onclick={() => setRange(r.key)}>{r.label}</button>
+          {/each}
+        </div>
+      </div>
+      {#if buckets.items.length}
+        <div class="chart-wrap">
+          <svg
+            class="chart"
+            viewBox="0 0 {CW} {CH}"
+            role="img"
+            aria-label={`Uso por ${UNIT_NAME[buckets.unit]}: cartas, aperturas y dispositivos`}
+            onpointermove={pointAt}
+            onpointerdown={pointAt}
+            onpointerleave={onChartLeave}
+          >
+            <line class="gridline" x1={PAD.l} y1={PAD.t} x2={CW - PAD.r} y2={PAD.t} />
+            <line class="gridline" x1={PAD.l} y1={CH - PAD.b} x2={CW - PAD.r} y2={CH - PAD.b} />
+            <text class="axis" x={PAD.l - 5} y={PAD.t + 4} text-anchor="end">{yMax}</text>
+            <text class="axis" x={PAD.l - 5} y={CH - PAD.b} text-anchor="end">0</text>
+            {#each xLabels as xl}
+              <text class="axis" x={xl.x} y={CH - 7} text-anchor="middle">{xl.label}</text>
+            {/each}
+            {#if hover !== null}
+              <line class="guide" x1={bx(hover)} y1={PAD.t} x2={bx(hover)} y2={CH - PAD.b} />
+            {/if}
+            {#each LINES as l}
+              <polyline fill="none" stroke={l.color} stroke-width="2" stroke-linejoin="round" points={asPoints(l.key)} />
+              {#each coords(l.key) as p, i}
+                <circle cx={p.x} cy={p.y} r={hover === i ? 3.6 : 2.2} fill={l.color} />
+              {/each}
+            {/each}
+          </svg>
+
+          {#if hovered}
+            <div
+              class="readout"
+              class:flip={bx(hover) > CW * 0.62}
+              style="left:{(bx(hover) / CW) * 100}%"
+            >
+              <span class="ro-when">{fullLabel(hovered.at, buckets.unit)}</span>
+              {#each LINES as l}
+                <span class="ro-row">
+                  <i style="background:{l.color}"></i>{l.label}<b>{fmt(hovered[l.key])}</b>
+                </span>
+              {/each}
+            </div>
+          {/if}
+        </div>
+        <span class="legend under">
           {#each LINES as l}
             <span class="lg"><i style="background:{l.color}"></i>{l.label}</span>
           {/each}
         </span>
-      </div>
-      {#if data.series.length}
-        <svg class="chart" viewBox="0 0 {CW} {CH}" role="img" aria-label="Uso diario por día">
-          <line class="gridline" x1={PAD.l} y1={PAD.t} x2={CW - PAD.r} y2={PAD.t} />
-          <line class="gridline" x1={PAD.l} y1={CH - PAD.b} x2={CW - PAD.r} y2={CH - PAD.b} />
-          <text class="axis" x={PAD.l - 5} y={PAD.t + 4} text-anchor="end">{yMax}</text>
-          <text class="axis" x={PAD.l - 5} y={CH - PAD.b} text-anchor="end">0</text>
-          {#each xLabels as xl}
-            <text class="axis" x={xl.x} y={CH - 7} text-anchor="middle">{xl.label}</text>
-          {/each}
-          {#each LINES as l}
-            <polyline fill="none" stroke={l.color} stroke-width="2" stroke-linejoin="round" points={asPoints(l.key)} />
-            {#each coords(l.key) as p}
-              <circle cx={p.x} cy={p.y} r="2.2" fill={l.color} />
-            {/each}
-          {/each}
-        </svg>
       {:else}
         <p class="muted small">Sin datos todavía.</p>
       {/if}
@@ -344,10 +472,90 @@
     border-radius: 2px;
     display: inline-block;
   }
+  /* Range selector: the env toggle's chrome, one size down. */
+  .toggle.range button {
+    padding: 0.24rem 0.5rem;
+    font-size: 0.72rem;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+  .chart-wrap {
+    position: relative;
+  }
   .chart {
     width: 100%;
     height: auto;
     display: block;
+    /* Reading a point is a tap or a drag along the line; the page must still
+       scroll vertically under the finger. */
+    touch-action: pan-y;
+  }
+  .chart .guide {
+    stroke: var(--text-muted);
+    stroke-width: 1;
+    stroke-dasharray: 3 3;
+    opacity: 0.6;
+  }
+  /* Readout: anchored to the hovered point, flipping to its left half-way
+     across so it never runs off the card. */
+  .readout {
+    position: absolute;
+    top: 0;
+    display: grid;
+    gap: 0.1rem;
+    min-width: 8.5rem;
+    padding: 0.45rem 0.55rem;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    box-shadow: 0 8px 24px #0009;
+    font-size: 0.74rem;
+    color: var(--text);
+    pointer-events: none;
+    transform: translateX(10px);
+    z-index: 5;
+  }
+  .readout.flip {
+    transform: translateX(-100%) translateX(-10px);
+  }
+  .ro-when {
+    color: var(--text-muted);
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.15rem;
+  }
+  .ro-row {
+    display: grid;
+    grid-template-columns: 10px 1fr auto;
+    align-items: center;
+    gap: 0.4rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .ro-row i {
+    width: 10px;
+    height: 3px;
+    border-radius: 2px;
+  }
+  .ro-row b {
+    font-weight: 600;
+  }
+  .legend.under {
+    margin-top: 0.5rem;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+  }
+  /* On a phone the plot is only ~100 px tall, so the readout gives back what
+     it can: less padding, tighter minimum, one step down in size. */
+  @media (max-width: 520px) {
+    .readout {
+      min-width: 7.4rem;
+      padding: 0.35rem 0.45rem;
+      font-size: 0.7rem;
+    }
+    .readout .ro-when {
+      font-size: 0.62rem;
+    }
   }
   .chart .gridline {
     stroke: var(--border);
