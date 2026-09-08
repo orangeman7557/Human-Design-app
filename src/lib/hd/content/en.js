@@ -499,7 +499,7 @@ const overrides = {
     sacral: {
       title: 'Sacral Authority',
       paragraphs: [
-        'The authority of most Generators. It lives in the **[Sacral Center](center:sacral)**, which answers **in the moment** with a sound or a gut movement — a rising "uh-huh" of yes, a flat "mm-mm" of no — to something concrete. The body speaks first.',
+        'Sacral authority lives in the [Sacral Center](center:sacral), which answers **in the moment** with a sound or a gut movement — a rising "uh-huh" of yes, a flat "mm-mm" of no — to something concrete: **the body says yes or no.**',
         'It is **immediate and physical**: it does not reason, it reacts. It works best with yes/no questions and clouds over as soon as the mind starts building a case. Learning to catch that first answer from the belly, and to trust it, is the whole practice.'
       ]
     },

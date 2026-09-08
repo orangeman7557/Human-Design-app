@@ -319,9 +319,12 @@
   /** @type {import('$lib/db/charts.js').Label[]} global list, in order */
   let labels = $state([]);
   let search = $state('');
-  let searchOpen = $state(false);
-  /** @type {string[]} last searches (max 3, most recent first) */
-  let recentSearches = $state([]);
+  /** true while the filter menu (labels + types) hangs off the funnel button */
+  let filterOpen = $state(false);
+  /** @type {string[]} label names being filtered on */
+  let filterLabels = $state([]);
+  /** @type {string[]} type keys being filtered on */
+  let filterTypes = $state([]);
   /** chart id whose label menu is open, or null */
   let labelMenuFor = $state(null);
   let labelManagerOpen = $state(false);
@@ -329,15 +332,13 @@
   let menuNewName = $state('');
   /** @type {HTMLInputElement | undefined} */
   let searchInput = $state();
-  // Non-reactive: true right after a suggestion (recent/label/type) was applied,
-  // so the following blur doesn't record it as a recent search.
-  let suggestionApplied = false;
 
-  const RECENTS_KEY = 'hd:recent-searches';
   // Accent- and case-insensitive: "alva" must find "Álvaro".
   const norm = (s) =>
     (s ?? '').toString().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-  const isFiltering = $derived(!!search.trim());
+  const isFiltering = $derived(
+    !!search.trim() || filterLabels.length > 0 || filterTypes.length > 0
+  );
 
   // The five HD types, in the community's canonical order (G, MG, P, M, R).
   const TYPE_ORDER = ['generator', 'manifesting-generator', 'projector', 'manifestor', 'reflector'];
@@ -345,15 +346,31 @@
     TYPE_ORDER.filter((k) => typeLabels[k]).map((k) => ({ key: k, label: typeLabels[k] }))
   );
 
-  // Filter over what the chip shows: name, type, date, place, labels.
+  // Free text searches what the chip shows: name, type, date, place, labels.
+  function matchesText(c, q) {
+    return [c.name, typeLabels[c.type] ?? c.type, formatDate(c), cityCountry(c.birth?.placeLabel), ...(c.labels ?? [])]
+      .some((v) => norm(v).includes(q));
+  }
+
+  // Picked filters add up inside a group and narrow between groups: "Familia or
+  // Trabajo" AND "a Generator". The type match is by key, never by its label —
+  // a "Generador" filter must not drag the Generadores manifestantes along.
   const filteredCharts = $derived.by(() => {
     const q = norm(search).trim();
-    if (!q) return savedCharts;
-    return savedCharts.filter((c) =>
-      [c.name, typeLabels[c.type] ?? c.type, formatDate(c), cityCountry(c.birth?.placeLabel), ...(c.labels ?? [])]
-        .some((v) => norm(v).includes(q))
-    );
+    if (!q && !filterLabels.length && !filterTypes.length) return savedCharts;
+    return savedCharts.filter((c) => {
+      if (q && !matchesText(c, q)) return false;
+      if (filterLabels.length && !(c.labels ?? []).some((n) => filterLabels.includes(n))) return false;
+      if (filterTypes.length && !filterTypes.includes(c.type)) return false;
+      return true;
+    });
   });
+
+  // The chips under the search row, labels first, in the global label order.
+  const activeFilters = $derived([
+    ...filterLabels.map((name) => ({ kind: 'label', value: name, text: name })),
+    ...filterTypes.map((key) => ({ kind: 'type', value: key, text: typeLabels[key] ?? key }))
+  ]);
 
   // Keep the search box from moving while filtering: reserve the list's natural
   // (unfiltered) height so the whole centred block doesn't re-center as rows drop.
@@ -367,7 +384,6 @@
 
   onMount(() => {
     restoreLastBirth();
-    loadRecents();
     initLists();
   });
 
@@ -394,6 +410,12 @@
     // the old word: reload them too.
     if (await syncDefaultLabels(defaultLabels(), defaultLabelsByLocale())) await refreshList();
     await refreshLabels();
+    // A seeded label translated by that sync is a rename, so a filter holding
+    // the old word would match nothing: drop the names that no longer exist.
+    const known = new Set(labels.map((l) => l.name));
+    filterLabels = filterLabels.filter(
+      (n) => known.has(n) || savedCharts.some((c) => (c.labels ?? []).includes(n))
+    );
   }
   $effect(() => {
     lang;
@@ -418,81 +440,48 @@
     }
   }
 
-  function loadRecents() {
-    try {
-      const arr = JSON.parse(localStorage.getItem(RECENTS_KEY) ?? '[]');
-      if (Array.isArray(arr)) recentSearches = arr.filter((s) => typeof s === 'string').slice(0, 3);
-    } catch {
-      // ignore malformed storage
-    }
-  }
-
-  function pushRecent(text) {
-    const v = text.trim();
-    if (!v) return;
-    recentSearches = [v, ...recentSearches.filter((s) => s.toLowerCase() !== v.toLowerCase())].slice(0, 3);
-    try {
-      localStorage.setItem(RECENTS_KEY, JSON.stringify(recentSearches));
-    } catch {
-      // ignore — recents are a convenience, not data
-    }
-  }
-
-  function removeRecent(text) {
-    recentSearches = recentSearches.filter((s) => s !== text);
-    try {
-      localStorage.setItem(RECENTS_KEY, JSON.stringify(recentSearches));
-    } catch {
-      // ignore
-    }
-  }
-
-  // Applying a suggestion (a recent, a label or a type): fills the field and
-  // filters, but is NOT recorded as a recent (only typed searches are).
-  function applySearch(text) {
-    search = text;
-    suggestionApplied = true;
-    searchOpen = false;
-  }
-
   function clearSearch() {
     search = '';
-    suggestionApplied = false;
-    // Drop focus so the dropdown closes and the full list shows again.
-    searchOpen = false;
     searchInput?.blur();
   }
 
-  // A chart chip's label, tapped: fill the search with it and filter, without
-  // opening the dropdown (applySearch leaves it closed and doesn't focus).
-  function pickChipLabel(name) {
-    applySearch(name);
+  // The funnel button owns the filter menu; the field is plain text again.
+  function toggleFilterMenu() {
+    filterOpen = !filterOpen;
+    labelMenuFor = null;
   }
-  function onChipKey(e, name) {
+
+  // Every entry point into the filter goes through these two, so a label tapped
+  // on a chart row and one ticked in the menu do exactly the same thing.
+  function toggleLabelFilter(name) {
+    const next = filterLabels.includes(name)
+      ? filterLabels.filter((n) => n !== name)
+      : [...filterLabels, name];
+    // Chips read in the global label order, whatever order they were picked in;
+    // a name only an imported chart carries goes last.
+    const order = labels.map((l) => l.name);
+    filterLabels = [...order.filter((n) => next.includes(n)), ...next.filter((n) => !order.includes(n))];
+  }
+
+  function toggleTypeFilter(key) {
+    filterTypes = filterTypes.includes(key)
+      ? filterTypes.filter((k) => k !== key)
+      : TYPE_ORDER.filter((k) => k === key || filterTypes.includes(k));
+  }
+
+  const removeFilter = (f) =>
+    f.kind === 'label' ? toggleLabelFilter(f.value) : toggleTypeFilter(f.value);
+
+  function onFilterKey(e, kind, value) {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
-      pickChipLabel(name);
+      if (kind === 'label') toggleLabelFilter(value);
+      else toggleTypeFilter(value);
     }
-  }
-
-  function onSearchInput() {
-    searchOpen = true;
-    suggestionApplied = false;
-  }
-
-  function onSearchBlur() {
-    if (search.trim() && !suggestionApplied) pushRecent(search);
-    setTimeout(() => (searchOpen = false), 150);
   }
 
   function onSearchKeydown(e) {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      pushRecent(search);
-      searchOpen = false;
-    } else if (e.key === 'Escape') {
-      searchOpen = false;
-    }
+    if (e.key === 'Escape') clearSearch();
   }
 
   // Labels in the global order, restricted to those assigned to this chart
@@ -509,7 +498,7 @@
   function toggleLabelMenu(id) {
     labelMenuFor = labelMenuFor === id ? null : id;
     menuNewName = '';
-    searchOpen = false;
+    filterOpen = false;
   }
 
   // The menu stays open while labels are ticked, so several can be set in one
@@ -759,13 +748,18 @@
     };
   }
 
+  // The type now carries an icon (11px + its 0.22rem gap), which the name row
+  // has to pay for before deciding whether the long label still fits.
+  const TYPE_ICON_W = 15;
+
   function rowType(c) {
     const full = typeLabels[c.type] ?? c.type;
     if (!c.type || !rowFont || !nameBoxW) return full;
     const short = tr('types.short.' + c.type);
     if (!short || short === full) return full;
     const wide =
-      textWidth(c.name, rowFont.name) + rowFont.gap + textWidth(full, rowFont.type) > nameBoxW;
+      textWidth(c.name, rowFont.name) + rowFont.gap + TYPE_ICON_W + textWidth(full, rowFont.type) >
+      nameBoxW;
     return wide ? short : full;
   }
 
@@ -952,9 +946,15 @@
     </svg>
   {/snippet}
 
-  {#snippet personIcon(size)}
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  {#snippet personIcon(size, filled = false)}
+    <svg class="person-ic" width={size} height={size} viewBox="0 0 24 24" fill={filled ? 'currentColor' : 'none'} stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
       <circle cx="12" cy="8" r="4" /><path d="M4 21v-1a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v1" />
+    </svg>
+  {/snippet}
+
+  {#snippet funnelIcon(size, filled = false)}
+    <svg width={size} height={size} viewBox="0 0 24 24" fill={filled ? 'currentColor' : 'none'} stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M21 4H3l7.2 8.5V19l3.6 1.8v-8.3L21 4z" />
     </svg>
   {/snippet}
 
@@ -969,75 +969,106 @@
     <div class="saved-head">
       <h2>{tr('saved.heading')}</h2>
       {#if savedCharts.length > 0}
-        <div class="search">
-          <svg class="search-ic" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" />
-          </svg>
-          <input
-            bind:this={searchInput}
-            class:has-value={search}
-            type="text"
-            bind:value={search}
-            aria-label={tr('saved.searchAria')}
-            onfocus={() => { searchOpen = true; labelMenuFor = null; }}
-            onclick={() => (searchOpen = true)}
-            oninput={onSearchInput}
-            onblur={onSearchBlur}
-            onkeydown={onSearchKeydown}
-          />
-          {#if search}
-            <button type="button" class="search-clear" onmousedown={(e) => e.preventDefault()} onclick={clearSearch} aria-label={tr('saved.searchClear')}>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18" /><line x1="18" y1="6" x2="6" y2="18" /></svg>
-            </button>
-          {/if}
-          {#if searchOpen && (recentSearches.length || labels.length || typeEntries.length)}
-            <div class="search-dd">
-              {#if recentSearches.length}
-                <div class="dd-head">{tr('saved.searchRecents')}</div>
-                {#each recentSearches as r}
-                  <div class="dd-recent">
-                    <button type="button" class="dd-item" onmousedown={(e) => e.preventDefault()} onclick={() => applySearch(r)}>
-                      <span class="dd-ic">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M12 8v4l3 2" /></svg>
-                      </span>
-                      <span class="dd-name">{r}</span>
-                    </button>
-                    <button type="button" class="dd-x" onmousedown={(e) => e.preventDefault()} onclick={() => removeRecent(r)} aria-label={tr('saved.searchRecentsClear')}>
-                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18" /><line x1="18" y1="6" x2="6" y2="18" /></svg>
-                    </button>
-                  </div>
-                {/each}
-              {/if}
-              {#if labels.length}
-                {#if recentSearches.length}<div class="dd-sep"></div>{/if}
-                <div class="dd-head-row">
-                  <span class="dd-head">{tr('saved.searchLabels')}</span>
-                  <button type="button" class="dd-gear" onmousedown={(e) => e.preventDefault()} onclick={openManager} aria-label={tr('labels.managerAria')}>
-                    {@render gearIcon(13)}
-                  </button>
+        <div class="head-tools">
+          <div class="search">
+            <svg class="search-ic" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" />
+            </svg>
+            <input
+              bind:this={searchInput}
+              class:has-value={search}
+              type="text"
+              bind:value={search}
+              aria-label={tr('saved.searchAria')}
+              onkeydown={onSearchKeydown}
+            />
+            {#if search}
+              <button type="button" class="search-clear" onmousedown={(e) => e.preventDefault()} onclick={clearSearch} aria-label={tr('saved.searchClear')}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18" /><line x1="18" y1="6" x2="6" y2="18" /></svg>
+              </button>
+            {/if}
+          </div>
+          {#if labels.length || typeEntries.length}
+            <div class="filter-wrap">
+              <button
+                type="button"
+                class="filter-btn"
+                class:open={filterOpen}
+                class:active={activeFilters.length > 0}
+                onclick={toggleFilterMenu}
+                aria-label={tr('saved.filterAria')}
+                aria-haspopup="true"
+                aria-expanded={filterOpen}
+              >
+                {@render funnelIcon(14, activeFilters.length > 0)}
+              </button>
+
+              {#if filterOpen}
+                <div class="filter-dd" role="menu">
+                  {#if labels.length}
+                    <div class="dd-head-row">
+                      <span class="dd-head">{tr('saved.searchLabels')}</span>
+                      <button type="button" class="dd-gear" onclick={openManager} aria-label={tr('labels.managerAria')}>
+                        {@render gearIcon(13)}
+                      </button>
+                    </div>
+                    {#each labels as l}
+                      <button
+                        type="button"
+                        class="lm-item"
+                        class:sel={filterLabels.includes(l.name)}
+                        role="menuitemcheckbox"
+                        aria-checked={filterLabels.includes(l.name)}
+                        onclick={() => toggleLabelFilter(l.name)}
+                      >
+                        {@render tagIcon(14, filterLabels.includes(l.name))}
+                        <span class="lm-name">{l.name}</span>
+                      </button>
+                    {/each}
+                  {/if}
+                  {#if typeEntries.length}
+                    {#if labels.length}<div class="dd-sep"></div>{/if}
+                    <div class="dd-head">{tr('saved.searchTypes')}</div>
+                    {#each typeEntries as ty}
+                      <button
+                        type="button"
+                        class="lm-item"
+                        class:sel={filterTypes.includes(ty.key)}
+                        role="menuitemcheckbox"
+                        aria-checked={filterTypes.includes(ty.key)}
+                        onclick={() => toggleTypeFilter(ty.key)}
+                      >
+                        {@render personIcon(14, filterTypes.includes(ty.key))}
+                        <span class="lm-name">{ty.label}</span>
+                      </button>
+                    {/each}
+                  {/if}
                 </div>
-                {#each labels as l}
-                  <button type="button" class="dd-item" onmousedown={(e) => e.preventDefault()} onclick={() => applySearch(l.name)}>
-                    <span class="dd-ic">{@render tagIcon(14)}</span>
-                    <span class="dd-name">{l.name}</span>
-                  </button>
-                {/each}
-              {/if}
-              {#if typeEntries.length}
-                <div class="dd-sep"></div>
-                <div class="dd-head">{tr('saved.searchTypes')}</div>
-                {#each typeEntries as ty}
-                  <button type="button" class="dd-item" onmousedown={(e) => e.preventDefault()} onclick={() => applySearch(ty.label)}>
-                    <span class="dd-ic">{@render personIcon(14)}</span>
-                    <span class="dd-name">{ty.label}</span>
-                  </button>
-                {/each}
               {/if}
             </div>
           {/if}
         </div>
       {/if}
     </div>
+
+    {#if activeFilters.length}
+      <div class="filter-chips">
+        {#each activeFilters as f (f.kind + f.value)}
+          <span class="filter-chip">
+            {#if f.kind === 'label'}{@render tagIcon(11, true)}{:else}{@render personIcon(11, true)}{/if}
+            <span class="filter-chip-text">{f.text}</span>
+            <button
+              type="button"
+              class="filter-chip-x"
+              onclick={() => removeFilter(f)}
+              aria-label={tr('saved.filterRemove', { name: f.text })}
+            >
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18" /><line x1="18" y1="6" x2="6" y2="18" /></svg>
+            </button>
+          </span>
+        {/each}
+      </div>
+    {/if}
 
     {#if listError}
       <p class="error">{listError}</p>
@@ -1064,7 +1095,17 @@
                 <span class="chart-name" use:rowMetrics bind:clientWidth={nameBoxW}>
                   <span class="chart-name-text">{c.name}</span>
                   {#if c.type}
-                    <span class="chart-type">{rowType(c)}</span>
+                    <!-- Inside the open-chart button on purpose: the row's type
+                         is a filter shortcut, exactly like its labels, so the
+                         click stops here instead of opening the chart. -->
+                    <span
+                      class="chart-type"
+                      class:on={filterTypes.includes(c.type)}
+                      role="button"
+                      tabindex="0"
+                      onclick={(e) => { e.stopPropagation(); toggleTypeFilter(c.type); }}
+                      onkeydown={(e) => { e.stopPropagation(); onFilterKey(e, 'type', c.type); }}
+                    >{@render personIcon(11, filterTypes.includes(c.type))}<span class="chart-type-text">{rowType(c)}</span></span>
                   {/if}
                 </span>
                 <span class="chart-meta">{formatDate(c)} · {cityCountry(c.birth?.placeLabel)}</span>
@@ -1072,7 +1113,7 @@
               {#if assignedNames(c).length}
                 <div class="chart-labels">
                   {@render tagIcon(12)}
-                  <span class="chart-labels-text">{#each assignedNames(c) as n, li}<span class="chip-label" role="button" tabindex="0" onclick={() => pickChipLabel(n)} onkeydown={(e) => onChipKey(e, n)}>{n}</span>{#if li < assignedNames(c).length - 1}{', '}{/if}{/each}</span>
+                  <span class="chart-labels-text">{#each assignedNames(c) as n, li}<span class="chip-label" class:on={filterLabels.includes(n)} role="button" tabindex="0" onclick={() => toggleLabelFilter(n)} onkeydown={(e) => onFilterKey(e, 'label', n)}>{n}</span>{#if li < assignedNames(c).length - 1}{', '}{/if}{/each}</span>
                 </div>
               {/if}
             </div>
@@ -1187,8 +1228,8 @@
     </div>
   </section>
 
-  {#if labelMenuFor !== null}
-    <div class="menu-scrim" role="presentation" onclick={() => (labelMenuFor = null)}></div>
+  {#if labelMenuFor !== null || filterOpen}
+    <div class="menu-scrim" role="presentation" onclick={() => { labelMenuFor = null; filterOpen = false; }}></div>
   {/if}
 
   {#if labelManagerOpen}
@@ -1631,12 +1672,26 @@
     font-size: 0.85rem;
     user-select: none;
   }
+  /* The type is a filter shortcut too: its own icon, and the same discreet
+     treatment as an assigned label (accent on hover, accent while filtering). */
   .chart-type {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.22rem;
     flex: none;
     white-space: nowrap;
     color: var(--text-muted);
     font-weight: 400;
     font-size: 0.78rem;
+    cursor: pointer;
+  }
+  .chart-type.on {
+    color: var(--accent);
+  }
+  @media (hover: hover) {
+    .chart-type:hover {
+      color: var(--accent);
+    }
   }
   .saved-foot {
     display: flex;
@@ -1815,10 +1870,14 @@
     }
   }
   @media (hover: none) {
-    .chip-label {
+    .chip-label,
+    .chart-type-text {
       text-decoration: underline;
       text-underline-offset: 2px;
     }
+  }
+  .chip-label.on {
+    color: var(--accent);
   }
   .tag-ic {
     flex: none;
@@ -1875,12 +1934,23 @@
 
   /* Search box (top-right of the saved section) + its dropdown. Kept short —
      roughly the height of the "cartas guardadas" title — and narrow. */
+  /* Field + funnel as one right-hand block. They are two separate controls
+     with air between them — the button never sits on the field's edge. */
+  .head-tools {
+    display: flex;
+    /* Stretch, so the funnel takes its height from the field beside it — the
+       field is shorter on desktop and the two must still line up. */
+    align-items: stretch;
+    gap: 0.45rem;
+    flex: 0 1 185px;
+    min-width: 0;
+  }
   .search {
     position: relative;
     /* Wrap the field, don't stretch to the heading's row height: the lupa is
        centred against THIS box, so a stretched one left it sitting high. */
     align-self: center;
-    flex: 0 1 140px;
+    flex: 1 1 auto;
     min-width: 0;
   }
   .search-ic {
@@ -1943,8 +2013,91 @@
     }
   }
 
-  /* Shared dropdown look for the search box and the chip label menu. */
-  .search-dd,
+  /* Funnel: same chrome as the per-row icon buttons, so it reads as a control
+     of the list and not as part of the field next to it. */
+  .filter-wrap {
+    position: relative;
+    flex: none;
+  }
+  .filter-btn {
+    display: grid;
+    place-items: center;
+    width: 1.6rem;
+    height: 100%;
+    padding: 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text-muted);
+    cursor: pointer;
+  }
+  .filter-btn:hover {
+    color: var(--text);
+    border-color: var(--accent);
+  }
+  .filter-btn.open {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+  /* Filtering: the funnel fills in, like a row's tag icon with labels on it. */
+  .filter-btn.active {
+    color: var(--accent);
+    background: var(--accent-soft);
+    border-color: #d4a65755;
+  }
+
+  /* The picked filters, one chip each, on their own line under the field. */
+  .filter-chips {
+    display: flex;
+    flex-wrap: wrap;
+    /* Left, not under the funnel: the open menu drops over its own corner and
+       would hide the chips it is filling in. */
+    gap: 0.35rem;
+    margin: -0.35rem 0 0.7rem;
+  }
+  .filter-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    max-width: 100%;
+    padding: 0.14rem 0.26rem 0.14rem 0.42rem;
+    background: var(--accent-soft);
+    border: 1px solid #d4a65755;
+    border-radius: 999px;
+    color: var(--accent);
+    font-size: 0.74rem;
+    line-height: 1.3;
+  }
+  .filter-chip :global(svg) {
+    flex: none;
+  }
+  .filter-chip-text {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .filter-chip-x {
+    display: grid;
+    place-items: center;
+    width: 1.05rem;
+    height: 1.05rem;
+    flex: none;
+    padding: 0;
+    border: none;
+    background: none;
+    color: inherit;
+    opacity: 0.75;
+    cursor: pointer;
+    border-radius: 50%;
+  }
+  .filter-chip-x:hover {
+    opacity: 1;
+    background: #d4a65722;
+  }
+
+  /* Shared dropdown look for the filter menu and the chip label menu. */
+  .filter-dd,
   .label-menu {
     position: absolute;
     right: 0;
@@ -1958,8 +2111,8 @@
     max-height: 60vh;
     overflow-y: auto;
   }
-  .search-dd {
-    width: 230px;
+  .filter-dd {
+    width: 200px;
     max-width: 80vw;
   }
   .label-menu {
@@ -1994,33 +2147,6 @@
   .dd-gear:hover {
     color: var(--text);
   }
-  /* Recent row: the search shortcut fills the row, a discreet per-item "x"
-     (no button chrome) removes just that entry. */
-  .dd-recent {
-    display: flex;
-    align-items: center;
-  }
-  .dd-recent .dd-item {
-    flex: 1;
-    min-width: 0;
-  }
-  .dd-x {
-    display: grid;
-    place-items: center;
-    width: 1.5rem;
-    height: 1.5rem;
-    flex: none;
-    padding: 0;
-    border: none;
-    background: none;
-    color: var(--text-muted);
-    cursor: pointer;
-    border-radius: 6px;
-  }
-  .dd-x:hover {
-    color: var(--text);
-  }
-  .dd-item,
   .lm-item {
     display: flex;
     align-items: center;
@@ -2036,30 +2162,22 @@
     font-size: 0.84rem;
     cursor: pointer;
   }
-  .dd-item:hover,
   .lm-item:hover {
     background: #ffffff08;
   }
-  .dd-ic {
-    width: 15px;
-    height: 15px;
-    flex: none;
-    display: grid;
-    place-items: center;
-    color: var(--text-muted);
-  }
-  .dd-name,
   .lm-name {
     min-width: 0;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
-  /* Assigned label: no check column — the tag icon itself turns filled + accent. */
-  .lm-item .tag-ic {
+  /* Ticked row: no check column — the icon itself turns filled + accent. */
+  .lm-item .tag-ic,
+  .lm-item .person-ic {
     flex: none;
   }
-  .lm-item.sel .tag-ic {
+  .lm-item.sel .tag-ic,
+  .lm-item.sel .person-ic {
     color: var(--accent);
   }
   /* Inline "new label" field, last row of the assign menu. `.lm-add` is a

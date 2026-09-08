@@ -1168,7 +1168,7 @@ export default {
     sacral: {
       title: 'Autoridad sacral',
       paragraphs: [
-        'La autoridad de la mayoría de Generadores. Reside en el **[centro Sacral](center:sacral)**, que responde **en el momento** con un sonido o un impulso visceral —una especie de "ajá" de atracción o un "mmm-mmm" de rechazo— ante algo concreto: el cuerpo *dice* sí o no.',
+        'La autoridad sacral reside en el [centro Sacral](center:sacral), que responde **en el momento** con un sonido o un impulso visceral —una especie de "ajá" de atracción o un "mmm-mmm" de rechazo— ante algo concreto: **el cuerpo dice sí o no.**',
         'Es una autoridad **inmediata y corporal**: no razona, reacciona. Funciona mejor con preguntas de sí/no y se nubla cuando la mente intenta argumentar la decisión. Aprender a captar y confiar en esa respuesta instantánea del vientre es la práctica central de quien la tiene.'
       ]
     },
