@@ -282,7 +282,7 @@ export default {
 
   about: {
     link: 'acerca de',
-    donateLink: 'donar',
+    donateLink: 'agradecer',
     donateHeading: 'Donar',
     donateAria: 'Donar',
     donateIntro: 'Si encuentras la app útil y te nace agradecer o contribuir, ¡adelante!',
