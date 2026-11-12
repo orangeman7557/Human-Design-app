@@ -841,7 +841,7 @@
 
   // "New" badge: moving the report into the menu hides the page's most
   // useful entry point for a newcomer, so for the first few visits a dot on
-  // the menu button and a "new" pill on the report item call it out. Retires
+  // the menu button and a matching dot on the report item call it out. Retires
   // when the report is opened, or on its own after a few chart views.
   const REPORT_BADGE_KEY = 'hd:menu-report-seen';
   const REPORT_BADGE_VIEWS = 'hd:menu-report-views';
@@ -997,8 +997,8 @@
           aria-expanded={menuOpen}
           aria-label={tr('chart.menu')}
         >
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <circle cx="12" cy="5" r="1.9" /><circle cx="12" cy="12" r="1.9" /><circle cx="12" cy="19" r="1.9" />
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <line x1="4" y1="6" x2="20" y2="6" /><line x1="4" y1="12" x2="20" y2="12" /><line x1="4" y1="18" x2="20" y2="18" />
           </svg>
           {#if showReportBadge}<span class="menu-dot" aria-hidden="true"></span>{/if}
         </button>
@@ -1012,7 +1012,7 @@
                 <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="8" y1="13" x2="16" y2="13" /><line x1="8" y1="17" x2="16" y2="17" />
               </svg>
               <span class="mi-lbl">{tr('chart.reportAria')}</span>
-              {#if showReportBadge}<span class="mi-new">{tr('chart.menuNew')}</span>{/if}
+              {#if showReportBadge}<span class="mi-dot" role="img" aria-label={tr('chart.menuNew')}></span>{/if}
             </button>
             <button class="mi" role="menuitem" type="button" onclick={() => menuAction(shareLink)}>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -1607,6 +1607,7 @@
   /* Chart actions menu (top right). Same square-rounded control as the rest
      of the page's small buttons; turns gold while open. */
   .menu-wrap {
+    --new-dot: #e84672;
     position: relative;
     margin-left: auto;
     flex: none;
@@ -1633,8 +1634,10 @@
   .menu-btn.open {
     background: var(--accent-soft);
   }
-  /* "New" dot: a gold notification dot with a soft ring that pulses, the
-     usual "something new here" cue. Stops pulsing for reduced-motion users. */
+  /* "New" dot: a notification dot with a soft ring that pulses, the usual
+     "something new here" cue. In the bodygraph's Design rose, not the gold —
+     gold is everywhere on this page, so a gold dot didn't stand out; the rose
+     is already part of the app's palette. Stops pulsing for reduced motion. */
   .menu-dot {
     position: absolute;
     top: -4px;
@@ -1642,7 +1645,7 @@
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    background: var(--accent);
+    background: var(--new-dot);
     box-shadow: 0 0 0 2px var(--bg);
   }
   .menu-dot::after {
@@ -1650,7 +1653,7 @@
     position: absolute;
     inset: 0;
     border-radius: 50%;
-    background: var(--accent);
+    background: var(--new-dot);
     animation: menu-ping 1.8s ease-out infinite;
   }
   @keyframes menu-ping {
@@ -1717,15 +1720,13 @@
   .mi-lbl {
     flex: 1;
   }
-  .mi-new {
-    font-size: 0.68rem;
-    font-weight: 500;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    padding: 0.12rem 0.45rem;
-    border-radius: 999px;
-    background: var(--accent);
-    color: #1a1408;
+  /* Same dot as on the button, so the eye links the two. */
+  .mi-dot {
+    width: 8px;
+    height: 8px;
+    flex: none;
+    border-radius: 50%;
+    background: var(--new-dot);
   }
   .mi-sep {
     height: 1px;

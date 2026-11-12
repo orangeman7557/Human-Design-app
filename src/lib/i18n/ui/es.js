@@ -238,7 +238,7 @@ export default {
     // Split around the info-dot glyph, which is rendered as the icon itself.
     infoHintA: 'Toca cualquier elemento de la carta y pulsa en ',
     infoHintB: ' para obtener más información.',
-    infoHintC: 'Si no conoces aún el Diseño Humano, abre el menú ⋮ de arriba a la derecha y elige «Informe inicial»: es un buen lugar para empezar.'
+    infoHintC: 'Si no conoces aún el Diseño Humano, abre el menú ☰ de arriba a la derecha y elige «Informe inicial»: es un buen lugar para empezar.'
   },
 
   storage: {

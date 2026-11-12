@@ -9,8 +9,8 @@
   // one I'd switch to?"); the menu removes that and scales to a third language.
   //
   // Placement: aligned to the right edge of the page's CONTENT column (not the
-  // viewport), hence the `contentMax` prop. Deliberately thin so it never
-  // collides with the chart header's save button on a phone.
+  // viewport), hence the `contentMax` prop. Deliberately thin, and inset from
+  // the right so it hangs beside the chart header's menu button, not over it.
   import { page } from '$app/stores';
   import { goto } from '$app/navigation';
   import { LOCALES, getLocale } from '$lib/i18n/index.svelte.js';
@@ -115,7 +115,10 @@
   .row {
     width: 100%;
     max-width: var(--content-max, 720px);
-    padding-inline: 0.75rem;
+    /* The right inset keeps the tab clear of the chart's menu button (page
+       padding 1.25rem + button 2.25rem + a gap), so it hangs to its left
+       instead of sitting on top of it (nov 2026). */
+    padding-inline: 0.75rem 4rem;
     display: flex;
     justify-content: flex-end;
   }
