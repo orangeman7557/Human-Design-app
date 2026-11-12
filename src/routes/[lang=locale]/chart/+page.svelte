@@ -619,9 +619,7 @@
       filter: (node) => {
         if (
           node.classList?.contains('back') ||
-          node.classList?.contains('report-btn') ||
-          node.classList?.contains('actions') ||
-          node.classList?.contains('img-actions') ||
+          node.classList?.contains('menu-wrap') ||
           node.tagName === 'FOOTER'
         )
           return false;
@@ -775,51 +773,89 @@
     }
   }
 
-  // Mobile header fit (jul 2026). On a phone the header row is [back] [name +
-  // Informe] [Guardar]. Space permitting, the buttons show words instead of
-  // bare icons; when the name would push them off, the labels collapse in a
-  // fixed order — Informe's word first, then Guardar's — before the name
-  // finally truncates with an ellipsis. We can't express "labels drop before
-  // the name truncates" in CSS alone, so we measure: pick the richest layout in
-  // which the name isn't cut off. Desktop is untouched (media query handles it).
-  //   'full'       → Guardar (text) · Informe (icon + text)
-  //   'noInforme'  → Guardar (text) · Informe (icon)
-  //   'icons'      → Guardar (icon) · Informe (icon)
+  // Chart actions menu (nov 2026): report, share link, save, download image
+  // and install live behind one button at the top right, replacing the row
+  // of header buttons (and the footer "install" link) that had to shed labels
+  // to fit a phone.
+  let menuOpen = $state(false);
   /** @type {HTMLElement | undefined} */
-  let headerEl = $state();
-  let hdrMode = $state('icons');
-  let fitSeq = 0;
+  let menuWrap = $state();
+  /** @type {HTMLButtonElement | undefined} */
+  let menuBtn = $state();
 
-  function isMobileHeader() {
-    return window.matchMedia('(max-width: 679px)').matches;
+  function menuItems() {
+    return /** @type {HTMLElement[]} */ ([...(menuWrap?.querySelectorAll('[role="menuitem"]:not(:disabled)') ?? [])]);
   }
-  async function fitHeader() {
-    if (!headerEl || !isMobileHeader()) return;
-    const seq = ++fitSeq;
-    const h1 = headerEl.querySelector('h1');
-    if (!h1) return;
-    for (const m of ['full', 'noInforme', 'icons']) {
-      hdrMode = m;
+  async function toggleMenu() {
+    menuOpen = !menuOpen;
+    if (menuOpen) {
       await tick();
-      if (seq !== fitSeq) return; // a newer run superseded this one
-      // 'icons' is the last resort; otherwise keep the first mode that doesn't
-      // truncate the name (+1px tolerance for sub-pixel rounding).
-      if (m === 'icons' || h1.scrollWidth <= h1.clientWidth + 1) return;
+      menuItems()[0]?.focus();
     }
   }
+  function closeMenu(refocus = false) {
+    if (!menuOpen) return;
+    menuOpen = false;
+    if (refocus) menuBtn?.focus();
+  }
+  /** @param {KeyboardEvent} e */
+  function menuKeydown(e) {
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      closeMenu(true);
+      return;
+    }
+    if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp' && e.key !== 'Home' && e.key !== 'End') return;
+    e.preventDefault();
+    const items = menuItems();
+    if (!items.length) return;
+    const i = items.indexOf(/** @type {HTMLElement} */ (document.activeElement));
+    const next =
+      e.key === 'Home' ? 0
+      : e.key === 'End' ? items.length - 1
+      : e.key === 'ArrowDown' ? (i + 1) % items.length
+      : (i - 1 + items.length) % items.length;
+    items[next].focus();
+  }
+  $effect(() => {
+    if (!menuOpen) return;
+    /** @param {PointerEvent} e */
+    const onDown = (e) => {
+      if (menuWrap && !menuWrap.contains(/** @type {Node} */ (e.target))) closeMenu();
+    };
+    document.addEventListener('pointerdown', onDown, true);
+    return () => document.removeEventListener('pointerdown', onDown, true);
+  });
+  /** @param {() => unknown} fn */
+  function menuAction(fn) {
+    // Hand focus back to the trigger first, so overlays opened by the action
+    // (report, save dialog) restore to it on close instead of to <body>.
+    closeMenu(true);
+    fn();
+  }
+  function openReport() {
+    reportOpen = true;
+    track('report');
+    retireReportBadge();
+  }
 
-  $effect(() => {
-    const onResize = () => fitHeader();
-    window.addEventListener('resize', onResize);
-    return () => window.removeEventListener('resize', onResize);
-  });
-  // Re-fit when the name, the chart's presence, or the save label change width.
-  $effect(() => {
-    void birthData?.name;
-    void chart;
-    void saved;
-    fitHeader();
-  });
+  // "New" badge: moving the report into the menu hides the page's most
+  // useful entry point for a newcomer, so for the first few visits a dot on
+  // the menu button and a "new" pill on the report item call it out. Retires
+  // when the report is opened, or on its own after a few chart views.
+  const REPORT_BADGE_KEY = 'hd:menu-report-seen';
+  const REPORT_BADGE_VIEWS = 'hd:menu-report-views';
+  const REPORT_BADGE_MAX_VIEWS = 5;
+  let showReportBadge = $state(false);
+  function retireReportBadge() {
+    if (!showReportBadge) return;
+    showReportBadge = false;
+    try {
+      localStorage.setItem(REPORT_BADGE_KEY, '1');
+    } catch {
+      // Storage disabled: the badge shows again next time, harmless.
+    }
+  }
 
   onMount(async () => {
     try {
@@ -833,6 +869,15 @@
       if (views > INFO_HINT_MAX_VIEWS) localStorage.setItem(INFO_HINT_KEY, '1');
     } catch {
       showInfoHint = false;
+    }
+    try {
+      const seen = localStorage.getItem(REPORT_BADGE_KEY) === '1';
+      const views = Number(localStorage.getItem(REPORT_BADGE_VIEWS) ?? 0) + 1;
+      localStorage.setItem(REPORT_BADGE_VIEWS, String(views));
+      showReportBadge = !seen && views <= REPORT_BADGE_MAX_VIEWS;
+      if (views > REPORT_BADGE_MAX_VIEWS) localStorage.setItem(REPORT_BADGE_KEY, '1');
+    } catch {
+      showReportBadge = false;
     }
     try {
       // A shared link (/chart?…) carries the birth data in the URL; otherwise
@@ -893,7 +938,7 @@
     goto(`/${lang}`);
   }
 
-  // "instalar como app" footer link — same behaviour as the home's: Chromium
+  // "Instalar como app" menu item — same behaviour as the home's link: Chromium
   // fires the captured native prompt, iOS browsers get manual instructions.
   async function onInstallClick() {
     if (install.mode === 'prompt') {
@@ -925,82 +970,82 @@
   </svg>
 {/snippet}
 
-{#snippet imgButtons()}
-  <button
-    class="img-btn"
-    onclick={shareLink}
-    data-tip={linkCopied ? tr('chart.shareCopied') : tr('chart.shareLink')}
-    aria-label={tr('chart.shareLinkAria')}
-  >
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <circle cx="18" cy="5" r="3" />
-      <circle cx="6" cy="12" r="3" />
-      <circle cx="18" cy="19" r="3" />
-      <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
-      <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
-    </svg>
-  </button>
-  <button
-    class="img-btn"
-    onclick={download}
-    disabled={sharing}
-    data-tip={sharing ? tr('chart.generatingImage') : tr('chart.downloadImage')}
-    aria-label={tr('chart.downloadImage')}
-  >
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M12 3v12" /><path d="m8 11 4 4 4-4" /><path d="M4 21h16" />
-    </svg>
-  </button>
-{/snippet}
-
 <!-- While sharing, .capturing applies the export-only layout (centred
      title and birth line) that the PNG clone picks up. -->
 <main bind:this={captureEl} class:capturing={sharing} class:pdf-shot={pdfShot}>
   <!-- Export-only brand line: shows in the shared/downloaded PNG (not the PDF
        cover, which gets a native header in report-pdf.js). -->
   <div class="export-brand" aria-hidden="true">HDchart.app</div>
-  <header
-    bind:this={headerEl}
-    class:hdr-full={hdrMode === 'full'}
-    class:hdr-noinforme={hdrMode === 'noInforme'}
-    class:hdr-icons={hdrMode === 'icons'}
-  >
+  <header>
     <button class="back" onclick={back} aria-label={tr('chart.back')}>
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <line x1="19" y1="12" x2="5" y2="12" />
         <polyline points="12 19 5 12 12 5" />
       </svg>
     </button>
-    <div class="title-wrap">
-      <h1>{birthData?.name?.trim() || tr('chart.untitled')}</h1>
-      {#if chart}
-        <button class="report-btn" type="button" onclick={() => { reportOpen = true; track('report'); }} aria-label={tr('chart.reportAria')}>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-            <polyline points="14 2 14 8 20 8" />
-            <line x1="8" y1="13" x2="16" y2="13" />
-            <line x1="8" y1="17" x2="16" y2="17" />
-          </svg>
-          <span class="report-lbl">{tr('chart.report')}</span>
-        </button>
-      {/if}
-    </div>
+    <h1>{birthData?.name?.trim() || tr('chart.untitled')}</h1>
     {#if chart}
-      <div class="actions">
-        <!-- Desktop spot; on mobile the buttons render over the graph
-             corner instead (.graph-actions). -->
-        <div class="img-actions">
-          {@render imgButtons()}
-        </div>
-        <button class="save" onclick={save} disabled={saved} aria-label={saved ? tr('chart.savedAria') : tr('chart.save')}>
-          {#if saved}
-            <svg class="save-ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>
-          {:else}
-            <svg class="save-ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" /><polyline points="17 21 17 13 7 13 7 21" /><polyline points="7 3 7 8 15 8" /></svg>
-          {/if}
-          <span class="save-lbl">{saved ? tr('chart.saved') : tr('chart.save')}</span>
-          <span class="save-lbl-m">{saved ? tr('chart.saved') : tr('chart.saveShort')}</span>
+      <!-- svelte-ignore a11y_no_static_element_interactions -->
+      <div class="menu-wrap" bind:this={menuWrap} onkeydown={menuKeydown}>
+        <button
+          bind:this={menuBtn}
+          class="menu-btn"
+          class:open={menuOpen}
+          type="button"
+          onclick={toggleMenu}
+          aria-haspopup="menu"
+          aria-expanded={menuOpen}
+          aria-label={tr('chart.menu')}
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <circle cx="12" cy="5" r="1.9" /><circle cx="12" cy="12" r="1.9" /><circle cx="12" cy="19" r="1.9" />
+          </svg>
+          {#if showReportBadge}<span class="menu-dot" aria-hidden="true"></span>{/if}
         </button>
+        {#if linkCopied && !menuOpen}
+          <span class="menu-toast" role="status">{tr('chart.shareCopied')}</span>
+        {/if}
+        {#if menuOpen}
+          <div class="menu" role="menu" aria-label={tr('chart.menu')}>
+            <button class="mi" role="menuitem" type="button" onclick={() => menuAction(openReport)}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="8" y1="13" x2="16" y2="13" /><line x1="8" y1="17" x2="16" y2="17" />
+              </svg>
+              <span class="mi-lbl">{tr('chart.reportAria')}</span>
+              {#if showReportBadge}<span class="mi-new">{tr('chart.menuNew')}</span>{/if}
+            </button>
+            <button class="mi" role="menuitem" type="button" onclick={() => menuAction(shareLink)}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" /><line x1="8.59" y1="13.51" x2="15.42" y2="17.49" /><line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+              </svg>
+              <span class="mi-lbl">{tr('chart.shareLink')}</span>
+            </button>
+            <button class="mi" role="menuitem" type="button" onclick={() => menuAction(save)} disabled={saved}>
+              {#if saved}
+                <svg class="ok" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>
+                <span class="mi-lbl">{tr('chart.savedAria')}</span>
+              {:else}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" /><polyline points="17 21 17 13 7 13 7 21" /><polyline points="7 3 7 8 15 8" /></svg>
+                <span class="mi-lbl">{tr('chart.save')}</span>
+              {/if}
+            </button>
+            <button class="mi" role="menuitem" type="button" onclick={() => menuAction(download)} disabled={sharing}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 3v12" /><path d="m8 11 4 4 4-4" /><path d="M4 21h16" />
+              </svg>
+              <span class="mi-lbl">{sharing ? tr('chart.generatingImage') : tr('chart.downloadImage')}</span>
+            </button>
+            {#if install.mode}
+              <div class="mi-sep" role="separator"></div>
+              <button class="mi" role="menuitem" type="button" onclick={() => menuAction(onInstallClick)}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="6" y="2" width="12" height="20" rx="2.5" /><line x1="11" y1="18" x2="13" y2="18" />
+                </svg>
+                <span class="mi-lbl">{tr('install.aria')}</span>
+              </button>
+            {/if}
+          </div>
+        {/if}
       </div>
     {/if}
   </header>
@@ -1242,12 +1287,6 @@
               ><InfoDot active={infoIsOpen('cross', chart.cross.angle)} label={tr('chart.moreCross')} /></span>{/if}</span>
           </div>
         {/if}
-      </div>
-
-      <!-- Mobile only: share/download over the graph's empty top-right
-           corner, right below the Definición card. -->
-      <div class="img-actions graph-actions">
-        {@render imgButtons()}
       </div>
 
       <div class="overlay right">
@@ -1504,11 +1543,6 @@
     </section>
 
     <footer>
-      {#if install.mode}
-        <div class="foot-install">
-          <button class="install-link" type="button" onclick={onInstallClick}>{tr('install.link')}</button>
-        </div>
-      {/if}
       <div class="foot-line">
         <ReportBug bind:this={reportBug} version={version} />
         <span aria-hidden="true">·</span>
@@ -1570,99 +1604,155 @@
     border-radius: 50%;
     cursor: pointer;
   }
-  /* Same square-rounded shape and size as the share/download buttons, in gold —
-     so the header doesn't mix too many button styles. */
-  .report-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.4rem;
+  /* Chart actions menu (top right). Same square-rounded control as the rest
+     of the page's small buttons; turns gold while open. */
+  .menu-wrap {
+    position: relative;
+    margin-left: auto;
     flex: none;
-    height: 2rem;
-    padding: 0 0.6rem;
-    background: var(--accent-soft);
-    border: 1px solid var(--accent);
-    color: var(--accent);
-    border-radius: var(--radius);
-    cursor: pointer;
-    font-family: inherit;
   }
-  .report-btn svg {
-    width: 16px;
-    height: 16px;
-  }
-  .report-lbl {
-    font-size: 0.85rem;
-    font-weight: 500;
-  }
-  /* Mobile: icon only by default; the "Informe" word shows only when the
-     header has room for it (hdr-full — see fitHeader). */
-  @media (max-width: 679px) {
-    .report-lbl {
-      display: none;
-    }
-    .report-btn {
-      width: 2rem;
-      padding: 0;
-      gap: 0;
-    }
-    header.hdr-full .report-lbl {
-      display: inline;
-    }
-    header.hdr-full .report-btn {
-      width: auto;
-      padding: 0 0.6rem;
-      gap: 0.4rem;
-    }
-  }
-  .report-btn:hover {
-    background: var(--accent);
-    color: #1a1408;
-  }
-  .save {
+  .menu-btn {
+    position: relative;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 0.4rem;
-    background: var(--accent);
-    color: #1a1408;
-    border: none;
-    padding: 0.55rem 0.9rem;
+    width: 2.25rem;
+    height: 2.25rem;
+    padding: 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
     border-radius: var(--radius);
-    font-size: 0.85rem;
-    font-weight: 500;
-    font-family: inherit;
+    color: var(--text);
     cursor: pointer;
   }
-  .save:disabled {
+  .menu-btn:hover,
+  .menu-btn.open {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .menu-btn.open {
+    background: var(--accent-soft);
+  }
+  /* "New" dot: a gold notification dot with a soft ring that pulses, the
+     usual "something new here" cue. Stops pulsing for reduced-motion users. */
+  .menu-dot {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 2px var(--bg);
+  }
+  .menu-dot::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: menu-ping 1.8s ease-out infinite;
+  }
+  @keyframes menu-ping {
+    0% { transform: scale(1); opacity: 0.7; }
+    80%, 100% { transform: scale(2.6); opacity: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .menu-dot::after {
+      animation: none;
+    }
+  }
+  .menu {
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    z-index: 50;
+    min-width: 13rem;
+    padding: 0.35rem;
     background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: 0 10px 30px #00000080;
+    display: flex;
+    flex-direction: column;
+  }
+  .mi {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    width: 100%;
+    padding: 0.6rem 0.65rem;
+    background: none;
+    border: none;
+    border-radius: 7px;
+    color: var(--text);
+    font: inherit;
+    font-size: 0.9rem;
+    text-align: left;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+  .mi svg {
+    width: 17px;
+    height: 17px;
+    flex: none;
+    color: var(--text-muted);
+  }
+  .mi:hover:not(:disabled),
+  .mi:focus-visible {
+    background: var(--accent-soft);
+    outline: none;
+  }
+  .mi:hover:not(:disabled) svg,
+  .mi:focus-visible svg {
+    color: var(--accent);
+  }
+  .mi:disabled {
     color: var(--text-muted);
     cursor: default;
   }
-  /* The save icon and the short mobile label ("Guardar") show only on mobile;
-     desktop uses the full ".save-lbl" ("Guardar carta"). */
-  .save-ic {
-    display: none;
+  .mi:disabled svg.ok {
+    color: var(--success);
   }
-  .save-lbl-m {
-    display: none;
-  }
-  /* Holds the name + the report button so the report button sits right next to
-     the name; this wrap takes the space up to the right-side actions. */
-  .title-wrap {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+  .mi-lbl {
     flex: 1;
-    min-width: 0;
+  }
+  .mi-new {
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 0.12rem 0.45rem;
+    border-radius: 999px;
+    background: var(--accent);
+    color: #1a1408;
+  }
+  .mi-sep {
+    height: 1px;
+    margin: 0.3rem 0.35rem;
+    background: var(--border);
+  }
+  /* Desktop share copies to the clipboard: a brief confirmation under the
+     button, since the menu has already closed. */
+  .menu-toast {
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    z-index: 50;
+    white-space: nowrap;
+    font-size: 0.75rem;
+    padding: 0.3rem 0.55rem;
+    border-radius: 7px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    color: var(--text);
   }
   h1 {
     font-size: 1.5rem;
     font-weight: 500;
     margin: 0;
-    /* Shrink + truncate a long name with … instead of pushing the report
-       button or the right-side actions. */
-    flex: 0 1 auto;
+    /* Shrink + truncate a long name with … instead of pushing the menu. */
+    flex: 1 1 auto;
     min-width: 0;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -1789,13 +1879,11 @@
      line are centred to keep the image header balanced.
 
      The chrome must ALSO be hidden in the live DOM: html-to-image copies each
-     node's computed width into the clone, so .title-wrap measured with the
-     "Informe" button inside stayed too wide after the filter dropped the
-     button, shifting the title left of centre (bug found 2026-07-06). */
+     node's computed width into the clone, so a header measured with the
+     buttons inside stayed too wide after the filter dropped them, shifting
+     the title left of centre (bug found 2026-07-06). */
   main.capturing .back,
-  main.capturing .report-btn,
-  main.capturing .actions,
-  main.capturing .img-actions,
+  main.capturing .menu-wrap,
   main.capturing .info-hint {
     display: none;
   }
@@ -1808,9 +1896,6 @@
     flex: none;
     overflow: visible;
     white-space: normal;
-  }
-  main.capturing .title-wrap {
-    flex: none;
   }
   main.capturing .birth {
     margin-left: 0;
@@ -1926,12 +2011,6 @@
     text-align: left;
     pointer-events: none;
     z-index: 40;
-  }
-  /* The header actions sit against the top of the page, where a tip drawn
-     above gets clipped by the viewport edge — those flip below the button. */
-  .img-btn[data-tip]:hover::after {
-    bottom: auto;
-    top: calc(100% + 7px);
   }
 
   .card {
@@ -2134,41 +2213,8 @@
     align-items: stretch;
     z-index: 1;
   }
-  /* Desktop: share/download to the left of the save button, same row. */
-  .actions {
-    margin-left: auto;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-  .img-actions {
-    display: flex;
-    gap: 0.4rem;
-  }
-  .graph-actions {
-    display: none;
-  }
   .count {
     cursor: help;
-  }
-  .img-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 2rem;
-    height: 2rem;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    color: var(--text);
-    cursor: pointer;
-  }
-  .img-btn:hover {
-    border-color: var(--accent);
-  }
-  .img-btn:disabled {
-    opacity: 0.5;
-    cursor: progress;
   }
   .center-list {
     display: flex;
@@ -2176,12 +2222,6 @@
     align-items: flex-start;
     gap: 0.3rem;
     margin-top: 0.2rem;
-  }
-
-  /* "Instalar como app" on its own line above the rest (author request aug
-     2026); hidden entirely when already installed. */
-  .foot-install {
-    margin-bottom: 0.5rem;
   }
 
   footer {
@@ -2200,19 +2240,6 @@
     text-decoration: none;
   }
   .foot-link:hover {
-    color: var(--text-muted);
-  }
-  /* Footer "instalar como app" link, matching the home's. */
-  .install-link {
-    background: none;
-    border: none;
-    padding: 0;
-    margin: 0;
-    font: inherit;
-    color: inherit;
-    cursor: pointer;
-  }
-  .install-link:hover {
     color: var(--text-muted);
   }
   .cc {
@@ -2383,50 +2410,6 @@
     .birth {
       /* Same title-text alignment as desktop, tight gap under the title. */
       margin: -0.1rem 0 1.25rem 3.25rem;
-    }
-    /* Mobile: save stays at title height in the header; share/download
-       move over the graph's empty top-right corner, right below the
-       Definición card (the date-place line keeps the full width). The
-       negative bottom margin lets the graph start at the same height,
-       so the buttons overlap its empty corner instead of pushing it
-       down. */
-    .actions .img-actions {
-      display: none;
-    }
-    .graph-actions {
-      display: flex;
-      order: 1;
-      align-self: flex-end;
-      margin: 0.45rem 0 calc(-2rem - 0.45rem);
-      z-index: 1;
-    }
-    /* Compact icon-only save by default on mobile (square, like the image
-       buttons); the "Guardar" word replaces the icon when the header has room
-       (hdr-full / hdr-noinforme — see fitHeader). */
-    .save {
-      width: 2rem;
-      height: 2rem;
-      padding: 0;
-    }
-    .save-lbl {
-      display: none;
-    }
-    .save-ic {
-      display: block;
-    }
-    header.hdr-full .save,
-    header.hdr-noinforme .save {
-      width: auto;
-      height: 2rem;
-      padding: 0 0.85rem;
-    }
-    header.hdr-full .save-lbl-m,
-    header.hdr-noinforme .save-lbl-m {
-      display: inline;
-    }
-    header.hdr-full .save-ic,
-    header.hdr-noinforme .save-ic {
-      display: none;
     }
   }
 

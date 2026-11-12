@@ -160,11 +160,10 @@ export default {
     errDownload: 'Could not download the image: {msg}',
     errPdf: 'Could not generate the PDF: {msg}',
     back: 'Back',
-    report: 'Report',
+    menu: 'Options',
+    menuNew: 'New',
     reportAria: 'Initial Report',
     save: 'Save Chart',
-    saveShort: 'Save',
-    saved: 'Saved ✓',
     savedAria: 'Chart Saved',
     dlgSaveTitle: 'Save Chart',
     dlgSavePlaceholder: 'Chart name',
@@ -172,7 +171,6 @@ export default {
     shareSheetTitle: 'Human Design Chart',
     shareFallbackTitle: 'Chart Link',
     shareLink: 'Share Link',
-    shareLinkAria: 'Share Chart Link',
     shareCopied: 'Link copied ✓',
     generatingImage: 'Generating image…',
     downloadImage: 'Download Image',
@@ -222,7 +220,7 @@ export default {
     // Split around the info-dot glyph, which is rendered as the icon itself.
     infoHintA: 'Tap any element of the chart, then tap ',
     infoHintB: ' for more information.',
-    infoHintC: 'New to Human Design? Tap the \u201cReport\u201d button \u2014 it is a good place to start.'
+    infoHintC: 'New to Human Design? Open the \u22ee menu at the top right and choose \u201cInitial Report\u201d \u2014 it is a good place to start.'
   },
 
   storage: {

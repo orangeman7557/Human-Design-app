@@ -172,11 +172,10 @@ export default {
     errPdf: 'No se pudo generar el PDF: {msg}',
     // Header / actions
     back: 'Volver',
-    report: 'Informe',
+    menu: 'Opciones',
+    menuNew: 'Nuevo',
     reportAria: 'Informe inicial',
     save: 'Guardar carta',
-    saveShort: 'Guardar',
-    saved: 'Guardada ✓',
     savedAria: 'Carta guardada',
     dlgSaveTitle: 'Guardar carta',
     dlgSavePlaceholder: 'Nombre de la carta',
@@ -184,7 +183,6 @@ export default {
     shareSheetTitle: 'Carta de Diseño Humano',
     shareFallbackTitle: 'Enlace de la carta',
     shareLink: 'Compartir enlace',
-    shareLinkAria: 'Compartir enlace de la carta',
     shareCopied: 'Enlace copiado ✓',
     generatingImage: 'Generando imagen…',
     downloadImage: 'Descargar imagen',
@@ -240,7 +238,7 @@ export default {
     // Split around the info-dot glyph, which is rendered as the icon itself.
     infoHintA: 'Toca cualquier elemento de la carta y pulsa en ',
     infoHintB: ' para obtener más información.',
-    infoHintC: 'Si no conoces aún el Diseño Humano, pulsa el botón «Informe»: es un buen lugar para empezar.'
+    infoHintC: 'Si no conoces aún el Diseño Humano, abre el menú ⋮ de arriba a la derecha y elige «Informe inicial»: es un buen lugar para empezar.'
   },
 
   storage: {
