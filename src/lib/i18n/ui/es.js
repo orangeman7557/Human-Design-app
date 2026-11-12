@@ -183,7 +183,7 @@ export default {
     shareSheetTitle: 'Carta de Diseño Humano',
     shareFallbackTitle: 'Enlace de la carta',
     shareLink: 'Compartir enlace',
-    shareCopied: 'Enlace copiado ✓',
+    linkCopied: 'Enlace copiado',
     generatingImage: 'Generando imagen…',
     downloadImage: 'Descargar imagen',
     // Section headings

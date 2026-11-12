@@ -33,6 +33,10 @@
   // from a link inside the about modal.
   let aboutOpen = $state(false);
   let donateOpen = $state(false);
+  // Also opened from the chart page's menu (nov 2026), via bind:this.
+  export function openAbout() {
+    aboutOpen = true;
+  }
 
   const COFFEE_URL = 'https://buymeacoffee.com/orangeman7557';
 
@@ -83,7 +87,7 @@
     if (donateOpen) loadCount();
   });
 
-  function openDonate() {
+  export function openDonate() {
     aboutOpen = false;
     donateOpen = true;
   }
