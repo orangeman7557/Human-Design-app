@@ -1,5 +1,6 @@
 <script>
   import { onMount, tick, untrack } from 'svelte';
+  import { fade } from 'svelte/transition';
 
   // Injected by Vite's `define` from package.json (see vite.config.js).
   const version = __APP_VERSION__;
@@ -68,6 +69,8 @@
   let reportOpen = $state(false);
   // Footer: donate modal's "send me a message" opens ReportBug preselected.
   let reportBug = $state();
+  // Footer "about"/"donate" modals, also opened from the chart menu.
+  let about = $state();
   /** @type {string | null} */
   let error = $state(null);
   let loading = $state(true);
@@ -649,18 +652,27 @@
   // Share the chart as a link (birth data in the URL) rather than an image:
   // the recipient recomputes the same chart locally. Native share sheet on
   // touch; clipboard copy (with a brief "copiado" confirmation) on desktop.
-  let linkCopied = $state(false);
+  //
+  // Brief confirmations ("copied", "saved") show to the left of the menu
+  // button, since the menu has already closed. Stored as a symbol, not as
+  // words, so a language switch can't leave stale text behind.
+  /** @type {'copied' | 'saved' | null} */
+  let flash = $state(null);
   /** @type {ReturnType<typeof setTimeout> | undefined} */
-  let copiedTimer;
+  let flashTimer;
+  /** @param {'copied' | 'saved'} kind */
+  function showFlash(kind) {
+    flash = kind;
+    clearTimeout(flashTimer);
+    flashTimer = setTimeout(() => (flash = null), 2400);
+  }
   async function doShareUrl(url) {
     try {
       if (navigator.share) {
         await navigator.share({ title: tr('chart.shareSheetTitle'), url });
       } else if (navigator.clipboard?.writeText) {
         await navigator.clipboard.writeText(url);
-        linkCopied = true;
-        clearTimeout(copiedTimer);
-        copiedTimer = setTimeout(() => (linkCopied = false), 2200);
+        showFlash('copied');
       } else {
         await dialog.alert({ title: tr('chart.shareFallbackTitle'), message: url });
       }
@@ -768,6 +780,7 @@
       // structured clone fails on proxied objects.
       await saveChart(name.trim() || suggested, $state.snapshot(birthData), chart?.type);
       saved = true;
+      showFlash('saved');
     } catch (e) {
       saveError = e instanceof Error ? e.message : String(e);
     }
@@ -1002,17 +1015,26 @@
           </svg>
           {#if showReportBadge}<span class="menu-dot" aria-hidden="true"></span>{/if}
         </button>
-        {#if linkCopied && !menuOpen}
-          <span class="menu-toast" role="status">{tr('chart.shareCopied')}</span>
-        {/if}
+        <span class="menu-flash" role="status">
+          {#if flash && !menuOpen}
+            {#key flash}
+              <span class="flash-msg" transition:fade={{ duration: 180 }}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>
+                {flash === 'saved' ? tr('chart.savedAria') : tr('chart.linkCopied')}
+              </span>
+            {/key}
+          {/if}
+        </span>
         {#if menuOpen}
           <div class="menu" role="menu" aria-label={tr('chart.menu')}>
             <button class="mi" role="menuitem" type="button" onclick={() => menuAction(openReport)}>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="8" y1="13" x2="16" y2="13" /><line x1="8" y1="17" x2="16" y2="17" />
-              </svg>
+              <span class="mi-ic">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="8" y1="13" x2="16" y2="13" /><line x1="8" y1="17" x2="16" y2="17" />
+                </svg>
+                {#if showReportBadge}<span class="mi-dot" role="img" aria-label={tr('chart.menuNew')}></span>{/if}
+              </span>
               <span class="mi-lbl">{tr('chart.reportAria')}</span>
-              {#if showReportBadge}<span class="mi-dot" role="img" aria-label={tr('chart.menuNew')}></span>{/if}
             </button>
             <button class="mi" role="menuitem" type="button" onclick={() => menuAction(shareLink)}>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -1022,7 +1044,7 @@
             </button>
             <button class="mi" role="menuitem" type="button" onclick={() => menuAction(save)} disabled={saved}>
               {#if saved}
-                <svg class="ok" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>
                 <span class="mi-lbl">{tr('chart.savedAria')}</span>
               {:else}
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" /><polyline points="17 21 17 13 7 13 7 21" /><polyline points="7 3 7 8 15 8" /></svg>
@@ -1035,8 +1057,8 @@
               </svg>
               <span class="mi-lbl">{sharing ? tr('chart.generatingImage') : tr('chart.downloadImage')}</span>
             </button>
+            <div class="mi-sep" role="separator"></div>
             {#if install.mode}
-              <div class="mi-sep" role="separator"></div>
               <button class="mi" role="menuitem" type="button" onclick={() => menuAction(onInstallClick)}>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <rect x="6" y="2" width="12" height="20" rx="2.5" /><line x1="11" y1="18" x2="13" y2="18" />
@@ -1044,6 +1066,12 @@
                 <span class="mi-lbl">{tr('install.aria')}</span>
               </button>
             {/if}
+            <!-- The footer's links, smaller and muted like the footer itself
+                 (the footer keeps them too). -->
+            <button class="mi mi-sm" role="menuitem" type="button" onclick={() => menuAction(() => reportBug?.openWith('fallo'))}>{tr('bug.link')}</button>
+            <a class="mi mi-sm" role="menuitem" href={`/${lang}/privacy`} onclick={() => closeMenu()}>{tr('footer.privacy')}</a>
+            <button class="mi mi-sm" role="menuitem" type="button" onclick={() => menuAction(() => about?.openDonate())}>{tr('about.donateLink')}</button>
+            <button class="mi mi-sm" role="menuitem" type="button" onclick={() => menuAction(() => about?.openAbout())}>{tr('about.link')}</button>
           </div>
         {/if}
       </div>
@@ -1548,7 +1576,7 @@
         <span aria-hidden="true">·</span>
         <a class="foot-link" href={`/${lang}/privacy`}>{tr('footer.privacy')}</a>
         <span aria-hidden="true">·</span>
-        <About version={version} onElement={(kind, key) => openInfoFor(kind, kind, key)} onMessage={() => reportBug?.openWith('sugerencia')} />
+        <About bind:this={about} version={version} onElement={(kind, key) => openInfoFor(kind, kind, key)} onMessage={() => reportBug?.openWith('sugerencia')} />
       </div>
     </footer>
   {/if}
@@ -1714,39 +1742,72 @@
     color: var(--text-muted);
     cursor: default;
   }
-  .mi:disabled svg.ok {
-    color: var(--success);
+  /* Wraps the report icon so the "new" dot can sit on its top-right corner. */
+  .mi-ic {
+    position: relative;
+    display: inline-flex;
+    flex: none;
   }
   .mi-lbl {
     flex: 1;
   }
-  /* Same dot as on the button, so the eye links the two. */
+  /* Same dot as on the button, perched on the report icon's corner, so the
+     eye links the two. The ring in the menu's colour detaches it from the
+     icon's stroke. */
   .mi-dot {
+    position: absolute;
+    top: -3px;
+    right: -4px;
     width: 8px;
     height: 8px;
-    flex: none;
     border-radius: 50%;
     background: var(--new-dot);
+    box-shadow: 0 0 0 2px var(--surface-2);
+  }
+  /* The footer links: same size ratio as the About modal's fine print against
+     its main text (0.76 vs 0.88rem), muted, lowercase like the footer, and
+     indented to line up with the item labels above. */
+  .mi-sm {
+    font-size: 0.78rem;
+    color: #82828a;
+    padding: 0.32rem 0.65rem 0.32rem calc(0.65rem + 17px + 0.65rem);
+    text-decoration: none;
+  }
+  .mi-sm:hover,
+  .mi-sm:focus-visible {
+    color: var(--text-muted);
   }
   .mi-sep {
     height: 1px;
     margin: 0.3rem 0.35rem;
     background: var(--border);
   }
-  /* Desktop share copies to the clipboard: a brief confirmation under the
-     button, since the menu has already closed. */
-  .menu-toast {
+  /* Brief confirmation to the left of the menu button. It sits over the end
+     of the title on purpose (with the page background behind it), so a long
+     name doesn't push it around. */
+  .menu-flash {
     position: absolute;
-    top: calc(100% + 6px);
-    right: 0;
-    z-index: 50;
+    top: 50%;
+    right: calc(100% + 0.5rem);
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+  .flash-msg {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
     white-space: nowrap;
-    font-size: 0.75rem;
-    padding: 0.3rem 0.55rem;
-    border-radius: 7px;
+    font-size: 0.8rem;
+    padding: 0.3rem 0.6rem;
+    border-radius: var(--radius);
     background: var(--surface-2);
     border: 1px solid var(--border);
     color: var(--text);
+  }
+  .flash-msg svg {
+    width: 14px;
+    height: 14px;
+    color: var(--accent);
   }
   h1 {
     font-size: 1.5rem;

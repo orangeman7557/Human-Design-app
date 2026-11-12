@@ -171,7 +171,7 @@ export default {
     shareSheetTitle: 'Human Design Chart',
     shareFallbackTitle: 'Chart Link',
     shareLink: 'Share Link',
-    shareCopied: 'Link copied ✓',
+    linkCopied: 'Link copied',
     generatingImage: 'Generating image…',
     downloadImage: 'Download Image',
     hBodygraph: 'Bodygraph',
