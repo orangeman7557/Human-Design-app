@@ -1063,7 +1063,11 @@
             {#if install.mode}
               <button class="mi mi-sm" role="menuitem" type="button" onclick={() => menuAction(onInstallClick)}>{tr('install.link')}</button>
             {/if}
-            <button class="mi mi-sm" role="menuitem" type="button" onclick={() => menuAction(() => reportBug?.openWith('fallo'))}>{tr('bug.link')}</button>
+            <button class="mi mi-sm" role="menuitem" type="button" onclick={() => menuAction(() => reportBug?.openWith('fallo'))}>{tr('bug.link')}<svg class="mi-bug" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M8 5a4 4 0 0 1 8 0" />
+                <rect x="7" y="7" width="10" height="12" rx="5" />
+                <path d="M12 10v8M4 11h3M4 16h3.2M17 11h3M16.8 16H20M6 7 4.5 5.5M18 7l1.5-1.5M6 19l-1.6 1.6M18 19l1.6 1.6" />
+              </svg></button>
             <a class="mi mi-sm" role="menuitem" href={`/${lang}/privacy`} onclick={() => closeMenu()}>{tr('footer.privacy')}</a>
             <button class="mi mi-sm" role="menuitem" type="button" onclick={() => menuAction(() => about?.openDonate())}>{tr('about.donateLink')}</button>
             <button class="mi mi-sm" role="menuitem" type="button" onclick={() => menuAction(() => about?.openAbout())}>{tr('about.link')}</button>
@@ -1771,6 +1775,15 @@
   .mi-sm:hover,
   .mi-sm:focus-visible {
     color: var(--text-muted);
+  }
+  /* The footer's bug glyph (ReportBug.svelte), same size and tilt. Overrides
+     the menu's 17px item icon sizing. */
+  .mi .mi-bug {
+    width: 1.05em;
+    height: 1.05em;
+    margin-left: 0.35em;
+    color: inherit;
+    transform: rotate(45deg);
   }
   .mi-sep {
     height: 1px;

@@ -283,8 +283,8 @@ export default {
   about: {
     link: 'acerca de',
     donateLink: 'agradecer',
-    donateHeading: 'Donar',
-    donateAria: 'Donar',
+    donateHeading: 'Agradecer',
+    donateAria: 'Agradecer',
     donateIntro: 'Si encuentras la app útil y te nace agradecer o contribuir, ¡adelante!',
     donateWays: 'Aquí te propongo dos maneras:',
     // Inline link in the "acerca de" modal that opens the donate modal.

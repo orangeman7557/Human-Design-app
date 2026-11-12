@@ -458,6 +458,9 @@ This resolves the inconsistency found in the gate/channel state codas
   the same handler (native prompt on Chromium, iOS instructions dialog),
   first in the footer like the home. Verified in the browser by dispatching a
   synthetic `beforeinstallprompt`.
+  *Update 1.5.7 (2026-11-12): on the chart page the install entry moved from
+  the footer into the ☰ actions menu (same `install.mode` gate and handler);
+  the home keeps its own link.*
 - ✅ **3. Update CLAUDE.md to reality — DONE 2026-07-03.** §1 now describes
   the shipped installability + basic offline; §3's tree gained
   `service-worker.js`, `pwa/install.svelte.js`, `report-pdf.js`, `privacy/`,

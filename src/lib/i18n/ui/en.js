@@ -269,8 +269,8 @@ export default {
   about: {
     link: 'about',
     donateLink: 'say thanks',
-    donateHeading: 'Donate',
-    donateAria: 'Donate',
+    donateHeading: 'Say Thanks',
+    donateAria: 'Say Thanks',
     donateIntro: 'If you find the app useful and feel like saying thanks or chipping in, go for it!',
     donateWays: 'Here are two ways:',
     // Inline link in the "about" modal that opens the donate modal.
