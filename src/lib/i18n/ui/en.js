@@ -220,7 +220,7 @@ export default {
     // Split around the info-dot glyph, which is rendered as the icon itself.
     infoHintA: 'Tap any element of the chart, then tap ',
     infoHintB: ' for more information.',
-    infoHintC: 'New to Human Design? Open the \u22ee menu at the top right and choose \u201cInitial Report\u201d \u2014 it is a good place to start.'
+    infoHintC: 'New to Human Design? Open the \u2630 menu at the top right and choose \u201cInitial Report\u201d \u2014 it is a good place to start.'
   },
 
   storage: {
