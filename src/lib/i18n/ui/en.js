@@ -268,7 +268,7 @@ export default {
 
   about: {
     link: 'about',
-    donateLink: 'donate',
+    donateLink: 'say thanks',
     donateHeading: 'Donate',
     donateAria: 'Donate',
     donateIntro: 'If you find the app useful and feel like saying thanks or chipping in, go for it!',

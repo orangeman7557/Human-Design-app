@@ -1018,7 +1018,7 @@
         <span class="menu-flash" role="status">
           {#if flash && !menuOpen}
             {#key flash}
-              <span class="flash-msg" transition:fade={{ duration: 180 }}>
+              <span class="flash-msg" in:fade={{ duration: 200 }} out:fade={{ duration: 900 }}>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>
                 {flash === 'saved' ? tr('chart.savedAria') : tr('chart.linkCopied')}
               </span>
@@ -1058,16 +1058,11 @@
               <span class="mi-lbl">{sharing ? tr('chart.generatingImage') : tr('chart.downloadImage')}</span>
             </button>
             <div class="mi-sep" role="separator"></div>
+            <!-- Install + the footer's links: smaller and muted like the footer
+                 itself (the footer keeps its links too). -->
             {#if install.mode}
-              <button class="mi" role="menuitem" type="button" onclick={() => menuAction(onInstallClick)}>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <rect x="6" y="2" width="12" height="20" rx="2.5" /><line x1="11" y1="18" x2="13" y2="18" />
-                </svg>
-                <span class="mi-lbl">{tr('install.aria')}</span>
-              </button>
+              <button class="mi mi-sm" role="menuitem" type="button" onclick={() => menuAction(onInstallClick)}>{tr('install.link')}</button>
             {/if}
-            <!-- The footer's links, smaller and muted like the footer itself
-                 (the footer keeps them too). -->
             <button class="mi mi-sm" role="menuitem" type="button" onclick={() => menuAction(() => reportBug?.openWith('fallo'))}>{tr('bug.link')}</button>
             <a class="mi mi-sm" role="menuitem" href={`/${lang}/privacy`} onclick={() => closeMenu()}>{tr('footer.privacy')}</a>
             <button class="mi mi-sm" role="menuitem" type="button" onclick={() => menuAction(() => about?.openDonate())}>{tr('about.donateLink')}</button>
@@ -1782,9 +1777,10 @@
     margin: 0.3rem 0.35rem;
     background: var(--border);
   }
-  /* Brief confirmation to the left of the menu button. It sits over the end
-     of the title on purpose (with the page background behind it), so a long
-     name doesn't push it around. */
+  /* Brief confirmation to the left of the menu button: plain text with a
+     green tick, a message rather than a control (no box). It sits over the end
+     of the title on purpose, on the page background with a soft left fade, so
+     a long name doesn't push it around. Fades out slowly. */
   .menu-flash {
     position: absolute;
     top: 50%;
@@ -1797,17 +1793,15 @@
     align-items: center;
     gap: 0.35rem;
     white-space: nowrap;
-    font-size: 0.8rem;
-    padding: 0.3rem 0.6rem;
-    border-radius: var(--radius);
-    background: var(--surface-2);
-    border: 1px solid var(--border);
-    color: var(--text);
+    font-size: 0.82rem;
+    padding: 0.3rem 0.1rem 0.3rem 1.4rem;
+    background: linear-gradient(to right, transparent, var(--bg) 1.2rem);
+    color: var(--text-muted);
   }
   .flash-msg svg {
-    width: 14px;
-    height: 14px;
-    color: var(--accent);
+    width: 15px;
+    height: 15px;
+    color: var(--success);
   }
   h1 {
     font-size: 1.5rem;
