@@ -187,9 +187,26 @@
   // ── Gate render entries (one per gate, all 64) ─────────────────────────────
   const definedCenterSet = new Set(chart.definedCenters);
 
-  // Inactive gate numbers on a defined centre: the dark purple reads on
-  // every defined fill except Root's dark brown, which needs a light tone.
-  const INACTIVE_TEXT_ON_DEFINED = { root: '#d8c8b0' };
+  // Inactive gate numbers on a defined centre, picked per fill by WCAG
+  // contrast (the dark purple only reaches 4.5:1 on yellow/green; on amber it
+  // needs a deeper tone, and red/brown fills need a light one).
+  const GATE_TEXT_PURPLE = '#4a2060';       // 8.0:1 yellow, 5.0:1 green
+  const GATE_TEXT_PURPLE_DEEP = '#2a1040';  // 4.7:1 on amber (3.5:1 with the base purple)
+  const GATE_TEXT_ON_RED = '#fff0e0';       // 4.6:1 on red (2.5:1 with purple)
+  const GATE_TEXT_ON_BROWN = '#d8c8b0';     // 5.9:1 on Root brown
+  const GATE_TEXT_UNDEFINED = '#aaaab4';    // 7.6:1 on the undefined fill
+  // Inactive numbers have no marker to fit in, so they can grow; 19 is the
+  // largest size with no overlap between neighbours (20 collides 33/45).
+  const GATE_FONT_ACTIVE = 17;
+  const GATE_FONT_INACTIVE = 19;
+  const INACTIVE_TEXT_ON_DEFINED = {
+    throat: GATE_TEXT_PURPLE_DEEP,
+    spleen: GATE_TEXT_PURPLE_DEEP,
+    solarPlexus: GATE_TEXT_PURPLE_DEEP,
+    heart: GATE_TEXT_ON_RED,
+    sacral: GATE_TEXT_ON_RED,
+    root: GATE_TEXT_ON_BROWN
+  };
 
   const gateEntries = Object.entries(GATE_POSITIONS).map(([gateStr, pos]) => {
     const gate = Number(gateStr);
@@ -362,8 +379,8 @@
         {@const baseText = g.active
           ? '#ffffff'
           : g.inDefinedCenter
-            ? (INACTIVE_TEXT_ON_DEFINED[CENTER_BY_GATE[g.gate]] ?? '#4a2060')
-            : '#aaaab4'}
+            ? (INACTIVE_TEXT_ON_DEFINED[CENTER_BY_GATE[g.gate]] ?? GATE_TEXT_PURPLE)
+            : GATE_TEXT_UNDEFINED}
         <g pointer-events="none">
           {#if g.active}
             <circle
@@ -383,7 +400,7 @@
             x={g.pos.x} y={g.pos.y}
             text-anchor="middle" dominant-baseline="central"
             fill={gd ? dimColor(baseText, 0.5) : baseText}
-            font-size="17"
+            font-size={g.active ? GATE_FONT_ACTIVE : GATE_FONT_INACTIVE}
             font-weight={g.active ? '600' : '400'}
             font-family="system-ui, sans-serif"
           >{g.gate}</text>
