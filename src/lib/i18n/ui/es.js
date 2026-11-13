@@ -165,6 +165,15 @@ export default {
     timeApprox: '~{time} (hora desconocida)',
     timeUnknownNote:
       'Sin hora de nacimiento: el perfil, la cruz y parte de las puertas dependen de ella, y a veces también el tipo y la autoridad.',
+    dayAlso: 'Ese día también es posible: {values}',
+    dayStable: 'Igual todo ese día: {list}.',
+    dayField: {
+      type: 'tipo',
+      authority: 'autoridad',
+      profile: 'perfil',
+      definition: 'definición',
+      cross: 'cruz'
+    },
     noBirthData: 'No hay datos de nacimiento. Vuelve a la página inicial y rellena el formulario.',
     calculating: 'Calculando…',
     errorPrefix: 'Error: {msg}',

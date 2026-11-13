@@ -16,6 +16,7 @@
   const tr = (key, params) => t(key, params, lang);
   // Full type names come from the content pack (translated in Phase M turn 2).
   const typeLabels = $derived(getDisplayLabels(lang).type);
+  const authorityLabels = $derived(getDisplayLabels(lang).authority);
 
   // Injected by Vite's `define` from package.json (see vite.config.js).
   const version = __APP_VERSION__;
@@ -47,6 +48,7 @@
   import LabelManager from '$lib/components/LabelManager.svelte';
   import WhatIsHD from '$lib/components/WhatIsHD.svelte';
   import { computeChart } from '$lib/hd/chart.js';
+  import { computeDayRange } from '$lib/hd/day-range.js';
 
   // ── SEO (Phase L, step 2 · per-language in Phase M) ───────────────────
   // The home is prerendered (see +page.js), so these tags land in the real
@@ -178,8 +180,8 @@
     }
     unknownTime = checked;
   }
-  /** @type {string | null} */
-  let previewType = $state(null);
+  /** @type {{ type: string, profile: string, authority: string } | null} */
+  let preview = $state(null);
   let previewBusy = $state(false);
   let previewSeq = 0;
 
@@ -207,24 +209,9 @@
     bandsBusy = true;
     typeBands = [];
     (async () => {
-      const types = [];
-      for (let v = 0; v <= 47; v++) {
-        const t = `${String(Math.floor(v / 2)).padStart(2, '0')}:${v % 2 === 0 ? '00' : '30'}`;
-        try {
-          const { type } = await computeChart({
-            name: null,
-            date: d,
-            time: t,
-            timezone: pl.timezone,
-            latitude: pl.latitude,
-            longitude: pl.longitude
-          });
-          types.push(type);
-        } catch {
-          types.push(null);
-        }
-        if (seq !== bandSeq) return;
-      }
+      const { slots } = await computeDayRange({ date: d, ...pl });
+      if (seq !== bandSeq) return;
+      const types = slots.map((x) => x?.type ?? null);
       const bands = [];
       for (let i = 0; i < types.length; i++) {
         const last = bands[bands.length - 1];
@@ -242,7 +229,7 @@
 
   $effect(() => {
     if (!unknownTime || !place) {
-      previewType = null;
+      preview = null;
       previewBusy = false;
       return;
     }
@@ -258,10 +245,10 @@
     previewBusy = true;
     const t = setTimeout(async () => {
       try {
-        const { type } = await computeChart(birth);
-        if (seq === previewSeq) previewType = type;
+        const { type, profile, authority } = await computeChart(birth);
+        if (seq === previewSeq) preview = { type, profile, authority };
       } catch {
-        if (seq === previewSeq) previewType = null;
+        if (seq === previewSeq) preview = null;
       } finally {
         if (seq === previewSeq) previewBusy = false;
       }
@@ -918,7 +905,11 @@
               {:else if previewBusy}
                 …
               {:else}
-                {typeLabels[previewType] ?? '—'}
+                {#if preview}
+                  {typeLabels[preview.type] ?? preview.type} · {preview.profile} · {authorityLabels[preview.authority] ?? preview.authority}
+                {:else}
+                  —
+                {/if}
               {/if}
             </span>
           </div>
@@ -1620,6 +1611,7 @@
   .slider-type {
     font-size: 0.85rem;
     color: var(--accent);
+    text-align: right;
   }
 
   button[type='submit'] {

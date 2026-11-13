@@ -5,6 +5,7 @@
   // Injected by Vite's `define` from package.json (see vite.config.js).
   const version = __APP_VERSION__;
   import { computeChart } from '$lib/hd/chart.js';
+  import { computeDayRange, DAY_FIELDS, crossKey } from '$lib/hd/day-range.js';
   import { CENTERS, PLANETS, CENTER_BY_GATE, CHANNELS } from '$lib/hd/constants.js';
   import { toBlob } from 'html-to-image';
   import { saveChart, findSavedChart } from '$lib/db/charts.js';
@@ -76,6 +77,49 @@
   let loading = $state(true);
   /** @type {Object | null} */
   let birthData = $state(null);
+
+  // Unknown birth time: the whole day's range of values, computed after the
+  // chart has painted (48 charts) — null until then, and for known times.
+  /** @type {import('$lib/hd/day-range.js').DayRange | null} */
+  let dayRange = $state(null);
+  function scheduleDayRange(birth) {
+    const pause = () => new Promise((r) => setTimeout(r, 0));
+    setTimeout(async () => {
+      try {
+        dayRange = await computeDayRange(birth, { pause });
+      } catch {
+        dayRange = null;
+      }
+    }, 300);
+  }
+  // Per field, the OTHER values the day allows, as one readable list ("3/6 or
+  // 4/6"); a field missing here is the same all day.
+  const dayAlso = $derived.by(() => {
+    if (!dayRange || !chart) return {};
+    const label = {
+      type: (v) => getDisplayLabels(lang).type[v] ?? v,
+      authority: (v) => AUTHORITY_LABELS[v] ?? v,
+      profile: (v) => v,
+      definition: (v) => DEFINITION_LABELS[v] ?? v,
+      cross: (v) => getCrossName(v, lang) ?? CROSS_LABELS[v.angle] ?? v.angle
+    };
+    const id = (f, v) => (f === 'cross' ? crossKey(v) : v);
+    const fmt = new Intl.ListFormat(lang, { type: 'disjunction' });
+    /** @type {Record<string, string>} */
+    const out = {};
+    for (const f of DAY_FIELDS) {
+      const others = dayRange.values[f].filter((v) => id(f, v) !== id(f, chart[f]));
+      if (others.length) out[f] = fmt.format(others.map(label[f]));
+    }
+    return out;
+  });
+  const dayStable = $derived(
+    dayRange?.stable.length
+      ? new Intl.ListFormat(lang, { type: 'conjunction' }).format(
+          dayRange.stable.map((f) => tr('chart.dayField.' + f))
+        )
+      : ''
+  );
   let saved = $state(false);
   /** @type {string | null} */
   let saveError = $state(null);
@@ -943,6 +987,7 @@
     } finally {
       loading = false;
     }
+    if (chart && birthData?.timeUnknown) scheduleDayRange($state.snapshot(birthData));
   });
 
   function back() {
@@ -976,6 +1021,12 @@
      green/red on purpose — the drawers are explicit that the misalignment
      signal is *information*, not a failing, so a "bad" red would contradict
      the copy. The aligned one takes the accent, the other stays muted. -->
+{#snippet dayAlsoLine(field, right = false)}
+  {#if dayAlso[field]}
+    <span class="day-also" class:right>{tr('chart.dayAlso', { values: dayAlso[field] })}</span>
+  {/if}
+{/snippet}
+
 {#snippet polarityIcon(plus)}
   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
     <circle cx="12" cy="12" r="9" />
@@ -1095,7 +1146,9 @@
       <p class="birth">
         {formatBirth(birthData)}
         {#if birthData.timeUnknown}
-          <span class="time-note">{tr('chart.timeUnknownNote')}</span>
+          <span class="time-note"
+            >{tr('chart.timeUnknownNote')}{#if dayStable}{' '}{tr('chart.dayStable', { list: dayStable })}{/if}</span
+          >
         {/if}
       </p>
     {/if}
@@ -1170,6 +1223,7 @@
               {/if}
             {/each}
           </div>
+          {@render dayAlsoLine('type')}
         </div>
         <div
           class="card"
@@ -1216,6 +1270,7 @@
               class="dot-side"
               data-info-cat="authority" data-info-kind="authority" data-info-key={chart.authority}
             ><InfoDot active={infoIsOpen('authority', chart.authority)} label={tr('chart.moreAuthority')} /></span>{/if}</span>
+          {@render dayAlsoLine('authority')}
         </div>
         <!-- Signals: one card, two values, each with its own "i" (the card's
              concept "i" explains what signals are). They sit right after
@@ -1278,6 +1333,7 @@
               class="dot-side"
               data-info-cat="profile" data-info-kind="profile" data-info-key={chart.profile}
             ><InfoDot active={infoIsOpen('profile', chart.profile)} label={tr('chart.moreProfile')} /></span>{/if}</span>
+          {@render dayAlsoLine('profile')}
         </div>
         <!-- Incarnation cross. The four Sun/Earth gates ride the label's line
              (right-aligned) so the long angle name keeps the full width to
@@ -1318,6 +1374,7 @@
                 class="dot-side"
                 data-info-cat="cross" data-info-kind="cross" data-info-key={chart.cross.angle}
               ><InfoDot active={infoIsOpen('cross', chart.cross.angle)} label={tr('chart.moreCross')} /></span>{/if}</span>
+            {@render dayAlsoLine('cross')}
           </div>
         {/if}
       </div>
@@ -1395,6 +1452,7 @@
               {DEFINITION_LABELS[chart.definition] ?? chart.definition}
             </button>
           </span>
+          {@render dayAlsoLine('definition', true)}
         </div>
       </div>
 
@@ -1873,6 +1931,17 @@
     border-left: 2px solid var(--accent);
     padding-left: 0.5rem;
     max-width: 34rem;
+  }
+  /* "Also possible that day: …" under a card value (unknown birth time). */
+  .day-also {
+    display: block;
+    margin-top: 0.3rem;
+    font-size: 0.72rem;
+    line-height: 1.35;
+    color: var(--text-muted);
+  }
+  .day-also.right {
+    text-align: right;
   }
   main.capturing .time-note {
     margin-left: auto;
