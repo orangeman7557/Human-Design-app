@@ -300,6 +300,8 @@
 
   /** @type {import('$lib/db/charts.js').SavedChart[]} */
   let savedCharts = $state([]);
+  // False until the first IndexedDB read ends, so the empty message doesn't flash.
+  let listLoaded = $state(false);
   /** @type {string | null} */
   let listError = $state(null);
   /** @type {HTMLInputElement | undefined} */
@@ -566,6 +568,8 @@
       backfillTypes();
     } catch (e) {
       listError = e instanceof Error ? e.message : String(e);
+    } finally {
+      listLoaded = true;
     }
   }
 
@@ -1078,7 +1082,7 @@
 
     <div class="list-wrap" bind:this={listWrap} style:min-height={isFiltering ? reservedH + 'px' : null}>
     {#if savedCharts.length === 0}
-      <p class="empty">{tr('saved.empty')}</p>
+      {#if listLoaded}<p class="empty">{tr('saved.empty')}</p>{/if}
     {:else if filteredCharts.length === 0}
       <p class="empty">{tr('saved.noMatches')}</p>
     {:else}
