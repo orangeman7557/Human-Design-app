@@ -11,6 +11,8 @@
 // or the default). DO NOT pass `lang=es` here. Without `lang`, Photon returns
 // names in their local language, which reads fine for our labels.
 
+import { buildPlaceLabel } from './place.js';
+
 const ENDPOINT = 'https://photon.komoot.io/api/';
 
 // A Spain centroid used ONLY when resolving a named major-Spanish-city lookup
@@ -237,7 +239,7 @@ function toPlace(feature) {
   const placeName = props.name || props.city || props.county;
   const region = props.state || props.county;
   const country = props.country;
-  const label = [placeName, region, country].filter(Boolean).join(', ');
+  const label = buildPlaceLabel(placeName, region, country);
 
   return {
     label,

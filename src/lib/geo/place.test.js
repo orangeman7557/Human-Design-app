@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { cityCountry } from './place.js';
+import { cityCountry, buildPlaceLabel } from './place.js';
 
 describe('cityCountry', () => {
   it('drops the intermediate region, keeping city + country', () => {
@@ -18,5 +18,17 @@ describe('cityCountry', () => {
   it('handles empty / missing input', () => {
     expect(cityCountry('')).toBe('');
     expect(cityCountry()).toBe('');
+  });
+});
+
+describe('buildPlaceLabel', () => {
+  it('omits a region that repeats the city, ignoring case and accents', () => {
+    expect(buildPlaceLabel('Lisbon', 'Lisbon', 'Portugal')).toBe('Lisbon, Portugal');
+    expect(buildPlaceLabel('Málaga', 'malaga', 'España')).toBe('Málaga, España');
+  });
+  it('keeps distinct regions and tolerates missing parts', () => {
+    expect(buildPlaceLabel('Madrid', 'Comunidad de Madrid', 'España')).toBe('Madrid, Comunidad de Madrid, España');
+    expect(buildPlaceLabel('Lisbon', undefined, 'Portugal')).toBe('Lisbon, Portugal');
+    expect(buildPlaceLabel('Lisbon', 'Lisbon', undefined)).toBe('Lisbon');
   });
 });
