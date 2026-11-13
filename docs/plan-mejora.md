@@ -57,14 +57,14 @@ Sale de la revisión global del 2026-11-13 (seis frentes: código, rigor de Dise
 - [ ] **UX-2** · S · Microtexto y estados apagados hasta 4,5:1 de contraste.
 - [ ] **UX-5** · M · Carta para novatos: frase en llano arriba, «En tu carta: definido/indefinido» al abrir un centro, encabezados claros en Activaciones.
 - [ ] **UX-6** · S · Cabecera compacta fija (volver + ☰) y confirmación de guardado que no tape el título.
-- [ ] **UX-8** · S · Ciudades en el idioma de la ruta y sin duplicar ciudad/provincia.
-- [ ] **UX-4** ⚠ · S · Nombre accesible de la «i» («Información: Garganta») y marca en la chip del tipo propio. *(Abrir el drawer al primer toque discrepa de la decisión de la 1.5.5.)*
+- [ ] **UX-8** · S · Ciudades en el idioma de la ruta y sin duplicar ciudad/provincia. — hecha 2026-11-13 la deduplicación ciudad/provincia; queda pedir a Photon el idioma de la ruta
+- [ ] **UX-4** ⚠ · S · Nombre accesible de la «i» («Información: Garganta») y marca en la chip del tipo propio. *(Abrir el drawer al primer toque discrepa de la decisión de la 1.5.5.)* — hecha 2026-11-13 la parte de accesibilidad (nombre accesible «Información: X»); queda la marca en la chip del tipo propio
 - [ ] **UX-7** · S · Errores del formulario en línea, no con la burbuja nativa.
-- [ ] **UX-9** · S · No pintar «aún no hay cartas» hasta que responda la base de datos.
-- [ ] **UX-10** · S · Regla global de movimiento reducido; auditar `outline: none`.
+- [x] **UX-9** · S · No pintar «aún no hay cartas» hasta que responda la base de datos. — hecho 2026-11-13, pendiente de validación del autor
+- [x] **UX-10** · S · Regla global de movimiento reducido; auditar `outline: none`. — hecho 2026-11-13, pendiente de validación del autor
 
 **Textos**
-- [ ] **TXT-A** (TXT-6) · S · Limpieza mecánica: raya española y «37 %».
+- [ ] **TXT-A** (TXT-6) · S · Limpieza mecánica: raya española y «37 %». — hecho 2026-11-13 el porcentaje («37 %» con espacio de no separación); queda la raya
 - [ ] **TXT-B** (TXT-1, 2, 5) · M · Reescritura dirigida de `type`, `strategy`, `authority`: dobletes, calcos, incisos.
 - [ ] **TXT-3** · M · Muletillas en todo el pack («de verdad» ×50, «conviene» ×29, «No es X, es Y»): lista por búsqueda y decidir caso a caso.
 - [ ] **TXT-2 / TXT-7** · S · Chrome: «reporte», «Email», «Si encuentras la app útil»; unificar «yo»/«nosotros».
@@ -79,7 +79,7 @@ Sale de la revisión global del 2026-11-13 (seis frentes: código, rigor de Dise
 - [ ] **PRO-5** · M · Plan B si cae Photon: entrada manual de coordenadas/zona o segundo proveedor.
 - [ ] **COD-5** · S · Contadores anónimos de error en la analítica propia.
 - [ ] **COD-3** ✔ · S · Avisar cuando la copia en cookie se llena (~11 KB); medir el techo real.
-- [ ] **COD-2** · S · Una única `validateBirth()` para importar, enlace, bóveda y formulario.
+- [x] **COD-2** · S · Una única `validateBirth()` para importar, enlace, bóveda y formulario. — hecho 2026-11-13, pendiente de validación del autor
 - [ ] **PRO-7** ⚠ · S · Frase en la política sobre los datos que viajan en el enlace compartido. *(Aceptado a propósito el 2026-07-22.)*
 
 ## 3. Más adelante — solo con ganas o con datos que lo pidan
@@ -90,7 +90,7 @@ Sale de la revisión global del 2026-11-13 (seis frentes: código, rigor de Dise
 - [ ] **HD-2b** · M · Lo que queda de HD-2: corregir de verdad las zonas pre-1970 aún sin corregir (Luxemburgo, Mónaco, África/Caribe) con tabla de excepciones o tiempo medio local. Las reglas se pueden tomar del fichero `backzone` oficial de la base tz, como se hizo para cotejar las cinco zonas ya corregidas.
 - [ ] **COD-4** ✔ · L · Trocear los ficheros gigantes (carta 2.785 líneas, home 2.296) de forma oportunista, al tocar cada zona.
 - [ ] **COD-T** · M · Cinco tests de más red (ver `codigo.md`).
-- [ ] **COD-6, 7, 8** · S–M · CSP en modo informe, control de origen en `/api/love`, mensaje «recarga para actualizar».
+- [ ] **COD-6, 7, 8** · S–M · CSP en modo informe, control de origen en `/api/love`, mensaje «recarga para actualizar». — COD-7 hecho 2026-11-13 (control de origen y fallos de KV controlados en `/api/love`)
 - [ ] **PRO-6** · S · Documentar la procedencia de los 192 nombres de cruces y un plan de retirada.
 - [ ] **PRO-4** · S · `MANTENIMIENTO.md` de una página (dominio, despliegue, servicios de terceros).
 - [ ] **HD-L** · L · Textos de las 384 líneas, circuitos, retornos.
