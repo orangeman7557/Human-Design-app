@@ -1078,7 +1078,7 @@ export default {
     generator: {
       title: 'Generador',
       paragraphs: [
-        'Tipo mayoritario, Generador *puro*: alrededor del **~37% de la población**. Su rasgo definitorio es el [centro Sacral](center:sacral) definido: la fuente de energía vital del sistema, generativa y de carácter renovable. Su energía generadora y constructora, cuando está bien alineado, es continuada y abundante.',
+        'Tipo mayoritario, Generador *puro*: alrededor del **~37 % de la población**. Su rasgo definitorio es el [centro Sacral](center:sacral) definido: la fuente de energía vital del sistema, generativa y de carácter renovable. Su energía generadora y constructora, cuando está bien alineado, es continuada y abundante.',
         'Su estrategia es [responder](strategy:respond): **reacciona a lo que la vida le presenta** en lugar de iniciar desde la mente y lo racional. Cuando compromete su energía con lo correcto, aparece la *satisfacción*; si no se escucha bien y fuerza su energía donde no toca, aparece la *frustración*.',
         'En la práctica, su centro Sacral responde antes que su mente: ante algo concreto —una propuesta, una pregunta, una situación— surge una reacción visceral de atracción o rechazo. **Seguir esa señal del cuerpo**, en vez de decidir desde el pensamiento y la razón, es lo que mantiene su energía bien empleada.'
       ]
@@ -1086,7 +1086,7 @@ export default {
     'manifesting-generator': {
       title: 'Generador Manifestante',
       paragraphs: [
-        'Una variante del [Generador](type:generator) —los Generadores Manifestantes suponen un ~33% de la población, y junto al resto de Generadores, cerca del 70 %—: un Generador Manifestante tiene el [Sacral](center:sacral) definido, y lo que lo diferencia de otros Generadores es que además tiene la [Garganta](center:throat) conectada a un centro motor. Eso le da la energía generadora propia de los Generadores y, además, capacidad de manifestar y materializar con rapidez.',
+        'Una variante del [Generador](type:generator) —los Generadores Manifestantes suponen un ~33 % de la población, y junto al resto de Generadores, cerca del 70 %—: un Generador Manifestante tiene el [Sacral](center:sacral) definido, y lo que lo diferencia de otros Generadores es que además tiene la [Garganta](center:throat) conectada a un centro motor. Eso le da la energía generadora propia de los Generadores y, además, capacidad de manifestar y materializar con rapidez.',
         'Su estrategia es [**responder y luego informar**](strategy:respond-then-inform): primero espera la respuesta sacral —el sí o el no del cuerpo— y, una vez la tiene, avisa a quienes se verán afectados antes de lanzarse. Tiende a ser polifacético, veloz y no lineal: salta pasos, hace varias cosas a la vez y a veces vuelve atrás a rematar lo que se saltó.',
         'La clave para gestionar su energía es no dispersarse iniciando sin haber escuchado la respuesta de su cuerpo: cuando se compromete con lo que de verdad le enciende (cuando su cuerpo dice sí), avanza rápido y siente *satisfacción* y *paz*; pero cuando fuerza empujado por la mente y las ideas, acumula *frustración*, *enfado* y trabajo a medias.'
       ]
@@ -1094,7 +1094,7 @@ export default {
     projector: {
       title: 'Proyector',
       paragraphs: [
-        'Cerca del **~20% de la población**. No tiene el [Sacral](center:sacral) definido, así que **no está diseñado para un trabajo constante** ni para sostener la misma energía que un [Generador](type:generator): debe cuidarse de intentar rendir de manera continuada y sin descanso. Su don es otro: ver a los demás con enorme profundidad y saber guiar y orientar la energía ajena.',
+        'Cerca del **~20 % de la población**. No tiene el [Sacral](center:sacral) definido, así que **no está diseñado para un trabajo constante** ni para sostener la misma energía que un [Generador](type:generator): debe cuidarse de intentar rendir de manera continuada y sin descanso. Su don es otro: ver a los demás con enorme profundidad y saber guiar y orientar la energía ajena.',
         'Su estrategia es [**esperar la invitación**](strategy:wait-for-invitation) para lo importante —el trabajo, el amor, el lugar donde vivir—. Necesita ser reconocido e invitado para que su sabiduría y su esfuerzo sean bien recibidos; cuando se ofrece o se mete sin que se lo pidan, lo normal es que encuentre resistencia y rechazo. Cuando en su vida aparecen el *reconocimiento* y el *éxito*, son la pista de que va por buen camino. En cambio, el síntoma que aparece cuando no vive alineado es la *amargura*.',
         'En la gestión de su energía, su tarea es **descansar y dosificarse**: no compite en resistencia física, sino en profundidad y maestría. Su bienestar se fundamenta en dormir y soltar antes de quedar agotado, y en elegir bien a quién entrega su atención y esfuerzo: aprender a decir que sí o que no cuando toca (porque no toda invitación significa que tenga que decir que sí).'
       ]
@@ -1102,7 +1102,7 @@ export default {
     manifestor: {
       title: 'Manifestador',
       paragraphs: [
-        'El tipo más independiente, alrededor del **~9% de la población**. Tiene al menos un centro motor (el Corazón o el Plexo solar) conectado a la [Garganta](center:throat), pero el [Sacral](center:sacral) sin definir, así que su energía no es constante: llega a impulsos, que utiliza para iniciar y poner cosas en marcha, y luego necesita reposo, bastante reposo.',
+        'El tipo más independiente, alrededor del **~9 % de la población**. Tiene al menos un centro motor (el Corazón o el Plexo solar) conectado a la [Garganta](center:throat), pero el [Sacral](center:sacral) sin definir, así que su energía no es constante: llega a impulsos, que utiliza para iniciar y poner cosas en marcha, y luego necesita reposo, bastante reposo.',
         'Su estrategia es [**informar antes de actuar**](strategy:inform-before-acting). No se trata de pedir permiso, sino de avisar a quienes su impacto va a alcanzar: al hacerlo, reduce la resistencia y el rechazo que de otro modo encuentra a su alrededor. Actuar de manera alineada con su estrategia le trae *paz*; y si no lo hace, siente oposición y crece en él el *enfado*.',
         'El Manifestador está aquí para **iniciar e impactar**, no para ejecutar de forma sostenida. Gestionar su energía pasa por respetar sus ciclos de empuje y descanso, y por proteger su autonomía sin aislarse de quienes le rodean.'
       ]
@@ -1110,7 +1110,7 @@ export default {
     reflector: {
       title: 'Reflector',
       paragraphs: [
-        'El tipo más infrecuente: apenas el **~1% de la población**. No tiene ningún centro definido: todo su bodygraph está abierto. Eso lo convierte en un espejo extraordinariamente sensible de la gente y los lugares que lo rodean, capaz de percibir la salud de una comunidad.',
+        'El tipo más infrecuente: apenas el **~1 % de la población**. No tiene ningún centro definido: todo su bodygraph está abierto. Eso lo convierte en un espejo extraordinariamente sensible de la gente y los lugares que lo rodean, capaz de percibir la salud de una comunidad.',
         'Como muestrea constantemente la energía ajena, **el entorno y las compañías le afectan muchísimo**: con quién y dónde está cambia profundamente su experiencia. Su estrategia es [**esperar un ciclo lunar**](strategy:wait-lunar-cycle) —unos 28 días— antes de las decisiones importantes, dejando que el asunto se vea desde muchos ángulos antes de cerrarlo.',
         'Su mayor cuidado en la gestión de la energía es elegir bien los entornos y no identificarse con lo que solo está reflejando. Cuando vive alineado con su diseño, viviendo en el lugar y con las personas adecuadas, aparecen en él la *sorpresa* y el *deleite*. Si por el contrario no vive alineado, el síntoma que aparece en él es la *decepción*.'
       ]
@@ -1374,7 +1374,7 @@ export default {
     weight: {
       title: 'Peso de la activación',
       paragraphs: [
-        'No todas las activaciones influyen por igual. La enseñanza más extendida en Diseño Humano sitúa al **Sol y la Tierra** como lo más determinante —se les suele atribuir en torno al **70 %** del significado de la carta—; los **Nodos** describen sobre todo el entorno y la dirección de vida; y el resto de planetas **matizan**.',
+        'No todas las activaciones influyen por igual. La enseñanza más extendida en Diseño Humano sitúa al **Sol y la Tierra** como lo más determinante —se les suele atribuir en torno al **70 %** del significado de la carta—; los **Nodos** describen sobre todo el entorno y la dirección de vida; y el resto de planetas **matizan**.',
         'La columna *Peso* resume esa influencia relativa de forma orientativa (**alto / medio / bajo**). Es una guía aproximada, no una cifra oficial del sistema: úsala para saber por dónde empezar a leer la carta —siempre por el Sol y la Tierra—.'
       ]
     }
@@ -1386,7 +1386,7 @@ export default {
     sun: {
       title: 'Sol',
       paragraphs: [
-        'El **Sol** es la activación más importante de la carta: marca la **expresión esencial**, la energía que la persona irradia y el propósito que encarna. Junto con la Tierra, concentra la mayor parte del significado (~70%).',
+        'El **Sol** es la activación más importante de la carta: marca la **expresión esencial**, la energía que la persona irradia y el propósito que encarna. Junto con la Tierra, concentra la mayor parte del significado (~70 %).',
         'Su puerta de personalidad suele leerse como la nota dominante de la identidad consciente.'
       ]
     },
@@ -1570,7 +1570,7 @@ export default {
       theme: 'el foco en el detalle',
       text: 'La puerta 9 es la energía del **foco y la concentración** en los detalles que hacen falta para llevar algo a término. Su don es una atención sostenida que completa; su sombra, perderse en lo pequeño o dispersarse.',
       more: [
-        'Cuando la tienes activa, tienes una capacidad de concentración poco común: puedes sostener la atención en el detalle que hace falta para que algo llegue a terminarse. Es una energía silenciosa y muy práctica, la que remata lo que otros dejan al 90%.',
+        'Cuando la tienes activa, tienes una capacidad de concentración poco común: puedes sostener la atención en el detalle que hace falta para que algo llegue a terminarse. Es una energía silenciosa y muy práctica, la que remata lo que otros dejan al 90 %.',
         'Su reverso es perderte en lo pequeño. El mismo foco que completa puede atascarte en un detalle irrelevante durante horas. Merece la pena levantar la vista de vez en cuando y comprobar que el detalle sigue sirviendo al conjunto.'
       ]
     },
@@ -2063,10 +2063,10 @@ export default {
       intro:
         'Como en [el símil de las hormigas](section:intro), los tipos de Diseño Humano describen **las maneras distintas de estar diseñado para usar la energía**. Ninguno es mejor, y el conjunto funciona precisamente porque no todos somos iguales. Igual que el hormiguero funciona porque todos los tipos existen, el colectivo humano necesita de todos los diferentes tipos de persona.',
       bullets: [
-        '**Generadores (~37%) y Generadores Manifestantes (~33%)**: suponen cerca del 70% de la población. Son los constructores, con energía vital sostenida cuando hacen lo que de verdad les enciende. Son el motor que mueve el mundo humano.',
-        '**Proyectores (~20%)**: no tienen esa energía constante; su don es ver, guiar y orientar a los demás. Brillan cuando se les reconoce e invita, no forzándose al ritmo de un Generador.',
-        '**Manifestadores (~9%)**: son los iniciadores, capaces de arrancar cosas de la nada y causar impacto, sin esperar a nadie. Su clave es informar a quienes su acción salpica y gestionar su energía inconstante.',
-        '**Reflectores (~1%)**: los más infrecuentes, son un espejo del entorno: reflejan la salud del grupo y del lugar en que viven.'
+        '**Generadores (~37 %) y Generadores Manifestantes (~33 %)**: suponen cerca del 70 % de la población. Son los constructores, con energía vital sostenida cuando hacen lo que de verdad les enciende. Son el motor que mueve el mundo humano.',
+        '**Proyectores (~20 %)**: no tienen esa energía constante; su don es ver, guiar y orientar a los demás. Brillan cuando se les reconoce e invita, no forzándose al ritmo de un Generador.',
+        '**Manifestadores (~9 %)**: son los iniciadores, capaces de arrancar cosas de la nada y causar impacto, sin esperar a nadie. Su clave es informar a quienes su acción salpica y gestionar su energía inconstante.',
+        '**Reflectores (~1 %)**: los más infrecuentes, son un espejo del entorno: reflejan la salud del grupo y del lugar en que viven.'
       ],
       outro:
         'El error más común es medirse con el diseño de otro: que un Proyector se exija la resistencia de un Generador, o que un Generador se frustre por no iniciar como un Manifestador.'
@@ -2709,11 +2709,11 @@ export default {
     type: {
       heading: 'Los cinco tipos en el colectivo humano',
       items: {
-        generator: { label: 'Generador', note: 'construye con energía sostenida', pct: '~37%' },
-        'manifesting-generator': { label: 'Generador Manifestante', note: 'construye rápido y polifacético', pct: '~33%' },
-        projector: { label: 'Proyector', note: 've, guía y orienta la energía ajena', pct: '~20%' },
-        manifestor: { label: 'Manifestador', note: 'inicia e impacta con independencia', pct: '~9%' },
-        reflector: { label: 'Reflector', note: 'refleja y muestrea el entorno', pct: '~1%' }
+        generator: { label: 'Generador', note: 'construye con energía sostenida', pct: '~37 %' },
+        'manifesting-generator': { label: 'Generador Manifestante', note: 'construye rápido y polifacético', pct: '~33 %' },
+        projector: { label: 'Proyector', note: 've, guía y orienta la energía ajena', pct: '~20 %' },
+        manifestor: { label: 'Manifestador', note: 'inicia e impacta con independencia', pct: '~9 %' },
+        reflector: { label: 'Reflector', note: 'refleja y muestrea el entorno', pct: '~1 %' }
       }
     },
     strategy: {
