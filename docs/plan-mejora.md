@@ -24,7 +24,7 @@ Sale de la revisión global del 2026-11-13 (seis frentes: código, rigor de Dise
 
 ## Decisiones pendientes del autor
 
-- [ ] **Play Store (Fase P):** ¿aparcar? Cuenta personal nueva = 12 testers durante 14 días seguidos, nombre legal público, reconstrucción anual. Recomendación: aparcar.
+- [x] **Play Store (Fase P):** ¿aparcar? Cuenta personal nueva = 12 testers durante 14 días seguidos, nombre legal público, reconstrucción anual. Recomendación: aparcar. — **resuelta: aparcada** (autor, 2026-11-13).
 - [ ] **Guardado en línea (Fase 10):** ¿descartar? Recomendación: sí.
 - [ ] **PRO-7 y UX-4** (las dos marcadas ⚠): ¿se reabren?
 - [ ] **Textos en español:** confirmar el método (mecánico primero; luego tipo/estrategia/autoridad en tandas de un bloque).
@@ -33,15 +33,15 @@ Sale de la revisión global del 2026-11-13 (seis frentes: código, rigor de Dise
 
 ## 1. Ahora — barato y de alto valor
 
-- [x] **COD-1** ✔ · S · Enlace compartido con fecha imposible da **error 500** (probado en vivo: `?d=19901399&la=…&lo=…`). `chartProfile` en `hooks.server.js` llama a `computeChart` sin capturar; `decodeBirth` solo valida dígitos. Capturar → `null`, validar mes/día, test con basura.
-- [ ] **HD-1** ✔ · M · La **hora desconocida** no sale del formulario: carta, guardado, enlace e informe la tratan como exacta. Guardar la marca, avisar en carta e informe, separar lo estable de lo variable («perfil 3/5 o 3/6»), añadir perfil y autoridad a las bandas del deslizador.
-- [ ] **HD-2a** ✔ (en Node) · S · Mostrar la **zona horaria y el desfase aplicados** en formulario y carta, y permitir corregirlo. Antes de 1970 hay regiones mal (Ámsterdam 1935: 20 min; Reikiavik 1960: 1 h; España antes de 1901).
-- [ ] **UX-3** · S · **Objetivos táctiles** a 44 px sin cambiar el dibujo, empezando por la «i» (17×17), «¿Qué es el Diseño Humano?», «Hora desconocida» y el pie.
-- [ ] **UX-1** · M · **Números de puerta** legibles en móvil (~6 px; contraste 2,5:1 sobre rojo, 1,3:1 sobre la Raíz): número claro con halo en centros oscuros o fuente de 8–9 px.
+- [x] **COD-1** ✔ · S · Enlace compartido con fecha imposible da **error 500** (probado en vivo: `?d=19901399&la=…&lo=…`). `chartProfile` en `hooks.server.js` llama a `computeChart` sin capturar; `decodeBirth` solo valida dígitos. Capturar → `null`, validar mes/día, test con basura. — hecho 2026-11-13, pendiente de validación del autor
+- [x] **HD-1** ✔ · M · La **hora desconocida** no sale del formulario: carta, guardado, enlace e informe la tratan como exacta. Guardar la marca, avisar en carta e informe, separar lo estable de lo variable («perfil 3/5 o 3/6»), añadir perfil y autoridad a las bandas del deslizador. — hecho 2026-11-13, pendiente de validación del autor
+- [x] **HD-2a** ✔ · S · Se resolvió corrigiendo los desfases anteriores a 1970 de forma invisible (`localToUtc` en `timezone.js`) en vez de mostrar la zona y el desfase y dejar corregirlos. Quedan sin corregir Luxemburgo, Mónaco y zonas de África/Caribe, y falta cotejar con la base tz oficial las fechas de verano de Países Bajos 1916–1925, Islandia 1917–1946 y Dinamarca 1946–1948. — hecho 2026-11-13, pendiente de validación del autor
+- [x] **UX-3** · S · **Objetivos táctiles** a 44 px sin cambiar el dibujo, empezando por la «i» (17×17), «¿Qué es el Diseño Humano?», «Hora desconocida» y el pie. (nota: no todos llegan a 44 px; las «i» quedan en 30–44) — hecho 2026-11-13, pendiente de validación del autor
+- [x] **UX-1** · M · **Números de puerta** legibles en móvil (~6 px; contraste 2,5:1 sobre rojo, 1,3:1 sobre la Raíz): número claro con halo en centros oscuros o fuente de 8–9 px. (nota: contraste corregido en ámbar y rojo, tamaño de 17 a 19; siguen siendo pequeños) — hecho 2026-11-13, pendiente de validación del autor
 - [ ] **MKT-1** · S · *(lo hace el autor)* Alta en **Search Console y Bing Webmaster**, enviar sitemap, pedir indexación de `/en` y `/es`.
-- [ ] **MKT-3** ✔ · S · En español, **título/H1/descripción con «Diseño Humano»** (hoy dicen «Human Design»).
-- [ ] **COD-9** ✔ · S–M · **Adelgazar la documentación de trabajo** (TASKS 1.206 líneas, BACKLOG 1.979): versión vigente corta + archivo; CLAUDE.md al día (no menciona `/api/stat`, `/stats`, `lib/analytics.js`) y sin mandar leerlo todo cada sesión.
-- [ ] **PRO-1** · S · Cerrar la decisión de Play Store (ver arriba).
+- [x] **MKT-3** ✔ · S · En español, **título/H1/descripción con «Diseño Humano»** (hoy dicen «Human Design»). — hecho 2026-11-13, pendiente de validación del autor
+- [x] **COD-9** ✔ · S–M · **Adelgazar la documentación de trabajo** (TASKS 1.206 líneas, BACKLOG 1.979): versión vigente corta + archivo; CLAUDE.md al día (no menciona `/api/stat`, `/stats`, `lib/analytics.js`) y sin mandar leerlo todo cada sesión. — hecho 2026-11-13, pendiente de validación del autor
+- [x] **PRO-1** · S · Cerrar la decisión de Play Store (ver arriba). (Play Store aparcada) — hecho 2026-11-13, pendiente de validación del autor
 
 ## 2. Siguiente
 
@@ -87,7 +87,7 @@ Sale de la revisión global del 2026-11-13 (seis frentes: código, rigor de Dise
 - [ ] **MKT-5** · M · Páginas de referencia **recortadas**: tipos, autoridades, perfiles y centros (~33 por idioma); puertas solo si cada página compone esencia + centro + canales + enlaces. Medir 8–12 semanas antes de seguir.
 - [ ] **Fase 9 — Tránsitos** · M · Único motivo real para volver a la app.
 - [ ] **Fase 8 — Carta compuesta**, versión mínima · M–L.
-- [ ] **HD-2b** · M · Corregir de verdad las zonas anteriores a 1970 (tabla de excepciones o tiempo medio local).
+- [ ] **HD-2b** · M · Lo que queda de HD-2: corregir de verdad las zonas pre-1970 aún sin corregir (Luxemburgo, Mónaco, África/Caribe) con tabla de excepciones o tiempo medio local, y cotejar con la base tz oficial NL 1916–1925, IS 1917–1946 y DK 1946–1948.
 - [ ] **COD-4** ✔ · L · Trocear los ficheros gigantes (carta 2.785 líneas, home 2.296) de forma oportunista, al tocar cada zona.
 - [ ] **COD-T** · M · Cinco tests de más red (ver `codigo.md`).
 - [ ] **COD-6, 7, 8** · S–M · CSP en modo informe, control de origen en `/api/love`, mensaje «recarga para actualizar».

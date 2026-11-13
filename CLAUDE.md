@@ -1,11 +1,9 @@
 # CLAUDE.md — Human Design Chart App
 
 Contexto base para que el asistente de IA trabaje eficientemente en este proyecto.
-Lee también `TASKS.md` y `BACKLOG.md` al inicio de cada sesión.
+Al inicio de cada sesión lee `TASKS.md` (corto) y `docs/plan-mejora.md`. `BACKLOG.md` y `docs/archivo/` (histórico congelado) solo se consultan con `grep` cuando haga falta; no se leen enteros.
 
 **Plan de mejora en curso (desde 2026-11-13):** [`docs/plan-mejora.md`](./docs/plan-mejora.md) es la lista de trabajo priorizada que salió de la revisión global de la 1.5.7; los seis informes que la sustentan están en `docs/revision-2026-11/`. Se trabaja de arriba abajo, una pieza por turno.
-
-**Mejora pendiente, sin hacer todavía (COD-9 del plan):** `TASKS.md` (~1.200 líneas) y `BACKLOG.md` (~2.000) han crecido hasta ser un coste de tokens en cada sesión. La propuesta es dejar una versión vigente corta y mover el histórico a un archivo; hasta entonces, buscar en ellos con grep el apartado que haga falta en vez de leerlos enteros.
 
 ---
 
@@ -25,21 +23,12 @@ El usuario introduce su fecha, hora y lugar de nacimiento → la app calcula su 
 
 ## 2. Stack técnico
 
-| Capa | Tecnología |
-|---|---|
-| Framework UI | **SvelteKit 2** con **Svelte 5** (runes: `$state`, `$props`, `$derived`) |
-| Modo de renderizado | SPA puro — `ssr: false` en `+layout.js` |
-| Build | **Vite 5** |
-| Deploy | **Cloudflare Workers** vía `@sveltejs/adapter-cloudflare` + Wrangler 4 |
-| Astronomía | `astronomy-engine` (MIT) — precisión ±1 arcmin, suficiente para puertas y líneas HD |
-| Fechas/zonas horarias | `luxon` (datetime timezone-aware) + `tz-lookup` (coords → IANA timezone, sin API) |
-| Geocodificación | **Photon** (komoot, sobre OpenStreetMap) — typeahead por prefijo, endpoint público sin autenticación |
-| Runtime | Node ≥ 22 (`.nvmrc` + `engines.node` en `package.json`) |
-| Lenguaje | JavaScript (sin TypeScript; JSDoc para tipos internos) |
+- **UI:** SvelteKit 2 con Svelte 5 (runes `$state`, `$props`, `$derived`), SPA puro (`ssr: false` en `+layout.js`), Vite 5. JavaScript sin TypeScript (JSDoc).
+- **Deploy:** Cloudflare Workers vía `@sveltejs/adapter-cloudflare` + Wrangler 4. Node ≥ 22 (`.nvmrc` + `engines.node`).
+- **Astronomía:** `astronomy-engine` (MIT), ±1 arcmin: suficiente para puertas y líneas. **Fechas/zonas:** `luxon` + `tz-lookup` (coords → IANA, sin API).
+- **Geocodificación:** **Photon** (komoot, OpenStreetMap): typeahead por prefijo, endpoint público sin autenticación.
 
-**URLs:**
-- Live: `https://hdchart.app/` (custom domain; also served at the original `human-design-chart-app.orangeman7557.workers.dev` Workers origin)
-- Repo: `https://github.com/orangeman7557/human-design-chart-app`
+**URLs:** live `https://hdchart.app/` (también en el origen antiguo `human-design-chart-app.orangeman7557.workers.dev`) · repo `https://github.com/orangeman7557/human-design-chart-app`
 
 **CI/CD:** auto-deploy en cada push a `main` via Cloudflare Workers Builds.
 
@@ -50,20 +39,17 @@ El usuario introduce su fecha, hora y lugar de nacimiento → la app calcula su 
 ```
 /
 ├── CLAUDE.md            ← este archivo
-├── TASKS.md             ← estado canónico del proyecto entre sesiones (leer siempre)
-├── BACKLOG.md           ← decisiones técnicas diferidas, deuda conocida
-├── package.json
-├── svelte.config.js
-├── vite.config.js
-├── vitest.config.js     ← configuración de tests (vitest)
-├── wrangler.jsonc       ← configuración de Cloudflare Workers
-├── static/
-│   ├── manifest.webmanifest
-│   ├── favicon.svg + iconos PNG (32/180/192/512/maskable) + og-image.png
-│   └── robots.txt · sitemap.xml
+├── TASKS.md             ← estado actual de un vistazo (corto; leer siempre)
+├── BACKLOG.md           ← solo lo vivo: decisiones diferidas, deuda, fases futuras (grep)
+├── docs/
+│   ├── plan-mejora.md       ← lista de trabajo viva (revisión global nov 2026)
+│   ├── revision-2026-11/    ← los seis informes de la revisión (código, HD, UX, textos, marketing, producto)
+│   ├── archivo/             ← histórico congelado de TASKS y BACKLOG hasta 2026-11 (grep)
+│   ├── fase-m-multilingue.md · informe-inicial.md · referencias del bodygraph
+├── package.json · svelte.config.js · vite.config.js · vitest.config.js · wrangler.jsonc
+├── static/              ← manifest.webmanifest, favicon.svg + iconos PNG + og-image.png, robots.txt, sitemap.xml
 └── src/
-    ├── app.html         ← shell HTML
-    ├── app.css          ← tokens CSS globales (:root variables)
+    ├── app.html · app.css ← shell HTML · tokens CSS globales (:root)
     ├── service-worker.js ← precache del shell + offline básico (Fase L)
     ├── hooks.server.js  ← Worker: negocia `/`, redirects legacy, OG por carta, <html lang>
     ├── params/
@@ -71,21 +57,21 @@ El usuario introduce su fecha, hora y lugar de nacimiento → la app calcula su 
     ├── routes/
     │   ├── +layout.js   ← SPA mode por defecto (ssr: false, prerender: false)
     │   ├── +layout.svelte ← chrome global: selector de idioma, badge staging, Dialog
-    │   ├── api/         ← endpoints del Worker (sin idioma: /api/backup, /api/love)
+    │   ├── api/         ← endpoints del Worker (sin idioma): /api/backup (bóveda-cookie), /api/love (contador),
+    │   │                  /api/stat (escritura de analítica propia, KV) y /api/stats (lectura; solo en hosts staging)
+    │   ├── stats/       ← panel de uso (`+page.svelte`); solo responde en staging, en producción muestra «no disponible»
     │   └── [lang=locale]/   ← TODAS las páginas cuelgan del idioma (/en/…, /es/…)
-    │       ├── +layout.js   ← activa el locale antes de renderizar
-    │       ├── +page.js     ← la home se prerenderiza por idioma (SEO)
+    │       ├── +layout.js · +page.js ← activa el locale · la home se prerenderiza por idioma (SEO)
     │       ├── +page.svelte ← pantalla 1: formulario de nacimiento
     │       ├── privacy/     ← política de privacidad (prerenderizada, Fase L)
     │       └── chart/
-    │           ├── +page.js      ← recoge datos de sessionStorage (SPA puro)
-    │           └── +page.svelte  ← pantalla 2: bodygraph + resumen textual
+    │           └── +page.js · +page.svelte ← datos de sessionStorage (SPA puro) · pantalla 2: bodygraph + resumen
     └── lib/
         ├── i18n/          ← motor multiidioma (Fase M; ver docs/fase-m-multilingue.md)
-        │   ├── locales.js      ← FUENTE ÚNICA de idiomas (datos planos, la usa el Worker)
-        │   ├── index.svelte.js ← locale activo + t(clave, params, locale?)
+        │   ├── locales.js · index.svelte.js ← FUENTE ÚNICA de idiomas (la usa el Worker) · locale activo + t(clave, params, locale?)
         │   ├── route-t.svelte.js ← routeT(): t() atado al idioma de la RUTA (obligatorio en prerender)
         │   └── ui/es.js · ui/en.js ← textos de chrome por idioma
+        ├── analytics.js      ← analítica propia sin cookies: contadores agregados, un único sendBeacon por sesión (→ /api/stat)
         ├── hd/
         │   ├── constants.js           ← GATE_WHEEL, CENTERS, CHANNELS, GATES_BY_CENTER, etc.
         │   ├── ephemeris.js           ← cálculo astronómico (Julian Day, longitudes planetarias)
@@ -95,34 +81,22 @@ El usuario introduce su fecha, hora y lugar de nacimiento → la app calcula su 
         │   ├── prompts.js             ← genera los prompts para la IA del usuario (handoff, Fase 6)
         │   ├── report.js              ← ensambla el informe inicial desde el chart (Fase 7)
         │   ├── report-pdf.js          ← maqueta el informe en PDF con jsPDF (import diferido)
+        │   ├── share-link.js          ← codifica/decodifica el enlace compartible (`/chart?…`, claves terse, validación)
+        │   ├── profile-json.js        ← perfil calculado como JSON/texto legible por IA (lo embebe el Worker en el enlace compartido)
+        │   ├── day-range.js           ← modo hora desconocida: las 48 cartas posibles del día y lo estable/variable (HD-1)
         │   └── content/               ← textos propios por idioma (es.js base; en.js = deep-merge sobre es) + accesores (index.js): conceptos, tipos, centros, 64 puertas, informe
         ├── geo/
-        │   ├── geocoder.js   ← geocodificación vía Photon (typeahead, debounce, abort, dedup)
-        │   ├── place.js      ← helper de etiqueta "ciudad, país"
-        │   └── timezone.js   ← resolución de timezone por coordenadas
+        │   ├── geocoder.js · place.js ← Photon (typeahead, debounce, abort, dedup) · etiqueta "ciudad, país"
+        │   └── timezone.js   ← timezone por coordenadas; `localToUtc` corrige además desfases anteriores a 1970 (HD-2)
         ├── db/
-        │   └── charts.js     ← persistencia local (IndexedDB vía Dexie)
-        ├── ai/
-        │   └── handoff.js    ← deep-links a IAs + preferencia (sin API)
-        ├── pwa/
-        │   └── install.svelte.js ← captura beforeinstallprompt / detecta iOS ("instalar como app")
+        │   ├── charts.js     ← persistencia local (IndexedDB vía Dexie)
+        │   └── backup.js     ← formato de la bóveda-cookie (lista guardada comprimida, cookie-safe)
+        ├── ai/handoff.js     ← deep-links a IAs + preferencia (sin API)
+        ├── pwa/install.svelte.js ← captura beforeinstallprompt / detecta iOS ("instalar como app")
         ├── markup.js         ← renderInline: **negrita**/*cursiva*/[enlaces] → HTML (compartido)
-        └── components/
-            ├── CityAutocomplete.svelte  ← campo de ciudad con sugerencias de Photon
-            ├── DateField.svelte         ← fecha como DD/MM/AAAA tecleables (sin picker nativo)
-            ├── Bodygraph.svelte         ← SVG del bodygraph (centros, canales, marcadores)
-            ├── Dialog.svelte            ← diálogos propios prompt/confirm/alert (vía dialog.svelte.js)
-            ├── ElementInfo.svelte       ← panel "i" reutilizable (info + handoff IA)
-            ├── InitialReport.svelte     ← overlay del informe inicial (Fase 7)
-            ├── InfoDot.svelte           ← la "i" de información
-            ├── About.svelte             ← modales "acerca de" y "agradecer" (pie + menú de la carta)
-            ├── ReportBug.svelte         ← "notificar un fallo" → Web3Forms (pie + menú de la carta)
-            ├── StorageInfo.svelte       ← "saber más": dónde viven las cartas (bóveda de cookie)
-            ├── WhatIsHD.svelte          ← "¿Qué es el Diseño Humano?": modal en la home con la Parte A del informe
-            ├── LangSwitch.svelte        ← selector de idioma (pestaña colgando del borde superior)
-            ├── focus-trap.js            ← acción compartida: foco dentro del overlay + restore al cerrar
-            ├── scroll-lock.js           ← acción compartida: body pinned con overlay abierto (fix scroll iOS)
-            └── select-on-focus.js       ← acción compartida: al enfocar un campo se selecciona su contenido (sobrescribir al teclear)
+        └── components/        ← Svelte: Bodygraph (SVG), CityAutocomplete, DateField, Dialog, ElementInfo ("i" + handoff IA),
+                                  InitialReport (overlay del informe), InfoDot, About, ReportBug, StorageInfo, WhatIsHD, LangSwitch;
+                                  acciones compartidas: focus-trap, scroll-lock, select-on-focus
 ```
 
 **Flujo de datos:** formulario → `sessionStorage` → `computeChart()` → SVG + texto. Sin backend, todo client-side.
@@ -145,7 +119,7 @@ El usuario introduce su fecha, hora y lugar de nacimiento → la app calcula su 
   4. **`labels` ≠ `promptLabels`** en el pack de contenido: `labels` son etiquetas de display (mayúscula inicial, sin artículos) y `promptLabels` está redactado para incrustarse en frases de prompt (minúsculas, "el Sol"). La UI usa `getDisplayLabels()`.
 - **Voz de los textos (decisión 2026-07-03, revisada 2026-08):** el **informe inicial** (y su PDF) habla en **2ª persona** — es un documento dirigido al dueño de la carta. Los **drawers de puertas y canales** también van en **2ª persona** (revisión 2026-08): la esencia se ancla ("cuando la tienes activa…") para que siga siendo cierta con puertas/canales que la carta no tiene, y las **líneas de estado (codas) dicen "tu carta"**. El resto de drawers "i" (tipo, estrategia, autoridad, perfil, señales, cruz, conceptos), prompts y tooltips siguen siendo **impersonales** — el que mira puede estar viendo la carta guardada de otro, y ahí sí chirría leer "tú" (p. ej. la estrategia de un tipo que no es el suyo). *Observación del autor (2026-08): en puertas/canales leer en 2ª persona no molesta aunque sea la carta de otro; incluso queda bien, como curioseando lo que a esa persona le dicen.* Excepción consciente: el prompt de cierre del informe va en 1ª persona (vive dentro del marco-documento).
 - **Caso de prueba de validación:** la carta del autor (orangeman7557: 1984-03-13, 09:30, Madrid — Manifestor) es la referencia para validación manual. El atajo oculto de la home que rellenaba el formulario con esos datos se eliminó en el lanzamiento 1.0.0 (2026-07-03); para probar, introducir los datos a mano o usar los tests (`npm test`).
-- **Tests con vitest** (`npm test`): 40 casos en 5 ficheros. El núcleo de cálculo (`src/lib/hd/chart.test.js`) tiene dos cartas de referencia validadas externamente (Reflector + autor) con snapshot completo de activaciones, seis anclas de regresión auto-congeladas que cubren los 5 tipos y las 7 autoridades (2026-07-03), y límites de `longitudeToGate`/`cityCountry`. `src/lib/i18n/catalog.test.js` vigila la paridad de claves entre idiomas y guarda contra un *fallback* masivo. `src/lib/hd/cross-names.test.js` (1.5.0) valida los **datos de las cruces contra la efeméride**: cobertura de las 192, correspondencia nombre↔cuarteto, la geometría Sol↔Tierra y `crossQuartet()` derivada de la rueda, más la cobertura de las 192 interpretaciones en ambos idiomas. El resto se valida manualmente contra la carta conocida del autor.
+- **Tests con vitest** (`npm test`): 75 casos en 9 ficheros. El núcleo de cálculo (`src/lib/hd/chart.test.js`) tiene dos cartas de referencia validadas externamente (Reflector + autor) con snapshot completo de activaciones, seis anclas de regresión auto-congeladas que cubren los 5 tipos y las 7 autoridades (2026-07-03), y límites de `longitudeToGate`/`cityCountry`. `src/lib/i18n/catalog.test.js` vigila la paridad de claves entre idiomas y guarda contra un *fallback* masivo. `src/lib/hd/cross-names.test.js` (1.5.0) valida los **datos de las cruces contra la efeméride** (192 cruces, nombre↔cuarteto, geometría Sol↔Tierra, `crossQuartet()`, 192 interpretaciones en ambos idiomas). Otros: `share-link.test.js` (enlaces compartidos, incluida basura), `timezone.test.js` (desfases históricos), `day-range.test.js` y `time-unknown.test.js` (modo hora desconocida), `db/backup.test.js` (bóveda-cookie) y `geo/place.test.js`. El resto se valida manualmente contra la carta conocida del autor.
 - **Regla de oro del i18n (Fase M).** El locale activo es un `$state` **de módulo**, es decir compartido, y el prerender construye `/en` y `/es` **en paralelo**: cualquier cosa que pueda renderizarse durante el prerender **debe atarse al idioma de la ruta**, no leer el estado de módulo. Las páginas usan `const tr = (k, p) => t(k, p, lang)` con `lang = $page.params.lang`; los componentes usan `const t = routeT()` (`lib/i18n/route-t.svelte.js`). Ojo: **no basta con que un componente sea "de cliente"** — si su disparador se pinta dentro de una página prerenderizada (los modales del pie: `About`, `ReportBug`, `StorageInfo`), también aplica. El síntoma es cruel: se autocorrige al hidratar, así que **nunca se ve en dev, solo en el build** — y los crawlers ven la versión rota. Detalle en `docs/fase-m-multilingue.md` §3.
 - **Los catálogos no son traducciones espejo.** `ui/en.js` y `content/en.js` se escriben **desde el significado**, no palabra por palabra desde el español (el pase literal produjo inglés rígido, corregido en dos pasadas). Hay bloques con un comentario que lo dice explícitamente — no re-sincronizarlos con el español. **La regla vale también para las plantillas con huecos** (`promptTemplates`, `drawer`, `reportShell`), no solo para la prosa: el orden de palabras del español puede ser correcto en inglés con un relleno corto y romperse con uno largo. Ocurrió en `ask`/`askChart` (2026-08-19), calcadas de «¿me explicas en detalle {subject}?» como `can you explain {subject} in detail?`: con un sujeto que acaba en subordinada, el "in detail" quedaba colgando veinte palabras después del verbo. **Toda plantilla nueva se prueba con el relleno más largo que admita.**
 - **Nada de texto de UI congelado en `$state`.** Un `$state(t('…'))` guarda las *palabras* del idioma en que se creó el componente, y cambiar de idioma es una **navegación por cliente**: los componentes que sobreviven (los modales del pie, montados con la home) se quedan en el idioma anterior. Se descubrió a golpes con el botón «¡Mándame amor!» (ago 2026), que seguía en español sobre una página en inglés. La regla: guardar **qué** se muestra (un estado simbólico) y derivar el texto con `t()`/`routeT()`; lo mismo vale para cualquier trabajo que dependa del idioma y cuelgue de `onMount` — debe colgar del idioma de la ruta.
@@ -156,89 +130,37 @@ El usuario introduce su fecha, hora y lugar de nacimiento → la app calcula su 
 
 ## 5. Diseño visual
 
-### Paleta (tokens CSS en `app.css`)
-
-| Token | Valor | Uso |
-|---|---|---|
-| `--bg` | `#0b0b0d` | Fondo raíz (negro profundo) |
-| `--surface` | `#161618` | Tarjetas, inputs |
-| `--surface-2` | `#1e1e22` | Superficie elevada |
-| `--border` | `#2a2a2e` | Bordes sutiles |
-| `--text` | `#e8e8ea` | Texto principal |
-| `--text-muted` | `#a0a0a8` | Labels, texto secundario |
-| `--accent` | `#d4a657` | Oro ámbar — CTA, chips activos, links |
-| `--accent-soft` | `#d4a65720` | Fondo suave de chips activos |
-| `--danger` | `#e06262` | Errores |
-| `--success` | `#6ec48a` | [sin uso activo aún] |
-
-### Paleta del bodygraph SVG
-
-| Uso | Valor |
-|---|---|
-| Personality | `#ffffff` (blanco puro) |
-| Design | `#e84672` (rosa-rojo) |
-| Both (Personality + Design) | rayas blancas sobre base `#e84672` (stroke-dasharray) |
-| Inactive (skeleton) | `#606070` (gris tenue, siempre visible) |
-| Marcador de puerta activa (fill) | `#4a2060` (morado oscuro) |
-| Puertas inactivas (texto) | `#4a2060` en centro definido / `#aaaab4` en indefinido |
-| Centros definidos (stroke) | color de fill del centro (sin borde separado) |
-| Centros indefinidos (fill / stroke) | `#181823` / `#46465a` |
-
-Colores de centros definidos: Head/G amarillo `#e5cf3d`, Ajna verde `#6cb46c`, Throat/Spleen/SP ámbar `#b87a35`, Heart/Sacral rojo `#c83838`, Root marrón `#5e3e1d`.
-
-### Tipografía
-
-- `system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif` — sin fuente externa.
-- Labels en uppercase con `letter-spacing: 0.06em` y tamaño `0.72rem`.
-- Fuente base `1rem`, peso 500 para títulos y CTAs.
-- `-webkit-font-smoothing: antialiased` activado.
-
-### Principios estéticos
-
-- **Dark theme profundo** con acento en oro ámbar — evoca la estética mística del HD sin ser recargado.
-- **Minimalista.** Sin decoración superflua. Similar en tono a Vercel/Linear.
-- **Border radius uniforme** `10px` en todos los controles interactivos.
-- **El bodygraph apunta al estilo Rave clásico** — referencia canónica del International Human Design School.
-- `max-width: 460px` en formulario, `720px` en página de carta.
+- **Tokens CSS** (`app.css`): `--bg #0b0b0d`, `--surface #161618`, `--surface-2 #1e1e22`, `--border #2a2a2e`, `--text #e8e8ea`, `--text-muted #a0a0a8`, `--accent #d4a657` (oro ámbar: CTA, chips activos, enlaces), `--accent-soft #d4a65720`, `--danger #e06262`, `--success #6ec48a` (sin uso activo).
+- **Bodygraph SVG:** Personality `#ffffff`; Design `#e84672`; Both = rayas blancas sobre `#e84672` (`stroke-dasharray`); esqueleto inactivo `#606070`; marcador de puerta activa `#4a2060`; texto de puertas inactivas `#4a2060` en centro definido / `#aaaab4` en indefinido; centros indefinidos fill `#181823`, stroke `#46465a`; centros definidos sin borde separado, con el color de su fill. Colores de centros definidos: Head/G amarillo `#e5cf3d`, Ajna verde `#6cb46c`, Throat/Spleen/SP ámbar `#b87a35`, Heart/Sacral rojo `#c83838`, Root marrón `#5e3e1d`.
+- **Tipografía:** `system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif`, sin fuente externa. Labels en uppercase con `letter-spacing: 0.06em` y `0.72rem`. Base `1rem`, peso 500 en títulos y CTAs. `-webkit-font-smoothing: antialiased`.
+- **Principios:** dark theme profundo con acento ámbar (místico sin ser recargado); minimalista, tono Vercel/Linear; `border-radius: 10px` uniforme en controles; el bodygraph apunta al estilo Rave clásico (referencia del International Human Design School); `max-width` 460px en formulario y 720px en carta.
 
 ---
 
 ## 6. Estado actual del proyecto
 
-### Completado
+Versión en producción: **1.5.7** (2026-11-12). La crónica completa de cada fase y versión está en `docs/archivo/TASKS-hasta-2026-11.md` (grep).
 
-- **Fase 0 — Infraestructura:** repo + Cloudflare Workers auto-deploy + PWA manifest + dark theme base.
-- **Fase 1.1 — Cálculo astronómico:** 13 cuerpos (Personality + Design), gate/line mapping, tipo/estrategia/autoridad/perfil/definición. Validado contra dos cartas reales.
-- **Fase 1.2 — Autocomplete de ciudad + timezone automática:** geocoder con debounce/abort, `tz-lookup` para timezone, dedup y ranking de resultados (Nominatim en su día; migrado a **Photon** en jun 2026 para typeahead por prefijo).
-- **Fase 1.3 — Bodygraph SVG funcional:** 9 centros en formas correctas, 36 canales gate-to-gate, color coding básico.
-- **Fase 1.4 — Precisión visual del bodygraph:** centros y puertas con coordenadas del referencial (viewBox 1058×1630), circuito de integración como polilíneas calculadas, colores refinados, split-circle para puertas Both.
-- **Fase 2 — Persistencia local:** IndexedDB vía Dexie.js (`src/lib/db/charts.js`). Guardar/listar/renombrar/borrar cartas (diálogos propios temáticos). Exportar/importar JSON. Se guarda el dato de nacimiento y la carta se recalcula al abrir.
-- **Fase 3 — Pulido visual:** resumen y centros como overlays a los lados del bodygraph, tipo como chips con % de población, columnas de canales/colgantes con interacciones hover/tap hacia centros y activaciones (con chip seleccionada destacada y resto atenuado), canales Both rayados 70/30, cartas guardadas con tipo y reordenado drag & drop (Dexie schema v2). Detalle en TASKS.md.
-- **Fase 4 — Modo hora desconocida:** formulario en orden fecha-lugar-hora; checkbox "Hora desconocida" que deshabilita el campo y muestra un slider 0-24h (pasos de 30 min) con banda de tipos del día y preview del tipo resultante; la hora del slider es la que usa "Calcular carta".
-- **Fase 5 — Compartir imagen (cierra el MVP, validada 2026-06-12):** botones compartir/descargar en la página de carta que capturan toda la vista a PNG vía `html-to-image` (título y subtítulo centrados solo en la exportación); share sheet nativo en táctil, descarga en escritorio; fichero `nombre carta YYYY-MM-DD-HHMM-ciudad.png`. Durante el cierre se corrigió además el **bug grave de cálculo** (nodo lunar medio → nodo verdadero osculante en `ephemeris.js`).
-- **Fase L — Preparación de lanzamiento (jun-jul 2026, cerrada con el 1.0.0 del 2026-07-03):** revisión de textos (gate OK 2026-07-02) → instalabilidad (iconos propios, service worker, manifest, enlace "instalar como app") → SEO (home y `/privacy` prerenderizadas, Open Graph, og-image, robots, sitemap, JSON-LD) → dominio propio **`hdchart.app`** (Cloudflare Registrar + Custom Domain) → "notificar un fallo" vía **Web3Forms** (`ReportBug.svelte`) → política de privacidad en `/privacy` → fila de apoyo en «Acerca de» («¡Mándame amor!» con contador global en Cloudflare KV + «Invítame a un café» → Buy Me a Coffee) → **bump a 1.0.0 y lanzamiento web (2026-07-03)**. **Verificación en vivo cerrada el 2026-08-10** (contador KV vivo, `www`→raíz, SW desplegado con su precache y fallback offline, cabeceras, OG por carta, enlace legible por IA, consola limpia). En esa misma pasada se detectó y arregló que el Worker servía `/chart` **sin ninguna cabecera de seguridad** y que los enlaces compartidos eran **indexables** con datos de nacimiento; y el autor activó «Always Use HTTPS» en Cloudflare. **Solo queda lo que exige dispositivo físico:** iPhone real (bóveda-cookie, restauración, scroll iOS) y el enlace «instalar como app» en Chrome Android. Detalle en BACKLOG ("Phase L — Launch plan").
-- **Fase M — Multilingüe (COMPLETADA, 2026-07-21):** turno 1 (**estructura**) y turno 2 (**traducción**) cerrados; la app funciona entera en inglés y español. El idioma vive en la URL (`/en/…`, `/es/…`, sin contenido en la raíz: el Worker la negocia y redirige), con una **fuente única de idiomas** (`lib/i18n/locales.js`) de la que se derivan matcher de rutas, menú de idiomas, hreflang, entradas de prerender y fallback offline. Todo el contenido (conceptos, 64 puertas, 36 canales, informe, prompts) y todo el chrome están traducidos, incluida la política de privacidad (con las convenciones de una política inglesa, no traducción literal). Un test de paridad (`src/lib/i18n/catalog.test.js`) vigila que no falten claves al añadir idiomas. **Plan, regla de SSR y checklist de "cómo añadir un idioma" en [`docs/fase-m-multilingue.md`](./docs/fase-m-multilingue.md)** — leerlo antes de tocar nada de i18n.
+### Completado
+- **Fases 0-2 (may-jun 2026):** infraestructura (Cloudflare Workers, PWA), cálculo astronómico validado, autocompletado de ciudad + zona horaria (Photon), bodygraph SVG preciso y persistencia local (Dexie).
+- **Fases 3-5 (MVP, 2026-06-12):** pulido visual, modo hora desconocida, compartir imagen PNG; corregido el nodo lunar (medio → verdadero).
+- **Fase 6 — Handoff a IA + info de elementos** y **Fase 7 — Informe inicial** (+ PDF): construidas jun 2026, textos revisados 2026-07-02.
+- **Fase L — Lanzamiento 1.0.0 (2026-07-03):** instalable, SEO, dominio `hdchart.app`, notificar fallo, privacidad, «agradecer». Verificación en vivo cerrada 2026-08-10.
+- **Fase M — Multilingüe en/es (2026-07-21):** idioma en la URL, fuente única de idiomas, contenido y chrome traducidos. Leer `docs/fase-m-multilingue.md` antes de tocar i18n.
+- **1.4-1.5 (jul-sep 2026):** señales y cruz de encarnación (192 nombres validados contra la efeméride, 192 interpretaciones), enlace de perfil compartible legible por IA, analítica propia y panel `/stats`, etiquetas y filtro de cartas guardadas, copia de seguridad por correo, drawer con gestos.
+- **1.5.7 (2026-11-12):** menú ☰ de acciones de la carta (informe, compartir, guardar, imagen, instalar y enlaces del pie).
+- **Revisión global y plan de mejora (nov 2026):** seis informes en `docs/revision-2026-11/` y lista de trabajo en `docs/plan-mejora.md`. Hecho el 2026-11-13, pendiente de validación del autor: COD-1 (enlace con fecha imposible ya no da 500), MKT-3 (título/H1/descripción en español con «Diseño Humano»), HD-2a (desfases pre-1970 corregidos de forma invisible), HD-1 (la hora desconocida se guarda y se avisa en carta, enlace e informe), UX-3 (objetivos táctiles mayores), UX-1 (números de puerta legibles), COD-9 (esta reorganización de la documentación) y PRO-1 (Play Store aparcada).
 
 ### Pendiente
-
-- **Estabilización post-MVP:** en curso. Aterrizado (jun 2026): tests del núcleo con vitest, diálogos propios, autocompletado por prefijo (Photon), flecha de volver y etiqueta "ciudad, país". Pendiente: pruebas con cartas reales y las mejoras menores de BACKLOG ("Possible improvements"). El TWA para Google Play pasó a ser fase propia (Fase P).
-- **Fase 6 — Integración IA (handoff) + info de elementos:** generar desde cualquier elemento de la app un prompt listo para llevar a la IA del propio usuario (la IA no corre dentro de la app), más información textual básica de cada elemento (tipo, autoridad, perfil, centros, canales) — solo si es legalmente viable: redacción propia o fuentes libres, nunca copiado de Jovian Archive. **Funcionalmente completa** (6.A–6.F construidas y verificadas, jun 2026; revisión de textos del autor cerrada 2026-07-02 — el bump de versión llegará con el 1.0.0 de Fase L). Las **64 puertas** estrenan esencia propia (2-3 frases desde el hexagrama de dominio público + el centro + don/sombra) con **coda de 3 estados** según la carta (completa/colgante/inactiva); los canales heredan la misma lógica (jun 2026). Detalle en TASKS/BACKLOG.
-- **Fase 7 — Informe inicial:** primer de HD en lenguaje llano para quien ve su carta sin saber nada del sistema. **Construida y verificada (jun 2026; revisión de textos del autor cerrada 2026-07-02).** Overlay `InitialReport.svelte` abierto por un botón "Informe" junto al nombre de la carta; `report.js` (`buildReport`) ensambla ~13 secciones desde el chart — Parte A (qué es HD + analogía de las hormigas + bodygraph/centros + condicionamiento + desacondicionamiento), Parte B personalizada (tipo y lugar en el colectivo, estrategia, autoridad/decisiones, energía·trampa·señales por tipo, perfil, definición, recorrido de centros con su estado real) y Parte C (handoff de carta completa) — reutilizando la biblioteca de Fase 6 + bloques `report`/`typeReport`; arquitectura **híbrida** (estático determinista + handoff para profundizar). Spec en `docs/informe-inicial.md`.
-- **Señales + cruz de encarnación (COMPLETADO, 2026-07-22, versión 1.5.0):** los dos datos que faltaban frente a las apps de referencia. Las **señales** (alineamiento/desalineamiento) son una tarjeta con dos valores compuesta desde el tipo — se llaman así a propósito, y «firma»/«tema del no-yo» solo se menciona dentro del drawer. La **cruz de encarnación** (`chart.cross`) muestra su **nombre canónico** + las cuatro puertas Sol/Tierra y compone su significado desde las esencias de esas puertas. Los **192 nombres** (bloque `crossName`, clave `"<puertaSol>|<ángulo>"`) se obtuvieron de material publicado y se **validan contra la efeméride** en `cross-names.test.js`: una cruz queda determinada por (puerta del Sol de Personalidad, ángulo), así que el motor regenera el mapa completo por su cuenta y ninguna fila mal transcrita puede pasar. El informe estrena sección **«Tu propósito»**, colocada tras «Vivir tu diseño» y subordinada a ella a propósito. Las **192 cruces tienen interpretación propia** (bloque `crossEssence`, indexado por nombre: 112 entradas cubren las 192, porque las cruces que comparten nombre comparten sus cuatro puertas rotadas), y el drawer general lleva el **índice completo por cuartos del mandala**, derivados de `GATE_WHEEL` igual que los cuartetos (`crossQuartet()` en `constants.js`).
-- **Tanda de UI + etiquetas por idioma (1.5.5, 2026-08-24):** el drawer se abre al segundo toque y se cierra arrastrándolo hacia abajo; las **etiquetas por defecto siguen el idioma** de la app (las del usuario, no); **copia de seguridad por correo** con un tercer botón que entrega el fichero a la hoja de compartir (las copias pasan a `hdchart-YYYY-MM-DD.txt`, JSON dentro, porque Chromium no deja compartir `.json`); filas de la lista de una sola línea y **todas de la misma altura**; los diálogos salen por encima de cualquier overlay. Detalle en TASKS.
-- **Filtro de cartas guardadas (1.5.6, 2026-09-09):** el desplegable de etiquetas/tipos cuelga de un **botón de embudo** propio, no del buscador (que vuelve a ser texto libre); se queda abierto mientras se marca, marca en ámbar y el embudo pasa a relleno cuando hay filtros. Lo elegido vive como **chips con X** bajo la cabecera —sin «borrar todos»— sumando dentro de un grupo y filtrando entre grupos. El filtro de tipo compara **la clave** (`c.type`), nunca la etiqueta: «Generador» ya no arrastra a los Generadores manifestantes. En cada fila, la etiqueta **y ahora el tipo** (con su icono) activan/desactivan su chip. Fuera los «recientes» de búsqueda.
-- **Menú de acciones de la carta (1.5.7, 2026-11-12):** un botón **☰** arriba a la derecha de la carta reúne informe inicial, compartir enlace, guardar, descargar imagen y, en un bloque discreto, instalar como app + los enlaces del pie (notificar fallo, privacidad, agradecer, acerca de). Sustituye a los botones de la cabecera (y a su lógica de encaje en móvil) y al «instalar como app» del pie. Un **punto rosa** marca el informe durante las primeras visitas; guardar y copiar dan una confirmación breve junto al botón. «Donar» pasa a **«agradecer» / «say thanks»**.
-- **Fase P — Play Store (SIGUIENTE; decidida 2026-07-06, desbloqueada al cerrar la Fase M):** empaquetar la PWA como **TWA** y publicarla en **Google Play** (Bubblewrap/PWABuilder, cuenta de desarrollador de Google — pago único de 25 USD). **Apple App Store queda aparcada a propósito:** exige la cuota de ~99 €/año de la Apple Developer Program, que el autor no va a pagar salvo que la app demuestre recorrido más adelante.
-- **Fase 8 — Carta compuesta:** overlay visual de dos cartas guardadas.
-- **Fase 9 — Tránsitos:** vista de tránsitos en tiempo real sobre una carta guardada.
-- **Fase 10 — Guardado en línea:** sincronización opcional en la nube (local-only sigue siendo el default).
-- **Fase 11 — Distribución y difusión (creada 2026-08-10):** dar a conocer la app. El diagnóstico que la motiva: la app **tiene 4 URLs indexables** mientras sus packs de contenido guardan una enciclopedia bilingüe ya escrita (64 puertas, 36 canales, 9 centros, 5 tipos, 7 autoridades, 12 líneas, 112 textos de cruces × 2 idiomas) que **Google no ve**. Cinco niveles, del más barato al más caro, detallados en BACKLOG § "Fase 11 — Distribución y marketing": (0) instrumentación — Search Console/Bing, hoy no hay ningún dato de adquisición; (1) **páginas de referencia prerenderizadas** por elemento e idioma, el gran multiplicador; (2) lanzamiento puntual (Product Hunt, Show HN, directorios) por los backlinks más que por el tráfico; (3) comunidad HD (Discord ~46k, Reddit, Facebook), donde la vía de entrada son los dos ángulos que nadie más tiene — sin registro y **enlace legible por una IA**; (4) Play Store, que es la Fase P; (5) el producto como motor — imagen OG por carta y «puerta del día».
+- **Siguiente: el plan de mejora** (`docs/plan-mejora.md`), de arriba abajo, una pieza por turno.
+- **Fase P — Play Store: APARCADA por decisión del autor el 2026-11-13.** Una cuenta personal nueva exige 12 testers durante 14 días seguidos, publica el nombre legal y obliga a actualizar cada año; se retomará solo si hay 12 voluntarios. Apple App Store, aparcada también (99 €/año).
+- **Fase 8 — Carta compuesta**, **Fase 9 — Tránsitos** (con la «puerta del día» como versión barata), **Fase 10 — Guardado en línea** (el plan propone descartarla) y **Fase 11 — Distribución y marketing** (Search Console, páginas de referencia prerenderizadas, comunidad HD): resumen en `BACKLOG.md`.
+- **Validación en dispositivo físico:** iPhone real (bóveda-cookie, restauración, scroll iOS) y enlace «instalar como app» en Chrome Android.
 
 ### Deuda técnica conocida
-
 - El geocoder usa la instancia pública de **Photon** (komoot); válido para bajo tráfico, a revisar (mirror propio) si crece.
 - Algunos comentarios de código aún en español (legado de fases 0/1.1) — se migran al inglés cuando se toca el archivo.
-- `toBlob()` (html-to-image, exportar PNG/PDF) **no tiene timeout ni recuperación**: si se cuelga, el botón queda deshabilitado para siempre sin error. Funciona en navegadores reales (verificado 2026-07-22); anotado en BACKLOG por si algún día da la cara.
+- `toBlob()` (html-to-image, exportar PNG/PDF) ya lleva un timeout de 30 s que convierte un cuelgue en error visible (2026-07-22); en navegadores reales funciona.
 - Lo revisado y **aceptado a propósito** en la batería de testeo previa al 1.4 (guardado duplicado, datos personales en la query del enlace compartido, comillas rectas, lector masculino en español…) está en BACKLOG § "QA review before 1.4" — leerlo antes de "descubrirlo" otra vez.
 
 ---
