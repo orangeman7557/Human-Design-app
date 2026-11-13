@@ -9,13 +9,9 @@
 // base64url where CompressionStream isn't available). Internal format, not a
 // file: the JSON export in charts.js stays the user-facing backup.
 
-/** Same requirement importCharts enforces: what computeChart needs. */
-function validBirth(b) {
-  return (
-    b && typeof b === 'object' &&
-    typeof b.date === 'string' && typeof b.time === 'string' && typeof b.timezone === 'string'
-  );
-}
+import { validateBirth } from '$lib/hd/birth.js';
+
+const validBirth = validateBirth;
 
 /** @param {Uint8Array} bytes @param {any} stream Compression/DecompressionStream */
 async function pipeThrough(bytes, stream) {
