@@ -3,6 +3,10 @@
 Contexto base para que el asistente de IA trabaje eficientemente en este proyecto.
 Lee también `TASKS.md` y `BACKLOG.md` al inicio de cada sesión.
 
+**Plan de mejora en curso (desde 2026-11-13):** [`docs/plan-mejora.md`](./docs/plan-mejora.md) es la lista de trabajo priorizada que salió de la revisión global de la 1.5.7; los seis informes que la sustentan están en `docs/revision-2026-11/`. Se trabaja de arriba abajo, una pieza por turno.
+
+**Mejora pendiente, sin hacer todavía (COD-9 del plan):** `TASKS.md` (~1.200 líneas) y `BACKLOG.md` (~2.000) han crecido hasta ser un coste de tokens en cada sesión. La propuesta es dejar una versión vigente corta y mover el histórico a un archivo; hasta entonces, buscar en ellos con grep el apartado que haga falta en vez de leerlos enteros.
+
 ---
 
 ## 1. Qué es esta app
