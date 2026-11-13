@@ -11,9 +11,9 @@
 
 export default {
   seo: {
-    title: 'Human Design Chart — calcula tu carta gratis, sin registro',
+    title: 'Carta de Diseño Humano gratis, sin registro — Human Design Chart',
     description:
-      'Calcula tu carta de Human Design gratis y sin registro: tipo, estrategia, autoridad, perfil, centros y canales, con un bodygraph interactivo.'
+      'Calcula tu carta de Diseño Humano (Human Design) gratis y sin registro: tipo, estrategia, autoridad, perfil, centros y canales, con un bodygraph interactivo.'
   },
 
   lang: {
