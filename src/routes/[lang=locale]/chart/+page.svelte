@@ -1214,7 +1214,7 @@
                 {t.label}
                 {#if innerReveal === `type:${t.key}` || infoIsOpen('type', t.key)}
                   <span class="dot-slot" data-info-cat="type" data-info-kind="type" data-info-key={t.key}>
-                    <InfoDot active={infoIsOpen('type', t.key)} label={t.label} />
+                    <InfoDot active={infoIsOpen('type', t.key)} label={tr('chart.infoOf', { name: t.label })} />
                   </span>
                 {/if}
               </span>
@@ -1414,7 +1414,7 @@
                 </button>
                 {#if innerReveal === `center:${c}` || infoIsOpen('center', c)}
                   <span class="dot-slot" data-info-cat="center" data-info-kind="center" data-info-key={c}>
-                    <InfoDot active={infoIsOpen('center', c)} label={CENTER_LABELS[c]} />
+                    <InfoDot active={infoIsOpen('center', c)} label={tr('chart.infoOf', { name: CENTER_LABELS[c] })} />
                   </span>
                 {/if}
               </span>
@@ -1505,7 +1505,7 @@
                   </span>
                   {#if innerReveal === `channel:${g1}-${g2}` || infoIsOpen('channel', `${g1}-${g2}`)}
                     <span class="dot-slot" data-info-cat="channel" data-info-kind="channel" data-info-key={`${g1}-${g2}`}>
-                      <InfoDot active={infoIsOpen('channel', `${g1}-${g2}`)} label={`${g1}-${g2}`} />
+                      <InfoDot active={infoIsOpen('channel', `${g1}-${g2}`)} label={tr('chart.infoOf', { name: `${g1}-${g2}` })} />
                     </span>
                   {/if}
                 </span>
@@ -1559,7 +1559,7 @@
                   </span>
                   {#if innerReveal === `gate:${g}` || infoIsOpen('gate', `${g}`)}
                     <span class="dot-slot" data-info-cat="gate" data-info-kind="gate" data-info-key={`${g}`}>
-                      <InfoDot active={infoIsOpen('gate', `${g}`)} label={`${g}`} />
+                      <InfoDot active={infoIsOpen('gate', `${g}`)} label={tr('chart.infoOf', { name: `${g}` })} />
                     </span>
                   {/if}
                 </span>
@@ -1609,7 +1609,7 @@
               {@const w = getActivationWeight(p)}
               <tr>
                 <td class="planet" data-inner-key={`planet:${p}`}>
-                  <span class="psym">{PLANET_SYMBOLS[p]}</span>{PLANET_LABELS[p]}{#if innerReveal === `planet:${p}` || infoIsOpen('planet', p)}<span class="dot-side" data-info-cat="planet" data-info-kind="planet" data-info-key={p}><InfoDot active={infoIsOpen('planet', p)} label={PLANET_LABELS[p]} /></span>{/if}
+                  <span class="psym">{PLANET_SYMBOLS[p]}</span>{PLANET_LABELS[p]}{#if innerReveal === `planet:${p}` || infoIsOpen('planet', p)}<span class="dot-side" data-info-cat="planet" data-info-kind="planet" data-info-key={p}><InfoDot active={infoIsOpen('planet', p)} label={tr('chart.infoOf', { name: PLANET_LABELS[p] })} /></span>{/if}
                 </td>
                 <td>
                   <span class="act" class:hl={actHl(chart.personality[p].gate)}

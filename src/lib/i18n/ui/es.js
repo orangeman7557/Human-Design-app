@@ -248,6 +248,7 @@ export default {
     moreSignals: 'Más información sobre estas señales',
     tipSignalAligned: 'Alineamiento',
     tipSignalMisaligned: 'Desalineamiento',
+    infoOf: 'Información: {name}',
     moreCross: 'Más información sobre esta cruz de encarnación',
     // Split around the info-dot glyph, which is rendered as the icon itself.
     infoHintA: 'Toca cualquier elemento de la carta y pulsa en ',

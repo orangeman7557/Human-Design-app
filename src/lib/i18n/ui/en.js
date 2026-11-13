@@ -228,6 +228,7 @@ export default {
     moreSignals: 'More about these signals',
     tipSignalAligned: 'Alignment',
     tipSignalMisaligned: 'Misalignment',
+    infoOf: 'Info: {name}',
     moreCross: 'More about this incarnation cross',
     // Split around the info-dot glyph, which is rendered as the icon itself.
     infoHintA: 'Tap any element of the chart, then tap ',
