@@ -160,6 +160,11 @@ export default {
       'Tu carta de Human Design: bodygraph interactivo con tipo, estrategia, autoridad, perfil, centros y canales.',
     untitled: 'Tu carta',
     noName: 'Sin nombre',
+    // Unknown birth time (form slider mode): the hour in the birth subtitle and
+    // the note right under it.
+    timeApprox: '~{time} (hora desconocida)',
+    timeUnknownNote:
+      'Sin hora de nacimiento: el perfil, la cruz y parte de las puertas dependen de ella, y a veces también el tipo y la autoridad.',
     noBirthData: 'No hay datos de nacimiento. Vuelve a la página inicial y rellena el formulario.',
     calculating: 'Calculando…',
     errorPrefix: 'Error: {msg}',
@@ -355,6 +360,7 @@ export default {
       intro: 'Qué es el Diseño Humano',
       experiment: 'Un experimento vital',
       chart: 'Bodygraph',
+      birthTime: 'Tu hora',
       type: 'Tu tipo',
       centers: 'Tus centros',
       strategy: 'Tu estrategia',

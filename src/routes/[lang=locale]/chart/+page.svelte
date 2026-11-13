@@ -528,7 +528,8 @@
     const [y, m, d] = (b.date ?? '').split('-');
     const date = d ? `${d}/${m}/${y}` : b.date;
     const place = cityCountry(b.placeLabel);
-    return [`${date}, ${b.time}`, place].filter(Boolean).join(' · ');
+    const time = b.timeUnknown ? tr('chart.timeApprox', { time: b.time }) : b.time;
+    return [`${date}, ${time}`, place].filter(Boolean).join(' · ');
   }
 
   // Share the whole chart view (bodygraph + summary + lists) as a PNG via
@@ -1091,7 +1092,12 @@
     <p class="status"><a href={`/${lang}`}>{tr('chart.backToForm')}</a></p>
   {:else if chart}
     {#if birthData}
-      <p class="birth">{formatBirth(birthData)}</p>
+      <p class="birth">
+        {formatBirth(birthData)}
+        {#if birthData.timeUnknown}
+          <span class="time-note">{tr('chart.timeUnknownNote')}</span>
+        {/if}
+      </p>
     {/if}
 
     <!-- Every element on this page has an explanation behind an "i". On
@@ -1853,6 +1859,24 @@
     /* Left-aligned with the title text (back button 2.25rem + gap 1rem);
        slight negative top margin tucks it right under the title. */
     margin: -0.15rem 0 1.5rem 3.25rem;
+  }
+
+  /* Unknown birth time: a second, smaller line under the birth subtitle. Kept
+     in the PNG export on purpose — the image is shared as "my chart", and the
+     approximate hour must travel with it. */
+  .time-note {
+    display: block;
+    margin-top: 0.3rem;
+    font-size: 0.78rem;
+    line-height: 1.4;
+    color: var(--text-muted);
+    border-left: 2px solid var(--accent);
+    padding-left: 0.5rem;
+    max-width: 34rem;
+  }
+  main.capturing .time-note {
+    margin-left: auto;
+    margin-right: auto;
   }
 
   /* One-off discoverability notice for the "i" drawers. A card with a touch of

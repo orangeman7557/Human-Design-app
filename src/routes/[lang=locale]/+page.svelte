@@ -296,6 +296,9 @@
         longitude: place.longitude,
         placeLabel: place.label
       };
+      // Only present when true, so charts entered with a known time keep the
+      // exact same stored shape as before (and match their saved copies).
+      if (unknownTime) birth.timeUnknown = true;
       sessionStorage.setItem('birthData', JSON.stringify(birth));
       // A chart created from the form (not a shared-link open or a re-opened
       // saved chart). `notime` additionally flags the unknown-time path.
@@ -546,6 +549,14 @@
       name = b.name ?? '';
       date = b.date;
       time = b.time ?? '';
+      // Back from an unknown-time chart: reopen the slider at the hour used.
+      // sliderVal goes first — the `time = sliderTime` effect fires as soon as
+      // unknownTime flips and would otherwise reset the hour to 12:00.
+      const m = /^(\d{1,2}):(\d{2})/.exec(time);
+      if (b.timeUnknown && m) {
+        sliderVal = Math.min(47, Number(m[1]) * 2 + Math.round(Number(m[2]) / 30));
+        unknownTime = true;
+      }
       if (b.placeLabel && b.timezone) {
         place = {
           label: b.placeLabel,

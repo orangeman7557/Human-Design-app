@@ -28,6 +28,27 @@ describe('decodeBirth', () => {
     });
   });
 
+  it('carries the unknown-time flag as a trailing u on d', () => {
+    const birth = {
+      date: '1990-05-17',
+      time: '12:00',
+      latitude: 38.7167,
+      longitude: -9.1333,
+      timeUnknown: true
+    };
+    const qs = encodeBirth(birth);
+    expect(q(qs).get('d')).toBe('199005171200u');
+    const out = decodeBirth(q(qs));
+    expect(out).toMatchObject({ date: '1990-05-17', time: '12:00', timeUnknown: true });
+  });
+
+  it('leaves the flag off links without it (old links unchanged)', () => {
+    const out = decodeBirth(q('d=199005171420&la=38.7167&lo=-9.1333'));
+    expect(out).not.toHaveProperty('timeUnknown');
+    expect(encodeBirth({ date: '1990-05-17', time: '14:20' })).toBe('d=199005171420');
+    expect(decodeBirth(q('d=19900517x&la=1&lo=1'))).toBeNull();
+  });
+
   it('still reads the legacy separate t= param', () => {
     expect(decodeBirth(q('d=19900517&t=1420&la=38.7&lo=-9.1')).time).toBe('14:20');
   });

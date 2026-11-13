@@ -2858,6 +2858,10 @@ export default {
     // Same slot as `who` when the link carries the data: the prompt still says
     // whose chart it is, without repeating what the link already serves.
     whoLink: 'un {type} con esta carta (ver enlace al final)',
+    // Appended to chart-angle prompts when the birth time is unknown (the form's
+    // slider mode); also the note in the shareable JSON profile.
+    timeUnknown:
+      '\n\nLa hora de nacimiento de esta carta es desconocida: se ha calculado con una hora aproximada, así que el perfil, la cruz de encarnación y parte de las puertas podrían ser otros, y a veces también el tipo y la autoridad.',
     none: 'ninguno',
     side: { personality: 'Personalidad', design: 'Diseño' },
     activation: '{planet} en {side} (línea {line})',
@@ -3040,6 +3044,13 @@ export default {
     // the prompt doesn't spell it out (aug 2026).
     closingPromptLink:
       'Según el Diseño Humano, me gustaría saber más sobre mi carta. Consulta el siguiente enlace para ver los datos completos de mi carta: {url}\n\nEn concreto, me gustaría profundizar en...',
-    noCenters: 'ninguno'
+    noCenters: 'ninguno',
+    // Unknown birth time: a section opening Part B, and a first-person line that
+    // leads the closing prompt.
+    birthTimeTitle: 'Tu hora de nacimiento',
+    birthTimeBody:
+      'Esta carta se ha calculado sin conocer tu hora de nacimiento, con una hora aproximada. Lo que sigue es una de las cartas posibles para tu día: el perfil y la cruz cambian casi siempre a lo largo de un día, y a veces también el tipo, la autoridad y la definición. Toma esas partes como una posibilidad, no como un hecho, hasta que puedas confirmar la hora.',
+    closingTimeUnknown:
+      'No conozco mi hora de nacimiento: la carta está calculada con una hora aproximada, así que el perfil, la cruz y algunas puertas podrían ser otros.'
   }
 };

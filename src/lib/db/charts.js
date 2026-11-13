@@ -183,7 +183,8 @@ export async function findSavedChart(birth) {
     b.time === birth.time &&
     b.timezone === birth.timezone &&
     b.latitude === birth.latitude &&
-    b.longitude === birth.longitude;
+    b.longitude === birth.longitude &&
+    !!b.timeUnknown === !!birth.timeUnknown;
   const all = await db.charts.toArray();
   return all.find((c) => same(c.birth)) ?? null;
 }
@@ -443,7 +444,7 @@ export async function importCharts(json) {
   const validBirth = (b) =>
     b && typeof b === 'object' &&
     typeof b.date === 'string' && typeof b.time === 'string' && typeof b.timezone === 'string';
-  const key = (name, b) => [name, b.date, b.time, b.timezone, b.placeLabel ?? ''].join('|');
+  const key = (name, b) => [name, b.date, b.time, b.timezone, b.placeLabel ?? '', b.timeUnknown ? 'u' : ''].join('|');
   const existing = new Set(
     (await db.charts.toArray()).filter((c) => validBirth(c.birth)).map((c) => key(c.name, c.birth))
   );
