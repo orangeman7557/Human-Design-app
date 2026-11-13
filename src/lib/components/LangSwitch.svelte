@@ -129,6 +129,7 @@
   /* Same silhouette as the staging badge (hangs from the top edge, thin) but in
      neutral colours — the accent is reserved for the staging warning. */
   .tag {
+    position: relative;
     display: block;
     padding: 0.12rem 0.6rem;
     border: 1px solid var(--border);
@@ -143,6 +144,13 @@
     letter-spacing: 0.08em;
     text-transform: uppercase;
     cursor: pointer;
+  }
+  /* Invisible touch area (UX-3): the tab hangs from the top edge, so it grows
+     downwards and sideways only. */
+  .tag::after {
+    content: '';
+    position: absolute;
+    inset: 0 -5px -24px;
   }
   .tag:hover {
     color: var(--text);

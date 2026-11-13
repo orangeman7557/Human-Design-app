@@ -2131,6 +2131,25 @@
   .dot-host {
     display: inline-flex;
   }
+  /* Touch area of each "i" (UX-3; top right bottom left, how far past the
+     17px circle it answers the finger). Each host gives it what its
+     neighbours allow: heading dots sit on the line above the value dot, so
+     they take the space above and leave the line below; value dots do the
+     opposite; the superscript on a chip already overlaps its neighbours, so
+     it only grows inwards over its own chip. */
+  .dot-h2,
+  .dot-host {
+    --dot-hit: -14px -8px 0 -8px;
+  }
+  .dot-side {
+    --dot-hit: 0 -8px -14px -19px;
+  }
+  .planet .dot-side {
+    --dot-hit: -8px -8px -7px -19px;
+  }
+  .dot-slot {
+    --dot-hit: 0 0 -13px -13px;
+  }
   .tchip.on {
     background: var(--accent);
     border-color: var(--accent);
@@ -2398,8 +2417,15 @@
   /* Footer "privacidad" link: overrides the global accent-coloured anchor so it
      matches the muted "acerca de" / "notificar un fallo" siblings. */
   .foot-link {
+    position: relative;
     color: inherit;
     text-decoration: none;
+  }
+  /* Invisible touch area (UX-3). */
+  .foot-link::after {
+    content: '';
+    position: absolute;
+    inset: -4px -5px -25px;
   }
   .foot-link:hover {
     color: var(--text-muted);

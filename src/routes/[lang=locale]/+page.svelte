@@ -972,7 +972,7 @@
       <h2>{tr('saved.heading')}</h2>
       {#if savedCharts.length > 0}
         <div class="head-tools">
-          <div class="search">
+          <label class="search">
             <svg class="search-ic" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" />
             </svg>
@@ -989,7 +989,7 @@
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18" /><line x1="18" y1="6" x2="6" y2="18" /></svg>
               </button>
             {/if}
-          </div>
+          </label>
           {#if labels.length || typeEntries.length}
             <div class="filter-wrap">
               <button
@@ -1490,9 +1490,14 @@
       text-align: center;
     }
     .check {
-      position: static;
+      position: relative;
       justify-content: center;
       margin-top: 0.15rem;
+    }
+    .check::after {
+      content: '';
+      position: absolute;
+      inset: -4px 0 -25px;
     }
   }
 
@@ -1502,8 +1507,13 @@
      whatever the text width. Desktop (wider) keeps the classic top-right spot. */
   @media (min-width: 521px) and (max-width: 834px) {
     .check {
-      position: static;
+      position: relative;
       margin-top: 0.3rem;
+    }
+    .check::after {
+      content: '';
+      position: absolute;
+      inset: -4px 0 -25px;
     }
   }
 
@@ -1640,6 +1650,7 @@
   /* Deliberately understated: a quiet escape hatch under the CTA, not a
      competing action. */
   .clear-link {
+    position: relative;
     align-self: center;
     display: inline-flex;
     align-items: center;
@@ -1653,6 +1664,13 @@
     color: var(--text-muted);
     opacity: 0.6;
     cursor: pointer;
+  }
+  /* Invisible touch area (UX-3): 10px up (the button above is 14px away) and
+     14px down; the drawn text does not move. */
+  .clear-link::after {
+    content: '';
+    position: absolute;
+    inset: -10px 0 -14px;
   }
   .clear-link:hover {
     opacity: 1;
@@ -1729,6 +1747,7 @@
     margin: 0;
   }
   .io-btn {
+    position: relative;
     display: grid;
     place-items: center;
     width: 1.9rem;
@@ -1738,6 +1757,19 @@
     border-radius: var(--radius);
     color: var(--text-muted);
     cursor: pointer;
+  }
+  /* Invisible touch area (UX-3): 7px up and down, half the 7px gap between
+     buttons, and the outer two grow outwards. */
+  .io-btn::after {
+    content: '';
+    position: absolute;
+    inset: -7px -3px;
+  }
+  .io-btn:first-child::after {
+    inset: -7px -3px -7px -14px;
+  }
+  .io-btn:last-of-type::after {
+    inset: -7px -14px -7px -3px;
   }
   .io-btn:hover:not(:disabled) {
     color: var(--text);
@@ -1901,6 +1933,7 @@
     gap: 0.4rem;
   }
   .icon {
+    position: relative;
     background: var(--surface);
     border: 1px solid var(--border);
     color: var(--text-muted);
@@ -1921,6 +1954,23 @@
   }
   .icon.del {
     grid-area: del;
+  }
+  /* Invisible touch areas (UX-3). Rows are 8px apart and the three buttons 7px
+     apart, so each takes half of the gap it shares and everything else it can
+     (towards the card on the left, the page margin on the right). The stacked
+     pair cannot reach 44px tall without a redesign. */
+  .icon::after {
+    content: '';
+    position: absolute;
+  }
+  .icon.edit::after {
+    inset: -4px -3px -3px -12px;
+  }
+  .icon.labels-btn::after {
+    inset: -3px -3px -4px -12px;
+  }
+  .icon.del::after {
+    inset: -4px -10px -4px -3px;
   }
   .icon:hover {
     color: var(--text);
@@ -1950,6 +2000,11 @@
   }
   .search {
     position: relative;
+    /* Touch area (UX-3): the label grows 10px up and down around the field and
+       the negative margin cancels it, so nothing moves; tapping it focuses the
+       input. */
+    padding-block: 10px;
+    margin-block: -10px;
     /* Wrap the field, don't stretch to the heading's row height: the lupa is
        centred against THIS box, so a stretched one left it sitting high. */
     align-self: center;
@@ -1988,6 +2043,14 @@
     color: var(--text-muted);
   }
   /* Clear "x", same right-hand slot pattern as the city field. */
+  /* Wider than a phone: the heading row sits closer to the first card, so the
+     invisible touch areas of the field and the funnel give back 3px. */
+  @media (min-width: 521px) {
+    .search {
+      padding-block: 7px;
+      margin-block: -7px;
+    }
+  }
   .search-clear {
     position: absolute;
     right: 4px;
@@ -2023,6 +2086,7 @@
     flex: none;
   }
   .filter-btn {
+    position: relative;
     display: grid;
     place-items: center;
     width: 1.6rem;
@@ -2033,6 +2097,18 @@
     border-radius: var(--radius);
     color: var(--text-muted);
     cursor: pointer;
+  }
+  /* Invisible touch area (UX-3): into the page margin on the right, half the
+     gap towards the field on the left. */
+  .filter-btn::after {
+    content: '';
+    position: absolute;
+    inset: -10px -15px -10px -3px;
+  }
+  @media (min-width: 521px) {
+    .filter-btn::after {
+      inset: -4px -15px -4px -3px;
+    }
   }
   .filter-btn:hover {
     color: var(--text);
@@ -2258,6 +2334,7 @@
   /* Footer links ("instalar como app" · "acerca de"): the footer sets the
      size/colour; this just matches About's link. */
   .install-link {
+    position: relative;
     background: none;
     border: none;
     padding: 0;
@@ -2266,6 +2343,13 @@
     color: inherit;
     cursor: pointer;
   }
+  /* Invisible touch area (UX-3): this row grows upwards, the links row below it
+     grows downwards, and they split the 8px between them. */
+  .install-link::after {
+    content: '';
+    position: absolute;
+    inset: -25px -5px -4px;
+  }
   .install-link:hover {
     color: var(--text-muted);
   }
@@ -2273,8 +2357,14 @@
   /* Footer "privacidad" link: overrides the global accent-coloured anchor so it
      matches the muted "acerca de" / "notificar un fallo" siblings. */
   .foot-link {
+    position: relative;
     color: inherit;
     text-decoration: none;
+  }
+  .foot-link::after {
+    content: '';
+    position: absolute;
+    inset: -4px -5px -25px;
   }
   .foot-link:hover {
     color: var(--text-muted);
