@@ -33,7 +33,7 @@ Sale de la revisión global del 2026-11-13 (seis frentes: código, rigor de Dise
 
 ## 1. Ahora — barato y de alto valor
 
-- [ ] **COD-1** ✔ · S · Enlace compartido con fecha imposible da **error 500** (probado en vivo: `?d=19901399&la=…&lo=…`). `chartProfile` en `hooks.server.js` llama a `computeChart` sin capturar; `decodeBirth` solo valida dígitos. Capturar → `null`, validar mes/día, test con basura.
+- [x] **COD-1** ✔ · S · Enlace compartido con fecha imposible da **error 500** (probado en vivo: `?d=19901399&la=…&lo=…`). `chartProfile` en `hooks.server.js` llama a `computeChart` sin capturar; `decodeBirth` solo valida dígitos. Capturar → `null`, validar mes/día, test con basura.
 - [ ] **HD-1** ✔ · M · La **hora desconocida** no sale del formulario: carta, guardado, enlace e informe la tratan como exacta. Guardar la marca, avisar en carta e informe, separar lo estable de lo variable («perfil 3/5 o 3/6»), añadir perfil y autoridad a las bandas del deslizador.
 - [ ] **HD-2a** ✔ (en Node) · S · Mostrar la **zona horaria y el desfase aplicados** en formulario y carta, y permitir corregirlo. Antes de 1970 hay regiones mal (Ámsterdam 1935: 20 min; Reikiavik 1960: 1 h; España antes de 1901).
 - [ ] **UX-3** · S · **Objetivos táctiles** a 44 px sin cambiar el dibujo, empezando por la «i» (17×17), «¿Qué es el Diseño Humano?», «Hora desconocida» y el pie.

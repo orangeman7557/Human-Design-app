@@ -76,13 +76,28 @@ export function decodeBirth(params) {
   if (!dm) return null;
   const d = dm[1];
   const date = `${d.slice(0, 4)}-${d.slice(4, 6)}-${d.slice(6, 8)}`;
+  // A mistyped or truncated link can carry digits that are not a real calendar
+  // date (month 13, Feb 31). Reject it here: computeChart throws on it, which
+  // on the Worker turned the share URL into a 500 (nov 2026).
+  const [y, mo, da] = [Number(d.slice(0, 4)), Number(d.slice(4, 6)), Number(d.slice(6, 8))];
+  const probe = new Date(Date.UTC(2000, mo - 1, da));
+  probe.setUTCFullYear(y);
+  if (y < 1 || probe.getUTCMonth() !== mo - 1 || probe.getUTCDate() !== da) return null;
 
   const t = (dm[2] || params.get('t') || '').padStart(4, '0');
-  const time = /^\d{4}$/.test(t) ? `${t.slice(0, 2)}:${t.slice(2, 4)}` : '00:00';
+  let time = '00:00';
+  if (/^\d{4}$/.test(t)) {
+    if (Number(t.slice(0, 2)) > 23 || Number(t.slice(2, 4)) > 59) return null;
+    time = `${t.slice(0, 2)}:${t.slice(2, 4)}`;
+  }
 
-  const latitude = Number(params.get('la'));
-  const longitude = Number(params.get('lo'));
+  const laRaw = params.get('la');
+  const loRaw = params.get('lo');
+  if (!laRaw || !loRaw) return null;
+  const latitude = Number(laRaw);
+  const longitude = Number(loRaw);
   if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) return null;
+  if (Math.abs(latitude) > 90 || Math.abs(longitude) > 180) return null;
 
   let timezone;
   try {

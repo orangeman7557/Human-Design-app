@@ -108,8 +108,14 @@ function wantsJsonOnly(req) {
 async function chartProfile(url, lang) {
   const birth = decodeBirth(url.searchParams);
   if (!birth) return null;
-  const chart = await computeChart(birth);
-  return buildProfileJson(chart, birth, lang);
+  // Never let a bad link take the page down: without a profile the route still
+  // serves the normal shell, and the client shows its own "invalid link" state.
+  try {
+    const chart = await computeChart(birth);
+    return buildProfileJson(chart, birth, lang);
+  } catch {
+    return null;
+  }
 }
 
 /** Escape text for safe embedding inside a <pre> / HTML text node. Escaping `<`
