@@ -42,6 +42,16 @@ describe('cookie-vault encoding', () => {
     expect(back.map((c) => c.name)).toEqual(['Buena']);
   });
 
+  it('keeps the unknown-time flag on the birth record (and adds none where absent)', async () => {
+    const payload = await encodeCharts([
+      { name: 'Sin hora', createdAt: 'x', sortOrder: 0, birth: { ...birth, time: '12:00', timeUnknown: true } },
+      { name: 'Con hora', createdAt: 'x', sortOrder: 1, birth }
+    ]);
+    const { charts } = await decodeCharts(payload);
+    expect(charts[0].birth.timeUnknown).toBe(true);
+    expect(charts[1].birth).not.toHaveProperty('timeUnknown');
+  });
+
   it('roundtrips an empty list', async () => {
     expect(await decodeCharts(await encodeCharts([]))).toEqual({ charts: [], labels: [] });
   });

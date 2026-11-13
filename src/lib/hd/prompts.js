@@ -113,6 +113,9 @@ function channelChartSubject(T, a, b, state) {
  */
 export function buildPrompts(kind, key, chart, lang = getLocale(), shareUrl = null) {
   const out = buildPromptsCore(kind, key, chart, lang, !!shareUrl);
+  if (out?.chart && chart?.meta?.birth?.timeUnknown) {
+    out.chart += getPromptTemplates(lang).timeUnknown;
+  }
   if (shareUrl && out?.chart) {
     out.chart += fillTpl(getPromptTemplates(lang).chartLink, { url: shareUrl });
   }

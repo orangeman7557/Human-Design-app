@@ -23,22 +23,38 @@ async function readCount(kv, key) {
   return Number(await kv.get(key)) || 0;
 }
 
+const UNKNOWN = { count: null, senders: null };
+
 export async function GET({ platform }) {
   const kv = platform?.env?.LOVE;
-  if (!kv) return json({ count: null, senders: null });
+  if (!kv) return json(UNKNOWN);
   const { key, sendersKey } = keys(platform);
-  const [count, senders] = await Promise.all([readCount(kv, key), readCount(kv, sendersKey)]);
-  return json({ count, senders });
+  try {
+    const [count, senders] = await Promise.all([readCount(kv, key), readCount(kv, sendersKey)]);
+    return json({ count, senders });
+  } catch {
+    return json(UNKNOWN);
+  }
 }
 
 // Body: { n, first? } — clicks batched client-side, clamped so one request
 // can't inflate the counter arbitrarily; an invalid or empty n adds nothing
 // (never "at least 1", so junk requests can't creep the counter up). KV
 // read-modify-write can drop counts under simultaneous clicks from different
-// visitors; fine for a love counter.
+// visitors; fine for a love counter. Same-origin only, like /api/stat; a KV
+// failure answers the "unknown" shape (client hides the counter) instead of 500.
 export async function POST({ request, platform }) {
   const kv = platform?.env?.LOVE;
-  if (!kv) return json({ count: null, senders: null });
+  if (!kv) return json(UNKNOWN);
+  const origin = request.headers.get('origin');
+  const host = request.headers.get('host');
+  if (origin && host) {
+    try {
+      if (new URL(origin).host !== host) return json(UNKNOWN);
+    } catch {
+      return json(UNKNOWN);
+    }
+  }
   const { key, sendersKey } = keys(platform);
   let n = 0;
   let first = false;
@@ -49,14 +65,18 @@ export async function POST({ request, platform }) {
   } catch {
     n = 0;
   }
-  let senders = await readCount(kv, sendersKey);
-  if (!Number.isFinite(n) || n < 1) return json({ count: await readCount(kv, key), senders });
-  if (n > MAX_PER_POST) n = MAX_PER_POST;
-  const count = (await readCount(kv, key)) + n;
-  await kv.put(key, String(count));
-  if (first) {
-    senders += 1;
-    await kv.put(sendersKey, String(senders));
+  try {
+    let senders = await readCount(kv, sendersKey);
+    if (!Number.isFinite(n) || n < 1) return json({ count: await readCount(kv, key), senders });
+    if (n > MAX_PER_POST) n = MAX_PER_POST;
+    const count = (await readCount(kv, key)) + n;
+    await kv.put(key, String(count));
+    if (first) {
+      senders += 1;
+      await kv.put(sendersKey, String(senders));
+    }
+    return json({ count, senders });
+  } catch {
+    return json(UNKNOWN);
   }
-  return json({ count, senders });
 }

@@ -16,6 +16,7 @@ import {
   getPlanetLongitudes,
   computeDesignJd
 } from './ephemeris.js';
+import { localToUtc } from '../geo/timezone.js';
 
 /**
  * @typedef {Object} BirthData
@@ -69,7 +70,8 @@ export async function computeChart(birth) {
         `(fecha "${birth.date}", hora "${birth.time}", zona horaria "${birth.timezone}").`
     );
   }
-  const utcDate = localDt.toUTC().toJSDate();
+  // HD-2: corrects pre-1970 offsets the runtime tz data gets wrong.
+  const utcDate = localToUtc(birth.date, birth.time, birth.timezone, birth.longitude);
 
   // 2. Calcular Julian Day del nacimiento (Personality).
   const personalityJd = await dateToJd(utcDate);

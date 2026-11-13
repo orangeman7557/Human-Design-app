@@ -114,6 +114,8 @@ const overrides = {
     // Same slot as `who` when the link carries the data: the prompt still says
     // whose chart it is, without repeating what the link already serves.
     whoLink: 'a {type} with this chart (see the link at the end)',
+    timeUnknown:
+      '\n\nThe birth time for this chart is unknown: it was calculated with an approximate time, so the profile, the incarnation cross and some of the gates may be different, and sometimes the type and authority too.',
     none: 'none',
     side: { personality: 'Personality', design: 'Design' },
     activation: '{planet} in {side} (line {line})',
@@ -276,7 +278,12 @@ const overrides = {
     // the prompt doesn't spell it out (aug 2026).
     closingPromptLink:
       'According to Human Design, I would like to know more about my chart. Please open the following link to see my full chart data: {url}\n\nIn particular, I would like to go deeper into...',
-    noCenters: 'none'
+    noCenters: 'none',
+    birthTimeTitle: 'Your Birth Time',
+    birthTimeBody:
+      'This chart was calculated without your birth time, using an approximate one. What follows is one of the possible charts for your birth day: the profile and the cross almost always shift over the course of a day, and sometimes the type, authority and definition do too. Treat those parts as a possibility rather than a fact until you can confirm the time.',
+    closingTimeUnknown:
+      "I don't know my birth time: the chart was calculated with an approximate one, so the profile, the cross and some of the gates may be different."
   },
 
   concept: {

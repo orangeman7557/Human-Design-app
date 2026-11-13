@@ -5,6 +5,7 @@
   // Injected by Vite's `define` from package.json (see vite.config.js).
   const version = __APP_VERSION__;
   import { computeChart } from '$lib/hd/chart.js';
+  import { computeDayRange, DAY_FIELDS, crossKey } from '$lib/hd/day-range.js';
   import { CENTERS, PLANETS, CENTER_BY_GATE, CHANNELS } from '$lib/hd/constants.js';
   import { toBlob } from 'html-to-image';
   import { saveChart, findSavedChart } from '$lib/db/charts.js';
@@ -76,6 +77,49 @@
   let loading = $state(true);
   /** @type {Object | null} */
   let birthData = $state(null);
+
+  // Unknown birth time: the whole day's range of values, computed after the
+  // chart has painted (48 charts) — null until then, and for known times.
+  /** @type {import('$lib/hd/day-range.js').DayRange | null} */
+  let dayRange = $state(null);
+  function scheduleDayRange(birth) {
+    const pause = () => new Promise((r) => setTimeout(r, 0));
+    setTimeout(async () => {
+      try {
+        dayRange = await computeDayRange(birth, { pause });
+      } catch {
+        dayRange = null;
+      }
+    }, 300);
+  }
+  // Per field, the OTHER values the day allows, as one readable list ("3/6 or
+  // 4/6"); a field missing here is the same all day.
+  const dayAlso = $derived.by(() => {
+    if (!dayRange || !chart) return {};
+    const label = {
+      type: (v) => getDisplayLabels(lang).type[v] ?? v,
+      authority: (v) => AUTHORITY_LABELS[v] ?? v,
+      profile: (v) => v,
+      definition: (v) => DEFINITION_LABELS[v] ?? v,
+      cross: (v) => getCrossName(v, lang) ?? CROSS_LABELS[v.angle] ?? v.angle
+    };
+    const id = (f, v) => (f === 'cross' ? crossKey(v) : v);
+    const fmt = new Intl.ListFormat(lang, { type: 'disjunction' });
+    /** @type {Record<string, string>} */
+    const out = {};
+    for (const f of DAY_FIELDS) {
+      const others = dayRange.values[f].filter((v) => id(f, v) !== id(f, chart[f]));
+      if (others.length) out[f] = fmt.format(others.map(label[f]));
+    }
+    return out;
+  });
+  const dayStable = $derived(
+    dayRange?.stable.length
+      ? new Intl.ListFormat(lang, { type: 'conjunction' }).format(
+          dayRange.stable.map((f) => tr('chart.dayField.' + f))
+        )
+      : ''
+  );
   let saved = $state(false);
   /** @type {string | null} */
   let saveError = $state(null);
@@ -528,7 +572,8 @@
     const [y, m, d] = (b.date ?? '').split('-');
     const date = d ? `${d}/${m}/${y}` : b.date;
     const place = cityCountry(b.placeLabel);
-    return [`${date}, ${b.time}`, place].filter(Boolean).join(' · ');
+    const time = b.timeUnknown ? tr('chart.timeApprox', { time: b.time }) : b.time;
+    return [`${date}, ${time}`, place].filter(Boolean).join(' · ');
   }
 
   // Share the whole chart view (bodygraph + summary + lists) as a PNG via
@@ -942,6 +987,7 @@
     } finally {
       loading = false;
     }
+    if (chart && birthData?.timeUnknown) scheduleDayRange($state.snapshot(birthData));
   });
 
   function back() {
@@ -975,6 +1021,12 @@
      green/red on purpose — the drawers are explicit that the misalignment
      signal is *information*, not a failing, so a "bad" red would contradict
      the copy. The aligned one takes the accent, the other stays muted. -->
+{#snippet dayAlsoLine(field, right = false)}
+  {#if dayAlso[field]}
+    <span class="day-also" class:right>{tr('chart.dayAlso', { values: dayAlso[field] })}</span>
+  {/if}
+{/snippet}
+
 {#snippet polarityIcon(plus)}
   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
     <circle cx="12" cy="12" r="9" />
@@ -1091,7 +1143,14 @@
     <p class="status"><a href={`/${lang}`}>{tr('chart.backToForm')}</a></p>
   {:else if chart}
     {#if birthData}
-      <p class="birth">{formatBirth(birthData)}</p>
+      <p class="birth">
+        {formatBirth(birthData)}
+        {#if birthData.timeUnknown}
+          <span class="time-note"
+            >{tr('chart.timeUnknownNote')}{#if dayStable}{' '}{tr('chart.dayStable', { list: dayStable })}{/if}</span
+          >
+        {/if}
+      </p>
     {/if}
 
     <!-- Every element on this page has an explanation behind an "i". On
@@ -1155,7 +1214,7 @@
                 {t.label}
                 {#if innerReveal === `type:${t.key}` || infoIsOpen('type', t.key)}
                   <span class="dot-slot" data-info-cat="type" data-info-kind="type" data-info-key={t.key}>
-                    <InfoDot active={infoIsOpen('type', t.key)} label={t.label} />
+                    <InfoDot active={infoIsOpen('type', t.key)} label={tr('chart.infoOf', { name: t.label })} />
                   </span>
                 {/if}
               </span>
@@ -1164,6 +1223,7 @@
               {/if}
             {/each}
           </div>
+          {@render dayAlsoLine('type')}
         </div>
         <div
           class="card"
@@ -1210,6 +1270,7 @@
               class="dot-side"
               data-info-cat="authority" data-info-kind="authority" data-info-key={chart.authority}
             ><InfoDot active={infoIsOpen('authority', chart.authority)} label={tr('chart.moreAuthority')} /></span>{/if}</span>
+          {@render dayAlsoLine('authority')}
         </div>
         <!-- Signals: one card, two values, each with its own "i" (the card's
              concept "i" explains what signals are). They sit right after
@@ -1272,6 +1333,7 @@
               class="dot-side"
               data-info-cat="profile" data-info-kind="profile" data-info-key={chart.profile}
             ><InfoDot active={infoIsOpen('profile', chart.profile)} label={tr('chart.moreProfile')} /></span>{/if}</span>
+          {@render dayAlsoLine('profile')}
         </div>
         <!-- Incarnation cross. The four Sun/Earth gates ride the label's line
              (right-aligned) so the long angle name keeps the full width to
@@ -1312,6 +1374,7 @@
                 class="dot-side"
                 data-info-cat="cross" data-info-kind="cross" data-info-key={chart.cross.angle}
               ><InfoDot active={infoIsOpen('cross', chart.cross.angle)} label={tr('chart.moreCross')} /></span>{/if}</span>
+            {@render dayAlsoLine('cross')}
           </div>
         {/if}
       </div>
@@ -1351,7 +1414,7 @@
                 </button>
                 {#if innerReveal === `center:${c}` || infoIsOpen('center', c)}
                   <span class="dot-slot" data-info-cat="center" data-info-kind="center" data-info-key={c}>
-                    <InfoDot active={infoIsOpen('center', c)} label={CENTER_LABELS[c]} />
+                    <InfoDot active={infoIsOpen('center', c)} label={tr('chart.infoOf', { name: CENTER_LABELS[c] })} />
                   </span>
                 {/if}
               </span>
@@ -1389,6 +1452,7 @@
               {DEFINITION_LABELS[chart.definition] ?? chart.definition}
             </button>
           </span>
+          {@render dayAlsoLine('definition', true)}
         </div>
       </div>
 
@@ -1441,7 +1505,7 @@
                   </span>
                   {#if innerReveal === `channel:${g1}-${g2}` || infoIsOpen('channel', `${g1}-${g2}`)}
                     <span class="dot-slot" data-info-cat="channel" data-info-kind="channel" data-info-key={`${g1}-${g2}`}>
-                      <InfoDot active={infoIsOpen('channel', `${g1}-${g2}`)} label={`${g1}-${g2}`} />
+                      <InfoDot active={infoIsOpen('channel', `${g1}-${g2}`)} label={tr('chart.infoOf', { name: `${g1}-${g2}` })} />
                     </span>
                   {/if}
                 </span>
@@ -1495,7 +1559,7 @@
                   </span>
                   {#if innerReveal === `gate:${g}` || infoIsOpen('gate', `${g}`)}
                     <span class="dot-slot" data-info-cat="gate" data-info-kind="gate" data-info-key={`${g}`}>
-                      <InfoDot active={infoIsOpen('gate', `${g}`)} label={`${g}`} />
+                      <InfoDot active={infoIsOpen('gate', `${g}`)} label={tr('chart.infoOf', { name: `${g}` })} />
                     </span>
                   {/if}
                 </span>
@@ -1545,7 +1609,7 @@
               {@const w = getActivationWeight(p)}
               <tr>
                 <td class="planet" data-inner-key={`planet:${p}`}>
-                  <span class="psym">{PLANET_SYMBOLS[p]}</span>{PLANET_LABELS[p]}{#if innerReveal === `planet:${p}` || infoIsOpen('planet', p)}<span class="dot-side" data-info-cat="planet" data-info-kind="planet" data-info-key={p}><InfoDot active={infoIsOpen('planet', p)} label={PLANET_LABELS[p]} /></span>{/if}
+                  <span class="psym">{PLANET_SYMBOLS[p]}</span>{PLANET_LABELS[p]}{#if innerReveal === `planet:${p}` || infoIsOpen('planet', p)}<span class="dot-side" data-info-cat="planet" data-info-kind="planet" data-info-key={p}><InfoDot active={infoIsOpen('planet', p)} label={tr('chart.infoOf', { name: PLANET_LABELS[p] })} /></span>{/if}
                 </td>
                 <td>
                   <span class="act" class:hl={actHl(chart.personality[p].gate)}
@@ -1855,6 +1919,35 @@
     margin: -0.15rem 0 1.5rem 3.25rem;
   }
 
+  /* Unknown birth time: a second, smaller line under the birth subtitle. Kept
+     in the PNG export on purpose — the image is shared as "my chart", and the
+     approximate hour must travel with it. */
+  .time-note {
+    display: block;
+    margin-top: 0.3rem;
+    font-size: 0.78rem;
+    line-height: 1.4;
+    color: var(--text-muted);
+    border-left: 2px solid var(--accent);
+    padding-left: 0.5rem;
+    max-width: 34rem;
+  }
+  /* "Also possible that day: …" under a card value (unknown birth time). */
+  .day-also {
+    display: block;
+    margin-top: 0.3rem;
+    font-size: 0.72rem;
+    line-height: 1.35;
+    color: var(--text-muted);
+  }
+  .day-also.right {
+    text-align: right;
+  }
+  main.capturing .time-note {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
   /* One-off discoverability notice for the "i" drawers. A card with a touch of
      the accent so it reads as a notice and not as body copy — but only a
      touch: it sits above the chart and must not compete with it.
@@ -2037,6 +2130,25 @@
   }
   .dot-host {
     display: inline-flex;
+  }
+  /* Touch area of each "i" (UX-3; top right bottom left, how far past the
+     17px circle it answers the finger). Each host gives it what its
+     neighbours allow: heading dots sit on the line above the value dot, so
+     they take the space above and leave the line below; value dots do the
+     opposite; the superscript on a chip already overlaps its neighbours, so
+     it only grows inwards over its own chip. */
+  .dot-h2,
+  .dot-host {
+    --dot-hit: -14px -8px 0 -8px;
+  }
+  .dot-side {
+    --dot-hit: 0 -8px -14px -19px;
+  }
+  .planet .dot-side {
+    --dot-hit: -8px -8px -7px -19px;
+  }
+  .dot-slot {
+    --dot-hit: 0 0 -13px -13px;
   }
   .tchip.on {
     background: var(--accent);
@@ -2305,8 +2417,15 @@
   /* Footer "privacidad" link: overrides the global accent-coloured anchor so it
      matches the muted "acerca de" / "notificar un fallo" siblings. */
   .foot-link {
+    position: relative;
     color: inherit;
     text-decoration: none;
+  }
+  /* Invisible touch area (UX-3). */
+  .foot-link::after {
+    content: '';
+    position: absolute;
+    inset: -4px -5px -25px;
   }
   .foot-link:hover {
     color: var(--text-muted);

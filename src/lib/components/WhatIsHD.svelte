@@ -101,6 +101,7 @@
      white (not dimmed grey) since this is an entry point; the underline on hover
      signals it's clickable. */
   .link {
+    position: relative;
     display: inline-block;
     background: none;
     border: none;
@@ -113,6 +114,12 @@
        accent hover below still highlights it as a link. */
     color: var(--text-muted);
     cursor: pointer;
+  }
+  /* Invisible touch area (UX-3): 12px above and below the line. */
+  .link::after {
+    content: '';
+    position: absolute;
+    inset: -12px 0;
   }
   .link:hover,
   .link:focus-visible {

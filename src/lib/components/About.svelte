@@ -424,6 +424,7 @@
 <style>
   /* The footer sets the size/colour; the link just adds a discreet underline. */
   .link {
+    position: relative;
     background: none;
     border: none;
     padding: 0;
@@ -431,6 +432,13 @@
     font: inherit;
     color: inherit;
     cursor: pointer;
+  }
+  /* Invisible touch area (UX-3): footer links share their line with nothing
+     above but the install row, so they take 4px up and the space below. */
+  .link::after {
+    content: '';
+    position: absolute;
+    inset: -4px -5px -25px;
   }
   .link:hover {
     color: var(--text-muted);

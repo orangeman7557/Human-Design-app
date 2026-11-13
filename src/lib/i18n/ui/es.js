@@ -11,9 +11,9 @@
 
 export default {
   seo: {
-    title: 'Human Design Chart — calcula tu carta gratis, sin registro',
+    title: 'Carta de Diseño Humano gratis, sin registro — Human Design Chart',
     description:
-      'Calcula tu carta de Human Design gratis y sin registro: tipo, estrategia, autoridad, perfil, centros y canales, con un bodygraph interactivo.'
+      'Calcula tu carta de Diseño Humano (Human Design) gratis y sin registro: tipo, estrategia, autoridad, perfil, centros y canales, con un bodygraph interactivo.'
   },
 
   lang: {
@@ -160,6 +160,20 @@ export default {
       'Tu carta de Human Design: bodygraph interactivo con tipo, estrategia, autoridad, perfil, centros y canales.',
     untitled: 'Tu carta',
     noName: 'Sin nombre',
+    // Unknown birth time (form slider mode): the hour in the birth subtitle and
+    // the note right under it.
+    timeApprox: '~{time} (hora desconocida)',
+    timeUnknownNote:
+      'Sin hora de nacimiento: el perfil, la cruz y parte de las puertas dependen de ella, y a veces también el tipo y la autoridad.',
+    dayAlso: 'Ese día también es posible: {values}',
+    dayStable: 'Igual todo ese día: {list}.',
+    dayField: {
+      type: 'tipo',
+      authority: 'autoridad',
+      profile: 'perfil',
+      definition: 'definición',
+      cross: 'cruz'
+    },
     noBirthData: 'No hay datos de nacimiento. Vuelve a la página inicial y rellena el formulario.',
     calculating: 'Calculando…',
     errorPrefix: 'Error: {msg}',
@@ -234,6 +248,7 @@ export default {
     moreSignals: 'Más información sobre estas señales',
     tipSignalAligned: 'Alineamiento',
     tipSignalMisaligned: 'Desalineamiento',
+    infoOf: 'Información: {name}',
     moreCross: 'Más información sobre esta cruz de encarnación',
     // Split around the info-dot glyph, which is rendered as the icon itself.
     infoHintA: 'Toca cualquier elemento de la carta y pulsa en ',
@@ -355,6 +370,7 @@ export default {
       intro: 'Qué es el Diseño Humano',
       experiment: 'Un experimento vital',
       chart: 'Bodygraph',
+      birthTime: 'Tu hora',
       type: 'Tu tipo',
       centers: 'Tus centros',
       strategy: 'Tu estrategia',

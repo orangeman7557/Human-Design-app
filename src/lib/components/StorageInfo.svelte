@@ -51,6 +51,7 @@
 <style>
   /* The note sets size/colour; the trigger just adds a discreet underline. */
   .link {
+    position: relative;
     background: none;
     border: none;
     padding: 0;
@@ -60,6 +61,12 @@
     cursor: pointer;
     text-decoration: underline;
     text-underline-offset: 2px;
+  }
+  /* Invisible touch area (UX-3): 15px above and below, nothing pressable there. */
+  .link::after {
+    content: '';
+    position: absolute;
+    inset: -15px -10px;
   }
   .link:hover {
     color: var(--text);

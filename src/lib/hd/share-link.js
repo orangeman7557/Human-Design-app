@@ -18,6 +18,11 @@
 // reset the birth time to 00:00 and threw off the whole chart. Folding it into
 // `d` removes that failure mode (and shortens the URL). Old links with a
 // separate `t` still decode.
+//
+// An unknown birth time (the form's slider mode) rides in `d` too, as a
+// trailing `u` (YYYYMMDDHHMMu) rather than its own param, for the same reason:
+// a stripped flag would silently present an approximate hour as exact. Links
+// without the `u` decode exactly as before.
 
 import { cityCountry } from '$lib/geo/place.js';
 import { timezoneFor } from '$lib/geo/timezone.js';
@@ -38,7 +43,7 @@ export function encodeBirth(birth) {
   if (birth?.date) {
     const d = String(birth.date).replace(/-/g, '');
     const t = birth?.time ? String(birth.time).replace(':', '') : '';
-    p.set('d', d + t);
+    p.set('d', d + t + (birth?.timeUnknown ? 'u' : ''));
   }
   if (birth?.latitude != null) p.set('la', shortCoord(birth.latitude));
   if (birth?.longitude != null) p.set('lo', shortCoord(birth.longitude));
@@ -72,17 +77,32 @@ export function decodeBirth(params) {
   // `d` is YYYYMMDD (date only) or YYYYMMDDHHMM (time folded in). Old links kept
   // the time in a separate `t=HHMM`, so fall back to that when `d` is 8 digits.
   const dRaw = params.get('d') || '';
-  const dm = dRaw.match(/^(\d{8})(\d{4})?$/);
+  const dm = dRaw.match(/^(\d{8})(\d{4})?(u)?$/);
   if (!dm) return null;
   const d = dm[1];
   const date = `${d.slice(0, 4)}-${d.slice(4, 6)}-${d.slice(6, 8)}`;
+  // A mistyped or truncated link can carry digits that are not a real calendar
+  // date (month 13, Feb 31). Reject it here: computeChart throws on it, which
+  // on the Worker turned the share URL into a 500 (nov 2026).
+  const [y, mo, da] = [Number(d.slice(0, 4)), Number(d.slice(4, 6)), Number(d.slice(6, 8))];
+  const probe = new Date(Date.UTC(2000, mo - 1, da));
+  probe.setUTCFullYear(y);
+  if (y < 1 || probe.getUTCMonth() !== mo - 1 || probe.getUTCDate() !== da) return null;
 
   const t = (dm[2] || params.get('t') || '').padStart(4, '0');
-  const time = /^\d{4}$/.test(t) ? `${t.slice(0, 2)}:${t.slice(2, 4)}` : '00:00';
+  let time = '00:00';
+  if (/^\d{4}$/.test(t)) {
+    if (Number(t.slice(0, 2)) > 23 || Number(t.slice(2, 4)) > 59) return null;
+    time = `${t.slice(0, 2)}:${t.slice(2, 4)}`;
+  }
 
-  const latitude = Number(params.get('la'));
-  const longitude = Number(params.get('lo'));
+  const laRaw = params.get('la');
+  const loRaw = params.get('lo');
+  if (!laRaw || !loRaw) return null;
+  const latitude = Number(laRaw);
+  const longitude = Number(loRaw);
   if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) return null;
+  if (Math.abs(latitude) > 90 || Math.abs(longitude) > 180) return null;
 
   let timezone;
   try {
@@ -91,7 +111,7 @@ export function decodeBirth(params) {
     return null;
   }
 
-  return {
+  const birth = {
     name: params.get('n') || null,
     date,
     time,
@@ -100,4 +120,6 @@ export function decodeBirth(params) {
     longitude,
     placeLabel: params.get('p') || ''
   };
+  if (dm[3]) birth.timeUnknown = true;
+  return birth;
 }

@@ -40,10 +40,19 @@
     line-height: 1;
     padding: 0;
     cursor: pointer;
+    position: relative;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     transition: background 120ms, border-color 120ms, color 120ms;
+  }
+  /* Invisible touch area (UX-3): the drawn circle stays 17px, the part that
+     answers the finger grows. Each host sets --dot-hit to as much as its
+     neighbours allow; the default is modest enough for anywhere. */
+  .info-dot::after {
+    content: '';
+    position: absolute;
+    inset: var(--dot-hit, -6px);
   }
   .info-dot:hover,
   .info-dot:focus-visible {

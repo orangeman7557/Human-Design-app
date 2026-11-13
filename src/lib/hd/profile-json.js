@@ -13,6 +13,7 @@ import {
   getDisplayLabels,
   getCrossName,
   getChannelName,
+  getPromptTemplates,
   getLocale
 } from './content/index.js';
 
@@ -53,7 +54,12 @@ export function buildProfileJson(chart, birth, lang = getLocale()) {
       place: birth?.placeLabel ?? null,
       latitude: birth?.latitude ?? null,
       longitude: birth?.longitude ?? null,
-      timezone: birth?.timezone ?? null
+      timezone: birth?.timezone ?? null,
+      // Explicit either way, so a reader never has to infer it from absence.
+      timeUnknown: !!birth?.timeUnknown,
+      ...(birth?.timeUnknown
+        ? { timeNote: String(getPromptTemplates(lang).timeUnknown ?? '').trim() }
+        : {})
     },
     type: chart.type,
     typeLabel: L.type?.[chart.type] ?? chart.type,

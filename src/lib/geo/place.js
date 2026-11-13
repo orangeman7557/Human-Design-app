@@ -18,3 +18,25 @@ export function cityCountry(label) {
   const country = parts[parts.length - 1];
   return city === country ? city : `${city}, ${country}`;
 }
+
+const fold = (s) =>
+  String(s ?? '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .trim();
+
+/**
+ * Join place parts into "City, Region, Country", skipping a region that merely
+ * repeats the city (case/accent-insensitive) so we don't show "Lisbon, Lisbon,
+ * Portugal". Only affects labels built from now on; stored ones are untouched.
+ *
+ * @param {string | undefined} name
+ * @param {string | undefined} region
+ * @param {string | undefined} country
+ * @returns {string}
+ */
+export function buildPlaceLabel(name, region, country) {
+  const skipRegion = region && name && fold(region) === fold(name);
+  return [name, skipRegion ? undefined : region, country].filter(Boolean).join(', ');
+}

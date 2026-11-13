@@ -149,6 +149,18 @@ export default {
       'Your Human Design chart: interactive bodygraph with type, strategy, authority, profile, centers and channels.',
     untitled: 'Your Chart',
     noName: 'Untitled',
+    timeApprox: '~{time} (time unknown)',
+    timeUnknownNote:
+      'No birth time: the profile, the cross and some of the gates depend on it, and sometimes the type and authority do too.',
+    dayAlso: 'Also possible that day: {values}',
+    dayStable: 'Same all day: {list}.',
+    dayField: {
+      type: 'type',
+      authority: 'authority',
+      profile: 'profile',
+      definition: 'definition',
+      cross: 'cross'
+    },
     noBirthData: 'No birth data. Go back to the home page and fill in the form.',
     calculating: 'Calculating…',
     errorPrefix: 'Error: {msg}',
@@ -216,6 +228,7 @@ export default {
     moreSignals: 'More about these signals',
     tipSignalAligned: 'Alignment',
     tipSignalMisaligned: 'Misalignment',
+    infoOf: 'Info: {name}',
     moreCross: 'More about this incarnation cross',
     // Split around the info-dot glyph, which is rendered as the icon itself.
     infoHintA: 'Tap any element of the chart, then tap ',
@@ -342,6 +355,7 @@ export default {
       intro: 'What Human Design Is',
       experiment: 'A Life Experiment',
       chart: 'Bodygraph',
+      birthTime: 'Birth Time',
       type: 'Your Type',
       centers: 'Your Centers',
       strategy: 'Your Strategy',
